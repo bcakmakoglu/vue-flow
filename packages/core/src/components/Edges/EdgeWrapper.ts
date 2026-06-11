@@ -1,6 +1,6 @@
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue'
 import { getHandlePosition, getMarkerId } from '@xyflow/system'
-import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
+import type { Connection, Edge, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
@@ -35,10 +35,16 @@ const EdgeWrapper = defineComponent({
       edgesUpdatable,
       edgesFocusable,
       elevateEdgesOnSelect,
+      defaultEdgeOptions,
       hooks,
     } = useVueFlow()
 
-    const edge = computed(() => findEdge(props.id)!)
+    const storedEdge = computed(() => findEdge(props.id) as Edge)
+
+    const edge = computed<Edge>(() => {
+      const defaults = defaultEdgeOptions.value
+      return defaults ? ({ ...(defaults as Edge), ...storedEdge.value } as Edge) : storedEdge.value
+    })
 
     // resolved per edge (value-gated computed) so the z-tracking of BOTH endpoint lookup keys lives in
     // this component's scope — resolving it in EdgeRenderer's v-for made the whole renderer re-render
@@ -219,13 +225,15 @@ const EdgeWrapper = defineComponent({
             updating.value
               ? null
               : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
+                  // xyflow/react EdgeProps parity: no sourceNode/targetNode (resolve via `useInternalNode`
+                  // in custom edges); handles exposed as sourceHandleId/targetHandleId
                   id: props.id,
-                  sourceNode,
-                  targetNode,
                   source: edge.value.source,
                   target: edge.value.target,
                   type: edge.value.type,
                   updatable: isUpdatable.value,
+                  selectable: isSelectable.value,
+                  deletable: edge.value.deletable,
                   selected: edge.value.selected,
                   animated: edge.value.animated,
                   label: edge.value.label,
@@ -305,11 +313,11 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
-      emit.update({ event, edge: edge.value, connection })
+      emit.update({ event, edge: storedEdge.value, connection })
     }
 
     function onEdgeUpdateEnd(event: MouseTouchEvent) {
-      emit.updateEnd({ event, edge: edge.value })
+      emit.updateEnd({ event, edge: storedEdge.value })
       updating.value = false
     }
 
@@ -325,23 +333,23 @@ const EdgeWrapper = defineComponent({
 
       edgeUpdaterType.value = isSourceHandle ? 'target' : 'source'
 
-      emit.updateStart({ event, edge: edge.value })
+      emit.updateStart({ event, edge: storedEdge.value })
 
       handlePointerDown(event)
     }
 
     function onEdgeClick(event: MouseEvent) {
-      const data = { event, edge: edge.value }
+      const data = { event, edge: storedEdge.value }
 
       if (isSelectable.value) {
         nodesSelectionActive.value = false
 
         if (edge.value.selected && multiSelectionActive.value) {
-          removeSelectedEdges([edge.value])
+          removeSelectedEdges([storedEdge.value])
 
           edgeEl.value?.blur()
         } else {
-          addSelectedEdges([edge.value])
+          addSelectedEdges([storedEdge.value])
         }
       }
 
@@ -349,23 +357,23 @@ const EdgeWrapper = defineComponent({
     }
 
     function onEdgeContextMenu(event: MouseEvent) {
-      emit.contextMenu({ event, edge: edge.value })
+      emit.contextMenu({ event, edge: storedEdge.value })
     }
 
     function onDoubleClick(event: MouseEvent) {
-      emit.doubleClick({ event, edge: edge.value })
+      emit.doubleClick({ event, edge: storedEdge.value })
     }
 
     function onEdgeMouseEnter(event: MouseEvent) {
-      emit.mouseEnter({ event, edge: edge.value })
+      emit.mouseEnter({ event, edge: storedEdge.value })
     }
 
     function onEdgeMouseMove(event: MouseEvent) {
-      emit.mouseMove({ event, edge: edge.value })
+      emit.mouseMove({ event, edge: storedEdge.value })
     }
 
     function onEdgeMouseLeave(event: MouseEvent) {
-      emit.mouseLeave({ event, edge: edge.value })
+      emit.mouseLeave({ event, edge: storedEdge.value })
     }
 
     function onEdgeUpdaterSourceMouseDown(event: MouseEvent) {
@@ -383,9 +391,9 @@ const EdgeWrapper = defineComponent({
         if (unselect) {
           edgeEl.value?.blur()
 
-          removeSelectedEdges([findEdge(props.id)!])
+          removeSelectedEdges([storedEdge.value])
         } else {
-          addSelectedEdges([findEdge(props.id)!])
+          addSelectedEdges([storedEdge.value])
         }
       }
     }

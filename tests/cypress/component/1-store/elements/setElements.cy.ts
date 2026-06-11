@@ -53,7 +53,7 @@ describe('Store Action: `setNodes` / `setEdges`', () => {
       return types
     }, Object.keys(defaultEdgeTypes))
 
-    store.edges.value.forEach((el) => expect(edgeTypes).to.include(el.type))
+    store.edges.value.forEach((el) => expect(edgeTypes).to.include(el.type ?? 'default'))
   })
 
   describe('test node properties', () => {
@@ -89,12 +89,11 @@ describe('Store Action: `setNodes` / `setEdges`', () => {
       })
     })
 
-    it('has correct target-node and source-node', () => {
+    it('resolves source-node and target-node for every edge', () => {
+      // edges no longer carry sourceNode/targetNode (xyflow parity) — nodes resolve via the lookup
       store.getEdges.value.forEach((el) => {
-        const edge = edges.find((edge) => edge.id === el.id)
-
-        expect(el.sourceNode.id).to.eq(edge?.source)
-        expect(el.targetNode.id).to.eq(edge?.target)
+        expect(store.getInternalNode(el.source)?.id).to.eq(el.source)
+        expect(store.getInternalNode(el.target)?.id).to.eq(el.target)
       })
     })
 

@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { inject, onUnmounted, provide } from 'vue'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { Edge, FlowEmits, FlowProps, FlowSlots, GraphEdge, Node, VueFlowStore } from '../../types'
+import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
 import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useWatchProps } from '../../composables/useWatchProps'
@@ -68,7 +68,7 @@ const vfInstance =
   injectedStore ??
   useCreateVueFlow<NodeType, EdgeType>(props, {
     nodes: modelNodes as unknown as Ref<NodeType[]>,
-    edges: modelEdges as unknown as Ref<GraphEdge<EdgeType>[]>,
+    edges: modelEdges as unknown as Ref<EdgeType[]>,
   })
 
 // when reusing a provider's store, apply this `<VueFlow>`'s props to it

@@ -33,3 +33,47 @@ describe('node reactivity (markRaw)', () => {
     cy.get('[data-id="1"]').should('contain.text', 'updated')
   })
 })
+
+// Edge twin of the node guard (edge split): stored edges are the user's objects verbatim, markRaw'd at
+// the commit choke point — no deep proxy, no enriched edge representation. Renders trigger on immutable
+// replacement (lookup `.set`), driven through the store helpers.
+describe('edge reactivity (markRaw)', () => {
+  it('stored edges and their data are raw, and lookup values are the array elements', () => {
+    const { nodes, edges } = getElements(3, 3)
+    cy.vueFlow({ nodes, edges })
+
+    cy.then(() => {
+      const store = getStore()
+      const edge = store.edges.value[0]
+
+      expect(isReactive(edge), 'stored edge is raw').to.eq(false)
+      expect(isReactive(edge.data), 'edge data is raw').to.eq(false)
+      // xyflow parity: edgeLookup holds the SAME user edge references as the array
+      expect(store.findEdge(edge.id), 'lookup value === array element').to.eq(edge)
+    })
+  })
+
+  it('re-renders on updateEdgeData despite markRaw (immutable replacement)', () => {
+    cy.vueFlow({
+      nodes: [
+        { id: '1', type: 'default', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
+        { id: '2', type: 'default', position: { x: 200, y: 0 }, data: { label: 'Node 2' } },
+      ],
+      edges: [{ id: 'e1-2', source: '1', target: '2', label: 'initial', data: {} }],
+    })
+
+    cy.get('.vue-flow__edge').should('contain.text', 'initial')
+
+    cy.then(() => {
+      const store = getStore()
+      const before = store.findEdge('e1-2')
+
+      store.setEdges((prev) => prev.map((edge) => ({ ...edge, label: 'updated' })))
+
+      // immutable contract: the stored object was REPLACED, not mutated
+      expect(store.findEdge('e1-2')).to.not.eq(before)
+    })
+
+    cy.get('.vue-flow__edge').should('contain.text', 'updated')
+  })
+})

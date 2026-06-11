@@ -1,6 +1,6 @@
 import type { Viewport } from '@xyflow/system'
 import type { EventHookExtended, EventHookOn, EventHookTrigger, VueFlowError } from '../utils'
-import type { Edge, GraphEdge } from './edge'
+import type { Edge } from './edge'
 import type { GraphNode, Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { EdgeChange, NodeChange } from './changes'
@@ -21,12 +21,12 @@ export interface NodeDragEvent<NodeType extends Node = Node> {
 
 export interface EdgeMouseEvent<EdgeType extends Edge = Edge> {
   event: MouseTouchEvent
-  edge: GraphEdge<EdgeType>
+  edge: EdgeType
 }
 
 export interface EdgeUpdateEvent<EdgeType extends Edge = Edge> {
   event: MouseTouchEvent
-  edge: GraphEdge<EdgeType>
+  edge: EdgeType
   connection: Connection
 }
 

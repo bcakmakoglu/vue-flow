@@ -1,7 +1,6 @@
 import type { EdgeBase } from '@xyflow/system'
 import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
 import type { ElementData, Position, Styles } from './flow'
-import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
 
 /** Edge markers */
@@ -128,6 +127,10 @@ export type Edge<Data extends Record<string, unknown> = ElementData, Type extend
 
 export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle'>
 
+/**
+ * The computed positions an edge renders with — a render-OUTPUT type (xyflow's `EdgePosition`),
+ * computed per render from the source/target `InternalNode`s. Never stored on an edge.
+ */
 export interface EdgePositions {
   sourceX: number
   sourceY: number
@@ -136,38 +139,28 @@ export interface EdgePositions {
 }
 
 /**
- * Internal edge type — vue-flow-specific enrichment of a user `Edge` (resolved source/target nodes,
- * computed positions). There is no `@xyflow/system` "internal edge" to mirror (system stores edges
- * as-is), so this is parameterized on the user `EdgeType`, like `GraphNode<NodeType>`.
- */
-export type GraphEdge<EdgeType extends Edge = Edge> = EdgeType & {
-  selected: boolean
-  sourceNode: GraphNode
-  targetNode: GraphNode
-} & EdgePositions
-
-/**
  * these props are passed to edge components
  *
- * Parameterized on an `EdgeType` (matching the xyflow/react convention).
- * Defaults preserved for back-compat when no generic is passed.
+ * Mirrors xyflow/react's `EdgeProps` (no `sourceNode`/`targetNode` — resolve via `useInternalNode`;
+ * handles exposed as `sourceHandleId`/`targetHandleId`; markers pre-resolved to url strings).
+ * Parameterized on an `EdgeType`, matching the xyflow/react convention.
  */
 export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOptions, EdgePositions {
   id: string
-  sourceNode: GraphNode
-  targetNode: GraphNode
   source: string
   target: string
   type: NonNullable<EdgeType['type']> | string
   label?: string | VNode | Component<EdgeTextProps> | object
   style?: CSSProperties
   selected?: boolean
+  selectable?: boolean
+  deletable?: boolean
   sourcePosition: Position
   targetPosition: Position
   sourceHandleId?: string
   targetHandleId?: string
   animated?: boolean
-  updatable?: boolean
+  updatable?: EdgeUpdatable
   markerStart: string
   markerEnd: string
   curvature?: number

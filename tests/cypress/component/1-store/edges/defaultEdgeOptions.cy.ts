@@ -32,24 +32,25 @@ describe('Default Edge Options', () => {
     })
   })
 
-  it('sets default edge options', () => {
+  it('applies default edge options at render without stamping stored edges', () => {
+    // stored edges stay the user's objects verbatim (xyflow parity) — defaults merge at render time
     store.edges.value.forEach((edge) => {
-      expect(edge.class).to.equal(defaultEdgeOptions.class)
+      expect(edge.class).to.be.undefined
     })
 
     cy.get('.vue-flow__edge').should('have.class', defaultEdgeOptions.class)
   })
 
-  it('sets default edge options but does not overwrite options with existing values', () => {
+  it('does not overwrite existing values and keeps stored types verbatim', () => {
     store.edges.value.forEach((edge) => {
       if (edge.id === 'customEdge') {
         return expect(edge.type).to.equal('custom')
       }
 
-      expect(edge.type).to.equal(defaultEdgeOptions.type)
+      expect(edge.type).to.be.undefined
     })
 
-    // uses fallback default slot
+    // defaultEdgeOptions.type is unregistered, so rendering falls back to the default slot
     cy.get('.vue-flow__edge').should('have.class', 'vue-flow__edge-default')
   })
 })

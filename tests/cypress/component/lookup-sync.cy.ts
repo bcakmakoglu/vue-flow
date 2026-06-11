@@ -58,6 +58,41 @@ describe('lookup sync is O(changed)', () => {
     expect(unrelatedRuns, 'effect tracking an untouched node').to.equal(1)
   })
 
+  it('edge changes do not invalidate unrelated edge lookup keys', () => {
+    cy.then(() => {
+      store.addEdges([
+        { id: 'e1-2', source: '1', target: '2' },
+        { id: 'e2-3', source: '2', target: '3' },
+      ])
+    })
+
+    cy.then(() => {
+      let changedRuns = 0
+      let unrelatedRuns = 0
+
+      watchEffect(
+        () => {
+          store.edgeLookup.get('e1-2')
+          changedRuns++
+        },
+        { flush: 'sync' },
+      )
+
+      watchEffect(
+        () => {
+          store.edgeLookup.get('e2-3')
+          unrelatedRuns++
+        },
+        { flush: 'sync' },
+      )
+
+      store.applyEdgeChanges([{ id: 'e1-2', type: 'select', selected: true }])
+
+      expect(changedRuns, 'effect tracking the changed edge').to.be.greaterThan(1)
+      expect(unrelatedRuns, 'effect tracking an untouched edge').to.equal(1)
+    })
+  })
+
   it('removals only touch the removed key', () => {
     let removedRuns = 0
     let unrelatedRuns = 0

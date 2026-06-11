@@ -3,7 +3,7 @@ import { shallowRef, toRef, watch } from 'vue'
 import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import type { EdgeChange, Node, NodeChange } from '../../types'
+import type { Edge, EdgeChange, Node, NodeChange } from '../../types'
 import { SelectionMode } from '../../types'
 import { useKeyPress, useVueFlow } from '../../composables'
 import { getSelectionChanges } from '../../utils'
@@ -64,7 +64,7 @@ watch(deleteKeyPressed, (isKeyPressed) => {
 
   removeNodes(getSelectedNodes.value as unknown as Node[])
 
-  removeEdges(getSelectedEdges.value)
+  removeEdges(getSelectedEdges.value as unknown as Edge[])
 
   nodesSelectionActive.value = false
 })
@@ -173,7 +173,8 @@ function onPointerMove(event: PointerEvent) {
   )
 
   selectedEdgeIds.value = new Set()
-  const edgesSelectable = defaultEdgeOptions.value?.selectable ?? true
+  // resolution order mirrors EdgeWrapper's isSelectable: edge.selectable ?? defaults ?? global flag
+  const edgesSelectable = defaultEdgeOptions.value?.selectable ?? elementsSelectable.value
 
   // We look for all edges connected to the selected nodes
   for (const nodeId of selectedNodeIds.value) {

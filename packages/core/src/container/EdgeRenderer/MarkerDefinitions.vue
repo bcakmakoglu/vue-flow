@@ -5,7 +5,7 @@ import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types'
 import { useVueFlow } from '../../composables'
 import MarkerSymbols from './MarkerSymbols.vue'
 
-const { id: vueFlowId, edges, connectionLineOptions, defaultMarkerColor: defaultColor } = useVueFlow()
+const { id: vueFlowId, edges, connectionLineOptions, defaultEdgeOptions, defaultMarkerColor: defaultColor } = useVueFlow()
 
 const markers = computed(() => {
   const ids: Set<string> = new Set()
@@ -32,7 +32,11 @@ const markers = computed(() => {
   }
 
   for (const edge of edges.value) {
-    for (const marker of [edge.markerStart, edge.markerEnd]) {
+    // defaults are not stamped onto stored edges — resolve markers through defaultEdgeOptions at read time
+    for (const marker of [
+      edge.markerStart ?? defaultEdgeOptions.value?.markerStart,
+      edge.markerEnd ?? defaultEdgeOptions.value?.markerEnd,
+    ]) {
       createMarkers(marker)
     }
   }

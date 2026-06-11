@@ -1,6 +1,6 @@
 import { getEventPosition, getHandlePosition } from '@xyflow/system'
 import { ConnectionMode } from '../types'
-import type { Actions, Connection, GraphEdge, HandleElement, HandleType, IsValidParams, Node, NodeLookup, Result } from '../types'
+import type { Actions, Connection, Edge, HandleElement, HandleType, IsValidParams, Node, NodeLookup, Result } from '../types'
 
 const alwaysValid = () => true
 
@@ -52,7 +52,7 @@ export function isValidHandle(
     flowId,
     isValidConnection = alwaysValid,
   }: IsValidParams,
-  edges: GraphEdge[],
+  edges: Edge[],
   nodes: Node[],
   getInternalNode: Actions['getInternalNode'],
   nodeLookup: NodeLookup,

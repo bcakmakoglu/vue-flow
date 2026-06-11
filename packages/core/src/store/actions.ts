@@ -23,7 +23,6 @@ import type {
   EdgeRemoveChange,
   EdgeSelectionChange,
   FlowExportObject,
-  GraphEdge,
   GraphNode,
   Node,
   NodeAddChange,
@@ -41,7 +40,6 @@ import {
   calcNextPosition,
   createAdditionChange,
   createEdgeRemoveChange,
-  createGraphEdges,
   createNodeRemoveChange,
   createSelectionChange,
   getExtent,
@@ -51,6 +49,7 @@ import {
   isNode,
   updateConnectionLookup,
   updateEdgeAction,
+  validateEdges,
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
 
@@ -149,14 +148,19 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     recomputeAbsolutePositions()
   }
 
-  /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
-  function commitEdges(next: GraphEdge<EdgeType>[]) {
+  /**
+   * Single write path for edge membership (see {@link commitNodes}). Stores the USER edges verbatim
+   * (xyflow parity: `edgeLookup` values are the same references as the `state.edges` elements — no
+   * enriched edge representation exists). `markRaw` at this choke point keeps edges out of Vue's deep
+   * proxy: renders are driven by key-level lookup triggers + immutable replacement, like nodes.
+   */
+  function commitEdges(next: EdgeType[]) {
     // targeted sync instead of clear+refill: clearing a `reactive(Map)` invalidates every edge
-    // subscriber even when a single edge changed (in-place edge updates surface through the deep
-    // proxy regardless; key triggers are only needed for replaced/added/removed entries)
+    // subscriber even when a single edge changed
     const rawEdgeLookup = toRaw(edgeLookup)
 
-    for (const edge of next) {
+    for (let i = 0; i < next.length; i++) {
+      const edge = (next[i] = markRaw(toRaw(next[i])))
       if (rawEdgeLookup.get(edge.id) !== edge) {
         edgeLookup.set(edge.id, edge)
       }
@@ -176,6 +180,10 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     state.edges = next
+
+    // the connection lookup derives 1:1 from the edges array — rebuilding it here keeps every write
+    // path (setEdges/applyEdgeChanges/updateEdge/$reset) consistent by construction
+    updateConnectionLookup(state.connectionLookup, state.edges)
   }
 
   /**
@@ -313,7 +321,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    return edgeLookup.get(id)
+    return edgeLookup.get(id) as DeepReadonly<EdgeType> | undefined
   }
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
@@ -571,20 +579,17 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    const validEdges = createGraphEdges<EdgeType>(
-      nextEdges,
-      state.isValidConnection,
-      getInternalNode,
-      findEdge,
-      state.hooks.error.trigger,
-      state.defaultEdgeOptions,
-      state.nodes,
-      state.edges,
+    commitEdges(
+      validateEdges<EdgeType>(
+        nextEdges,
+        state.isValidConnection,
+        getInternalNode,
+        state.hooks.error.trigger,
+        state.defaultEdgeOptions,
+        state.nodes,
+        state.edges,
+      ),
     )
-
-    commitEdges(validEdges)
-
-    updateConnectionLookup(state.connectionLookup, edgeLookup, validEdges)
   }
 
   const addNodes: Actions<NodeType>['addNodes'] = (nodes) => {
@@ -610,11 +615,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     let nextEdges = params instanceof Function ? params(state.edges) : params
     nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
 
-    const validEdges = createGraphEdges<EdgeType>(
+    // the `add` change items are the validated USER edges (a `Connection` becomes a new edge with
+    // `defaultEdgeOptions` merged at creation) — no enrichment leaks into the change event payload
+    const validEdges = validateEdges<EdgeType>(
       nextEdges,
       state.isValidConnection,
       getInternalNode,
-      findEdge,
       state.hooks.error.trigger,
       state.defaultEdgeOptions,
       state.nodes,
@@ -641,7 +647,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     function createEdgeRemovalChanges(nodes: Node[]) {
       const connectedEdges = getConnectedEdges(nodes)
       for (const edge of connectedEdges) {
-        if (isDef(edge.deletable) ? edge.deletable : true) {
+        // deletable is no longer stamped onto stored edges — resolve through defaultEdgeOptions at read time
+        const deletable = edge.deletable ?? state.defaultEdgeOptions?.deletable
+        if (isDef(deletable) ? deletable : true) {
           edgeChanges.push(createEdgeRemoveChange(edge.id))
         }
       }
@@ -715,7 +723,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         continue
       }
 
-      if (isDef(currEdge.deletable) && !currEdge.deletable) {
+      const deletable = currEdge.deletable ?? state.defaultEdgeOptions?.deletable
+      if (isDef(deletable) && !deletable) {
         continue
       }
 
@@ -732,27 +741,28 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return false
     }
 
-    const prevEdgeIndex = state.edges.indexOf(prevEdge)
+    // resolve by id, not identity — callers commonly pass stale references (e.g. an edge captured in an
+    // event payload before an immutable change replaced the stored object)
+    const prevEdgeIndex = state.edges.findIndex((edge) => edge.id === oldEdge.id)
 
-    const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge, shouldReplaceId, state.hooks.error.trigger)
+    const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge as EdgeType, shouldReplaceId, state.hooks.error.trigger)
 
     if (newEdge) {
-      const [validEdge] = createGraphEdges<EdgeType>(
+      const [validEdge] = validateEdges<EdgeType>(
         [newEdge as unknown as EdgeType],
         state.isValidConnection,
         getInternalNode,
-        findEdge,
         state.hooks.error.trigger,
         state.defaultEdgeOptions,
         state.nodes,
         state.edges,
       )
 
-      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
+      if (!validEdge) {
+        return false
+      }
 
-      // rebuild from ALL edges — `updateConnectionLookup` clears the lookup before repopulating, so
-      // passing only the updated edge would drop every other edge's connections
-      updateConnectionLookup(state.connectionLookup, edgeLookup, state.edges)
+      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
 
       return validEdge
     }
@@ -767,9 +777,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge) : dataUpdate
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge as EdgeType) : dataUpdate
 
-    edge.data = options.replace ? nextData : { ...edge.data, ...nextData }
+    // immutable, mirroring `updateNodeData`: a NEW edge object replaces the stored one (in-place
+    // mutation wouldn't be reactive — edges are markRaw'd, renders trigger on lookup replacement)
+    const nextEdge = { ...edge, data: options.replace ? nextData : { ...edge.data, ...nextData } } as EdgeType
+
+    commitEdges(state.edges.map((item) => (item.id === id ? nextEdge : item)))
   }
 
   const applyNodeChanges: Actions<NodeType>['applyNodeChanges'] = (changes) => {
@@ -782,12 +796,10 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
-    const result = applyChanges(changes, Array.from(edgeLookup.values()))
-
+    // apply IMMUTABLY against the canonical user edges (mirrors `applyNodeChanges`): new array, new
+    // objects for changed edges, unchanged reused by reference
+    const result = applyChanges(changes, state.edges)
     commitEdges(result)
-
-    updateConnectionLookup(state.connectionLookup, edgeLookup, result)
-
     return result
   }
 
@@ -989,7 +1001,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     for (const edge of state.edges) {
-      const { selected: _, sourceNode: __, targetNode: ___, ...rest } = edge
+      // `state.edges` are the user `Edge`s verbatim; strip the transient runtime field for export
+      const { selected: _, ...rest } = edge
 
       edges.push(rest)
     }
