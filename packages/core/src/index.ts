@@ -50,7 +50,7 @@ export {
   getNodesInside,
 } from '@xyflow/system'
 
-export { isNode, isEdge, isGraphNode, isGraphEdge, connectionExists } from './utils/graph'
+export { isNode, isEdge, isGraphNode, connectionExists } from './utils/graph'
 
 /**
  * @deprecated - Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead

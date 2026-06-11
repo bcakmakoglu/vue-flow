@@ -1,10 +1,10 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue'
 import { computed, toValue } from 'vue'
-import type { Edge, GraphEdge } from '../types'
+import type { Edge } from '../types'
 import { warn } from '../utils'
 import { useVueFlow } from './useVueFlow'
 
-interface EdgeData<EdgeType extends Edge = GraphEdge> {
+interface EdgeData<EdgeType extends Edge = Edge> {
   id: string
   type: EdgeType['type']
   data: NonNullable<EdgeType['data']> | null
@@ -18,13 +18,13 @@ interface EdgeData<EdgeType extends Edge = GraphEdge> {
  * @param guard - Optional guard function to narrow down the node type
  * @returns An array of data objects
  */
-export function useEdgesData<EdgeType extends Edge = GraphEdge>(
+export function useEdgesData<EdgeType extends Edge = Edge>(
   edgeId: MaybeRefOrGetter<string>,
 ): ComputedRef<EdgeData<EdgeType> | null>
-export function useEdgesData<EdgeType extends Edge = GraphEdge>(
+export function useEdgesData<EdgeType extends Edge = Edge>(
   edgeIds: MaybeRefOrGetter<string[]>,
 ): ComputedRef<EdgeData<EdgeType>[]>
-export function useEdgesData<EdgeType extends Edge = GraphEdge>(
+export function useEdgesData<EdgeType extends Edge = Edge>(
   edgeIds: MaybeRefOrGetter<string[]>,
   guard: (node: Edge) => node is EdgeType,
 ): ComputedRef<EdgeData<EdgeType>[]>

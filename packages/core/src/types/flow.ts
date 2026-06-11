@@ -2,7 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, Viewport } from '@xyflow/system'
 import type { VueFlowError } from '../utils'
-import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
 import type {
   Connection,
@@ -237,8 +237,8 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   (event: 'nodeDragStop', nodeDragEvent: NodeDragEvent<NodeType>): void
 
   /** v-model event definitions */
-  (event: 'update:nodes', value: GraphNode<NodeType>[]): void
-  (event: 'update:edges', value: GraphEdge<EdgeType>[]): void
+  (event: 'update:nodes', value: NodeType[]): void
+  (event: 'update:edges', value: EdgeType[]): void
 }
 
 // Slots are optional (a flow needn't define every node-/edge-type slot), so use `Partial<Record<…>>`

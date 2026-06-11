@@ -1,4 +1,4 @@
-import type { Actions, GraphEdge, HandleElement } from '../types'
+import type { Actions, Edge, HandleElement } from '../types'
 
 export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string | null): HandleElement | null {
   if (!bounds) {
@@ -9,7 +9,7 @@ export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string 
   return (!handleId ? bounds[0] : bounds.find((d) => d.id === handleId)) || null
 }
 
-export function getEdgeZIndex(edge: GraphEdge, getInternalNode: Actions['getInternalNode'], elevateEdgesOnSelect = false) {
+export function getEdgeZIndex(edge: Edge, getInternalNode: Actions['getInternalNode'], elevateEdgesOnSelect = false) {
   const hasZIndex = typeof edge.zIndex === 'number'
   let z = hasZIndex ? edge.zIndex! : 0
 

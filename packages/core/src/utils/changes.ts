@@ -5,7 +5,6 @@ import type {
   EdgeRemoveChange,
   EdgeSelectionChange,
   ElementChange,
-  GraphEdge,
   GraphNode,
   Node,
   NodeAddChange,
@@ -128,7 +127,7 @@ export function applyChanges<
 }
 
 /** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
-export function applyEdgeChanges(changes: EdgeChange[], edges: GraphEdge[]) {
+export function applyEdgeChanges(changes: EdgeChange[], edges: Edge[]) {
   return applyChanges(changes, edges)
 }
 

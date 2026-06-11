@@ -13,7 +13,7 @@ import type {
   Connector,
   NodeConnection,
 } from './connection'
-import type { DefaultEdgeOptions, Edge, EdgeUpdatable, GraphEdge } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeUpdatable } from './edge'
 import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
@@ -21,7 +21,7 @@ import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle
 
 export type NodeLookup<NodeType extends Node = Node> = Map<string, GraphNode<NodeType>>
 
-export type EdgeLookup<EdgeType extends Edge = Edge> = Map<string, GraphEdge<EdgeType>>
+export type EdgeLookup<EdgeType extends Edge = Edge> = Map<string, EdgeType>
 
 export interface UpdateNodeDimensionsParams {
   id: string
@@ -41,8 +41,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   /** all stored nodes (the user-facing `Node`s; enriched `InternalNode`s live in `nodeLookup`) */
   nodes: NodeType[]
-  /** all stored edges */
-  edges: GraphEdge<EdgeType>[]
+  /** all stored edges (the user-facing `Edge`s, verbatim — xyflow parity: no enriched edge exists) */
+  edges: EdgeType[]
 
   connectionLookup: ConnectionLookup
 
@@ -146,7 +146,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
 export type SetNodes<NodeType extends Node = Node> = (nodes: NodeType[] | ((nodes: NodeType[]) => NodeType[])) => void
 
-export type SetEdges<EdgeType extends Edge = Edge> = (edges: EdgeType[] | ((edges: GraphEdge<EdgeType>[]) => EdgeType[])) => void
+export type SetEdges<EdgeType extends Edge = Edge> = (edges: EdgeType[] | ((edges: EdgeType[]) => EdgeType[])) => void
 
 export type AddNodes<NodeType extends Node = Node> = (
   nodes: NodeType | NodeType[] | ((nodes: NodeType[]) => NodeType | NodeType[]),
@@ -159,25 +159,25 @@ export type RemoveNodes = (
 ) => void
 
 export type RemoveEdges = (
-  edges: (string | Edge) | (Edge | string)[] | ((edges: GraphEdge[]) => (string | Edge) | (Edge | string)[]),
+  edges: (string | Edge) | (Edge | string)[] | ((edges: Edge[]) => (string | Edge) | (Edge | string)[]),
 ) => void
 
 export type AddEdges<EdgeType extends Edge = Edge> = (
   edgesOrConnections:
     | (EdgeType | Connection)
     | (EdgeType | Connection)[]
-    | ((edges: GraphEdge<EdgeType>[]) => (EdgeType | Connection) | (EdgeType | Connection)[]),
+    | ((edges: EdgeType[]) => (EdgeType | Connection) | (EdgeType | Connection)[]),
 ) => void
 
 export type UpdateEdge<EdgeType extends Edge = Edge> = (
-  oldEdge: GraphEdge<EdgeType>,
+  oldEdge: EdgeType,
   newConnection: Connection,
   shouldReplaceId?: boolean,
-) => GraphEdge<EdgeType> | false
+) => EdgeType | false
 
 export type UpdateEdgeData<EdgeType extends Edge = Edge> = (
   id: string,
-  dataUpdate: Partial<EdgeType['data']> | ((edge: GraphEdge<EdgeType>) => Partial<EdgeType['data']>),
+  dataUpdate: Partial<EdgeType['data']> | ((edge: EdgeType) => Partial<EdgeType['data']>),
   options?: { replace: boolean },
 ) => void
 
@@ -200,7 +200,7 @@ export type FindNode<NodeType extends Node = Node> = (id: string | undefined | n
  */
 export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
-export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => GraphEdge<EdgeType> | undefined
+export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => DeepReadonly<EdgeType> | undefined
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
   node: (Partial<NodeType> & { id: NodeType['id'] }) | Rect,
@@ -251,15 +251,15 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** updates the data of a node */
   updateNodeData: UpdateNodeData<NodeType>
   /** applies default edge change handler */
-  applyEdgeChanges: (changes: EdgeChange<EdgeType>[]) => GraphEdge<EdgeType>[]
+  applyEdgeChanges: (changes: EdgeChange<EdgeType>[]) => EdgeType[]
   /** applies default node change handler; returns the resulting user nodes */
   applyNodeChanges: (changes: NodeChange<NodeType>[]) => NodeType[]
   /** manually select edges and add to state */
-  addSelectedEdges: (edges: GraphEdge<EdgeType>[]) => void
+  addSelectedEdges: (edges: EdgeType[]) => void
   /** manually select nodes and add to state */
   addSelectedNodes: (nodes: NodeType[]) => void
   /** manually unselect edges and remove from state */
-  removeSelectedEdges: (edges?: GraphEdge<EdgeType>[]) => void
+  removeSelectedEdges: (edges?: EdgeType[]) => void
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes?: NodeType[]) => void
   /** apply min zoom value to panzoom */
@@ -296,7 +296,7 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** check if a node is intersecting with a defined area */
   isNodeIntersecting: IsNodeIntersecting
   /** get a node's connected edges */
-  getConnectedEdges: (nodes: Node[]) => GraphEdge<EdgeType>[]
+  getConnectedEdges: (nodes: Node[]) => EdgeType[]
   /** get all connections of a handle belonging to a node */
   getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => NodeConnection[]
   /** pan the viewport; return indicates if a transform has happened or not */
@@ -320,12 +320,12 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   getNodes: DeepReadonly<NodeType[]>
   // NOTE: DeepReadonly is a TYPE-only guard (zero runtime) — mutating a node read here is a compile error
   // pointing users at the helpers (updateNode/updateNodeData/applyNodeChanges/setNodes); see #40.
-  /** all visible edges */
-  getEdges: GraphEdge<EdgeType>[]
+  /** all visible edges (user-facing `Edge`s) */
+  getEdges: DeepReadonly<EdgeType[]>
   /** returns all currently selected nodes (user-facing `Node`s) */
   getSelectedNodes: DeepReadonly<NodeType[]>
   /** returns all currently selected edges */
-  getSelectedEdges: GraphEdge<EdgeType>[]
+  getSelectedEdges: DeepReadonly<EdgeType[]>
   /** the viewport as `{ x, y, zoom }`, derived from the canonical `transform` — read-only; set via `setViewport`/`zoom*`/`fitView` */
   viewport: Viewport
 }

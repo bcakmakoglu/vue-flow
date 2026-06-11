@@ -10,7 +10,6 @@ import type {
   DefaultEdgeOptions,
   Edge,
   EdgeLookup,
-  GraphEdge,
   GraphNode,
   Node,
   NodeConnection,
@@ -19,7 +18,7 @@ import type {
   ValidConnectionFunc,
   VueFlowStore,
 } from '../types'
-import { ErrorCode, VueFlowError, connectionExists, isEdge, isNode, parseEdge } from '.'
+import { ErrorCode, VueFlowError, connectionExists, isEdge, isNode } from '.'
 
 type NonUndefined<T> = T extends undefined ? never : T
 
@@ -29,28 +28,33 @@ export function isDef<T>(val: T): val is NonUndefined<T> {
   return typeof unrefVal !== 'undefined'
 }
 
-export function addEdgeToStore(
-  edgeParams: Edge | Connection,
-  edges: Edge[],
+/**
+ * Build a user `Edge` from a `Connection` (or validate a passed `Edge`), xyflow-style: a `Connection`
+ * becomes a NEW edge with `defaultEdgeOptions` merged at creation — the only moment defaults are
+ * persisted (mirrors RF's Handle doing `{ ...defaultEdgeOptions, ...params }` before `addEdge`).
+ * User-supplied `Edge`s pass through verbatim; stored edges are never parsed or re-stamped.
+ */
+export function addEdgeToStore<EdgeType extends Edge = Edge>(
+  edgeParams: EdgeType | Connection,
+  edges: EdgeType[],
   triggerError: State['hooks']['error']['trigger'],
   defaultEdgeOptions?: DefaultEdgeOptions,
-): GraphEdge | false {
+): EdgeType | false {
   if (!edgeParams || !edgeParams.source || !edgeParams.target) {
     triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as undefined | Edge)?.id ?? `[ID UNKNOWN]`))
     return false
   }
 
-  let edge
-  if (isEdge(edgeParams)) {
+  let edge: EdgeType
+  if (isEdge<EdgeType>(edgeParams)) {
     edge = edgeParams
   } else {
     edge = {
+      ...defaultEdgeOptions,
       ...edgeParams,
       id: getEdgeId(edgeParams),
-    } as Edge
+    } as EdgeType
   }
-
-  edge = parseEdge(edge, undefined, defaultEdgeOptions)
 
   if (connectionExists(edge, edges)) {
     return false
@@ -60,9 +64,9 @@ export function addEdgeToStore(
 }
 
 export function updateEdgeAction(
-  edge: GraphEdge,
+  edge: Edge,
   newConnection: Connection,
-  prevEdge: GraphEdge | undefined,
+  prevEdge: Edge | undefined,
   shouldReplaceId: boolean,
   triggerError: State['hooks']['error']['trigger'],
 ) {
@@ -211,7 +215,7 @@ function addConnectionToLookup(
   }
 }
 
-export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeLookup: EdgeLookup, edges: GraphEdge[]) {
+export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {
   connectionLookup.clear()
 
   for (const edge of edges) {
@@ -227,22 +231,26 @@ export function updateConnectionLookup(connectionLookup: ConnectionLookup, edgeL
 }
 
 /**
+ * Validate edges-or-connections for the store, xyflow-style: the returned edges are the USER's objects
+ * (a `Connection` becomes a new edge via {@link addEdgeToStore}, the only path that persists
+ * `defaultEdgeOptions`) — no enrichment, no captured node references, no default-stamping. Source/target
+ * node resolution and `EdgePosition` happen per-render in `EdgeWrapper`.
+ *
  * @internal
  */
-export function createGraphEdges<EdgeType extends Edge = Edge>(
+export function validateEdges<EdgeType extends Edge = Edge>(
   nextEdges: (EdgeType | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
   getInternalNode: Actions['getInternalNode'],
-  findEdge: Actions<Node, EdgeType>['findEdge'],
   onError: VueFlowStore['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
   nodes: Node[],
-  edges: GraphEdge[],
-): GraphEdge<EdgeType>[] {
-  const validEdges: GraphEdge<EdgeType>[] = []
+  edges: EdgeType[],
+): EdgeType[] {
+  const validEdges: EdgeType[] = []
 
   for (const edgeOrConnection of nextEdges) {
-    const edge = isEdge(edgeOrConnection)
+    const edge = isEdge<EdgeType>(edgeOrConnection)
       ? edgeOrConnection
       : addEdgeToStore(edgeOrConnection, edges, onError, defaultEdgeOptions)
 
@@ -253,7 +261,7 @@ export function createGraphEdges<EdgeType extends Edge = Edge>(
     const sourceNode = getInternalNode(edge.source)
     const targetNode = getInternalNode(edge.target)
 
-    if (!sourceNode || !targetNode) {
+    if (!sourceNode && !targetNode) {
       onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
       continue
     }
@@ -290,13 +298,7 @@ export function createGraphEdges<EdgeType extends Edge = Edge>(
       }
     }
 
-    const existingEdge = findEdge(edge.id)
-
-    validEdges.push({
-      ...parseEdge(edge, existingEdge, defaultEdgeOptions),
-      sourceNode,
-      targetNode,
-    } as unknown as GraphEdge<EdgeType>)
+    validEdges.push(edge)
   }
 
   return validEdges

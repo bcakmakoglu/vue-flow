@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import type { DeepReadonly } from 'vue'
 import { getNodesInside, isEdgeVisible } from '@xyflow/system'
-import type { ComputedGetters, Edge, GraphEdge, Node, NodeLookup, State } from '../types'
+import type { ComputedGetters, Edge, Node, NodeLookup, State } from '../types'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
@@ -15,6 +15,14 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     const keys = Object.keys(edgeTypes)
+
+    // defaults are not stamped onto stored edges — auto-register defaultEdgeOptions.type too, else
+    // edges relying on it would render the bezier default instead of the configured component
+    const defaultType = state.defaultEdgeOptions?.type
+    if (defaultType && !keys.includes(defaultType)) {
+      edgeTypes[defaultType] = defaultType
+      keys.push(defaultType)
+    }
 
     for (const e of state.edges) {
       e.type && !keys.includes(e.type) && (edgeTypes[e.type] = e.type)
@@ -59,11 +67,16 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
 
   const getEdges: ComputedGetters<NodeType, EdgeType>['getEdges'] = computed(() => {
     if (state.onlyRenderVisibleElements) {
-      const visibleEdges: GraphEdge<EdgeType>[] = []
+      const visibleEdges: EdgeType[] = []
 
       for (const edge of state.edges) {
-        const source = nodeLookup.get(edge.source)!
-        const target = nodeLookup.get(edge.target)!
+        const source = nodeLookup.get(edge.source)
+        const target = nodeLookup.get(edge.target)
+
+        // skip dangling edges instead of crashing (xyflow parity: edges with missing nodes are excluded)
+        if (!source || !target) {
+          continue
+        }
 
         if (
           isEdgeVisible({
@@ -78,10 +91,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         }
       }
 
-      return visibleEdges
+      return visibleEdges as unknown as DeepReadonly<EdgeType[]>
     }
 
-    return state.edges
+    return state.edges as unknown as DeepReadonly<EdgeType[]>
   })
 
   const getSelectedNodes: ComputedGetters<NodeType>['getSelectedNodes'] = computed(() => {
@@ -96,14 +109,14 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   })
 
   const getSelectedEdges: ComputedGetters<NodeType, EdgeType>['getSelectedEdges'] = computed(() => {
-    const selectedEdges: GraphEdge<EdgeType>[] = []
+    const selectedEdges: EdgeType[] = []
     for (const edge of state.edges) {
       if (edge.selected) {
         selectedEdges.push(edge)
       }
     }
 
-    return selectedEdges
+    return selectedEdges as unknown as DeepReadonly<EdgeType[]>
   })
 
   // the public `{ x, y, zoom }` shape derived from the canonical `transform` tuple (read-only)

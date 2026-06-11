@@ -1,6 +1,6 @@
 import type { Ref } from 'vue'
 import { reactive, shallowRef, toRaw, toRefs, watch } from 'vue'
-import type { Edge, EdgeLookup, FlowProps, GraphEdge, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
+import type { Edge, EdgeLookup, FlowProps, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
 import { useActions } from './actions'
 import { useGetters } from './getters'
 import { useState } from './state'
@@ -12,7 +12,7 @@ import { useState } from './state'
  */
 export interface StoreSignals<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   nodes?: Ref<NodeType[]>
-  edges?: Ref<GraphEdge<EdgeType>[]>
+  edges?: Ref<EdgeType[]>
 }
 
 /**
@@ -38,19 +38,19 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // which TS can't reconcile with the injected signal's type over an unresolved generic). The explicit
   // `| undefined` reflects an injected-but-unbound `defineModel` ref.
   const nodesSignal: Ref<NodeType[] | undefined> = signals?.nodes ?? shallowRef([])
-  const edgesSignal: Ref<GraphEdge<EdgeType>[] | undefined> = signals?.edges ?? shallowRef([])
+  const edgesSignal: Ref<EdgeType[] | undefined> = signals?.edges ?? shallowRef([])
 
   // The array references the store itself last wrote (through the `state.nodes`/`.edges` setters below).
   // The single-source binding watch (further down) uses these to tell its own writes apart from an
   // external `v-model` reassignment — no pause/resume flags needed.
   let lastWriteNodes: NodeType[] | undefined
-  let lastWriteEdges: GraphEdge<EdgeType>[] | undefined
+  let lastWriteEdges: EdgeType[] | undefined
 
   // Stable empty fallbacks: an injected `v-model` ref is `undefined` until bound (e.g. `<VueFlow>` with no
   // `:nodes`), so reads must never surface `undefined` (everything iterates `state.nodes`/`.edges`). A
   // stable reference avoids reactivity churn while unbound; `setState`/`commit` replace it with a real array.
   const emptyNodes: NodeType[] = []
-  const emptyEdges: GraphEdge<EdgeType>[] = []
+  const emptyEdges: EdgeType[] = []
 
   const state = useState<NodeType, EdgeType>()
 
@@ -67,7 +67,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   })
   Object.defineProperty(state, 'edges', {
     get: () => edgesSignal.value ?? emptyEdges,
-    set: (value: GraphEdge<EdgeType>[]) => {
+    set: (value: EdgeType[]) => {
       lastWriteEdges = toRaw(value)
       edgesSignal.value = value
     },
@@ -107,7 +107,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
     string,
     Map<string, GraphNode<NodeType>>
   >
-  const edgeLookup = reactive(new Map<string, GraphEdge<EdgeType>>()) as EdgeLookup<EdgeType>
+  const edgeLookup = reactive(new Map<string, EdgeType>()) as EdgeLookup<EdgeType>
 
   const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup)
 
