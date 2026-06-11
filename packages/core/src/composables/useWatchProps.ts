@@ -1,5 +1,5 @@
 import type { Ref, ToRefs } from 'vue'
-import { effectScope, isRef, toRef, watch } from 'vue'
+import { effectScope, isRef, toRaw, toRef, watch } from 'vue'
 import type { Connection, Edge, FlowProps, Node, VueFlowStore } from '../types'
 import { isDef } from '../utils'
 
@@ -39,13 +39,19 @@ function syncModelArray<ModelItem, StoreItem>(
 
   watch(
     [model, () => model.value?.length],
-    () => {
-      const next = model.value
-      if (!Array.isArray(next) || next === lastSnapshot) {
+    ([next]) => {
+      if (!Array.isArray(next)) {
         return
       }
 
-      setItems(next)
+      // compare raw identities: a deep model `ref` hands our own snapshot back as its reactive proxy,
+      // which would fail a plain `===` and loop snapshot → setItems → snapshot forever
+      const nextRaw = toRaw(next)
+      if (nextRaw === lastSnapshot) {
+        return
+      }
+
+      setItems(nextRaw)
     },
     { immediate: true },
   )
