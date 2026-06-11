@@ -36,6 +36,10 @@ type Handler<T = any> = (param: T) => any | Promise<any>
 
 const noop: Handler = () => {}
 
+// shared resolved promise for triggers with no observers — pointer-move hooks fire per mousemove, so
+// allocating a fresh array + allSettled chain for nothing is measurable GC pressure
+const EMPTY_TRIGGER_RESULT: Promise<unknown[]> = Promise.resolve([])
+
 export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => void): EventHookExtended<T> {
   const listeners = new Set<Handler>()
   let emitter: Handler = noop
@@ -82,6 +86,12 @@ export function createExtendedEventHook<T = any>(defaultHandler?: (param: T) => 
    * Errors are isolated via allSettled so one failing handler doesn't break others.
    */
   const trigger: EventHookTrigger<T> = (param) => {
+    // fast path: nothing can observe this event — no programmatic listeners, no `@event` vnode handler
+    // (the emitter would dispatch into a void emit), no default. Skip the dispatch + allocations.
+    if (listeners.size === 0 && !hasEmitListeners() && !defaultHandler) {
+      return EMPTY_TRIGGER_RESULT
+    }
+
     const queue: Handler[] = [emitter]
 
     if (hasListeners()) {

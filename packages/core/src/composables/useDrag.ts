@@ -63,10 +63,17 @@ export function useDrag(params: UseDragParams) {
 
     const dragInstance = XYDrag({
       getStoreItems: () => ({
-        // getNodes is DeepReadonly (public guard); XYDrag reads node data from nodeLookup, not this array
-        nodes: getNodes.value as unknown as NodeBase[],
+        // lazy getters: XYDrag never destructures `nodes`/`edges` (verified against every getStoreItems
+        // call site in system), and getStoreItems runs multiple times per pointermove — eagerly reading
+        // the getters here would recompute them per frame (O(n+m) with `onlyRenderVisibleElements`).
+        // getNodes is DeepReadonly (public guard); XYDrag reads node data from nodeLookup, not this array.
+        get nodes() {
+          return getNodes.value as unknown as NodeBase[]
+        },
         nodeLookup,
-        edges: getEdges.value as unknown as EdgeBase[],
+        get edges() {
+          return getEdges.value as unknown as EdgeBase[]
+        },
         nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent)
           ? nodeExtent.value
           : infiniteExtent) as CoordinateExtent,
