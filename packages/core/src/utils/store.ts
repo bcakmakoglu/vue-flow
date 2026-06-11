@@ -1,4 +1,4 @@
-import { unref } from 'vue'
+import { markRaw, toRaw, unref } from 'vue'
 import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
 import { adoptUserNodes } from '@xyflow/system'
 import type {
@@ -128,7 +128,12 @@ export function adoptNodes<NodeType extends Node = Node>(
       continue
     }
 
-    validNodes.push(node)
+    // `markRaw` the user node so Vue never deep-proxies it (the perf goal — large `data` objects stay
+    // raw). `toRaw` first in case it arrived as a reactive proxy; this is the choke point through which
+    // every node enters `state.nodes`/`nodeLookup`. Reactivity for the UI comes from re-adopting (the
+    // lookup `.set` + the per-node render computed), not from deep-proxying. Idempotent across re-adopts,
+    // so `checkEquality` (reference identity) keeps matching for unchanged nodes.
+    validNodes.push(markRaw(toRaw(node)))
   }
 
   // `@xyflow/system`'s `adoptUserNodes` (and the `clampPosition` it calls) only understand

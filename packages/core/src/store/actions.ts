@@ -1,3 +1,4 @@
+import { markRaw, toRaw } from 'vue'
 import {
   clampPosition,
   clampPositionToParent,
@@ -188,6 +189,14 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       // mirror the padding-clamped position onto the user node (the canonical array element) so v-model /
       // getNodes reflect it (the InternalNode's `position` is internal-only otherwise).
       ;(node.internals.userNode as Node).position = position
+    }
+
+    // Keep every InternalNode raw: `adoptUserNodes` rebuilds changed nodes as fresh plain objects and
+    // `updateAbsolutePositions` clones moved children (`.set(id, {...node})`), so without this the reactive
+    // lookup would deep-proxy them. The per-node render computed still re-renders on the lookup `.set`
+    // (key-level reactivity is independent of value markRaw). Idempotent — reused/already-raw entries no-op.
+    for (const internal of nodeLookup.values()) {
+      markRaw(toRaw(internal))
     }
   }
 
@@ -385,6 +394,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
               rect: { ...positionAbsolute, width: dimensions.width, height: dimensions.height },
             })
           }
+
+          // Re-set a fresh entry so the markRaw lookup re-renders this node — in-place `measured`/
+          // `handleBounds` writes don't trigger the per-node render computed (markRaw values aren't deep
+          // tracked; only the lookup `.set` is). This makes measurement reflect even with `applyDefault:false`
+          // (the 'dimensions' change additionally flows `measured` onto the user node via re-adopt).
+          nodeLookup.set(node.id, markRaw({ ...toRaw(node) }))
         }
       }
     }
