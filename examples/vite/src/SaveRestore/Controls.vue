@@ -24,13 +24,13 @@ function onRestore() {
   const flow = state.value
 
   if (flow) {
-    const [x = 0, y = 0] = flow.position
+    const { x = 0, y = 0, zoom = 0 } = flow.viewport
 
     setNodes(flow.nodes)
 
     setEdges(flow.edges)
 
-    setViewport({ x, y, zoom: flow.zoom || 0 })
+    setViewport({ x, y, zoom })
   }
 }
 

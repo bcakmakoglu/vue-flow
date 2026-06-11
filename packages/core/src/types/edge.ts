@@ -3,7 +3,6 @@ import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
 import type { ElementData, Position, Styles } from './flow'
 import type { GraphNode } from './node'
 import type { EdgeComponent, EdgeTextProps } from './components'
-import type { EdgeEventsHandler } from './hooks'
 
 /** Edge markers */
 export enum MarkerType {
@@ -145,8 +144,6 @@ export type GraphEdge<EdgeType extends Edge = Edge> = EdgeType & {
   selected: boolean
   sourceNode: GraphNode
   targetNode: GraphNode
-  /** @deprecated will be removed in the next major version */
-  events: Partial<EdgeEventsHandler>
 } & EdgePositions
 
 /**

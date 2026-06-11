@@ -100,7 +100,7 @@ export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>
  * The enriched, store-internal node — what `nodeLookup`/`getInternalNode(id)`/`useInternalNode(id)` return.
  * Carries the user `Node` (`internals.userNode`) plus the store-computed `internals.{positionAbsolute, z,
  * handleBounds}` and authoritative `measured`. Alias of {@link GraphNode}; named to mirror xyflow/react's
- * `InternalNode` so the public split (`getNode`/`v-model` = user `Node`, `getInternalNode` = `InternalNode`)
+ * `InternalNode` so the public split (`findNode`/`v-model` = user `Node`, `getInternalNode` = `InternalNode`)
  * reads the same across frameworks.
  */
 export type InternalNode<NodeType extends Node = Node> = GraphNode<NodeType>
