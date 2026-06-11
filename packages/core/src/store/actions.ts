@@ -744,9 +744,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // Immutable update: build a NEW user node (full replacement or shallow merge) for the target id and
     // re-adopt via `commitNodes`. Mutating in place would keep the reference and re-adopt the stale node.
-    const next = state.nodes.map((n) =>
-      n.id === id ? ((options.replace ? nextNode : { ...n, ...nextNode }) as NodeType) : n,
-    )
+    const next = state.nodes.map((n) => (n.id === id ? ((options.replace ? nextNode : { ...n, ...nextNode }) as NodeType) : n))
     commitNodes(next)
   }
 
@@ -810,8 +808,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const node = isRectObj
       ? null
       : isGraphNode(nodeOrRect as GraphNode)
-        ? (nodeOrRect as GraphNode)
-        : getInternalNode(nodeOrRect.id)
+      ? (nodeOrRect as GraphNode)
+      : getInternalNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj]

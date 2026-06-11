@@ -29,7 +29,12 @@ export function useNodesInitialized(options: UseNodesInitializedOptions = { incl
         // `nodes` are user `Node`s; the measured/handleBounds live on the InternalNode. A node is
         // initialized once it has been measured (handleBounds set + non-zero/defined dimensions).
         const internalNode = getInternalNode(node.id)
-        if (!internalNode || internalNode.internals.handleBounds === undefined || !internalNode.measured?.width || !internalNode.measured?.height) {
+        if (
+          !internalNode ||
+          internalNode.internals.handleBounds === undefined ||
+          !internalNode.measured?.width ||
+          !internalNode.measured?.height
+        ) {
           return false
         }
       }
