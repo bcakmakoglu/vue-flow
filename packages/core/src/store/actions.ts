@@ -218,7 +218,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    // The public contract: `findNode`/`getNode` return the user-facing `Node` (the exact object held in
+    // The public contract: `findNode` returns the user-facing `Node` (the exact object held in
     // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
     // data (internals/measured) is reached via `getInternalNode`. Typed `DeepReadonly` (zero runtime) so
     // mutating the result is a compile error → use the helpers (updateNode/applyNodeChanges/setNodes).
@@ -226,7 +226,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
-  // `internals`/`measured`), whereas `findNode`/`getNode` return the user-facing `Node` (`internals.userNode`).
+  // `internals`/`measured`), whereas `findNode` returns the user-facing `Node` (`internals.userNode`).
   // Internal call sites that need `internals`/`measured` use this.
   const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
     if (!id) {
@@ -917,7 +917,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     for (const edge of state.edges) {
-      const { selected: _, sourceNode: __, targetNode: ___, events: ____, ...rest } = edge
+      const { selected: _, sourceNode: __, targetNode: ___, ...rest } = edge
 
       edges.push(rest)
     }
@@ -927,8 +927,6 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       JSON.stringify({
         nodes,
         edges,
-        position: [state.viewport.x, state.viewport.y],
-        zoom: state.viewport.zoom,
         viewport: state.viewport,
       } as FlowExportObject),
     )

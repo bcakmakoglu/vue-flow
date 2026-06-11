@@ -201,7 +201,7 @@ export type FindNode<NodeType extends Node = Node> = (id: string | undefined | n
 /**
  * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
  * authoritative `measured`) for an id, mirroring xyflow/react's `getInternalNode`. This is the accessor
- * for store-computed data; `findNode`/`getNode` expose the user-facing node.
+ * for store-computed data; `findNode` exposes the user-facing node.
  */
 export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
@@ -327,16 +327,6 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   // pointing users at the helpers (updateNode/updateNodeData/applyNodeChanges/setNodes); see #40.
   /** all visible edges */
   getEdges: GraphEdge<EdgeType>[]
-  /**
-   * returns a node by id
-   * @deprecated use {@link Actions.findNode} instead
-   */
-  getNode: (id: string) => DeepReadonly<NodeType> | undefined
-  /**
-   * returns an edge by id
-   * @deprecated use {@link Actions.findEdge} instead
-   */
-  getEdge: (id: string) => GraphEdge<EdgeType> | undefined
   /** returns all currently selected nodes (user-facing `Node`s) */
   getSelectedNodes: DeepReadonly<NodeType[]>
   /** returns all currently selected edges */

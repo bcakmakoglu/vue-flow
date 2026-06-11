@@ -1,26 +1,13 @@
 import { computed } from 'vue'
 import type { DeepReadonly } from 'vue'
 import { getNodesInside, isEdgeVisible } from '@xyflow/system'
-import type { ComputedGetters, Edge, EdgeLookup, GraphEdge, Node, NodeLookup, State } from '../types'
+import type { ComputedGetters, Edge, GraphEdge, Node, NodeLookup, State } from '../types'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
 
 export function useGetters<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
-  edgeLookup: EdgeLookup<EdgeType>,
 ): ComputedGetters<NodeType, EdgeType> {
-  /**
-   * @deprecated will be removed in next major version; use findNode instead
-   */
-  const getNode: ComputedGetters<NodeType>['getNode'] = computed(
-    () => (id) => nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined,
-  )
-
-  /**
-   * @deprecated will be removed in next major version; use findEdge instead
-   */
-  const getEdge: ComputedGetters<NodeType, EdgeType>['getEdge'] = computed(() => (id) => edgeLookup.get(id))
-
   const getEdgeTypes: ComputedGetters<NodeType, EdgeType>['getEdgeTypes'] = computed(() => {
     const edgeTypes: Record<string, any> = {
       ...defaultEdgeTypes,
@@ -120,8 +107,6 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
   })
 
   return {
-    getNode,
-    getEdge,
     getEdgeTypes,
     getNodeTypes,
     getEdges,

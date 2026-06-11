@@ -106,7 +106,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   >
   const edgeLookup = reactive(new Map<string, GraphEdge<EdgeType>>()) as EdgeLookup<EdgeType>
 
-  const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup, edgeLookup)
+  const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup)
 
   const actions = useActions<NodeType, EdgeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
 
