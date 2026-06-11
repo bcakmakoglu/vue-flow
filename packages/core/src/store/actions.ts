@@ -62,6 +62,68 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 ): Actions<NodeType, EdgeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup)
 
+  // The system-facing twins of the reactive lookups. `@xyflow/system`'s `adoptUserNodes` re-adopts by
+  // clearing + refilling the lookup it's given — on a `reactive(Map)` that's an O(n) trigger storm per
+  // call (`clear()` invalidates every key and iteration subscriber, every drag frame). Adoption and
+  // recompute therefore run against these plain Maps (which also persist across adoptions, keeping
+  // `checkEquality` reuse intact); `syncLookups` then mirrors the result into the reactive lookups with
+  // targeted `.set`/`.delete`, so only entries whose `InternalNode` reference actually changed trigger —
+  // per-frame render invalidation stays O(changed) instead of O(n).
+  const systemNodeLookup: NodeLookup<NodeType> = new Map()
+  const systemParentLookup: Map<string, Map<string, GraphNode<NodeType>>> = new Map()
+
+  function sameMapEntries<K, V>(a: Map<K, V>, b: Map<K, V>) {
+    if (a.size !== b.size) {
+      return false
+    }
+
+    for (const [key, value] of a) {
+      if (b.get(key) !== value) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  /** Mirror the system lookups into the reactive ones, touching only entries that actually changed. */
+  function syncLookups() {
+    const rawNodeLookup = toRaw(nodeLookup)
+
+    for (const [id, internal] of systemNodeLookup) {
+      if (rawNodeLookup.get(id) !== internal) {
+        nodeLookup.set(id, internal)
+      }
+    }
+
+    if (rawNodeLookup.size !== systemNodeLookup.size) {
+      for (const id of rawNodeLookup.keys()) {
+        if (!systemNodeLookup.has(id)) {
+          nodeLookup.delete(id)
+        }
+      }
+    }
+
+    // adoption rebuilds every nested child-map instance, so compare content — blindly re-setting an
+    // unchanged entry would re-trigger every `parentLookup` subscriber each frame
+    const rawParentLookup = toRaw(parentLookup)
+
+    for (const [parentId, children] of systemParentLookup) {
+      const prev = rawParentLookup.get(parentId)
+      if (!prev || !sameMapEntries(prev, children)) {
+        parentLookup.set(parentId, children)
+      }
+    }
+
+    if (rawParentLookup.size !== systemParentLookup.size) {
+      for (const parentId of rawParentLookup.keys()) {
+        if (!systemParentLookup.has(parentId)) {
+          parentLookup.delete(parentId)
+        }
+      }
+    }
+  }
+
   /**
    * Single write path for node membership/content. Takes the canonical USER `Node`s, re-adopts them into
    * `nodeLookup`/`parentLookup` via `adoptNodes` (xyflow/react+svelte parity — `adoptUserNodes` mutates the
@@ -74,7 +136,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
    * `checkEquality` would re-adopt the stale `InternalNode`.
    */
   function commitNodes(nodes: NodeType[]) {
-    const validNodes = adoptNodes(nodes, nodeLookup, parentLookup, state.hooks.error.trigger, {
+    const validNodes = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
       nodeOrigin: [0, 0],
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
@@ -87,10 +149,30 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   /** Single write path for edge membership; mirrors `next` into `state.edges` (see {@link commitNodes}). */
   function commitEdges(next: GraphEdge<EdgeType>[]) {
-    edgeLookup.clear()
+    // targeted sync instead of clear+refill: clearing a `reactive(Map)` invalidates every edge
+    // subscriber even when a single edge changed (in-place edge updates surface through the deep
+    // proxy regardless; key triggers are only needed for replaced/added/removed entries)
+    const rawEdgeLookup = toRaw(edgeLookup)
+
     for (const edge of next) {
-      edgeLookup.set(edge.id, edge)
+      if (rawEdgeLookup.get(edge.id) !== edge) {
+        edgeLookup.set(edge.id, edge)
+      }
     }
+
+    if (rawEdgeLookup.size !== next.length) {
+      const nextIds = new Set<string>()
+      for (const edge of next) {
+        nextIds.add(edge.id)
+      }
+
+      for (const id of rawEdgeLookup.keys()) {
+        if (!nextIds.has(id)) {
+          edgeLookup.delete(id)
+        }
+      }
+    }
+
     state.edges = next
   }
 
@@ -117,7 +199,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
     // type can't express this without breaking system compat. We restore the original extent after.
     const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = []
-    for (const node of nodeLookup.values()) {
+    for (const node of systemNodeLookup.values()) {
       const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
       if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
         coercedExtents.push({ node, extent: node.extent })
@@ -125,7 +207,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    updateAbsolutePositions(nodeLookup, parentLookup, {
+    updateAbsolutePositions(systemNodeLookup, systemParentLookup, {
       nodeOrigin: [0, 0],
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
@@ -140,7 +222,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // internals now, so there is no array write-back. System does NOT set root-node `z` (only children get
     // it through the parent chain), so apply the elevate-on-select `z` to root InternalNodes here,
     // matching system's `calculateZ`.
-    for (const node of nodeLookup.values()) {
+    for (const node of systemNodeLookup.values()) {
       if (!node.parentId) {
         node.internals.z =
           (typeof node.zIndex === 'number' ? node.zIndex : 0) + (node.selected && state.elevateNodesOnSelect ? 1000 : 0)
@@ -159,7 +241,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         continue
       }
 
-      const parent = node.parentId ? nodeLookup.get(node.parentId) : undefined
+      const parent = node.parentId ? systemNodeLookup.get(node.parentId) : undefined
 
       // The padding clamp needs measured dimensions: `getExtent` indexes into the computed extent array
       // and would throw on the unmeasured fallback (the global extent may be undefined). Skip until the
@@ -193,9 +275,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // `updateAbsolutePositions` clones moved children (`.set(id, {...node})`), so without this the reactive
     // lookup would deep-proxy them. The per-node render computed still re-renders on the lookup `.set`
     // (key-level reactivity is independent of value markRaw). Idempotent — reused/already-raw entries no-op.
-    for (const internal of nodeLookup.values()) {
-      markRaw(toRaw(internal))
+    for (const internal of systemNodeLookup.values()) {
+      markRaw(internal)
     }
+
+    syncLookups()
   }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
@@ -289,7 +373,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // grow each parent to fit its `expandParent` children — system returns the parent's position +
     // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, [0, 0]))
     }
 
     if (changes.length) {
@@ -385,13 +469,17 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           // `handleBounds` writes don't trigger the per-node render computed (markRaw values aren't deep
           // tracked; only the lookup `.set` is). This makes measurement reflect even with `applyDefault:false`
           // (the 'dimensions' change additionally flows `measured` onto the user node via re-adopt).
-          nodeLookup.set(node.id, markRaw({ ...toRaw(node) }))
+          // The fresh entry goes into BOTH maps: the system map is what `adoptUserNodes` reuses via
+          // `checkEquality`, so leaving the old object there would let the maps' references diverge.
+          const fresh = markRaw({ ...toRaw(node) })
+          systemNodeLookup.set(node.id, fresh)
+          nodeLookup.set(node.id, fresh)
         }
       }
     }
 
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, nodeLookup, parentLookup, [0, 0]))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, [0, 0]))
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
