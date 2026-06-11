@@ -227,10 +227,14 @@ export default {
     >
       <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
 
+      <!-- v-memo on the lookup entry: unchanged nodes keep their InternalNode reference across commits
+      (checkEquality reuse), so drag/pan-frame MiniMap re-renders skip every untouched child instead of
+      re-rendering all of them (the inline per-node prop objects/calls would otherwise always patch) -->
       <MiniMapNode
         v-for="node of minimapNodes"
         :id="node.id"
         :key="node.id"
+        v-memo="[node, nodeClassNameFunc, nodeColorFunc, nodeStrokeColorFunc, nodeBorderRadius, nodeStrokeWidth, shapeRendering]"
         :position="node.internals.positionAbsolute"
         :dimensions="getNodeDimensions(node)"
         :selected="node.selected"
