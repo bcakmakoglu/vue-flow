@@ -2,10 +2,9 @@
 import EdgeWrapper from '../../components/Edges/EdgeWrapper'
 import ConnectionLine from '../../components/ConnectionLine'
 import { useVueFlow } from '../../composables'
-import { getEdgeZIndex } from '../../utils'
 import MarkerDefinitions from './MarkerDefinitions.vue'
 
-const { getInternalNode, getEdges, elevateEdgesOnSelect } = useVueFlow()
+const { getEdges } = useVueFlow()
 </script>
 
 <script lang="ts">
@@ -18,14 +17,9 @@ export default {
 <template>
   <MarkerDefinitions />
 
-  <svg
-    v-for="edge of getEdges"
-    :key="edge.id"
-    class="vue-flow__edges vue-flow__container"
-    :style="{ zIndex: getEdgeZIndex(edge, getInternalNode, elevateEdgesOnSelect) }"
-  >
-    <EdgeWrapper :id="edge.id" />
-  </svg>
+  <!-- the per-edge svg wrapper (and its node-lookup-tracking zIndex) lives in EdgeWrapper, so this
+  v-for only re-renders on edge membership changes, not on every node replacement -->
+  <EdgeWrapper v-for="edge of getEdges" :id="edge.id" :key="edge.id" />
 
   <ConnectionLine />
 </template>

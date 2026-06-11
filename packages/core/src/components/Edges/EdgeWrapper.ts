@@ -4,7 +4,7 @@ import type { Connection, EdgeComponent, HandleType, MouseTouchEvent } from '../
 import { ConnectionMode, Position } from '../../types'
 import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
-import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle } from '../../utils'
+import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle, getEdgeZIndex } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
 
 interface Props {
@@ -34,10 +34,16 @@ const EdgeWrapper = defineComponent({
       elementsSelectable,
       edgesUpdatable,
       edgesFocusable,
+      elevateEdgesOnSelect,
       hooks,
     } = useVueFlow()
 
     const edge = computed(() => findEdge(props.id)!)
+
+    // resolved per edge (value-gated computed) so the z-tracking of BOTH endpoint lookup keys lives in
+    // this component's scope — resolving it in EdgeRenderer's v-for made the whole renderer re-render
+    // (all edge vnodes) whenever ANY node entry was replaced, i.e. every drag frame
+    const zIndex = computed(() => getEdgeZIndex(edge.value, getInternalNode, elevateEdgesOnSelect.value))
 
     const { emit } = useEdgeHooks(emits)
 
@@ -173,118 +179,124 @@ const EdgeWrapper = defineComponent({
       edge.value.targetX = targetX
       edge.value.targetY = targetY
 
+      // the full-container svg wrapper (one stacking context per edge zIndex) is rendered here rather
+      // than in EdgeRenderer's v-for so its node-lookup tracking stays scoped to this edge
       return h(
-        'g',
-        {
-          'ref': edgeEl,
-          'key': props.id,
-          'data-id': props.id,
-          'class': [
-            'vue-flow__edge',
-            `vue-flow__edge-${edgeCmp.value === false ? 'default' : edge.value.type || 'default'}`,
-            noPanClassName.value,
-            edgeClass.value,
-            {
-              updating: mouseOver.value,
-              selected: edge.value.selected,
-              animated: edge.value.animated,
-              inactive: !isSelectable.value && !hooks.value.edgeClick.hasListeners(),
-            },
-          ],
-          'tabIndex': isFocusable.value ? 0 : undefined,
-          'aria-label':
-            edge.value.ariaLabel === null
-              ? undefined
-              : edge.value.ariaLabel ?? `Edge from ${edge.value.source} to ${edge.value.target}`,
-          'aria-describedby': isFocusable.value ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
-          'aria-roledescription': 'edge',
-          'role': isFocusable.value ? 'group' : 'img',
-          ...edge.value.domAttributes,
-          'onClick': onEdgeClick,
-          'onContextmenu': onEdgeContextMenu,
-          'onDblclick': onDoubleClick,
-          'onMouseenter': onEdgeMouseEnter,
-          'onMousemove': onEdgeMouseMove,
-          'onMouseleave': onEdgeMouseLeave,
-          'onKeyDown': isFocusable.value ? onKeyDown : undefined,
-        },
-        [
-          updating.value
-            ? null
-            : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
-                id: props.id,
-                sourceNode,
-                targetNode,
-                source: edge.value.source,
-                target: edge.value.target,
-                type: edge.value.type,
-                updatable: isUpdatable.value,
+        'svg',
+        { class: 'vue-flow__edges vue-flow__container', style: { zIndex: zIndex.value } },
+        h(
+          'g',
+          {
+            'ref': edgeEl,
+            'key': props.id,
+            'data-id': props.id,
+            'class': [
+              'vue-flow__edge',
+              `vue-flow__edge-${edgeCmp.value === false ? 'default' : edge.value.type || 'default'}`,
+              noPanClassName.value,
+              edgeClass.value,
+              {
+                updating: mouseOver.value,
                 selected: edge.value.selected,
                 animated: edge.value.animated,
-                label: edge.value.label,
-                labelStyle: edge.value.labelStyle,
-                labelShowBg: edge.value.labelShowBg,
-                labelBgStyle: edge.value.labelBgStyle,
-                labelBgPadding: edge.value.labelBgPadding,
-                labelBgBorderRadius: edge.value.labelBgBorderRadius,
-                data: edge.value.data,
-                style: edgeStyle.value,
-                markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
-                markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
-                sourcePosition,
-                targetPosition,
-                sourceX,
-                sourceY,
-                targetX,
-                targetY,
-                sourceHandleId: edge.value.sourceHandle,
-                targetHandleId: edge.value.targetHandle,
-                interactionWidth: edge.value.interactionWidth,
-                ...pathOptions,
-              }),
+                inactive: !isSelectable.value && !hooks.value.edgeClick.hasListeners(),
+              },
+            ],
+            'tabIndex': isFocusable.value ? 0 : undefined,
+            'aria-label':
+              edge.value.ariaLabel === null
+                ? undefined
+                : edge.value.ariaLabel ?? `Edge from ${edge.value.source} to ${edge.value.target}`,
+            'aria-describedby': isFocusable.value ? `${ARIA_EDGE_DESC_KEY}-${vueFlowId}` : undefined,
+            'aria-roledescription': 'edge',
+            'role': isFocusable.value ? 'group' : 'img',
+            ...edge.value.domAttributes,
+            'onClick': onEdgeClick,
+            'onContextmenu': onEdgeContextMenu,
+            'onDblclick': onDoubleClick,
+            'onMouseenter': onEdgeMouseEnter,
+            'onMousemove': onEdgeMouseMove,
+            'onMouseleave': onEdgeMouseLeave,
+            'onKeyDown': isFocusable.value ? onKeyDown : undefined,
+          },
           [
-            isUpdatable.value === 'source' || isUpdatable.value === true
-              ? [
-                  h(
-                    'g',
-                    {
-                      onMousedown: onEdgeUpdaterSourceMouseDown,
-                      onMouseenter: onEdgeUpdaterMouseEnter,
-                      onMouseout: onEdgeUpdaterMouseOut,
-                    },
-                    h(EdgeAnchor, {
-                      'position': sourcePosition,
-                      'centerX': sourceX,
-                      'centerY': sourceY,
-                      'radius': edgeUpdaterRadius.value,
-                      'type': 'source',
-                      'data-type': 'source',
-                    }),
-                  ),
-                ]
-              : null,
-            isUpdatable.value === 'target' || isUpdatable.value === true
-              ? [
-                  h(
-                    'g',
-                    {
-                      onMousedown: onEdgeUpdaterTargetMouseDown,
-                      onMouseenter: onEdgeUpdaterMouseEnter,
-                      onMouseout: onEdgeUpdaterMouseOut,
-                    },
-                    h(EdgeAnchor, {
-                      'position': targetPosition,
-                      'centerX': targetX,
-                      'centerY': targetY,
-                      'radius': edgeUpdaterRadius.value,
-                      'type': 'target',
-                      'data-type': 'target',
-                    }),
-                  ),
-                ]
-              : null,
+            updating.value
+              ? null
+              : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
+                  id: props.id,
+                  sourceNode,
+                  targetNode,
+                  source: edge.value.source,
+                  target: edge.value.target,
+                  type: edge.value.type,
+                  updatable: isUpdatable.value,
+                  selected: edge.value.selected,
+                  animated: edge.value.animated,
+                  label: edge.value.label,
+                  labelStyle: edge.value.labelStyle,
+                  labelShowBg: edge.value.labelShowBg,
+                  labelBgStyle: edge.value.labelBgStyle,
+                  labelBgPadding: edge.value.labelBgPadding,
+                  labelBgBorderRadius: edge.value.labelBgBorderRadius,
+                  data: edge.value.data,
+                  style: edgeStyle.value,
+                  markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
+                  markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
+                  sourcePosition,
+                  targetPosition,
+                  sourceX,
+                  sourceY,
+                  targetX,
+                  targetY,
+                  sourceHandleId: edge.value.sourceHandle,
+                  targetHandleId: edge.value.targetHandle,
+                  interactionWidth: edge.value.interactionWidth,
+                  ...pathOptions,
+                }),
+            [
+              isUpdatable.value === 'source' || isUpdatable.value === true
+                ? [
+                    h(
+                      'g',
+                      {
+                        onMousedown: onEdgeUpdaterSourceMouseDown,
+                        onMouseenter: onEdgeUpdaterMouseEnter,
+                        onMouseout: onEdgeUpdaterMouseOut,
+                      },
+                      h(EdgeAnchor, {
+                        'position': sourcePosition,
+                        'centerX': sourceX,
+                        'centerY': sourceY,
+                        'radius': edgeUpdaterRadius.value,
+                        'type': 'source',
+                        'data-type': 'source',
+                      }),
+                    ),
+                  ]
+                : null,
+              isUpdatable.value === 'target' || isUpdatable.value === true
+                ? [
+                    h(
+                      'g',
+                      {
+                        onMousedown: onEdgeUpdaterTargetMouseDown,
+                        onMouseenter: onEdgeUpdaterMouseEnter,
+                        onMouseout: onEdgeUpdaterMouseOut,
+                      },
+                      h(EdgeAnchor, {
+                        'position': targetPosition,
+                        'centerX': targetX,
+                        'centerY': targetY,
+                        'radius': edgeUpdaterRadius.value,
+                        'type': 'target',
+                        'data-type': 'target',
+                      }),
+                    ),
+                  ]
+                : null,
+            ],
           ],
-        ],
+        ),
       )
     }
 
