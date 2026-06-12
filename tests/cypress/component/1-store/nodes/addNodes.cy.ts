@@ -32,7 +32,7 @@ describe('Store Action: `addNodes`', () => {
     cy.get('.vue-flow__node').then((els) => {
       els.each((index, node) => {
         const nodeId = node.getAttribute('data-id')
-        const storedNode = store.findNode(nodeId)
+        const storedNode = store.getNode(nodeId)
 
         expect(storedNode).to.not.eq(undefined)
         expect(storedNode?.id).to.eq(nodeId)

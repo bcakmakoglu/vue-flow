@@ -54,8 +54,8 @@ describe('Default Edge Options', () => {
     cy.get('[data-id="owns"]').should('have.class', 'vue-flow__edge-typeB').and('not.have.class', 'vue-flow__edge-typeA')
 
     // ...and the store still holds the user's verbatim types (undefined / 'typeB')
-    expect(store.findEdge('inherits')?.type).to.be.undefined
-    expect(store.findEdge('owns')?.type).to.equal('typeB')
+    expect(store.getEdge('inherits')?.type).to.be.undefined
+    expect(store.getEdge('owns')?.type).to.equal('typeB')
   })
 
   it('class/style callbacks receive the RAW stored edge, not the merged render view', () => {
@@ -77,7 +77,7 @@ describe('Default Edge Options', () => {
     cy.get('[data-id="cb"]').should('have.class', 'from-default-cb')
 
     cy.then(() => {
-      const stored = getStore().findEdge('cb')
+      const stored = getStore().getEdge('cb')
       // identity: the callback arg is the exact stored edge (=== the array element), not a merged copy
       expect(captured).to.equal(stored)
       // and therefore carries none of the render-merge fields

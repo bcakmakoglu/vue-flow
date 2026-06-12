@@ -33,7 +33,7 @@ describe('Store Action: `updateNode`', () => {
 
     store.updateNode(nodeId, { position: newPosition })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')
@@ -61,7 +61,7 @@ describe('Store Action: `updateNode`', () => {
       return { position: newPosition }
     })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')
@@ -87,7 +87,7 @@ describe('Store Action: `updateNode`', () => {
 
     store.updateNode(nodeId, newNode, { replace: true })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')

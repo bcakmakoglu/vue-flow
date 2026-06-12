@@ -52,7 +52,7 @@ export function useHandle({
     nodesConnectable,
     autoPanOnConnect,
     autoPanSpeed,
-    findNode,
+    getNode,
     getInternalNode,
     panBy,
     startConnection,
@@ -221,7 +221,7 @@ export function useHandle({
 
     const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
 
-    const node = findNode(toValue(nodeId))
+    const node = getNode(toValue(nodeId))
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
       return

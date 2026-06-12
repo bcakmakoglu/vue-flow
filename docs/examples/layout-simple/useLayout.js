@@ -7,7 +7,7 @@ import { ref } from 'vue'
  * It uses the `dagre` library to calculate the layout of the nodes and edges.
  */
 export function useLayout() {
-  const { findNode } = useVueFlow()
+  const { getNode } = useVueFlow()
 
   const graph = ref(new dagre.graphlib.Graph())
 
@@ -28,7 +28,7 @@ export function useLayout() {
 
     for (const node of nodes) {
       // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`GraphNode` type)
-      const graphNode = findNode(node.id)
+      const graphNode = getNode(node.id)
 
       dagreGraph.setNode(node.id, { width: graphNode.dimensions.width || 150, height: graphNode.dimensions.height || 50 })
     }

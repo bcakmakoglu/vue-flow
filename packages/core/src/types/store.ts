@@ -191,16 +191,16 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type FindNode<NodeType extends Node = Node> = (id: string | undefined | null) => DeepReadonly<NodeType> | undefined
+export type GetNode<NodeType extends Node = Node> = (id: string | undefined | null) => DeepReadonly<NodeType> | undefined
 
 /**
  * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
  * authoritative `measured`) for an id, mirroring xyflow/react's `getInternalNode`. This is the accessor
- * for store-computed data; `findNode` exposes the user-facing node.
+ * for store-computed data; `getNode` exposes the user-facing node.
  */
 export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
-export type FindEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => DeepReadonly<EdgeType> | undefined
+export type GetEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => DeepReadonly<EdgeType> | undefined
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
   node: (Partial<NodeType> & { id: NodeType['id'] }) | Rect,
@@ -237,11 +237,11 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** remove edges from state */
   removeEdges: RemoveEdges
   /** find a node by id */
-  findNode: FindNode<NodeType>
+  getNode: GetNode<NodeType>
   /** get the enriched internal node (store-computed `internals` + `measured`) by id */
   getInternalNode: GetInternalNode<NodeType>
   /** find an edge by id */
-  findEdge: FindEdge<EdgeType>
+  getEdge: GetEdge<EdgeType>
   /** updates an edge */
   updateEdge: UpdateEdge<EdgeType>
   /** updates the data of an edge */

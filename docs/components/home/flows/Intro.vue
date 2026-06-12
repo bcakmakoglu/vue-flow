@@ -65,7 +65,7 @@ const initialEdges: Edge[] = [
 ]
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
-// the store (getNodes/findNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
+// the store (getNodes/getNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
 // component that renders the flow (no `useVueFlow()` outside a provider needed).
 const flow = ref<VueFlowStore>()
 
@@ -74,13 +74,13 @@ const setElements = useDebounceFn(() => {
     return
   }
 
-  const { findNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
+  const { getNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
 
   const offsetX = dimensions.value.width / 2
   const offsetY = dimensions.value.height / 4
 
   if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
-    const mainNode = findNode('intro')!
+    const mainNode = getNode('intro')!
     const mainInternal = getInternalNode('intro')!
 
     currentBreakpoint.value = 'sm'
@@ -157,7 +157,7 @@ const setElements = useDebounceFn(() => {
   } else if (!breakpoints.isSmaller('md')) {
     currentBreakpoint.value = 'md'
 
-    const mainNode = findNode('intro')!
+    const mainNode = getNode('intro')!
     const mainInternal = getInternalNode('intro')!
 
     setNodes((nodes) =>
