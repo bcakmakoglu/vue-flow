@@ -9,7 +9,6 @@ import type {
   CoordinateExtentRange,
   DefaultEdgeOptions,
   Edge,
-  EdgeLookup,
   GraphNode,
   Node,
   NodeConnection,

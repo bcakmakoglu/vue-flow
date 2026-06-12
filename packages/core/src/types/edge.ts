@@ -125,7 +125,7 @@ export type Edge<Data extends Record<string, unknown> = ElementData, Type extend
   | SmoothStepEdgeType<Data>
   | BezierEdgeType<Data>
 
-export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle'>
+export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'selected'>
 
 /**
  * The computed positions an edge renders with — a render-OUTPUT type (xyflow's `EdgePosition`),
@@ -149,7 +149,9 @@ export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOption
   id: string
   source: string
   target: string
-  type: NonNullable<EdgeType['type']> | string
+  // optional, matching the verbatim model + RF's Pick: defaults are no longer stamped onto stored edges,
+  // so `type`/`data` are genuinely undefined at runtime when the user didn't set them
+  type?: EdgeType['type']
   label?: string | VNode | Component<EdgeTextProps> | object
   style?: CSSProperties
   selected?: boolean
@@ -157,15 +159,15 @@ export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOption
   deletable?: boolean
   sourcePosition: Position
   targetPosition: Position
-  sourceHandleId?: string
-  targetHandleId?: string
+  sourceHandleId?: string | null
+  targetHandleId?: string | null
   animated?: boolean
   updatable?: EdgeUpdatable
   markerStart: string
   markerEnd: string
   curvature?: number
   interactionWidth?: number
-  data: EdgeType extends { data?: infer D } ? D : ElementData
+  data?: EdgeType['data']
 }
 
 export interface BaseEdgeProps extends EdgeLabelOptions {

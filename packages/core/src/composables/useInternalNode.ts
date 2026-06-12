@@ -1,4 +1,5 @@
-import { computed } from 'vue'
+import { computed, toValue } from 'vue'
+import type { MaybeRefOrGetter } from 'vue'
 import type { InternalNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 import { useNodeId } from './useNodeId'
@@ -10,13 +11,16 @@ import { useNodeId } from './useNodeId'
  * Mirrors xyflow/react's `useInternalNode`. If no id is given it is read from node context (call inside a
  * custom node). Use {@link useNode} for the user-facing node + dom element + connected edges.
  *
+ * The id accepts a ref/getter so it can track a reactive source — e.g. a custom edge resolving its
+ * endpoint with `useInternalNode(() => props.source)` stays correct after a reconnect changes the source.
+ *
  * @public
- * @param id - The id of the node to access (defaults to the node context id)
+ * @param id - The id of the node to access (a value, ref, or getter; defaults to the node context id)
  */
-export function useInternalNode<NodeType extends Node = Node>(id?: string) {
-  const nodeId = id ?? useNodeId() ?? ''
+export function useInternalNode<NodeType extends Node = Node>(id?: MaybeRefOrGetter<string | undefined>) {
+  const contextNodeId = useNodeId()
 
   const { getInternalNode } = useVueFlow()
 
-  return computed(() => getInternalNode(nodeId) as InternalNode<NodeType> | undefined)
+  return computed(() => getInternalNode(toValue(id) ?? contextNodeId ?? '') as InternalNode<NodeType> | undefined)
 }
