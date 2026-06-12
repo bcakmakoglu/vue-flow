@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { getNodesBounds } from '@xyflow/system'
 import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
 import { arrowKeyDiffs } from '../../utils'
-import type { GraphNode } from '../../types'
+import type { GraphNode, Node } from '../../types'
 
 const { emits, viewport, getSelectedNodes, nodeLookup, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
 
@@ -44,16 +44,7 @@ const innerStyle = computed(() => ({
 }))
 
 function onContextMenu(event: MouseEvent) {
-  // resolve the enriched InternalNodes for the event payload (`getSelectedNodes` is user-facing)
-  const nodes = getSelectedNodes.value.reduce<GraphNode[]>((acc, node) => {
-    const internalNode = nodeLookup.get(node.id)
-    if (internalNode) {
-      acc.push(internalNode)
-    }
-    return acc
-  }, [])
-
-  emits.selectionContextMenu({ event, nodes })
+  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] as unknown as Node[] })
 }
 
 function onKeyDown(event: KeyboardEvent) {

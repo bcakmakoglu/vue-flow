@@ -2,7 +2,7 @@ import type { CoordinateExtent, EdgeBase, InternalNodeBase, NodeBase, NodeDragIt
 import { XYDrag, infiniteExtent, isCoordinateExtent } from '@xyflow/system'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watchEffect } from 'vue'
-import type { NodeDragEvent, NodeDragItem } from '../types'
+import type { Node, NodeDragEvent, NodeDragItem } from '../types'
 import { useVueFlow } from '.'
 
 interface UseDragParams {
@@ -119,38 +119,19 @@ export function useDrag(params: UseDragParams) {
         },
         autoPanSpeed: autoPanSpeed.value,
       }),
+      // XYDrag hands user nodes (the InternalNode's `userNode`, spread with the live drag position +
+      // `dragging`), which is exactly the event payload — emit them directly, no lookup round-trip
       onDragStart: (event, _dragItems, node, nodes) => {
         dragFired = true
         dragging.value = true
-        const graphNode = getInternalNode(node.id)
-        if (graphNode) {
-          onStart({
-            event,
-            node: graphNode,
-            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
-          })
-        }
+        onStart({ event, node: node as Node, nodes: nodes as Node[] })
       },
       onDrag: (event, _dragItems, node, nodes) => {
-        const graphNode = getInternalNode(node.id)
-        if (graphNode) {
-          onDrag({
-            event,
-            node: graphNode,
-            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
-          })
-        }
+        onDrag({ event, node: node as Node, nodes: nodes as Node[] })
       },
       onDragStop: (event, _dragItems, node, nodes) => {
         dragging.value = false
-        const graphNode = getInternalNode(node.id)
-        if (graphNode) {
-          onStop({
-            event,
-            node: graphNode,
-            nodes: nodes.map((n) => getInternalNode(n.id)!).filter(Boolean),
-          })
-        }
+        onStop({ event, node: node as Node, nodes: nodes as Node[] })
       },
     })
 

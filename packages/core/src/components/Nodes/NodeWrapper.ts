@@ -296,35 +296,35 @@ const NodeWrapper = defineComponent({
     function onMouseEnter(event: MouseEvent) {
       const node = nodeRef.value
       if (node && !dragging?.value) {
-        emit.mouseEnter({ event, node })
+        emit.mouseEnter({ event, node: node.internals.userNode })
       }
     }
 
     function onMouseMove(event: MouseEvent) {
       const node = nodeRef.value
       if (node && !dragging?.value) {
-        emit.mouseMove({ event, node })
+        emit.mouseMove({ event, node: node.internals.userNode })
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
       const node = nodeRef.value
       if (node && !dragging?.value) {
-        emit.mouseLeave({ event, node })
+        emit.mouseLeave({ event, node: node.internals.userNode })
       }
     }
 
     function onContextMenu(event: MouseEvent) {
       const node = nodeRef.value
       if (node) {
-        emit.contextMenu({ event, node })
+        emit.contextMenu({ event, node: node.internals.userNode })
       }
     }
 
     function onDoubleClick(event: MouseEvent) {
       const node = nodeRef.value
       if (node) {
-        emit.doubleClick({ event, node })
+        emit.doubleClick({ event, node: node.internals.userNode })
       }
     }
 
@@ -335,6 +335,7 @@ const NodeWrapper = defineComponent({
       }
 
       if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
+        // handleNodeClick needs the enriched InternalNode; the event payload gets the user node
         handleNodeClick(
           node,
           multiSelectionActive.value,
@@ -346,7 +347,7 @@ const NodeWrapper = defineComponent({
         )
       }
 
-      emit.click({ event, node })
+      emit.click({ event, node: node.internals.userNode })
     }
 
     function onKeyDown(event: KeyboardEvent) {

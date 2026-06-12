@@ -15,8 +15,7 @@ watch(
   (isInit) => {
     if (isInit) {
       nextTick(() => {
-        // emit the enriched InternalNodes (the event payload stays rich; `getNodes` is user-facing)
-        emits.nodesInitialized(Array.from(nodeLookup.values()))
+        emits.nodesInitialized(Array.from(nodeLookup.values(), (node) => node.internals.userNode))
       })
     }
   },

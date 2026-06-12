@@ -1,7 +1,7 @@
 import type { Viewport } from '@xyflow/system'
 import type { EventHookExtended, EventHookOn, EventHookTrigger, VueFlowError } from '../utils'
 import type { Edge } from './edge'
-import type { GraphNode, Node } from './node'
+import type { Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
@@ -10,13 +10,13 @@ export type MouseTouchEvent = MouseEvent | TouchEvent
 
 export interface NodeMouseEvent<NodeType extends Node = Node> {
   event: MouseTouchEvent
-  node: GraphNode<NodeType>
+  node: NodeType
 }
 
 export interface NodeDragEvent<NodeType extends Node = Node> {
   event: MouseTouchEvent
-  node: GraphNode<NodeType>
-  nodes: GraphNode<NodeType>[]
+  node: NodeType
+  nodes: NodeType[]
 }
 
 export interface EdgeMouseEvent<EdgeType extends Edge = Edge> {
@@ -42,7 +42,7 @@ export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge 
   nodeDragStart: NodeDragEvent<NodeType>
   nodeDrag: NodeDragEvent<NodeType>
   nodeDragStop: NodeDragEvent<NodeType>
-  nodesInitialized: GraphNode[]
+  nodesInitialized: NodeType[]
   updateNodeInternals: string[]
   miniMapNodeClick: NodeMouseEvent<NodeType>
   miniMapNodeDoubleClick: NodeMouseEvent<NodeType>
@@ -65,7 +65,7 @@ export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge 
   selectionDragStart: NodeDragEvent<NodeType>
   selectionDrag: NodeDragEvent<NodeType>
   selectionDragStop: NodeDragEvent<NodeType>
-  selectionContextMenu: { event: MouseEvent; nodes: GraphNode[] }
+  selectionContextMenu: { event: MouseEvent; nodes: NodeType[] }
   selectionStart: MouseEvent
   selectionEnd: MouseEvent
   viewportChangeStart: Viewport
