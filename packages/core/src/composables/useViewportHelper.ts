@@ -1,12 +1,12 @@
 import { computed } from 'vue'
 import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system'
-import type { Edge, Node, NodeLookup, Project, State, ViewportFunctions } from '../types'
+import type { Edge, Node, NodeLookup, State, ViewportFunctions, ViewportPositionFunc } from '../types'
 import { warn } from '../utils'
 
 export interface ViewportHelper extends ViewportFunctions {
   viewportInitialized: boolean
-  screenToFlowCoordinate: Project
-  flowToScreenCoordinate: Project
+  screenToFlowPosition: ViewportPositionFunc
+  flowToScreenPosition: ViewportPositionFunc
 }
 
 const DEFAULT_PADDING = 0.1
@@ -24,9 +24,8 @@ const initialViewportHelper: ViewportHelper = {
   fitView: noop,
   setCenter: noop,
   fitBounds: noop,
-  project: (position) => position,
-  screenToFlowCoordinate: (position) => position,
-  flowToScreenCoordinate: (position) => position,
+  screenToFlowPosition: (position) => position,
+  flowToScreenPosition: (position) => position,
   setViewport: noop,
   getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
   viewportInitialized: false,
@@ -153,8 +152,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
 
         return true
       },
-      project: (position) => pointToRendererPoint(position, state.transform, state.snapToGrid, state.snapGrid),
-      screenToFlowCoordinate: (position) => {
+      screenToFlowPosition: (position) => {
         if (state.vueFlowRef) {
           const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
 
@@ -168,7 +166,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
 
         return { x: 0, y: 0 }
       },
-      flowToScreenCoordinate: (position) => {
+      flowToScreenPosition: (position) => {
         if (state.vueFlowRef) {
           const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
 
