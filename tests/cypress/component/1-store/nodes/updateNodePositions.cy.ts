@@ -54,7 +54,7 @@ describe('Store Action: `updateNodePositions`', () => {
     )
 
     cy.tryAssertion(() => {
-      const child = store.findNode('child')
+      const child = store.getNode('child')
       expect(child?.position).to.deep.equal({ x: 30, y: 70 })
 
       const internalChild = store.getInternalNode('child')

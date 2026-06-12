@@ -156,7 +156,7 @@ export function adoptNodes<NodeType extends Node = Node>(
 
   // For range-extent nodes we fed `adoptUserNodes` a COPY (different reference): restore the original
   // `{ range, padding }` extent and re-point `internals.userNode` at the un-coerced node so
-  // `findNode`/`getNodes` surface the exact user object the array holds.
+  // `getNode`/`getNodes` surface the exact user object the array holds.
   for (const node of validNodes) {
     const range = rangeExtents.get(node.id)
     if (!range) {

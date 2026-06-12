@@ -26,7 +26,7 @@ const EdgeWrapper = defineComponent({
       noPanClassName,
       getEdgeTypes,
       removeSelectedEdges,
-      findEdge,
+      getEdge,
       getInternalNode,
       isValidConnection,
       multiSelectionActive,
@@ -39,7 +39,7 @@ const EdgeWrapper = defineComponent({
       hooks,
     } = useVueFlow()
 
-    const storedEdge = computed(() => findEdge(props.id) as Edge)
+    const storedEdge = computed(() => getEdge(props.id) as Edge)
 
     const edge = computed<Edge>(() => {
       const defaults = defaultEdgeOptions.value

@@ -49,7 +49,7 @@ describe('edge reactivity (markRaw)', () => {
       expect(isReactive(edge), 'stored edge is raw').to.eq(false)
       expect(isReactive(edge.data), 'edge data is raw').to.eq(false)
       // xyflow parity: edgeLookup holds the SAME user edge references as the array
-      expect(store.findEdge(edge.id), 'lookup value === array element').to.eq(edge)
+      expect(store.getEdge(edge.id), 'lookup value === array element').to.eq(edge)
     })
   })
 
@@ -66,12 +66,12 @@ describe('edge reactivity (markRaw)', () => {
 
     cy.then(() => {
       const store = getStore()
-      const before = store.findEdge('e1-2')
+      const before = store.getEdge('e1-2')
 
       store.setEdges((prev) => prev.map((edge) => ({ ...edge, label: 'updated' })))
 
       // immutable contract: the stored object was REPLACED, not mutated
-      expect(store.findEdge('e1-2')).to.not.eq(before)
+      expect(store.getEdge('e1-2')).to.not.eq(before)
     })
 
     cy.get('.vue-flow__edge').should('contain.text', 'updated')

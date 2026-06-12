@@ -46,15 +46,15 @@ const props = defineProps({
   },
 })
 
-const { findNode } = useVueFlow()
+const { getNode } = useVueFlow()
 
 const path = computed(() => getBezierPath(props))
 
 const markerId = computed(() => `${props.id}-marker`)
 
 const markerColor = computed(() => {
-  const sourceNode = findNode(props.source)
-  const targetNode = findNode(props.target)
+  const sourceNode = getNode(props.source)
+  const targetNode = getNode(props.target)
 
   if (sourceNode.selected) {
     return '#ff0072'
@@ -68,8 +68,8 @@ const markerColor = computed(() => {
 })
 
 const markerType = computed(() => {
-  const sourceNode = findNode(props.source)
-  const targetNode = findNode(props.target)
+  const sourceNode = getNode(props.source)
+  const targetNode = getNode(props.target)
 
   if (sourceNode.selected) {
     return 'diamond'

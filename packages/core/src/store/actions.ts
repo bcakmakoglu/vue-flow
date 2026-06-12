@@ -293,12 +293,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return Array.from(state.connectionLookup.get(`${nodeId}${handleSuffix}`)?.values() ?? [])
   }
 
-  const findNode: Actions<NodeType>['findNode'] = (id) => {
+  const getNode: Actions<NodeType>['getNode'] = (id) => {
     if (!id) {
       return
     }
 
-    // The public contract: `findNode` returns the user-facing `Node` (the exact object held in
+    // The public contract: `getNode` returns the user-facing `Node` (the exact object held in
     // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
     // data (internals/measured) is reached via `getInternalNode`. Typed `DeepReadonly` (zero runtime) so
     // mutating the result is a compile error → use the helpers (updateNode/applyNodeChanges/setNodes).
@@ -306,7 +306,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
-  // `internals`/`measured`), whereas `findNode` returns the user-facing `Node` (`internals.userNode`).
+  // `internals`/`measured`), whereas `getNode` returns the user-facing `Node` (`internals.userNode`).
   // Internal call sites that need `internals`/`measured` use this.
   const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
     if (!id) {
@@ -316,7 +316,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return nodeLookup.get(id)
   }
 
-  const findEdge: Actions<NodeType, EdgeType>['findEdge'] = (id) => {
+  const getEdge: Actions<NodeType, EdgeType>['getEdge'] = (id) => {
     if (!id) {
       return
     }
@@ -331,7 +331,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     for (const node of dragItems) {
       // read `expandParent`/`parentId` from the canonical node: drag items carry them, but keyboard-move
       // items (from `useUpdateNodePositions`) do not — mirrors xyflow/react reading from the lookup.
-      const lookupNode = findNode(node.id)
+      const lookupNode = getNode(node.id)
       const expandParentId = lookupNode?.expandParent ? lookupNode.parentId : undefined
 
       const change: NodePositionChange = {
@@ -680,7 +680,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     for (const item of nodesToRemove) {
-      const currNode = typeof item === 'string' ? findNode(item) : item
+      const currNode = typeof item === 'string' ? getNode(item) : item
 
       if (!currNode) {
         continue
@@ -717,7 +717,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const changes: EdgeRemoveChange[] = []
 
     for (const item of edgesToRemove) {
-      const currEdge = typeof item === 'string' ? findEdge(item) : item
+      const currEdge = typeof item === 'string' ? getEdge(item) : item
 
       if (!currEdge) {
         continue
@@ -735,7 +735,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const updateEdge: Actions<NodeType, EdgeType>['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    const prevEdge = findEdge(oldEdge.id)
+    const prevEdge = getEdge(oldEdge.id)
 
     if (!prevEdge) {
       return false
@@ -771,7 +771,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const updateEdgeData: Actions<NodeType, EdgeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const edge = findEdge(id)
+    const edge = getEdge(id)
 
     if (!edge) {
       return
@@ -873,8 +873,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
     const isRectObj = isRectObject(nodeOrRect)
-    // use `getInternalNode` (not findNode): `nodeToRect` below needs `internals`/`measured`, which live on
-    // the InternalNode, not the user `Node` that findNode returns
+    // use `getInternalNode` (not getNode): `nodeToRect` below needs `internals`/`measured`, which live on
+    // the InternalNode, not the user `Node` that getNode returns
     const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id)
 
     if (!isRectObj && !node) {
@@ -1043,9 +1043,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     addEdges,
     removeNodes,
     removeEdges,
-    findNode,
+    getNode,
     getInternalNode,
-    findEdge,
+    getEdge,
     updateEdge,
     updateEdgeData,
     updateNode,

@@ -36,7 +36,7 @@ describe('Store Action: `removeNodes`', () => {
       cy.get('.vue-flow__node').then((els) => {
         els.each((index, node) => {
           const nodeId = node.getAttribute('data-id')
-          const storedNode = store.findNode(nodeId)
+          const storedNode = store.getNode(nodeId)
 
           expect(deletedNodes).to.not.include(nodeId)
           expect(storedNode).to.not.eq(undefined)

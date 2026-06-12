@@ -89,7 +89,7 @@ onMounted(() => {
   })
 
   setTimeout(() => {
-    const node = flow.value?.findNode('999')
+    const node = flow.value?.getNode('999')
     if (node) {
       node.expandParent = false
       node.extent = {

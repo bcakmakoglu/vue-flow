@@ -37,7 +37,7 @@ describe('Store State: `deleteKeyCode`', () => {
     cy.get(`[data-id="${nodeToDelete.id}"]`).should('not.exist')
 
     cy.tryAssertion(() => {
-      expect(store.findNode(nodeToDelete.id)).to.equal(undefined)
+      expect(store.getNode(nodeToDelete.id)).to.equal(undefined)
     })
   })
 
@@ -51,7 +51,7 @@ describe('Store State: `deleteKeyCode`', () => {
     cy.get(`[data-id="${nodeToDelete.id}"]`).should('not.exist')
 
     cy.tryAssertion(() => {
-      expect(store.findNode(nodeToDelete.id)).to.equal(undefined)
+      expect(store.getNode(nodeToDelete.id)).to.equal(undefined)
     })
   })
 
@@ -65,7 +65,7 @@ describe('Store State: `deleteKeyCode`', () => {
 
     cy.get(`[data-id="${nodeToDelete.id}"]`).should('exist')
 
-    expect(store.findNode(nodeToDelete.id)).to.not.equal(undefined)
+    expect(store.getNode(nodeToDelete.id)).to.not.equal(undefined)
   })
 
   it('does not delete node when node is not selected', () => {
@@ -82,7 +82,7 @@ describe('Store State: `deleteKeyCode`', () => {
     cy.get(`[data-id="${nodeToDelete.id}"]`).should('exist')
 
     cy.then(() => {
-      expect(store.findNode(nodeToDelete.id)).to.not.equal(undefined)
+      expect(store.getNode(nodeToDelete.id)).to.not.equal(undefined)
     })
   })
 
@@ -93,10 +93,10 @@ describe('Store State: `deleteKeyCode`', () => {
 
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('not.exist')
 
-    // retried + correct finder: a bare findEdge here runs before the queued click/keydown, and the
-    // original used findNode (always undefined for an edge id) — both made the store check vacuous
+    // retried + correct finder: a bare getEdge here runs before the queued click/keydown, and the
+    // original used getNode (always undefined for an edge id) — both made the store check vacuous
     cy.tryAssertion(() => {
-      expect(store.findEdge(edgeToDelete.id)).to.equal(undefined)
+      expect(store.getEdge(edgeToDelete.id)).to.equal(undefined)
     })
   })
 
@@ -111,7 +111,7 @@ describe('Store State: `deleteKeyCode`', () => {
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('exist')
 
     cy.then(() => {
-      expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+      expect(store.getEdge(edgeToDelete.id)).to.not.equal(undefined)
     })
   })
 
@@ -128,7 +128,7 @@ describe('Store State: `deleteKeyCode`', () => {
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('exist')
 
     cy.then(() => {
-      expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+      expect(store.getEdge(edgeToDelete.id)).to.not.equal(undefined)
     })
   })
 })

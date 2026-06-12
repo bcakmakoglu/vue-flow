@@ -116,7 +116,7 @@ describe('lookup sync is O(changed)', () => {
     store.removeNodes(['3'])
 
     cy.tryAssertion(() => {
-      expect(store.findNode('3')).to.equal(undefined)
+      expect(store.getNode('3')).to.equal(undefined)
       expect(removedRuns, 'effect tracking the removed node').to.be.greaterThan(1)
       expect(unrelatedRuns, 'effect tracking an untouched node').to.equal(1)
     })

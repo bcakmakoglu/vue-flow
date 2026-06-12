@@ -34,7 +34,7 @@ describe('Store Action: `addEdges`', () => {
     cy.get('.vue-flow__edge').then((els) => {
       els.each((index, edge) => {
         const edgeId = edge.getAttribute('data-id')
-        const storedEdge = store.findEdge(edgeId)
+        const storedEdge = store.getEdge(edgeId)
 
         expect(storedEdge).to.not.eq(undefined)
         expect(storedEdge?.id).to.eq(edgeId)
@@ -81,7 +81,7 @@ describe('Store Action: `addEdges` — defaultEdgeOptions at creation', () => {
       // a complete Edge passes through verbatim — defaults apply only at render, never persisted
       store.addEdges([{ id: 'verbatim', source: nodes[1].id, target: nodes[0].id }])
 
-      const stored = store.findEdge('verbatim')
+      const stored = store.getEdge('verbatim')
       expect(stored?.type).to.be.undefined
       expect(stored?.animated).to.be.undefined
     })
