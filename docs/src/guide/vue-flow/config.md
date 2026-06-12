@@ -684,23 +684,23 @@ const nodes = ref([
 
 ## Global Edge Options
 
-### edges-updatable (optional)
+### edges-reconnectable (optional)
 
-- Type: `EdgeUpdatable`
+- Type: `EdgeReconnectable`
 
 - Default: `true`
 
 - Details:
 
-  Globally enable/disable updating edges.
+  Globally enable/disable reconnecting edges.
 
-  If set to 'source' only source markers are updatable
-  
-  If set to 'target' only target markers are updatable
+  If set to 'source' only the source end is reconnectable
 
-  If set to 'true' both source and target markers are updatable
+  If set to 'target' only the target end is reconnectable
 
-  Can be overwritten by setting `updatable` on a specific edge element.
+  If set to 'true' both ends are reconnectable
+
+  Can be overwritten by setting `reconnectable` on a specific edge element.
 
 - Example:
 
@@ -741,7 +741,7 @@ const edges = ref([
 
   The default color value which is used when presenting edge-markers (arrowheads).
 
-### edge-updater-radius (optional)
+### reconnect-radius (optional)
 
 - Type: `number`
 
@@ -749,7 +749,7 @@ const edges = ref([
 
 - Details:
 
-  The radius at which an edge-updater can be triggered.
+  The radius around an edge anchor within which a reconnect can be triggered.
 
 ### connect-on-click (optional)
 

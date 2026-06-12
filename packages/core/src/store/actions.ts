@@ -47,8 +47,8 @@ import {
   isDef,
   isGraphNode,
   isNode,
-  updateConnectionLookup,
   reconnectEdgeAction,
+  updateConnectionLookup,
   validateEdges,
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
@@ -780,9 +780,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const nextEdge = typeof edgeUpdate === 'function' ? edgeUpdate(edge as EdgeType) : edgeUpdate
 
     // immutable: build a NEW edge (full replace or shallow merge) for the target id and recommit
-    const next = state.edges.map((e) =>
-      e.id === id ? ((options.replace ? nextEdge : { ...e, ...nextEdge }) as EdgeType) : e,
-    )
+    const next = state.edges.map((e) => (e.id === id ? ((options.replace ? nextEdge : { ...e, ...nextEdge }) as EdgeType) : e))
     commitEdges(next)
   }
 

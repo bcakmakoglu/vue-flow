@@ -783,7 +783,7 @@ But you may wish to expand on these features or implement your business logic in
 | sourceHandleId   | ID of the source handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | targetHandleId   | ID of the target handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | animated         | Is edge animated                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| updatable        | Is edge updatable                          | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| reconnectable    | Is edge reconnectable                      | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
 | markerStart      | Start marker                               | string                                       | <Close class="text-red-500" />             |
 | markerEnd        | End marker                                 | string                                       | <Close class="text-red-500" />             |
 | curvature        | The curvature of the edge                  | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
