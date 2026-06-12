@@ -42,4 +42,13 @@ describe('Check if custom nodes are rendered', () => {
 
     cy.get('.vue-flow__node-custom').should('have.css', 'transform', 'matrix(1, 0, 0, 1, 300, 300)')
   })
+
+  it('marks handles connectable by default (no explicit :connectable) so they are valid drop targets', () => {
+    // regression: the `connectable` class used the raw (undefined) prop instead of the resolved value;
+    // XYHandle's DOM query targets `.connectable` to find drop targets
+    cy.get('.vue-flow__node-custom .vue-flow__handle').should('have.length', 3).and('have.class', 'connectable')
+
+    // and no accidental `vue-flow__handle-null` when a handle id is set
+    cy.get('.vue-flow__handle-null').should('not.exist')
+  })
 })

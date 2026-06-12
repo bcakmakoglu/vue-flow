@@ -186,16 +186,18 @@ export default {
     class="vue-flow__handle"
     :class="[
       `vue-flow__handle-${position}`,
-      `vue-flow__handle-${handleId}`,
+      handleId && `vue-flow__handle-${handleId}`,
       noDragClassName,
       noPanClassName,
       type,
       {
-        connectable: isConnectable,
+        // use the resolved value (falls back to `nodesConnectable`), not the raw prop — XYHandle's DOM
+        // query targets `.connectable` to find drop targets, so an unset `:connectable` must still mark it
+        connectable: isHandleConnectable,
         connecting: isClickConnecting,
         connectablestart: isConnectableStart,
         connectableend: isConnectableEnd,
-        connectionindicator: isConnectable && ((isConnectableStart && !isConnecting) || (isConnectableEnd && isConnecting)),
+        connectionindicator: isHandleConnectable && ((isConnectableStart && !isConnecting) || (isConnectableEnd && isConnecting)),
       },
     ]"
     @mousedown="onPointerDown"

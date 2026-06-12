@@ -15,8 +15,11 @@ export default {
 <template>
   <div :id="`${ARIA_NODE_DESC_KEY}-${id}`" style="display: none">
     Press enter or space to select a node.
-    {{ !disableKeyboardA11y ? 'You can then use the arrow keys to move the node around.' : '' }}
-    You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.
+    {{
+      !disableKeyboardA11y
+        ? 'You can then use the arrow keys to move the node around, press delete to remove it and press escape to cancel.'
+        : ''
+    }}
   </div>
 
   <div :id="`${ARIA_EDGE_DESC_KEY}-${id}`" style="display: none">

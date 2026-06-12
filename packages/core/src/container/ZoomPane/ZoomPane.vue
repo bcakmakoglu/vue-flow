@@ -33,6 +33,7 @@ const {
   noWheelClassName,
   panActivationKeyCode,
   selectionKeyCode,
+  paneClickDistance,
   connectionStartHandle,
 } = useVueFlow()
 
@@ -95,6 +96,7 @@ onMounted(() => {
         noPanClassName,
         userSelectionActive,
         noWheelClassName,
+        paneClickDistance,
         connectionStartHandle,
       ],
       () => {
@@ -111,7 +113,7 @@ onMounted(() => {
           noPanClassName: noPanClassName.value,
           userSelectionActive: userSelectionActive.value,
           noWheelClassName: noWheelClassName.value,
-          paneClickDistance: 0,
+          paneClickDistance: paneClickDistance.value,
           onTransformChange: (nextTransform) => {
             emits.viewportChange({ x: nextTransform[0], y: nextTransform[1], zoom: nextTransform[2] })
             transform.value = nextTransform

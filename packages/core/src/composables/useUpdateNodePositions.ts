@@ -24,7 +24,7 @@ export function useUpdateNodePositions() {
 
     const nodeUpdates: NodeDragItem[] = []
     for (const node of getSelectedNodes.value) {
-      if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
+      if (node.draggable || (nodesDraggable.value && typeof node.draggable === 'undefined')) {
         // `getSelectedNodes` returns user `Node`s — resolve the enriched InternalNode for internals/measured
         const internalNode = getInternalNode(node.id)
         if (!internalNode) {
