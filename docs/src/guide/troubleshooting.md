@@ -87,17 +87,9 @@ const edges = ref([
 - **Description:** An edge's type has no corresponding component defined.
 - **Fix:** Define a component for every edge-type you use to ensure correct rendering of your custom edges.
 
-### EDGE_SOURCE_TARGET_SAME
-- **Description:** An edge's source and target are the same node.
-- **Fix:** If this is intentional, you can ignore this error. Otherwise, ensure the source and target nodes are different.
-
 ### EDGE_SOURCE_TARGET_MISSING
 - **Description:** Both, the source *and* target nodes are missing from an edge.
 - **Fix:** Ensure both the source and target nodes exist and are correctly set for each edge.
-
-### EDGE_ORPHANED
-- **Description:** An edge has lost its source or target node, likely due to node deletion.
-- **Fix:** If you intentionally orphaned the edge, you can ignore this error. Otherwise, ensure the source and target nodes exist or that you clean up edges before they are orphaned.
 
 ## Evaluating Errors During Runtime
 

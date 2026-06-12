@@ -53,9 +53,8 @@ export {
 export { isNode, isEdge, isGraphNode, connectionExists } from './utils/graph'
 
 /**
- * @deprecated - Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead
- * Intended for options API
- * In composition API you can access apply utilities from `useVueFlow`
+ * @deprecated Prefer the store instance's `applyChanges`/`applyNodeChanges`/`applyEdgeChanges` (from
+ * `useVueFlow`, or the instance received by `onInit`). Kept for the options API.
  */
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
 

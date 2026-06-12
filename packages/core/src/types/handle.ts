@@ -2,7 +2,6 @@ import type { Dimensions, Position, XYPosition } from './flow'
 import type { Connection, ConnectionMode } from './connection'
 import type { GraphNode, Node } from './node'
 import type { Edge } from './edge'
-import type { NodeLookup } from './store'
 
 export type HandleType = 'source' | 'target'
 
@@ -10,12 +9,6 @@ export interface HandleElement extends XYPosition, Dimensions {
   id?: string | null
   position: Position
   type: HandleType
-  nodeId: string
-}
-
-export interface ConnectionHandle extends XYPosition {
-  id: string | null
-  type: HandleType | null
   nodeId: string
 }
 
@@ -70,7 +63,6 @@ export interface IsValidParams {
   doc: Document | ShadowRoot
   lib: string
   flowId: string | null
-  nodeLookup: NodeLookup
 }
 
 export interface Result {
