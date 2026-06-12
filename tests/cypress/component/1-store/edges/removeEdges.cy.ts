@@ -32,17 +32,19 @@ describe('Store Action: `removeEdges`', () => {
   })
 
   it('removes edges from DOM', () => {
-    // todo: can we avoid the timeout? without it, the test fails in ci
-    setTimeout(() => {
-      cy.get('.vue-flow__edge').then((els) => {
-        els.each((index, edge) => {
-          const edgeId = edge.getAttribute('data-id')
-          const storedEdge = store.findEdge(edgeId)
+    // retried assertion instead of a bare setTimeout — cypress commands queued after the test body
+    // returns are silently dropped, which made this test vacuous
+    cy.tryAssertion(() => {
+      const els = Cypress.$('.vue-flow__edge')
+      expect(els.length).to.be.greaterThan(0)
 
-          expect(deletedEdges).to.not.include(edgeId)
-          expect(storedEdge).to.not.eq(undefined)
-        })
+      els.each((_, edge) => {
+        const edgeId = edge.getAttribute('data-id')
+        const storedEdge = store.findEdge(edgeId)
+
+        expect(deletedEdges).to.not.include(edgeId)
+        expect(storedEdge).to.not.eq(undefined)
       })
-    }, 1)
+    })
   })
 })
