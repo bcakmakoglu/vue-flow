@@ -124,6 +124,7 @@ export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' 
   'maxZoom',
   'minZoom',
   'translateExtent',
+  'nodeExtent',
   'hooks',
   'defaultEdgeOptions',
 ]

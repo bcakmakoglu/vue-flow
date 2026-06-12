@@ -77,4 +77,21 @@ describe('Store Action: `setState`', () => {
     })
     expect(Object.keys(store.getEdgeTypes.value)).to.contain('custom')
   })
+
+  it('re-clamps preloaded nodes to a nodeExtent passed in the same setState call', () => {
+    // regression: setState set nodeExtent via the generic loop (no recompute), so nodes adopted by the
+    // earlier setNodes call were never clamped to the extent
+    store.setState({
+      nodes: [{ id: '1', position: { x: 500, y: 500 } }],
+      nodeExtent: [
+        [0, 0],
+        [100, 100],
+      ],
+    })
+
+    cy.tryAssertion(() => {
+      const internal = store.getInternalNode('1')
+      expect(internal?.internals.positionAbsolute).to.deep.equal({ x: 100, y: 100 })
+    })
+  })
 })

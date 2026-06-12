@@ -982,6 +982,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       if (isDef(opts.translateExtent)) {
         setTranslateExtent(opts.translateExtent)
       }
+      // route through the setter (recomputes absolute positions) instead of the raw generic-loop
+      // assignment — runs after `setNodes`, so preloaded nodes get re-clamped to the extent
+      if (isDef(opts.nodeExtent)) {
+        setNodeExtent(opts.nodeExtent)
+      }
     }
 
     for (const o of Object.keys(opts)) {

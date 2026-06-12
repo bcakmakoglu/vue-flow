@@ -123,7 +123,7 @@ export function adoptNodes<NodeType extends Node = Node>(
 
     if (!isNode(node)) {
       triggerError(
-        new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id) || `[ID UNKNOWN|INDEX ${i}]`,
+        new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id ?? `[ID UNKNOWN|INDEX ${i}]`),
       )
       continue
     }
