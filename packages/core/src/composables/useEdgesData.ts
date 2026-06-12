@@ -21,9 +21,7 @@ interface EdgeData<EdgeType extends Edge = Edge> {
 export function useEdgesData<EdgeType extends Edge = Edge>(
   edgeId: MaybeRefOrGetter<string>,
 ): ComputedRef<EdgeData<EdgeType> | null>
-export function useEdgesData<EdgeType extends Edge = Edge>(
-  edgeIds: MaybeRefOrGetter<string[]>,
-): ComputedRef<EdgeData<EdgeType>[]>
+export function useEdgesData<EdgeType extends Edge = Edge>(edgeIds: MaybeRefOrGetter<string[]>): ComputedRef<EdgeData<EdgeType>[]>
 export function useEdgesData<EdgeType extends Edge = Edge>(
   edgeIds: MaybeRefOrGetter<string[]>,
   guard: (node: Edge) => node is EdgeType,

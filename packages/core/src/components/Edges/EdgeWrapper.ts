@@ -73,7 +73,9 @@ const EdgeWrapper = defineComponent({
       typeof edge.value.selectable === 'undefined' ? elementsSelectable.value : edge.value.selectable,
     )
 
-    const isReconnectable = toRef(() => (typeof edge.value.reconnectable === 'undefined' ? edgesReconnectable.value : edge.value.reconnectable))
+    const isReconnectable = toRef(() =>
+      typeof edge.value.reconnectable === 'undefined' ? edgesReconnectable.value : edge.value.reconnectable,
+    )
 
     const isFocusable = toRef(() => (typeof edge.value.focusable === 'undefined' ? edgesFocusable.value : edge.value.focusable))
 

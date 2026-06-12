@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import type { ConnectionState, GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 
-const NO_CONNECTION = {
+const NO_CONNECTION = Object.freeze({
   inProgress: false,
   isValid: null,
   from: null,
@@ -15,7 +15,7 @@ const NO_CONNECTION = {
   toPosition: null,
   toNode: null,
   pointer: null,
-} as const
+} as const)
 
 /**
  * Access the currently ongoing connection, composed from the store's split connection fields into a
@@ -37,7 +37,7 @@ export function useConnection<NodeType extends Node = Node>(): ComputedRef<Conne
     }
 
     const toHandle = connectionEndHandle.value
-    const to = connectionPosition.value
+    const pointer = connectionPosition.value
 
     return {
       inProgress: true,
@@ -46,11 +46,12 @@ export function useConnection<NodeType extends Node = Node>(): ComputedRef<Conne
       fromHandle,
       fromPosition: fromHandle.position,
       fromNode: fromNode as GraphNode<NodeType>,
-      to,
+      // `to` snaps to the hovered end handle; falls back to the raw pointer when over empty canvas
+      to: toHandle ? { x: toHandle.x, y: toHandle.y } : pointer,
       toHandle: toHandle ?? null,
       toPosition: toHandle?.position ?? null,
       toNode: ((toHandle ? getInternalNode(toHandle.nodeId) : undefined) ?? null) as GraphNode<NodeType> | null,
-      pointer: to,
+      pointer,
     }
   })
 }

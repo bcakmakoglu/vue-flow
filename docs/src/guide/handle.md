@@ -149,8 +149,8 @@ const handleConnectable: HandleConnectableFunc = (node, connectedEdges) => {
 
 ## Connection Mode
 
-By default, Vue Flow will use `<VueFlow :connection-mode="ConnectionMode.Loose" />` which allows you to connect edges to any handle.
-That means connections between a `source` and another `source` type `<Handle>` are allowed.
+By default, Vue Flow uses `<VueFlow :connection-mode="ConnectionMode.Strict" />`, where a `source` handle only connects to a `target` handle.
+Set `<VueFlow :connection-mode="ConnectionMode.Loose" />` to allow connecting to any handle (e.g. `source`-to-`source`).
 
 If you want to restrict connections to only be made between `source` and `target` type handles, you can set the `connection-mode` prop to `ConnectionMode.Strict`.
 
