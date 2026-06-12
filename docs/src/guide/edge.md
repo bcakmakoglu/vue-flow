@@ -811,9 +811,9 @@ const {
   onEdgeMouseEnter,
   onEdgeMouseLeave,
   onEdgeMouseMove,
-  onEdgeUpdateStart,
-  onEdgeUpdate,
-  onEdgeUpdateEnd,
+  onReconnectStart,
+  onReconnect,
+  onReconnectEnd,
 } = useVueFlow()
   
 const nodes = ref([
@@ -899,9 +899,9 @@ function logEvent(eventName, data) {
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @edge-update-start="logEvent('edge update start', $event)"
-    @edge-update="logEvent('edge update', $event)"
-    @edge-update-end="logEvent('edge update end', $event)"
+    @reconnect-start="logEvent(reconnect start, $event)"
+    @reconnect="logEvent('edge update', $event)"
+    @reconnect-end="logEvent(reconnect end, $event)"
   />
 </template>
 ```
@@ -917,9 +917,9 @@ function logEvent(eventName, data) {
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @edge-update-start="logEvent('edge update start', $event)"
-    @edge-update="logEvent('edge update', $event)"
-    @edge-update-end="logEvent('edge update end', $event)"
+    @reconnect-start="logEvent(reconnect start, $event)"
+    @reconnect="logEvent('edge update', $event)"
+    @reconnect-end="logEvent(reconnect end, $event)"
   >
     <Panel position="top-center">
         <p class="text-sm">Interact to see events in browser console</p>

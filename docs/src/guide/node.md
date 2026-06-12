@@ -345,7 +345,7 @@ const instance = useVueFlow()
 instance.updateNodeData(nodeId, { hello: 'mona' })
 
 // find the node in the state by its id
-const node = instance.findNode(nodeId)
+const node = instance.getNode(nodeId)
 
 node.data = {
   ...node.data,
