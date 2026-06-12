@@ -79,16 +79,3 @@ export interface Result {
   connection: Connection | null
   toHandle: ConnectingHandle | null
 }
-
-export interface ConnectionInProgress<NodeType extends GraphNode = GraphNode> {
-  inProgress: true
-  isValid: boolean | null
-  from: XYPosition
-  fromHandle: HandleElement
-  fromPosition: Position
-  fromNode: NodeType
-  to: XYPosition
-  toHandle: ConnectingHandle | null
-  toPosition: Position
-  toNode: NodeType | null
-}

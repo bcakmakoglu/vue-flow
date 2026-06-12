@@ -150,7 +150,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
   /**
    * Single write path for edge membership (see {@link commitNodes}). Stores the USER edges verbatim
-   * (xyflow parity: `edgeLookup` values are the same references as the `state.edges` elements — no
+   * (`edgeLookup` values are the same references as the `state.edges` elements; no
    * enriched edge representation exists). `markRaw` at this choke point keeps edges out of Vue's deep
    * proxy: renders are driven by key-level lookup triggers + immutable replacement, like nodes.
    */
@@ -330,7 +330,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     for (const node of dragItems) {
       // read `expandParent`/`parentId` from the canonical node: drag items carry them, but keyboard-move
-      // items (from `useUpdateNodePositions`) do not — mirrors xyflow/react reading from the lookup.
+      // items (from `useUpdateNodePositions`) do not.
       const lookupNode = getNode(node.id)
       const expandParentId = lookupNode?.expandParent ? lookupNode.parentId : undefined
 
@@ -779,8 +779,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge as EdgeType) : dataUpdate
 
-    // immutable, mirroring `updateNodeData`: a NEW edge object replaces the stored one (in-place
-    // mutation wouldn't be reactive — edges are markRaw'd, renders trigger on lookup replacement)
+    // build a NEW edge object — in-place mutation isn't reactive (edges are markRaw'd; renders trigger
+    // on lookup replacement)
     const nextEdge = { ...edge, data: options.replace ? nextData : { ...edge.data, ...nextData } } as EdgeType
 
     commitEdges(state.edges.map((item) => (item.id === id ? nextEdge : item)))
@@ -796,8 +796,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   }
 
   const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
-    // apply IMMUTABLY against the canonical user edges (mirrors `applyNodeChanges`): new array, new
-    // objects for changed edges, unchanged reused by reference
+    // apply immutably against the canonical user edges: new array, new objects for changed edges,
+    // unchanged reused by reference
     const result = applyChanges(changes, state.edges)
     commitEdges(result)
     return result
