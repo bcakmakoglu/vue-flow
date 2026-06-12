@@ -31,8 +31,8 @@ const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', dat
         :target-y="customEdgeProps.targetY"
         :source-position="customEdgeProps.sourcePosition"
         :target-position="customEdgeProps.targetPosition"
-        :source-node="customEdgeProps.sourceNode"
-        :target-node="customEdgeProps.targetNode"
+        :source="customEdgeProps.source"
+        :target="customEdgeProps.target"
         :data="customEdgeProps.data"
       />
     </template>

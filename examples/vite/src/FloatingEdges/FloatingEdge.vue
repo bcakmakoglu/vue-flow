@@ -1,15 +1,26 @@
 <script lang="ts" setup>
 import type { EdgeProps } from '@vue-flow/core'
-import { BaseEdge, getBezierPath } from '@vue-flow/core'
+import { BaseEdge, getBezierPath, useVueFlow } from '@vue-flow/core'
 import { getEdgeParams } from './floating-edge-utils'
 
 const props = defineProps<EdgeProps>()
 
-const edgeParams = computed(() => getEdgeParams(props.sourceNode, props.targetNode))
+const { getInternalNode } = useVueFlow()
+
+const edgeParams = computed(() => {
+  const sourceNode = getInternalNode(props.source)
+  const targetNode = getInternalNode(props.target)
+
+  if (!sourceNode || !targetNode) {
+    return null
+  }
+
+  return getEdgeParams(sourceNode, targetNode)
+})
 
 const edgePath = computed(
   () =>
-    (edgeParams.value.sx &&
+    (edgeParams.value?.sx &&
       getBezierPath({
         sourceX: edgeParams.value.sx,
         sourceY: edgeParams.value.sy,
