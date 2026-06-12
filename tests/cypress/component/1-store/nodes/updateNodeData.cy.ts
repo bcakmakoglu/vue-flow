@@ -29,7 +29,7 @@ describe('Store Action: `updateNodeData`', () => {
 
     store.updateNodeData(nodeId, { randomData: testData })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')
@@ -50,7 +50,7 @@ describe('Store Action: `updateNodeData`', () => {
       return { randomData: testData }
     })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')
@@ -66,7 +66,7 @@ describe('Store Action: `updateNodeData`', () => {
 
     store.updateNodeData(nodeId, { testData }, { replace: true })
 
-    const updatedNode = store.findNode(nodeId)
+    const updatedNode = store.getNode(nodeId)
 
     if (!updatedNode) {
       throw new Error('Node not found in store')

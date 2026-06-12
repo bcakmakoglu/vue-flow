@@ -10,7 +10,7 @@ export type Direction = 'LR' | 'TB'
  * It uses the `dagre` library to calculate the layout of the nodes and edges.
  */
 export function useLayout() {
-  const { findNode } = useVueFlow()
+  const { getNode } = useVueFlow()
 
   const graph = ref(new dagre.graphlib.Graph<Node>())
 
@@ -27,7 +27,7 @@ export function useLayout() {
 
     for (const node of nodes) {
       // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`GraphNode` type)
-      const graphNode = findNode(node.id)
+      const graphNode = getNode(node.id)
 
       if (!graphNode) {
         console.error(`Node with id ${node.id} not found in the graph`)

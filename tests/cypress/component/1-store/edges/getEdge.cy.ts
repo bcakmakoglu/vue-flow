@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements()
 
-describe('Store Action: `findEdge`', () => {
+describe('Store Action: `getEdge`', () => {
   let store: VueFlowStore
   let randomIndex: number
 
@@ -24,7 +24,7 @@ describe('Store Action: `findEdge`', () => {
   })
 
   it('finds edge in store when passed a valid (string) and existing id', () => {
-    const storedEdge = store.findEdge(edges[randomIndex].id)
+    const storedEdge = store.getEdge(edges[randomIndex].id)
 
     if (!storedEdge) {
       throw new Error('Edge not found in store')
@@ -34,18 +34,18 @@ describe('Store Action: `findEdge`', () => {
   })
 
   it('does not find edge in store when passed invalid id', () => {
-    expect(store.findEdge('some-invalid-id')).to.equal(undefined)
+    expect(store.getEdge('some-invalid-id')).to.equal(undefined)
   })
 
   it('does not find edge in store when passed undefined', () => {
-    expect(store.findEdge(undefined)).to.equal(undefined)
+    expect(store.getEdge(undefined)).to.equal(undefined)
   })
 
   it('does not find edge in store when passed empty string', () => {
-    expect(store.findEdge('')).to.equal(undefined)
+    expect(store.getEdge('')).to.equal(undefined)
   })
 
   it('does not find edge in store when passed number', () => {
-    expect(store.findEdge(123 as any)).to.equal(undefined)
+    expect(store.getEdge(123 as any)).to.equal(undefined)
   })
 })

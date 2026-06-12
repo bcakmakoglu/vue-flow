@@ -12,7 +12,7 @@ export function useTeleport(id) {
   const transition = ref(false)
   const teleport = ref(null)
 
-  const { updateNodeInternals, updateNodeData, findNode, edges, setEdges } = useVueFlow()
+  const { updateNodeInternals, updateNodeData, getNode, edges, setEdges } = useVueFlow()
 
   /**
    * specify a selector to teleport to
@@ -65,7 +65,7 @@ export function useTeleport(id) {
    * i.e. if they emit events, they will still emit them up their regular tree
    */
   const onClick = (destination) => {
-    const node = findNode(id)
+    const node = getNode(id)
 
     transition.value = true
 
@@ -80,7 +80,7 @@ export function useTeleport(id) {
       setEdges((eds) =>
         eds.map((edge) =>
           connectedEdgeIds.includes(edge.id)
-            ? { ...edge, hidden: !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination }
+            ? { ...edge, hidden: !!getNode(edge.source).data.destination || !!getNode(edge.target).data.destination }
             : edge,
         ),
       )

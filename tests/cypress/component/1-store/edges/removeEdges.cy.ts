@@ -40,7 +40,7 @@ describe('Store Action: `removeEdges`', () => {
 
       els.each((_, edge) => {
         const edgeId = edge.getAttribute('data-id')
-        const storedEdge = store.findEdge(edgeId)
+        const storedEdge = store.getEdge(edgeId)
 
         expect(deletedEdges).to.not.include(edgeId)
         expect(storedEdge).to.not.eq(undefined)

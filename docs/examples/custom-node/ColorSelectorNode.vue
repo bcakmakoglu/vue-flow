@@ -13,12 +13,12 @@ const props = defineProps({
   },
 })
 
-const { updateNodeData, findNode, getConnectedEdges, setEdges } = useVueFlow()
+const { updateNodeData, getNode, getConnectedEdges, setEdges } = useVueFlow()
 
 function onSelect(color) {
   updateNodeData(props.id, { color, isGradient: false })
 
-  const connectedEdgeIds = getConnectedEdges([findNode(props.id)]).map((edge) => edge.id)
+  const connectedEdgeIds = getConnectedEdges([getNode(props.id)]).map((edge) => edge.id)
 
   setEdges((edges) => edges.map((edge) => (connectedEdgeIds.includes(edge.id) ? { ...edge, style: { stroke: color } } : edge)))
 }

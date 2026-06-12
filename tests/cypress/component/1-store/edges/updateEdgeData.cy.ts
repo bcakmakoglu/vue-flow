@@ -29,7 +29,7 @@ describe('Store Action: `updateEdgeData`', () => {
 
     store.updateEdgeData(edgeId, { randomData: testData })
 
-    const updatedEdge = store.findEdge(edgeId)
+    const updatedEdge = store.getEdge(edgeId)
 
     if (!updatedEdge) {
       throw new Error('Edge not found in store')
@@ -50,7 +50,7 @@ describe('Store Action: `updateEdgeData`', () => {
       return { randomData: testData }
     })
 
-    expect(store.findEdge(edgeId)?.data!.randomData).to.equal(testData)
+    expect(store.getEdge(edgeId)?.data!.randomData).to.equal(testData)
   })
 
   it('replaces edge data when `replace` option is true', () => {
@@ -59,7 +59,7 @@ describe('Store Action: `updateEdgeData`', () => {
 
     store.updateEdgeData(edgeId, { testData }, { replace: true })
 
-    const updatedEdge = store.findEdge(edgeId)
+    const updatedEdge = store.getEdge(edgeId)
 
     expect(updatedEdge?.data!.testData).to.equal(testData)
     expect(updatedEdge?.data!.randomData).to.not.exist
@@ -69,15 +69,15 @@ describe('Store Action: `updateEdgeData`', () => {
     const edgeId = edges[randomIndex].id
     const otherId = edges[(randomIndex + 1) % edges.length].id
 
-    const before = store.findEdge(edgeId)
-    const otherBefore = store.findEdge(otherId)
+    const before = store.getEdge(edgeId)
+    const otherBefore = store.getEdge(otherId)
 
     store.updateEdgeData(edgeId, { randomData: 'x' })
 
     // immutable contract: the changed edge is a NEW object, untouched edges keep their reference
-    expect(store.findEdge(edgeId)).to.not.equal(before)
+    expect(store.getEdge(edgeId)).to.not.equal(before)
     if (otherId !== edgeId) {
-      expect(store.findEdge(otherId)).to.equal(otherBefore)
+      expect(store.getEdge(otherId)).to.equal(otherBefore)
     }
   })
 
@@ -112,7 +112,7 @@ describe('Store Action: `updateEdgeData`', () => {
       const s = getStore()
       const edgeId = edges[0].id
       s.updateEdgeData(edgeId, { randomData: 'no-apply' })
-      expect(s.findEdge(edgeId)?.data!.randomData).to.equal('no-apply')
+      expect(s.getEdge(edgeId)?.data!.randomData).to.equal('no-apply')
     })
   })
 })
