@@ -6,7 +6,7 @@ import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
-const { onNodeDrag, getIntersectingNodes, isNodeIntersecting, updateNode, screenToFlowCoordinate } = useVueFlow()
+const { onNodeDrag, getIntersectingNodes, isNodeIntersecting, updateNode, screenToFlowPosition } = useVueFlow()
 
 const nodes = ref([
   {
@@ -54,7 +54,7 @@ const panelPosition = computed(() => {
   const { left, top, width, height } = panelEl.value.$el.getBoundingClientRect()
 
   return {
-    ...screenToFlowCoordinate({ x: left, y: top }),
+    ...screenToFlowPosition({ x: left, y: top }),
     width,
     height,
   }

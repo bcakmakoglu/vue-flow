@@ -28,8 +28,8 @@ export type FitBoundsOptions = TransitionOptions & {
 /** Fit the viewport around visible nodes */
 export type FitView = (fitViewOptions?: FitViewParams) => Promise<boolean>
 
-/** project a position onto the viewport, i.e. a mouse event clientX/clientY onto graph coordinates */
-export type Project = (position: XYPosition) => XYPosition
+/** convert a position between screen and flow coordinate systems (screenToFlowPosition/flowToScreenPosition) */
+export type ViewportPositionFunc = (position: XYPosition) => XYPosition
 
 /** set center of viewport */
 export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => Promise<boolean>
@@ -58,5 +58,4 @@ export interface ViewportFunctions {
   fitView: FitView
   setCenter: SetCenter
   fitBounds: FitBounds
-  project: Project
 }
