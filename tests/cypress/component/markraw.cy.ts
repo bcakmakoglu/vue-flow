@@ -53,7 +53,7 @@ describe('edge reactivity (markRaw)', () => {
     })
   })
 
-  it('re-renders on updateEdgeData despite markRaw (immutable replacement)', () => {
+  it('re-renders on setEdges despite markRaw (immutable replacement)', () => {
     cy.vueFlow({
       nodes: [
         { id: '1', type: 'default', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
