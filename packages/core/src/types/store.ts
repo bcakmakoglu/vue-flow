@@ -41,7 +41,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   /** all stored nodes (the user-facing `Node`s; enriched `InternalNode`s live in `nodeLookup`) */
   nodes: NodeType[]
-  /** all stored edges (the user-facing `Edge`s, verbatim — xyflow parity: no enriched edge exists) */
+  /** all stored edges — the user-facing `Edge`s, stored verbatim (no enriched edge representation) */
   edges: EdgeType[]
 
   connectionLookup: ConnectionLookup

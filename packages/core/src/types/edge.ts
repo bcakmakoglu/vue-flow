@@ -139,11 +139,8 @@ export interface EdgePositions {
 }
 
 /**
- * these props are passed to edge components
- *
- * Mirrors xyflow/react's `EdgeProps` (no `sourceNode`/`targetNode` — resolve via `useInternalNode`;
- * handles exposed as `sourceHandleId`/`targetHandleId`; markers pre-resolved to url strings).
- * Parameterized on an `EdgeType`, matching the xyflow/react convention.
+ * Props passed to edge components. No `sourceNode`/`targetNode` (resolve them with `useInternalNode`);
+ * handles are exposed as `sourceHandleId`/`targetHandleId`; markers are pre-resolved to url strings.
  */
 export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOptions, EdgePositions {
   id: string

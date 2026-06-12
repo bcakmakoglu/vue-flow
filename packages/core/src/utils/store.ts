@@ -28,9 +28,8 @@ export function isDef<T>(val: T): val is NonUndefined<T> {
 }
 
 /**
- * Build a user `Edge` from a `Connection` (or validate a passed `Edge`), xyflow-style: a `Connection`
- * becomes a NEW edge with `defaultEdgeOptions` merged at creation — the only moment defaults are
- * persisted (mirrors RF's Handle doing `{ ...defaultEdgeOptions, ...params }` before `addEdge`).
+ * Build a user `Edge` from a `Connection` (or validate a passed `Edge`). A `Connection` becomes a NEW
+ * edge with `defaultEdgeOptions` merged in — the only point where defaults are persisted onto an edge.
  * User-supplied `Edge`s pass through verbatim; stored edges are never parsed or re-stamped.
  */
 export function addEdgeToStore<EdgeType extends Edge = Edge>(

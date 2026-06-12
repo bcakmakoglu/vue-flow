@@ -183,8 +183,8 @@ const EdgeWrapper = defineComponent({
 
       const targetPosition = targetHandle?.position || Position.Top
 
-      // positions are render-local (xyflow parity: `EdgePosition` is a render-output type, never stored
-      // on the edge) — they flow to the edge component as props only
+      // positions are render-local — computed each render and passed to the edge component as props,
+      // never stored on the edge
       const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
       const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
 
@@ -232,8 +232,8 @@ const EdgeWrapper = defineComponent({
             updating.value
               ? null
               : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
-                  // xyflow/react EdgeProps parity: no sourceNode/targetNode (resolve via `useInternalNode`
-                  // in custom edges); handles exposed as sourceHandleId/targetHandleId
+                  // no sourceNode/targetNode (custom edges resolve nodes via `useInternalNode`);
+                  // handles passed as sourceHandleId/targetHandleId
                   id: props.id,
                   source: edge.value.source,
                   target: edge.value.target,
