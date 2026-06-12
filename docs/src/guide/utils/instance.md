@@ -54,7 +54,7 @@ export default defineComponent({
 - Example:
 
 ```ts
-vueFlowInstance.project({ x: 100, y: 100 })
+vueFlowInstance.screenToFlowPosition({ x: 100, y: 100 })
 ```
 
 ## [fitView](/typedocs/type-aliases/FitView)

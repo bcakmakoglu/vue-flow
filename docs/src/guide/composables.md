@@ -13,7 +13,7 @@ The `useVueFlow` composable provides you with a set of methods to interact with 
 import { ref } from 'vue'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 
-const { onInit, findNode, fitView, snapToGrid } = useVueFlow()
+const { onInit, getNode, fitView, snapToGrid } = useVueFlow()
 
 const nodes = ref([/* ... */])
 
@@ -28,7 +28,7 @@ onInit((instance) => {
   
   fitView()
   
-  const node = findNode('1')
+  const node = getNode('1')
   
   if (node) {
     node.position = { x: 100, y: 100 }
