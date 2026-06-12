@@ -191,7 +191,7 @@ function onPointerMove(event: PointerEvent) {
   }
 
   if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.value)) {
-    const changes = getSelectionChanges(nodeLookup, selectedNodeIds.value, true) as NodeChange[]
+    const changes = getSelectionChanges(nodeLookup, selectedNodeIds.value) as NodeChange[]
     emits.nodesChange(changes)
   }
 

@@ -172,7 +172,6 @@ export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
 export function getSelectionChanges(
   items: Map<string, any>,
   selectedIds: Set<string> = new Set(),
-  mutateItem = false,
 ): NodeSelectionChange[] | EdgeSelectionChange[] {
   const changes: NodeSelectionChange[] | EdgeSelectionChange[] = []
 
@@ -181,12 +180,6 @@ export function getSelectionChanges(
 
     // we don't want to set all items to selected=false on the first selection
     if (!(item.selected === undefined && !willBeSelected) && item.selected !== willBeSelected) {
-      if (mutateItem) {
-        // this hack is needed for nodes. When the user dragged a node, it's selected.
-        // When another node gets dragged, we need to deselect the previous one,
-        // in order to have only one selected node at a time - the onNodesChange callback comes too late here :/
-        item.selected = willBeSelected
-      }
       changes.push(createSelectionChange(item.id, willBeSelected))
     }
   }

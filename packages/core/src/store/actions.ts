@@ -496,7 +496,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map((n) => n.id)), true))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map((n) => n.id))))
     state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup))
   }
 
@@ -508,7 +508,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup, new Set(edges.map((e) => e.id))))
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(), true))
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set()))
   }
 
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
