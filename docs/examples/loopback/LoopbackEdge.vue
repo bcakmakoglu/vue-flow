@@ -1,5 +1,5 @@
 <script setup>
-import { Position, getBezierPath, getSmoothStepPath } from '@vue-flow/core'
+import { Position, getBezierPath, getSmoothStepPath, useInternalNode } from '@vue-flow/core'
 import { computed } from 'vue'
 
 const props = defineProps({
@@ -31,12 +31,12 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  sourceNode: {
-    type: Object,
+  source: {
+    type: String,
     required: true,
   },
-  targetNode: {
-    type: Object,
+  target: {
+    type: String,
     required: true,
   },
   data: {
@@ -45,8 +45,10 @@ const props = defineProps({
   },
 })
 
+const sourceNode = useInternalNode(props.source)
+
 const path = computed(() => {
-  if (props.sourceNode && props.targetNode) {
+  if (sourceNode.value) {
     if (props.data.pathType === 'bezier') {
       if (
         (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top) ||
@@ -69,19 +71,19 @@ const path = computed(() => {
       }
     } else if (props.data.pathType === 'smoothstep') {
       let centerX, centerY
-      if (props.sourceNode === props.targetNode) {
+      if (props.source === props.target) {
         if (
           (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top) ||
           (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
         ) {
-          const source = props.sourceNode
+          const source = sourceNode.value
           centerX = props.sourceX - 40 - source.measured.width / 2
           centerY = (props.sourceY + props.targetY) / 2
         } else if (
           (props.sourcePosition === Position.Left && props.targetPosition === Position.Right) ||
           (props.sourcePosition === Position.Right && props.targetPosition === Position.Left)
         ) {
-          const source = props.sourceNode
+          const source = sourceNode.value
           centerX = (props.sourceX + props.targetX) / 2
           centerY = props.sourceY + 40 + source.measured.height / 2
         }

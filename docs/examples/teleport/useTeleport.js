@@ -12,7 +12,7 @@ export function useTeleport(id) {
   const transition = ref(false)
   const teleport = ref(null)
 
-  const { updateNodeInternals, findNode, edges } = useVueFlow()
+  const { updateNodeInternals, updateNodeData, findNode, edges, setEdges } = useVueFlow()
 
   /**
    * specify a selector to teleport to
@@ -70,23 +70,29 @@ export function useTeleport(id) {
     transition.value = true
 
     // save current teleport destination to data of node
-    node.data.destination = destination
+    updateNodeData(id, { destination })
 
     // hide connected edges when teleporting
-    const connectedEdges = getConnectedEdges([node], edges.value)
+    const connectedEdgeIds = getConnectedEdges([node], edges.value).map((edge) => edge.id)
 
-    // if destination is not null, hide edges immediately
     // check if nodes connected to edge are teleported and hide edge if one of them is
-    if (destination) {
-      connectedEdges.forEach(
-        (edge) => (edge.hidden = !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination),
+    const updateHiddenEdges = () => {
+      setEdges((eds) =>
+        eds.map((edge) =>
+          connectedEdgeIds.includes(edge.id)
+            ? { ...edge, hidden: !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination }
+            : edge,
+        ),
       )
     }
 
+    // if destination is not null, hide edges immediately
+    if (destination) {
+      updateHiddenEdges()
+    }
+
     const onFinish = () => {
-      connectedEdges.forEach(
-        (edge) => (edge.hidden = !!findNode(edge.source).data.destination || !!findNode(edge.target).data.destination),
-      )
+      updateHiddenEdges()
     }
 
     switch (animation.value) {

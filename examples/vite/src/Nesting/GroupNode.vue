@@ -4,7 +4,7 @@ import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<NodeProps>()
 
-const { onNodeDragStop, nodeLookup, viewport } = useVueFlow()
+const { onNodeDragStop, nodeLookup, viewport, updateNodeData } = useVueFlow()
 
 onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(
@@ -18,17 +18,15 @@ onNodeDragStop(({ node }) => {
     [viewport.value.x, viewport.value.y, viewport.value.zoom],
   )
   if (nodes.some((n) => n.id === node.id && n.id !== props.id)) {
-    node.data = {
-      ...node.data,
+    updateNodeData(node.id, {
       label: `In ${props.id}`,
       group: props.id,
-    }
+    })
   } else if (node.data?.group === props.id) {
-    node.data = {
-      ...node.data,
+    updateNodeData(node.id, {
       group: undefined,
       label: node.id,
-    }
+    })
   }
 })
 </script>

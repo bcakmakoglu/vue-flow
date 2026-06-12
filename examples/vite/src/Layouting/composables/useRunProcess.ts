@@ -25,7 +25,7 @@ interface UseRunProcessOptions {
  * @param options.cancelOnError Whether to cancel the process if an error occurs.
  */
 export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRunProcessOptions) {
-  const { updateNodeData, getConnectedEdges, findNode } = useVueFlow<ProcessNode>()
+  const { updateNodeData, getConnectedEdges, findNode, findEdge } = useVueFlow<ProcessNode, ProcessEdge>()
 
   const graph = toRef(() => toValue(dagreGraph))
 
@@ -58,7 +58,8 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
     const incomers = connectedEdges.filter((connection) => connection.target === nodeId)
 
     // wait for edge animations to finish before starting the process
-    await Promise.all(incomers.map((incomer) => until(() => !incomer.data?.isAnimating)))
+    // re-read the edge from the store on every poll - edge updates replace the stored object, so a captured reference would go stale
+    await Promise.all(incomers.map((incomer) => until(() => !findEdge(incomer.id)?.data?.isAnimating)))
 
     // remove the upcoming task since we are about to start it
     upcomingTasks.clear()

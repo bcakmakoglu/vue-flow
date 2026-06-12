@@ -1,6 +1,6 @@
 <script setup>
 import { Background, MiniMap, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { getElements } from './utils.js'
 
 const { nodes: initialNodes, edges: initialEdges } = getElements(15, 15)
@@ -9,7 +9,20 @@ const nodes = ref(initialNodes)
 
 const edges = ref(initialEdges)
 
-const { dimensions, fitView } = useVueFlow()
+const { dimensions, fitView, getSelectedNodes, setEdges } = useVueFlow()
+
+// highlight edges that are connected to a selected node
+watch(getSelectedNodes, (selectedNodes) => {
+  const selectedNodeIds = new Set(selectedNodes.map((node) => node.id))
+
+  setEdges((eds) =>
+    eds.map((edge) => ({
+      ...edge,
+      style:
+        selectedNodeIds.has(edge.source) || selectedNodeIds.has(edge.target) ? { stroke: '#10b981', strokeWidth: 3 } : undefined,
+    })),
+  )
+})
 
 function updatePos() {
   nodes.value = nodes.value.map((node) => {

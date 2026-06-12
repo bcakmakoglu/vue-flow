@@ -18,8 +18,8 @@ const edges = ref<Edge[]>([
 ])
 
 watch(isHidden, (shouldHide) => {
-  nodes.value.forEach((n) => (n.hidden = shouldHide))
-  edges.value.forEach((e) => (e.hidden = shouldHide))
+  nodes.value = nodes.value.map((n) => ({ ...n, hidden: shouldHide }))
+  edges.value = edges.value.map((e) => ({ ...e, hidden: shouldHide }))
 })
 </script>
 
