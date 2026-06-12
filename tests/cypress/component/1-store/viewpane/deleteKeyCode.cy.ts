@@ -99,7 +99,8 @@ describe('Store State: `deleteKeyCode`', () => {
   it('does not delete edge when edge is not deletable', () => {
     cy.get(`[data-id="${edgeToDelete.id}"]`).click()
 
-    store.findEdge(edgeToDelete.id)!.deletable = false
+    // edge fields are updated through the changes pipeline (stored edges are immutable user objects)
+    store.setEdges((edges) => edges.map((edge) => (edge.id === edgeToDelete.id ? { ...edge, deletable: false } : edge)))
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })
 
@@ -113,7 +114,7 @@ describe('Store State: `deleteKeyCode`', () => {
 
     // deselect AFTER the click has run (see the node case above)
     cy.then(() => {
-      store.findEdge(edgeToDelete.id)!.selected = false
+      store.applyEdgeChanges([{ id: edgeToDelete.id, type: 'select', selected: false }])
     })
 
     cy.get('body').trigger('keydown', { key: defaultKeyCode })

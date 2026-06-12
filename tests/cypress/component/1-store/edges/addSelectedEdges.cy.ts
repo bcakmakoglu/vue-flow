@@ -26,24 +26,26 @@ describe('Store Action: `addSelectedEdges`', () => {
   })
 
   it('adds `selected` class to edges', () => {
-    // todo: can we avoid the timeout? without it, the test fails in ci
-    setTimeout(() => {
-      cy.get('.vue-flow__edge').then((els) => {
-        els.each((index, edge) => {
-          const edgeId = edge.getAttribute('data-id')
-          const storedEdge = store.findEdge(edgeId!)
+    // retried assertion instead of a bare setTimeout — cypress commands queued after the test body
+    // returns are silently dropped, which made this test vacuous
+    cy.tryAssertion(() => {
+      const els = Cypress.$('.vue-flow__edge')
+      expect(els.length).to.be.greaterThan(0)
 
-          expect(storedEdge).to.not.eq(undefined)
+      els.each((index, edge) => {
+        const edgeId = edge.getAttribute('data-id')
+        const storedEdge = store.findEdge(edgeId!)
 
-          if (index < randomNumber) {
-            expect(!!storedEdge?.selected).to.eq(true)
-            expect(edge).to.have.class('selected')
-          } else {
-            expect(!!storedEdge?.selected).to.eq(false)
-            expect(edge).to.not.have.class('selected')
-          }
-        })
+        expect(storedEdge).to.not.eq(undefined)
+
+        if (index < randomNumber) {
+          expect(!!storedEdge?.selected).to.eq(true)
+          expect(edge).to.have.class('selected')
+        } else {
+          expect(!!storedEdge?.selected).to.eq(false)
+          expect(edge).to.not.have.class('selected')
+        }
       })
-    }, 1)
+    })
   })
 })
