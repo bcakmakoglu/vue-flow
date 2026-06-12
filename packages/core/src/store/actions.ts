@@ -48,7 +48,7 @@ import {
   isGraphNode,
   isNode,
   updateConnectionLookup,
-  updateEdgeAction,
+  reconnectEdgeAction,
   validateEdges,
 } from '../utils'
 import { storeOptionsToSkip, useState } from './state'
@@ -182,7 +182,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     state.edges = next
 
     // the connection lookup derives 1:1 from the edges array — rebuilding it here keeps every write
-    // path (setEdges/applyEdgeChanges/updateEdge/$reset) consistent by construction
+    // path (setEdges/applyEdgeChanges/reconnectEdge/$reset) consistent by construction
     updateConnectionLookup(state.connectionLookup, state.edges)
   }
 
@@ -734,7 +734,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     state.hooks.edgesChange.trigger(changes)
   }
 
-  const updateEdge: Actions<NodeType, EdgeType>['updateEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
+  const reconnectEdge: Actions<NodeType, EdgeType>['reconnectEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
     const prevEdge = getEdge(oldEdge.id)
 
     if (!prevEdge) {
@@ -745,7 +745,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // event payload before an immutable change replaced the stored object)
     const prevEdgeIndex = state.edges.findIndex((edge) => edge.id === oldEdge.id)
 
-    const newEdge = updateEdgeAction(oldEdge, newConnection, prevEdge as EdgeType, shouldReplaceId, state.hooks.error.trigger)
+    const newEdge = reconnectEdgeAction(oldEdge, newConnection, prevEdge as EdgeType, shouldReplaceId, state.hooks.error.trigger)
 
     if (newEdge) {
       const [validEdge] = validateEdges<EdgeType>(
@@ -1046,7 +1046,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     getNode,
     getInternalNode,
     getEdge,
-    updateEdge,
+    reconnectEdge,
     updateEdgeData,
     updateNode,
     updateNodeData,

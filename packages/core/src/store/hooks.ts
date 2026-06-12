@@ -52,9 +52,9 @@ export function createHooks<NodeType extends Node = Node, EdgeType extends Edge 
     edgeMouseLeave: createExtendedEventHook(),
     edgeDoubleClick: createExtendedEventHook(),
     edgeClick: createExtendedEventHook(),
-    edgeUpdateStart: createExtendedEventHook(),
-    edgeUpdate: createExtendedEventHook(),
-    edgeUpdateEnd: createExtendedEventHook(),
+    reconnectStart: createExtendedEventHook(),
+    reconnect: createExtendedEventHook(),
+    reconnectEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
     error: createExtendedEventHook((err) => warn(err.message)),
   }

@@ -4,9 +4,9 @@ import type { Actions, Connection, Edge, HandleElement, HandleType, IsValidParam
 
 const alwaysValid = () => true
 
-export function getHandleType(edgeUpdaterType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
-  if (edgeUpdaterType) {
-    return edgeUpdaterType
+export function getHandleType(reconnectHandleType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
+  if (reconnectHandleType) {
+    return reconnectHandleType
   } else if (handleDomNode?.classList.contains('target')) {
     return 'target'
   } else if (handleDomNode?.classList.contains('source')) {

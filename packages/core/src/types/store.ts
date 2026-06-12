@@ -13,7 +13,7 @@ import type {
   Connector,
   NodeConnection,
 } from './connection'
-import type { DefaultEdgeOptions, Edge, EdgeUpdatable } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge'
 import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
@@ -85,13 +85,13 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   isValidConnection: ValidConnectionFunc | null
 
   connectOnClick: boolean
-  edgeUpdaterRadius: number
+  reconnectRadius: number
 
   snapToGrid: boolean
   snapGrid: SnapGrid
   defaultMarkerColor: string
 
-  edgesUpdatable: EdgeUpdatable
+  edgesReconnectable: EdgeReconnectable
   edgesFocusable: boolean
 
   nodesFocusable: boolean
@@ -169,7 +169,7 @@ export type AddEdges<EdgeType extends Edge = Edge> = (
     | ((edges: EdgeType[]) => (EdgeType | Connection) | (EdgeType | Connection)[]),
 ) => void
 
-export type UpdateEdge<EdgeType extends Edge = Edge> = (
+export type ReconnectEdge<EdgeType extends Edge = Edge> = (
   oldEdge: EdgeType,
   newConnection: Connection,
   shouldReplaceId?: boolean,
@@ -243,7 +243,7 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** find an edge by id */
   getEdge: GetEdge<EdgeType>
   /** updates an edge */
-  updateEdge: UpdateEdge<EdgeType>
+  reconnectEdge: ReconnectEdge<EdgeType>
   /** updates the data of an edge */
   updateEdgeData: UpdateEdgeData<EdgeType>
   /** updates a node */

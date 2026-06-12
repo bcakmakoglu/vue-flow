@@ -29,13 +29,13 @@ describe('isValidConnection Prop', () => {
       ],
       connectOnClick: true,
       autoConnect: true,
-      edgesUpdatable: true,
+      edgesReconnectable: true,
       isValidConnection,
     })
 
     cy.then(() => {
       store = getStore()
-      store.onEdgeUpdate((params) => store.updateEdge(params.edge, params.connection))
+      store.onReconnect((params) => store.reconnectEdge(params.edge, params.connection))
     })
   })
 

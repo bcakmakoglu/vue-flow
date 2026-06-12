@@ -12,9 +12,9 @@ export interface UseHandleProps {
   nodeId: MaybeRefOrGetter<string>
   type: MaybeRefOrGetter<HandleType>
   isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>
-  edgeUpdaterType?: MaybeRefOrGetter<HandleType>
-  onEdgeUpdate?: (event: MouseTouchEvent, connection: Connection) => void
-  onEdgeUpdateEnd?: (event: MouseTouchEvent) => void
+  reconnectHandleType?: MaybeRefOrGetter<HandleType>
+  onReconnect?: (event: MouseTouchEvent, connection: Connection) => void
+  onReconnectEnd?: (event: MouseTouchEvent) => void
 }
 
 function alwaysValid() {
@@ -36,9 +36,9 @@ export function useHandle({
   nodeId,
   type,
   isValidConnection,
-  edgeUpdaterType,
-  onEdgeUpdate,
-  onEdgeUpdateEnd,
+  reconnectHandleType,
+  onReconnect,
+  onReconnectEnd,
 }: UseHandleProps) {
   const {
     id: flowId,
@@ -110,7 +110,8 @@ export function useHandle({
       nodeLookup,
       lib: 'vue',
       flowId,
-      edgeUpdaterType: toValue(edgeUpdaterType),
+      // system's own param name stays `edgeUpdaterType`; our prop is `reconnectHandleType`
+      edgeUpdaterType: toValue(reconnectHandleType),
       autoPanSpeed: autoPanSpeed.value,
       handleDomNode,
       panBy,
@@ -177,16 +178,16 @@ export function useHandle({
         })
       },
       onConnect: (connection) => {
-        if (onEdgeUpdate) {
-          onEdgeUpdate(event, connection)
+        if (onReconnect) {
+          onReconnect(event, connection)
         } else {
           emits.connect(connection)
         }
       },
       onConnectEnd: (evt) => {
         emits.connectEnd(evt as MouseTouchEvent)
-        if (edgeUpdaterType) {
-          onEdgeUpdateEnd?.(evt as MouseTouchEvent)
+        if (reconnectHandleType) {
+          onReconnectEnd?.(evt as MouseTouchEvent)
         }
       },
     })

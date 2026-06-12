@@ -20,7 +20,7 @@ const EdgeWrapper = defineComponent({
       id: vueFlowId,
       addSelectedEdges,
       connectionMode,
-      edgeUpdaterRadius,
+      reconnectRadius,
       emits,
       nodesSelectionActive,
       noPanClassName,
@@ -32,7 +32,7 @@ const EdgeWrapper = defineComponent({
       multiSelectionActive,
       disableKeyboardA11y,
       elementsSelectable,
-      edgesUpdatable,
+      edgesReconnectable,
       edgesFocusable,
       elevateEdgesOnSelect,
       defaultEdgeOptions,
@@ -65,7 +65,7 @@ const EdgeWrapper = defineComponent({
 
     const handleId = shallowRef<string | null>(null)
 
-    const edgeUpdaterType = shallowRef<HandleType>('source')
+    const reconnectHandleType = shallowRef<HandleType>('source')
 
     const edgeEl = shallowRef<SVGElement | null>(null)
 
@@ -73,7 +73,7 @@ const EdgeWrapper = defineComponent({
       typeof edge.value.selectable === 'undefined' ? elementsSelectable.value : edge.value.selectable,
     )
 
-    const isUpdatable = toRef(() => (typeof edge.value.updatable === 'undefined' ? edgesUpdatable.value : edge.value.updatable))
+    const isReconnectable = toRef(() => (typeof edge.value.reconnectable === 'undefined' ? edgesReconnectable.value : edge.value.reconnectable))
 
     const isFocusable = toRef(() => (typeof edge.value.focusable === 'undefined' ? edgesFocusable.value : edge.value.focusable))
 
@@ -121,11 +121,11 @@ const EdgeWrapper = defineComponent({
     const { handlePointerDown } = useHandle({
       nodeId,
       handleId,
-      type: edgeUpdaterType,
+      type: reconnectHandleType,
       isValidConnection,
-      edgeUpdaterType,
-      onEdgeUpdate,
-      onEdgeUpdateEnd,
+      reconnectHandleType,
+      onReconnect,
+      onReconnectEnd,
     })
 
     return () => {
@@ -238,7 +238,7 @@ const EdgeWrapper = defineComponent({
                   source: edge.value.source,
                   target: edge.value.target,
                   type: edge.value.type,
-                  updatable: isUpdatable.value,
+                  reconnectable: isReconnectable.value,
                   selectable: isSelectable.value,
                   deletable: edge.value.deletable,
                   selected: edge.value.selected,
@@ -265,40 +265,40 @@ const EdgeWrapper = defineComponent({
                   ...pathOptions,
                 }),
             [
-              isUpdatable.value === 'source' || isUpdatable.value === true
+              isReconnectable.value === 'source' || isReconnectable.value === true
                 ? [
                     h(
                       'g',
                       {
-                        onMousedown: onEdgeUpdaterSourceMouseDown,
-                        onMouseenter: onEdgeUpdaterMouseEnter,
-                        onMouseout: onEdgeUpdaterMouseOut,
+                        onMousedown: onReconnectSourceMouseDown,
+                        onMouseenter: onReconnectMouseEnter,
+                        onMouseout: onReconnectMouseOut,
                       },
                       h(EdgeAnchor, {
                         'position': sourcePosition,
                         'centerX': sourceX,
                         'centerY': sourceY,
-                        'radius': edgeUpdaterRadius.value,
+                        'radius': reconnectRadius.value,
                         'type': 'source',
                         'data-type': 'source',
                       }),
                     ),
                   ]
                 : null,
-              isUpdatable.value === 'target' || isUpdatable.value === true
+              isReconnectable.value === 'target' || isReconnectable.value === true
                 ? [
                     h(
                       'g',
                       {
-                        onMousedown: onEdgeUpdaterTargetMouseDown,
-                        onMouseenter: onEdgeUpdaterMouseEnter,
-                        onMouseout: onEdgeUpdaterMouseOut,
+                        onMousedown: onReconnectTargetMouseDown,
+                        onMouseenter: onReconnectMouseEnter,
+                        onMouseout: onReconnectMouseOut,
                       },
                       h(EdgeAnchor, {
                         'position': targetPosition,
                         'centerX': targetX,
                         'centerY': targetY,
-                        'radius': edgeUpdaterRadius.value,
+                        'radius': reconnectRadius.value,
                         'type': 'target',
                         'data-type': 'target',
                       }),
@@ -311,24 +311,24 @@ const EdgeWrapper = defineComponent({
       )
     }
 
-    function onEdgeUpdaterMouseEnter() {
+    function onReconnectMouseEnter() {
       mouseOver.value = true
     }
 
-    function onEdgeUpdaterMouseOut() {
+    function onReconnectMouseOut() {
       mouseOver.value = false
     }
 
-    function onEdgeUpdate(event: MouseTouchEvent, connection: Connection) {
-      emit.update({ event, edge: storedEdge.value, connection })
+    function onReconnect(event: MouseTouchEvent, connection: Connection) {
+      emit.reconnect({ event, edge: storedEdge.value, connection })
     }
 
-    function onEdgeUpdateEnd(event: MouseTouchEvent) {
-      emit.updateEnd({ event, edge: storedEdge.value })
+    function onReconnectEnd(event: MouseTouchEvent) {
+      emit.reconnectEnd({ event, edge: storedEdge.value })
       updating.value = false
     }
 
-    function handleEdgeUpdater(event: MouseEvent, isSourceHandle: boolean) {
+    function handleReconnect(event: MouseEvent, isSourceHandle: boolean) {
       if (event.button !== 0) {
         return
       }
@@ -338,9 +338,9 @@ const EdgeWrapper = defineComponent({
       nodeId.value = isSourceHandle ? edge.value.target : edge.value.source
       handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? null
 
-      edgeUpdaterType.value = isSourceHandle ? 'target' : 'source'
+      reconnectHandleType.value = isSourceHandle ? 'target' : 'source'
 
-      emit.updateStart({ event, edge: storedEdge.value })
+      emit.reconnectStart({ event, edge: storedEdge.value })
 
       handlePointerDown(event)
     }
@@ -383,12 +383,12 @@ const EdgeWrapper = defineComponent({
       emit.mouseLeave({ event, edge: storedEdge.value })
     }
 
-    function onEdgeUpdaterSourceMouseDown(event: MouseEvent) {
-      handleEdgeUpdater(event, true)
+    function onReconnectSourceMouseDown(event: MouseEvent) {
+      handleReconnect(event, true)
     }
 
-    function onEdgeUpdaterTargetMouseDown(event: MouseEvent) {
-      handleEdgeUpdater(event, false)
+    function onReconnectTargetMouseDown(event: MouseEvent) {
+      handleReconnect(event, false)
     }
 
     function onKeyDown(event: KeyboardEvent) {
