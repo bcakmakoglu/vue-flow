@@ -80,8 +80,15 @@ const EdgeWrapper = defineComponent({
     provide(EdgeId, props.id)
     provide(EdgeRef, edgeEl)
 
-    const edgeClass = computed(() => (edge.value.class instanceof Function ? edge.value.class(edge.value) : edge.value.class))
-    const edgeStyle = computed(() => (edge.value.style instanceof Function ? edge.value.style(edge.value) : edge.value.style))
+    // the class/style callbacks receive the RAW stored edge (like every event payload + selection action),
+    // not the internal `{ ...defaultEdgeOptions, ...edge }` render view — only the resolved fn is read off
+    // the merged view so a defaults-provided callback still applies
+    const edgeClass = computed(() =>
+      edge.value.class instanceof Function ? edge.value.class(storedEdge.value) : edge.value.class,
+    )
+    const edgeStyle = computed(() =>
+      edge.value.style instanceof Function ? edge.value.style(storedEdge.value) : edge.value.style,
+    )
 
     const edgeCmp = computed(() => {
       const name = edge.value.type || 'default'

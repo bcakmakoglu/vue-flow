@@ -45,7 +45,7 @@ const props = defineProps({
   },
 })
 
-const sourceNode = useInternalNode(props.source)
+const sourceNode = useInternalNode(() => props.source)
 
 const path = computed(() => {
   if (sourceNode.value) {
