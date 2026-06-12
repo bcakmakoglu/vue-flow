@@ -333,52 +333,49 @@ function removeMultipleEdges() {
 
 ## Updating Edge Data
 
-Since edges are reactive object, you can update their data at any point by simply mutating it.
-This allows you to change the label, or even add new properties to the data object at any point in time.
+::: warning Vue Flow 2.0
+Edges are stored as your plain objects and are **not** deeply reactive — mutating a stored edge in place
+(`edge.data = ...`, `edge.animated = !edge.animated`) no longer triggers a re-render. Update edges through
+the store helpers (`updateEdgeData`, `updateEdge`, `setEdges`, `applyEdgeChanges`) or by reassigning your
+`v-model` array immutably. This mirrors the node model and matches React Flow / Svelte Flow.
+:::
 
 There are multiple ways of achieving this, here are some examples:
 
 ::: code-group
 
 ```ts [useVueFlow]
-import  { useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 
-const instance = useVueFlow()
+const { updateEdgeData, setEdges } = useVueFlow()
 
-// use the `updateEdgeData` method to update the data of an edge
-instance.updateEdgeData(edgeId, { hello: 'mona' })
+// the simplest path: merge into an edge's data (pass `{ replace: true }` to overwrite instead of merge)
+updateEdgeData(edgeId, { hello: 'world' })
 
-// find the edge in the state by its id
-const edge = instance.findEdge(edgeId)
+// updater function — receives the current stored edge
+updateEdgeData(edgeId, (edge) => ({ count: (edge.data?.count ?? 0) + 1 }))
 
-edge.data = {
-  ...edge.data,
-  hello: 'world',
-}
-
-// you can also mutate properties like `selectable` or `animated`
-edge.selectable = !edge.selectable
-edge.animated = !edge.animated
+// for non-data fields (selectable, animated, …) reassign the edge immutably via setEdges
+setEdges((edges) =>
+  edges.map((edge) => (edge.id === edgeId ? { ...edge, animated: !edge.animated } : edge)),
+)
 ```
 
 ```vue [useEdge]
 <!-- CustomEdge.vue -->
 <script setup>
-import { useEdge } from '@vue-flow/core'
+import { useEdge, useVueFlow } from '@vue-flow/core'
 
-// `useEdge` returns us the edge object straight from the state
-// since the edge obj is reactive, we can mutate it to update our edges' data
-const { edge } = useEdge()
+// `useEdge` returns the edge as a `ComputedRef` (read `edge.value`); it is NOT mutable
+const { id, edge } = useEdge()
+const { updateEdgeData, setEdges } = useVueFlow()
 
 function onSomeEvent() {
-  edge.data = {
-    ...edge.data,  
-    hello: 'world',
-  }
-  
-  // you can also mutate properties like `selectable` or `animated`
-  edge.selectable = !edge.selectable
-  edge.animated = !edge.animated
+  updateEdgeData(id, { hello: 'world' })
+
+  setEdges((edges) =>
+    edges.map((e) => (e.id === id ? { ...e, animated: !e.animated } : e)),
+  )
 }
 </script>
 ```
@@ -386,22 +383,6 @@ function onSomeEvent() {
 ```vue [v-model]
 <script setup>
 import { ref } from 'vue'
-
-const nodes = ref([
-  {
-    id: '1',
-    position: { x: 50, y: 50 },
-    data: {
-      label: 'Node 1',
-      hello: 'world',
-    },
-  },
-  {
-      id: '2',
-      position: { x: 50, y: 250 },
-      data: { label: 'Node 2', },
-  },
-])
 
 const edges = ref([
   {
@@ -411,21 +392,18 @@ const edges = ref([
   },
 ])
 
+// reassign immutably — a new array with a new object for the changed edge
 function onSomeEvent(edgeId) {
-  const edge = edges.value.find((edge) => edge.id === edgeId)
-  edge.data = {
-    ...elements.value[0].data,
-    hello: 'world',
-  }
-
-  // you can also mutate properties like `selectable` or `animated`
-  edge.selectable = !edge.selectable
-  edge.animated = !edge.animated
+  edges.value = edges.value.map((edge) =>
+    edge.id === edgeId
+      ? { ...edge, data: { ...edge.data, hello: 'world' }, animated: !edge.animated }
+      : edge,
+  )
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow v-model:edges="edges" />
 </template>
 ```
 
