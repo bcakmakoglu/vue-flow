@@ -323,11 +323,11 @@ const edges = ref([
 
 - Type: [`ConnectionMode`](/typedocs/enumerations/ConnectionMode)
 
-- Default: `ConnectionMode.Loose`
+- Default: `ConnectionMode.Strict`
 
 - Details:
 
-  If set to `loose` all handles are treated as source handles (thus allowing for connections on target handles as well.)
+  In `strict` mode a source handle only connects to a target handle. Set to `loose` to treat all handles as source handles (allowing connections on target handles as well).
 
 ### connection-line-options
 
@@ -709,7 +709,7 @@ const nodes = ref([
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const edgesUpdatable = ref(false)
+const edgesReconnectable = ref(false)
   
 const nodes = ref([
   { id: '1', position: { x: 250, y: 5 } },
@@ -721,13 +721,13 @@ const edges = ref([
   { 
     id: 'e1->3',
     // Overwrites global edges-updatable config
-    updatable: true, 
+    reconnectable: true, 
     source: '1', target: '3', 
   },
 ])
 </script>
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :edges-updatable="edgesUpdatable" />
+  <VueFlow :nodes="nodes" :edges="edges" :edges-reconnectable="edgesReconnectable" />
 </template>
 ```
 
