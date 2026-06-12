@@ -73,7 +73,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         const source = nodeLookup.get(edge.source)
         const target = nodeLookup.get(edge.target)
 
-        // skip dangling edges instead of crashing (xyflow parity: edges with missing nodes are excluded)
+        // skip dangling edges (missing endpoint node) instead of crashing on the non-null assertion
         if (!source || !target) {
           continue
         }

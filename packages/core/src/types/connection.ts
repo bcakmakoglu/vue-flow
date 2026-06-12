@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'vue'
-import type { Position } from './flow'
-import type { GraphNode } from './node'
-import type { HandleElement, HandleType } from './handle'
+import type { Position, XYPosition } from './flow'
+import type { GraphNode, Node } from './node'
+import type { ConnectingHandle, HandleElement, HandleType } from './handle'
 import type { Edge, EdgeMarkerType } from './edge'
 
 /** Connection line types (same as default edge types */
@@ -42,6 +42,54 @@ export type Connector = (
 ) => Promise<(Connection & Partial<Edge>) | false> | ((Connection & Partial<Edge>) | false)
 
 export type ConnectionStatus = 'valid' | 'invalid'
+
+/**
+ * An ongoing connection, mirroring xyflow/react's `ConnectionState` (returned by `useConnection`).
+ * Handles are vue-flow `ConnectingHandle`s and nodes are `GraphNode`s (the resolved `InternalNode`s).
+ */
+export interface ConnectionInProgress<NodeType extends Node = Node> {
+  inProgress: true
+  /** `true`/`false` when over a handle or inside the connection radius, otherwise `null` */
+  isValid: boolean | null
+  /** xy start position of the connection */
+  from: XYPosition
+  /** the handle the connection started from */
+  fromHandle: ConnectingHandle
+  /** the side of the start handle */
+  fromPosition: Position
+  /** the node the connection started from */
+  fromNode: GraphNode<NodeType>
+  /** xy end position of the connection (the current pointer position) */
+  to: XYPosition
+  /** the handle the connection currently ends on, or `null` */
+  toHandle: ConnectingHandle | null
+  /** the side of the end handle, or `null` */
+  toPosition: Position | null
+  /** the node the connection currently ends on, or `null` */
+  toNode: GraphNode<NodeType> | null
+  /** the current pointer position */
+  pointer: XYPosition
+}
+
+/** No connection in progress — the resting `ConnectionState`. */
+export interface NoConnection {
+  inProgress: false
+  isValid: null
+  from: null
+  fromHandle: null
+  fromPosition: null
+  fromNode: null
+  to: null
+  toHandle: null
+  toPosition: null
+  toNode: null
+  pointer: null
+}
+
+/**
+ * The full connection state bundled for `useConnection`, mirroring xyflow/react's `ConnectionState`.
+ */
+export type ConnectionState<NodeType extends Node = Node> = ConnectionInProgress<NodeType> | NoConnection
 
 /** The source nodes params when connection is initiated */
 export interface OnConnectStartParams {
