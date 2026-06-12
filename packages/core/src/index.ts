@@ -65,6 +65,8 @@ export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './contex
 
 export { useVueFlow } from './composables/useVueFlow'
 export { useHandle } from './composables/useHandle'
+export { useInternalNode } from './composables/useInternalNode'
+
 export { useNode } from './composables/useNode'
 export { useEdge } from './composables/useEdge'
 export { useGetPointerPosition } from './composables/useGetPointerPosition'
