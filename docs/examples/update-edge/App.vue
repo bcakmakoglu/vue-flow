@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 
-const { updateEdge, addEdges } = useVueFlow()
+const { reconnectEdge, addEdges } = useVueFlow()
 
 const nodes = ref([
   {
@@ -24,18 +24,18 @@ const nodes = ref([
   },
 ])
 
-const edges = ref([{ id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', updatable: true }])
+const edges = ref([{ id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', reconnectable: true }])
 
-function onEdgeUpdateStart(edge) {
+function onReconnectStart(edge) {
   console.log('start update', edge)
 }
 
-function onEdgeUpdateEnd(edge) {
+function onReconnectEnd(edge) {
   console.log('end update', edge)
 }
 
-function onEdgeUpdate({ edge, connection }) {
-  updateEdge(edge, connection)
+function onReconnect({ edge, connection }) {
+  reconnectEdge(edge, connection)
 }
 
 function onConnect(params) {
@@ -48,10 +48,10 @@ function onConnect(params) {
     :nodes="nodes"
     :edges="edges"
     fit-view-on-init
-    @edge-update="onEdgeUpdate"
+    @reconnect="onReconnect"
     @connect="onConnect"
-    @edge-update-start="onEdgeUpdateStart"
-    @edge-update-end="onEdgeUpdateEnd"
+    @reconnect-start="onReconnectStart"
+    @reconnect-end="onReconnectEnd"
   >
     <Background />
   </VueFlow>

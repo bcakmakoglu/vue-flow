@@ -4,7 +4,7 @@ import { getElements } from '../../../utils'
 
 const { nodes, edges } = getElements(2, 2)
 
-describe('Store Action: `updateEdge`', () => {
+describe('Store Action: `reconnectEdge`', () => {
   let store: VueFlowStore
   let randomIndex: number
 
@@ -24,7 +24,7 @@ describe('Store Action: `updateEdge`', () => {
   })
 
   it('updates edge', () => {
-    store.updateEdge(store.edges.value[randomIndex], {
+    store.reconnectEdge(store.edges.value[randomIndex], {
       sourceHandle: null,
       targetHandle: null,
       source: nodes[0].id,
@@ -37,7 +37,7 @@ describe('Store Action: `updateEdge`', () => {
     expect(storedEdge.target).to.equal(nodes[1].id)
   })
 
-  // regression: `updateEdge` used to rebuild the connection lookup from ONLY the updated edge
+  // regression: `reconnectEdge` used to rebuild the connection lookup from ONLY the updated edge
   // (`updateConnectionLookup` clears it first), erasing every other edge's connections
   it('keeps other edges in the connection lookup', () => {
     const edgeToUpdate = store.edges.value.find((edge) => edge.source === '2' && edge.target === '3')
@@ -46,7 +46,7 @@ describe('Store Action: `updateEdge`', () => {
       throw new Error('Edge 2->3 not found in store')
     }
 
-    store.updateEdge(edgeToUpdate, {
+    store.reconnectEdge(edgeToUpdate, {
       sourceHandle: null,
       targetHandle: null,
       source: '2',

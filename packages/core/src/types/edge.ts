@@ -42,7 +42,7 @@ export interface MarkerProps {
 
 export type EdgeMarkerType = string | MarkerType | EdgeMarker
 
-export type EdgeUpdatable = boolean | 'target' | 'source'
+export type EdgeReconnectable = boolean | 'target' | 'source'
 
 export interface EdgeLabelOptions {
   /** Label styles (CSSProperties) */
@@ -72,7 +72,7 @@ export interface DefaultEdge<Data extends Record<string, unknown> = ElementData,
   /** EdgeMarker */
   markerEnd?: EdgeMarkerType
   /** Disable/enable updating edge */
-  updatable?: EdgeUpdatable
+  reconnectable?: EdgeReconnectable
   /** Disable/enable focusing edge (a11y) */
   focusable?: boolean
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
@@ -162,7 +162,7 @@ export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOption
   sourceHandleId?: string | null
   targetHandleId?: string | null
   animated?: boolean
-  updatable?: EdgeUpdatable
+  reconnectable?: EdgeReconnectable
   markerStart: string
   markerEnd: string
   curvature?: number

@@ -9,9 +9,9 @@ function createEdgeHooks() {
     mouseMove: createExtendedEventHook(),
     mouseLeave: createExtendedEventHook(),
     contextMenu: createExtendedEventHook(),
-    updateStart: createExtendedEventHook(),
-    update: createExtendedEventHook(),
-    updateEnd: createExtendedEventHook(),
+    reconnectStart: createExtendedEventHook(),
+    reconnect: createExtendedEventHook(),
+    reconnectEnd: createExtendedEventHook(),
   }
 }
 
@@ -47,16 +47,16 @@ export function useEdgeHooks(emits: VueFlowStore['emits']): { emit: EdgeEventsEm
     emits.edgeContextMenu(event)
   })
 
-  edgeHooks.updateStart.on((event) => {
-    emits.edgeUpdateStart(event)
+  edgeHooks.reconnectStart.on((event) => {
+    emits.reconnectStart(event)
   })
 
-  edgeHooks.update.on((event) => {
-    emits.edgeUpdate(event)
+  edgeHooks.reconnect.on((event) => {
+    emits.reconnect(event)
   })
 
-  edgeHooks.updateEnd.on((event) => {
-    emits.edgeUpdateEnd(event)
+  edgeHooks.reconnectEnd.on((event) => {
+    emits.reconnectEnd(event)
   })
 
   return Object.entries(edgeHooks).reduce(

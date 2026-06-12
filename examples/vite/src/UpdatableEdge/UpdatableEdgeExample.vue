@@ -20,7 +20,7 @@ const initialElements: (Node | Edge)[] = [
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
-  { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', updatable: 'target' },
+  { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', reconnectable: 'target' },
 ]
 
 const nodes = ref<Node[]>(initialElements.filter(isNode))
@@ -33,16 +33,16 @@ function onLoad(flowInstance: VueFlowStore) {
   return flowInstance.fitView()
 }
 
-function onEdgeUpdateStart({ edge }: FlowEvents['edgeUpdateStart']) {
+function onReconnectStart({ edge }: FlowEvents['reconnectStart']) {
   return console.log('start update', edge)
 }
 
-function onEdgeUpdateEnd({ edge }: FlowEvents['edgeUpdateEnd']) {
+function onReconnectEnd({ edge }: FlowEvents['reconnectEnd']) {
   return console.log('end update', edge)
 }
 
-function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
-  return flow.value?.updateEdge(edge, connection)
+function onReconnect({ edge, connection }: FlowEvents['reconnect']) {
+  return flow.value?.reconnectEdge(edge, connection)
 }
 </script>
 
@@ -54,9 +54,9 @@ function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
     @init="onLoad"
-    @edge-update="onEdgeUpdate"
-    @edge-update-start="onEdgeUpdateStart"
-    @edge-update-end="onEdgeUpdateEnd"
+    @reconnect="onReconnect"
+    @reconnect-start="onReconnectStart"
+    @reconnect-end="onReconnectEnd"
   >
     <Controls />
   </VueFlow>
