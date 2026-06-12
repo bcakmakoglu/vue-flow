@@ -24,7 +24,7 @@ export interface EdgeMouseEvent<EdgeType extends Edge = Edge> {
   edge: EdgeType
 }
 
-export interface EdgeUpdateEvent<EdgeType extends Edge = Edge> {
+export interface EdgeReconnectEvent<EdgeType extends Edge = Edge> {
   event: MouseTouchEvent
   edge: EdgeType
   connection: Connection
@@ -83,9 +83,9 @@ export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge 
   edgeMouseLeave: EdgeMouseEvent<EdgeType>
   edgeDoubleClick: EdgeMouseEvent<EdgeType>
   edgeClick: EdgeMouseEvent<EdgeType>
-  edgeUpdateStart: EdgeMouseEvent<EdgeType>
-  edgeUpdate: EdgeUpdateEvent<EdgeType>
-  edgeUpdateEnd: EdgeMouseEvent<EdgeType>
+  reconnectStart: EdgeMouseEvent<EdgeType>
+  reconnect: EdgeReconnectEvent<EdgeType>
+  reconnectEnd: EdgeMouseEvent<EdgeType>
   error: VueFlowError
 }
 
@@ -132,9 +132,9 @@ export interface EdgeEventsHandler<EdgeType extends Edge = Edge> {
   mouseMove: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
   mouseLeave: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
   contextMenu: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
-  updateStart: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
-  update: (event: EdgeUpdateEvent<EdgeType>) => void | { off: () => void }
-  updateEnd: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  reconnectStart: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
+  reconnect: (event: EdgeReconnectEvent<EdgeType>) => void | { off: () => void }
+  reconnectEnd: (event: EdgeMouseEvent<EdgeType>) => void | { off: () => void }
 }
 
 export type EdgeEventsOn<EdgeType extends Edge = Edge> = {

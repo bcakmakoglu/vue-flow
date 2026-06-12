@@ -47,7 +47,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     panOnScrollMode: PanOnScrollMode.Free,
     paneClickDistance: 0,
     panOnDrag: true,
-    edgeUpdaterRadius: 10,
+    reconnectRadius: 10,
     onlyRenderVisibleElements: false,
     defaultViewport: { x: 0, y: 0, zoom: 1 },
 
@@ -74,7 +74,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     snapGrid: [15, 15],
     snapToGrid: false,
 
-    edgesUpdatable: false,
+    edgesReconnectable: false,
     edgesFocusable: true,
     nodesFocusable: true,
     nodesConnectable: true,

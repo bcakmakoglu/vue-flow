@@ -2,7 +2,7 @@ import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, Viewport } from '@xyflow/system'
 import type { VueFlowError } from '../utils'
-import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable } from './edge'
+import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
 import type {
   Connection,
@@ -13,7 +13,7 @@ import type {
   OnConnectStartParams,
 } from './connection'
 import type { EdgeTypesObject, NodeTypesObject } from './components'
-import type { EdgeMouseEvent, EdgeUpdateEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
+import type { EdgeMouseEvent, EdgeReconnectEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
@@ -108,7 +108,7 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   snapToGrid?: boolean
   snapGrid?: SnapGrid
   onlyRenderVisibleElements?: boolean
-  edgesUpdatable?: EdgeUpdatable
+  edgesReconnectable?: EdgeReconnectable
   nodesDraggable?: boolean
   nodesConnectable?: boolean
   nodeDragThreshold?: number
@@ -136,7 +136,7 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
   preventScrolling?: boolean
   selectionMode?: SelectionMode
-  edgeUpdaterRadius?: number
+  reconnectRadius?: number
   /** will be renamed to `fitView` */
   fitViewOnInit?: boolean
   /** allow connection with click handlers, i.e. support touch devices */
@@ -222,9 +222,9 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   (event: 'edgeMouseLeave', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
   (event: 'edgeDoubleClick', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
   (event: 'edgeClick', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
-  (event: 'edgeUpdateStart', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
-  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent<EdgeType>): void
-  (event: 'edgeUpdateEnd', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'reconnectStart', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
+  (event: 'reconnect', reconnectEvent: EdgeReconnectEvent<EdgeType>): void
+  (event: 'reconnectEnd', edgeMouseEvent: EdgeMouseEvent<EdgeType>): void
 
   (event: 'nodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'nodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void

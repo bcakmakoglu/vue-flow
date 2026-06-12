@@ -62,7 +62,7 @@ export function addEdgeToStore<EdgeType extends Edge = Edge>(
   return edge
 }
 
-export function updateEdgeAction(
+export function reconnectEdgeAction(
   edge: Edge,
   newConnection: Connection,
   prevEdge: Edge | undefined,

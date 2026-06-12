@@ -65,7 +65,7 @@ export const exampleImports = {
     'utils.js': StressUtils,
     'style.css': StressCSS,
   },
-  updateEdge: {
+  reconnectEdge: {
     'App.vue': UpdateEdgeApp,
   },
   updateNode: {
