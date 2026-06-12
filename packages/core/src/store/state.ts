@@ -61,7 +61,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
       type: ConnectionLineType.Bezier,
       style: {},
     },
-    connectionMode: ConnectionMode.Loose,
+    connectionMode: ConnectionMode.Strict,
     connectionStartHandle: null,
     connectionEndHandle: null,
     connectionClickStartHandle: null,
