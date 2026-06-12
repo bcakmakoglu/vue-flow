@@ -175,6 +175,12 @@ export type ReconnectEdge<EdgeType extends Edge = Edge> = (
   shouldReplaceId?: boolean,
 ) => EdgeType | false
 
+export type UpdateEdge<EdgeType extends Edge = Edge> = (
+  id: string,
+  edgeUpdate: Partial<EdgeType> | ((edge: EdgeType) => Partial<EdgeType>),
+  options?: { replace: boolean },
+) => void
+
 export type UpdateEdgeData<EdgeType extends Edge = Edge> = (
   id: string,
   dataUpdate: Partial<EdgeType['data']> | ((edge: EdgeType) => Partial<EdgeType['data']>),
@@ -242,8 +248,10 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   getInternalNode: GetInternalNode<NodeType>
   /** find an edge by id */
   getEdge: GetEdge<EdgeType>
-  /** updates an edge */
+  /** reconnects an edge to a new source/target (connection) */
   reconnectEdge: ReconnectEdge<EdgeType>
+  /** partially updates an edge */
+  updateEdge: UpdateEdge<EdgeType>
   /** updates the data of an edge */
   updateEdgeData: UpdateEdgeData<EdgeType>
   /** updates a node */

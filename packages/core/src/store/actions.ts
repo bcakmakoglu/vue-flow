@@ -770,6 +770,22 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     return false
   }
 
+  const updateEdge: Actions<NodeType, EdgeType>['updateEdge'] = (id, edgeUpdate, options = { replace: false }) => {
+    const edge = getEdge(id)
+
+    if (!edge) {
+      return
+    }
+
+    const nextEdge = typeof edgeUpdate === 'function' ? edgeUpdate(edge as EdgeType) : edgeUpdate
+
+    // immutable: build a NEW edge (full replace or shallow merge) for the target id and recommit
+    const next = state.edges.map((e) =>
+      e.id === id ? ((options.replace ? nextEdge : { ...e, ...nextEdge }) as EdgeType) : e,
+    )
+    commitEdges(next)
+  }
+
   const updateEdgeData: Actions<NodeType, EdgeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
     const edge = getEdge(id)
 
@@ -1047,6 +1063,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     getInternalNode,
     getEdge,
     reconnectEdge,
+    updateEdge,
     updateEdgeData,
     updateNode,
     updateNodeData,
