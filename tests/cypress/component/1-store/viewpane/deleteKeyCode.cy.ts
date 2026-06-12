@@ -93,7 +93,11 @@ describe('Store State: `deleteKeyCode`', () => {
 
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('not.exist')
 
-    expect(store.findNode(edgeToDelete.id)).to.equal(undefined)
+    // retried + correct finder: a bare findEdge here runs before the queued click/keydown, and the
+    // original used findNode (always undefined for an edge id) — both made the store check vacuous
+    cy.tryAssertion(() => {
+      expect(store.findEdge(edgeToDelete.id)).to.equal(undefined)
+    })
   })
 
   it('does not delete edge when edge is not deletable', () => {
@@ -106,7 +110,9 @@ describe('Store State: `deleteKeyCode`', () => {
 
     cy.get(`[data-id="${edgeToDelete.id}"]`).should('exist')
 
-    expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+    cy.then(() => {
+      expect(store.findEdge(edgeToDelete.id)).to.not.equal(undefined)
+    })
   })
 
   it('does not delete edge when edge is not selected', () => {

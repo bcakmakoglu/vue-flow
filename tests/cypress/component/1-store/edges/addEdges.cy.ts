@@ -48,3 +48,42 @@ describe('Store Action: `addEdges`', () => {
     expect(store.edges.value).to.have.length(edges.length)
   })
 })
+
+describe('Store Action: `addEdges` — defaultEdgeOptions at creation', () => {
+  let store: VueFlowStore
+
+  beforeEach(() => {
+    cy.vueFlow({
+      nodes,
+      edges: [],
+      defaultEdgeOptions: { type: 'special', animated: true },
+    })
+
+    cy.then(() => {
+      store = getStore()
+    })
+  })
+
+  it('persists defaults onto an edge created from a Connection', () => {
+    cy.then(() => {
+      // a Connection (no id) is the connect-drag shape — defaults are merged at creation and PERSISTED
+      store.addEdges([{ source: nodes[0].id, target: nodes[1].id, sourceHandle: null, targetHandle: null }])
+
+      const created = store.edges.value.find((edge) => edge.source === nodes[0].id && edge.target === nodes[1].id)
+      expect(created, 'connection-created edge exists').to.not.eq(undefined)
+      expect(created?.type).to.equal('special')
+      expect(created?.animated).to.equal(true)
+    })
+  })
+
+  it('does NOT stamp defaults onto a fully-specified user Edge', () => {
+    cy.then(() => {
+      // a complete Edge passes through verbatim — defaults apply only at render, never persisted
+      store.addEdges([{ id: 'verbatim', source: nodes[1].id, target: nodes[0].id }])
+
+      const stored = store.findEdge('verbatim')
+      expect(stored?.type).to.be.undefined
+      expect(stored?.animated).to.be.undefined
+    })
+  })
+})
