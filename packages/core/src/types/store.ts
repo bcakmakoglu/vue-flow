@@ -315,7 +315,7 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** reset state to defaults */
   $reset: () => void
 
-  /** remove store instance from global storage and destroy it (will invalidate effect scopes) */
+  /** destroy the store instance (invalidates its effect scopes); runs the `onDestroy` hook if one was set */
   $destroy: () => void
 }
 

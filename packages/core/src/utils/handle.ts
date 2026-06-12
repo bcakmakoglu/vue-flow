@@ -4,10 +4,8 @@ import type { Actions, Connection, Edge, HandleElement, HandleType, IsValidParam
 
 const alwaysValid = () => true
 
-export function getHandleType(reconnectHandleType: HandleType | undefined, handleDomNode: Element | null): HandleType | null {
-  if (reconnectHandleType) {
-    return reconnectHandleType
-  } else if (handleDomNode?.classList.contains('target')) {
+function getHandleType(handleDomNode: Element | null): HandleType | null {
+  if (handleDomNode?.classList.contains('target')) {
     return 'target'
   } else if (handleDomNode?.classList.contains('source')) {
     return 'source'
@@ -76,7 +74,7 @@ export function isValidHandle(
   }
 
   if (handleToCheck) {
-    const handleType = getHandleType(undefined, handleToCheck)
+    const handleType = getHandleType(handleToCheck)
     const handleNodeId = handleToCheck.getAttribute('data-nodeid')
     const handleId = handleToCheck.getAttribute('data-handleid')
     const connectable = handleToCheck.classList.contains('connectable')

@@ -126,12 +126,12 @@ export function applyChanges<
   return next
 }
 
-/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
+/** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
 export function applyEdgeChanges(changes: EdgeChange[], edges: Edge[]) {
   return applyChanges(changes, edges)
 }
 
-/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
+/** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
 export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
   return applyChanges(changes, nodes)
 }

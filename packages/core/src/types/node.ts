@@ -1,7 +1,7 @@
 import type { InternalNodeBase, NodeBase } from '@xyflow/system'
 import type { HTMLAttributes } from 'vue'
-import type { Position, Styles, XYPosition } from './flow'
-import type { HandleElement, HandleType } from './handle'
+import type { Styles } from './flow'
+import type { HandleElement } from './handle'
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
 export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
@@ -24,28 +24,6 @@ export interface CoordinateExtentRange {
  * system d.ts (its `Optional<T, K>` utility trips vuejs/core#14236). Structurally identical to system's.
  */
 export type NodeOrigin = [number, number]
-
-/**
- * Bounding box for a node — system shape.
- *
- * Locally defined; see {@link NodeOrigin}.
- */
-export type NodeBounds = XYPosition & { width: number | null; height: number | null }
-
-/**
- * Handle data attached to a node — system shape.
- *
- * Locally defined; see {@link NodeOrigin}.
- */
-export interface NodeHandle {
-  id?: string | null
-  position: Position
-  type: HandleType
-  x: number
-  y: number
-  width?: number
-  height?: number
-}
 
 export interface NodeHandleBounds {
   source: HandleElement[] | null

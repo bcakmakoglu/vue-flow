@@ -1,4 +1,4 @@
-import type { EdgeEventsEmit, EdgeEventsOn, VueFlowStore } from '../types'
+import type { EdgeEventsEmit, VueFlowStore } from '../types'
 import { createExtendedEventHook } from '../utils'
 
 function createEdgeHooks() {
@@ -20,7 +20,7 @@ function createEdgeHooks() {
  *
  * @internal
  */
-export function useEdgeHooks(emits: VueFlowStore['emits']): { emit: EdgeEventsEmit; on: EdgeEventsOn } {
+export function useEdgeHooks(emits: VueFlowStore['emits']): { emit: EdgeEventsEmit } {
   const edgeHooks = createEdgeHooks()
 
   edgeHooks.doubleClick.on((event) => {
@@ -62,10 +62,9 @@ export function useEdgeHooks(emits: VueFlowStore['emits']): { emit: EdgeEventsEm
   return Object.entries(edgeHooks).reduce(
     (hooks, [key, value]) => {
       hooks.emit[key as keyof EdgeEventsEmit] = value.trigger
-      hooks.on[key as keyof EdgeEventsOn] = value.on
 
       return hooks
     },
-    { emit: {} as EdgeEventsEmit, on: {} as EdgeEventsOn },
+    { emit: {} as EdgeEventsEmit },
   )
 }

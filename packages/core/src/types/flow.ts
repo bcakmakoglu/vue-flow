@@ -21,8 +21,6 @@ import type { VueFlowStore } from './store'
 // todo: should be object type
 export type ElementData = any
 
-export type MaybeElement = Node | Edge | Connection | Element
-
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
 }
@@ -51,16 +49,9 @@ export interface XYPosition {
   y: number
 }
 
-export type XYZPosition = XYPosition & { z: number }
-
 export interface Dimensions {
   width: number
   height: number
-}
-
-export interface Box extends XYPosition {
-  x2: number
-  y2: number
 }
 
 export interface Rect extends Dimensions, XYPosition {}
@@ -143,12 +134,10 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   connectOnClick?: boolean
   /**
    * apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually
-   * @deprecated - will be removed in the next major version, changes will not be auto applied in the future
    */
   applyDefault?: boolean
   /**
    * automatically create an edge when connection is triggered
-   * @deprecated - will be removed in the next major version
    */
   autoConnect?: boolean | Connector
   noDragClassName?: string

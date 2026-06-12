@@ -248,7 +248,6 @@ export function useHandle({
         doc,
         lib: 'vue',
         flowId,
-        nodeLookup,
       },
       edges.value,
       nodes.value,
