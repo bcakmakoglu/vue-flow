@@ -3,7 +3,7 @@ import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, Viewport } from '@xyflow/system'
 import type { VueFlowError } from '../utils'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge'
-import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
+import type { CoordinateExtent, CoordinateExtentRange, Node, NodeProps } from './node'
 import type {
   Connection,
   ConnectionLineOptions,
@@ -173,7 +173,7 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
 export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   (event: 'nodesChange', changes: NodeChange<NodeType>[]): void
   (event: 'edgesChange', changes: EdgeChange<EdgeType>[]): void
-  (event: 'nodesInitialized'): void
+  (event: 'nodesInitialized', nodes: NodeType[]): void
   (event: 'miniMapNodeClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'miniMapNodeDoubleClick', nodeMouseEvent: NodeMouseEvent<NodeType>): void
   (event: 'miniMapNodeMouseEnter', nodeMouseEvent: NodeMouseEvent<NodeType>): void
@@ -200,7 +200,7 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   (event: 'selectionDragStart', selectionEvent: NodeDragEvent<NodeType>): void
   (event: 'selectionDrag', selectionEvent: NodeDragEvent<NodeType>): void
   (event: 'selectionDragStop', selectionEvent: NodeDragEvent<NodeType>): void
-  (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
+  (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: NodeType[] }): void
   (event: 'selectionStart', selectionEvent: MouseEvent): void
   (event: 'selectionEnd', selectionEvent: MouseEvent): void
   (event: 'viewportChangeStart', viewport: Viewport): void

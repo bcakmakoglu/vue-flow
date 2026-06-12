@@ -177,31 +177,31 @@ function onSvgClick(event: MouseEvent) {
 }
 
 function onNodeClick(event: MouseEvent, node: GraphNode) {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
+  const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeClick(param)
   emit('nodeClick', param)
 }
 
 function onNodeDblClick(event: MouseEvent, node: GraphNode) {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
+  const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeDoubleClick(param)
   emit('nodeDblclick', param)
 }
 
 function onNodeMouseEnter(event: MouseEvent, node: GraphNode) {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
+  const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseEnter(param)
   emit('nodeMouseenter', param)
 }
 
 function onNodeMouseMove(event: MouseEvent, node: GraphNode) {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
+  const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseMove(param)
   emit('nodeMousemove', param)
 }
 
 function onNodeMouseLeave(event: MouseEvent, node: GraphNode) {
-  const param = { event, node, connectedEdges: getConnectedEdges([node], edges.value) }
+  const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) }
   emits.miniMapNodeMouseLeave(param)
   emit('nodeMouseleave', param)
 }
