@@ -197,8 +197,7 @@ export default {
         connecting: isClickConnecting,
         connectablestart: isConnectableStart,
         connectableend: isConnectableEnd,
-        connectionindicator:
-          isHandleConnectable && ((isConnectableStart && !isConnecting) || (isConnectableEnd && isConnecting)),
+        connectionindicator: isHandleConnectable && ((isConnectableStart && !isConnecting) || (isConnectableEnd && isConnecting)),
       },
     ]"
     @mousedown="onPointerDown"
