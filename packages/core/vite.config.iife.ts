@@ -22,6 +22,17 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ['vue'],
+      // we bundle @vueuse/core on purpose; its prebuilt dist ships `#__PURE__` annotations in
+      // positions Rolldown can't read, so drop that third-party-only noise (keep our own warnings)
+      onwarn(warning, warn) {
+        if (
+          warning.code === 'INVALID_ANNOTATION' &&
+          (warning.id?.includes('node_modules') || warning.message?.includes('node_modules'))
+        ) {
+          return
+        }
+        warn(warning)
+      },
       output: {
         format: 'iife',
         dir: './dist',
