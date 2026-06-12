@@ -20,7 +20,7 @@ export function useOnInitHandler<NodeType extends Node = Node, EdgeType extends 
       if (isInitialized) {
         setTimeout(() => {
           // `init` hook payload is the non-generic `VueFlowStore`; erase the `NodeType` generic here.
-          vfInstance.emits.init(vfInstance as unknown as VueFlowStore)
+          vfInstance.emits.init(vfInstance)
         }, 1)
       }
     },

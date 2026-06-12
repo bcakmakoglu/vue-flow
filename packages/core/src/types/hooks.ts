@@ -58,7 +58,7 @@ export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge 
     event?: MouseEvent | TouchEvent
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
-  init: VueFlowStore
+  init: VueFlowStore<NodeType, EdgeType>
   move: { event: MouseTouchEvent | null; viewport: Viewport }
   moveStart: { event: MouseTouchEvent | null; viewport: Viewport }
   moveEnd: { event: MouseTouchEvent | null; viewport: Viewport }
