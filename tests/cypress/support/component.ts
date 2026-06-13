@@ -97,31 +97,48 @@ function retry(assertion: Function, { interval = 20, timeout = 1000 } = {}) {
 }
 
 function dragConnection(from: string, to: string) {
-  cy.window().then((win) => {
-    const sourceHandle = cy.get(`[data-nodeid="${from}"].source`)
-    const targetHandle = cy.get(`[data-nodeid="${to}"].target`)
+  // Dispatch the whole connection drag NATIVELY in one async block rather than as chained `cy.trigger`
+  // commands. XYHandle starts the connection on `mousedown` and then listens for `mousemove`/`mouseup` on
+  // `document`; a cypress command between the steps re-queries/hovers the DOM and can cancel the
+  // in-progress connection (the old flake). Driving it with raw events + `requestAnimationFrame` settles —
+  // and returning the promise so cypress waits — makes it deterministic.
+  cy.get(`[data-nodeid="${from}"].source`).then(($src) => {
+    cy.get(`[data-nodeid="${to}"].target`).then(($tgt) => {
+      const src = $src[0]
+      const tgt = $tgt[0]
+      const win = src.ownerDocument.defaultView as Window
+      const doc = src.ownerDocument
+      const s = src.getBoundingClientRect()
+      const t = tgt.getBoundingClientRect()
+      const sx = s.x + s.width / 2
+      const sy = s.y + s.height / 2
+      const tx = t.x + t.width / 2
+      const ty = t.y + t.height / 2
 
-    targetHandle.then((handle) => {
-      const target = handle[0]
-      const { x, y } = target.getBoundingClientRect()
+      const fire = (target: EventTarget, type: string, x: number, y: number, buttons: number) =>
+        target.dispatchEvent(new win.MouseEvent(type, { bubbles: true, cancelable: true, view: win, button: 0, buttons, clientX: x, clientY: y }))
+      // `setTimeout` rather than `requestAnimationFrame` to settle between steps: rAF is throttled in a
+      // headless/backgrounded run, which is what made the synthetic connection drag flaky
+      const settle = () => new Promise<void>((resolve) => win.setTimeout(resolve, 24))
 
-      sourceHandle
-        .trigger('mousedown', {
-          button: 0,
-          force: true,
-          view: win,
-        })
-        .trigger('mousemove', {
-          clientX: x + 5,
-          clientY: y + 5,
-          force: true,
-        })
-        .trigger('mouseup', {
-          clientX: x + 5,
-          clientY: y + 5,
-          force: true,
-          view: win,
-        })
+      return (async () => {
+        fire(src, 'mousedown', sx, sy, 1)
+        await settle()
+
+        // step smoothly toward the target so XYHandle progressively detects it; moves go to `document`
+        // (where XYHandle attached its listeners)
+        const STEPS = 5
+        for (let i = 1; i <= STEPS; i++) {
+          fire(doc, 'mousemove', sx + ((tx - sx) * i) / STEPS, sy + ((ty - sy) * i) / STEPS, 1)
+          await settle()
+        }
+        // a final move + up dispatched on the target handle itself, in case detection went by event target
+        fire(tgt, 'mousemove', tx, ty, 1)
+        await settle()
+        fire(tgt, 'mouseup', tx, ty, 0)
+        fire(doc, 'mouseup', tx, ty, 0)
+        await settle()
+      })()
     })
   })
 }
