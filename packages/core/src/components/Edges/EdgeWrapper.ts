@@ -1,6 +1,6 @@
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue'
 import { getHandlePosition, getMarkerId } from '@xyflow/system'
-import type { Connection, Edge, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
+import type { Connection, Edge, EdgeComponent, GraphNode, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
 import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
@@ -9,6 +9,18 @@ import EdgeAnchor from './EdgeAnchor'
 
 interface Props {
   id: string
+}
+
+// candidate handles for one end of an edge: strict mode = only the matching side; loose mode = both
+// sides, matching side first (so `getEdgeHandle` prefers it)
+function getNodeHandles(node: GraphNode, side: 'source' | 'target', strict: boolean) {
+  const bounds = node.internals.handleBounds
+  if (strict) {
+    return bounds?.[side] ?? null
+  }
+
+  const other = side === 'source' ? 'target' : 'source'
+  return [...(bounds?.[side] || []), ...(bounds?.[other] || [])]
 }
 
 const EdgeWrapper = defineComponent({
@@ -126,6 +138,12 @@ const EdgeWrapper = defineComponent({
     })
 
     return () => {
+      // bail if the edge was removed between a lookup update and this wrapper unmounting — otherwise the
+      // derefs below throw when no `defaultEdgeOptions` mask the now-undefined edge
+      if (!storedEdge.value) {
+        return null
+      }
+
       const sourceNode = getInternalNode(edge.value.source)
       const targetNode = getInternalNode(edge.value.target)
       const pathOptions = 'pathOptions' in edge.value ? edge.value.pathOptions : {}
@@ -152,29 +170,10 @@ const EdgeWrapper = defineComponent({
         return null
       }
 
-      let sourceNodeHandles
-      if (connectionMode.value === ConnectionMode.Strict) {
-        sourceNodeHandles = sourceNode.internals.handleBounds?.source ?? null
-      } else {
-        sourceNodeHandles = [
-          ...(sourceNode.internals.handleBounds?.source || []),
-          ...(sourceNode.internals.handleBounds?.target || []),
-        ]
-      }
-
-      const sourceHandle = getEdgeHandle(sourceNodeHandles, edge.value.sourceHandle)
-
-      let targetNodeHandles
-      if (connectionMode.value === ConnectionMode.Strict) {
-        targetNodeHandles = targetNode.internals.handleBounds?.target ?? null
-      } else {
-        targetNodeHandles = [
-          ...(targetNode.internals.handleBounds?.target || []),
-          ...(targetNode.internals.handleBounds?.source || []),
-        ]
-      }
-
-      const targetHandle = getEdgeHandle(targetNodeHandles, edge.value.targetHandle)
+      // strict mode considers only the matching side's handles; loose mode considers both (matching first)
+      const strict = connectionMode.value === ConnectionMode.Strict
+      const sourceHandle = getEdgeHandle(getNodeHandles(sourceNode, 'source', strict), edge.value.sourceHandle)
+      const targetHandle = getEdgeHandle(getNodeHandles(targetNode, 'target', strict), edge.value.targetHandle)
 
       const sourcePosition = sourceHandle?.position || Position.Bottom
 
@@ -248,8 +247,11 @@ const EdgeWrapper = defineComponent({
                   labelBgBorderRadius: edge.value.labelBgBorderRadius,
                   data: edge.value.data,
                   style: edgeStyle.value,
-                  markerStart: `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')`,
-                  markerEnd: `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')`,
+                  // only emit a marker ref when the edge actually has one — `getMarkerId(undefined)`
+                  // returns '' (→ `url('#')`), which otherwise writes a bogus marker attr on every edge
+                  // path every render (a wasted `setAttribute` per frame for the common marker-less edge)
+                  markerStart: edge.value.markerStart ? `url('#${getMarkerId(edge.value.markerStart, vueFlowId)}')` : undefined,
+                  markerEnd: edge.value.markerEnd ? `url('#${getMarkerId(edge.value.markerEnd, vueFlowId)}')` : undefined,
                   sourcePosition,
                   targetPosition,
                   sourceX,

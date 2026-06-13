@@ -61,7 +61,7 @@ describe('EdgeProps surface (xyflow/react parity)', () => {
         { id: '1', data: { label: 'Node 1' }, position: { x: 0, y: 0 } },
         { id: '2', data: { label: 'Node 2' }, position: { x: 300, y: 300 } },
       ],
-      edges: [{ id: 'e1-2', source: '1', target: '2', type: 'custom', data: { foo: 'bar' } }],
+      edges: [{ id: 'e1-2', source: '1', target: '2', type: 'custom', data: { foo: 'bar' }, markerEnd: 'arrow' }],
       edgeTypes: { custom: markRaw(RecordingEdge) },
     })
 
@@ -81,9 +81,10 @@ describe('EdgeProps surface (xyflow/react parity)', () => {
       expect(captured).to.have.property('targetHandleId')
       expect(captured).to.have.property('selectable')
       expect(captured).to.have.property('deletable')
-      // markers are pre-resolved to url() strings
-      expect(captured.markerStart).to.be.a('string')
-      expect(captured.markerEnd).to.be.a('string')
+      // a set marker is pre-resolved to a url() string; an absent one is `undefined` (xyflow/react parity —
+      // RF passes undefined rather than a bogus `url('#')`)
+      expect(captured.markerEnd).to.eq("url('#arrow')")
+      expect(captured.markerStart, 'absent marker → undefined').to.eq(undefined)
       // render-output positions are present
       expect(captured.sourceX).to.be.a('number')
       expect(captured.targetY).to.be.a('number')
