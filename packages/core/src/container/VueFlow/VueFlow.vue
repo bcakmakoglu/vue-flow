@@ -1,12 +1,14 @@
 <script lang="ts" setup generic="NodeType extends Node = Node, EdgeType extends Edge = Edge">
 import type { Ref } from 'vue'
 import { inject, onUnmounted, provide } from 'vue'
+import type { Viewport } from '@xyflow/system'
 import ZoomPane from '../ZoomPane/ZoomPane.vue'
 import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
 import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
 import { useColorModeClass } from '../../composables/useColorModeClass'
+import { useViewportSync } from '../../composables/useViewportSync'
 import { useWatchProps } from '../../composables/useWatchProps'
 import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
 import { useHooks } from '../../store/hooks'
@@ -54,6 +56,7 @@ const slots = defineSlots<FlowSlots<NodeType, EdgeType>>()
 
 const modelNodes = defineModel<NodeType[]>('nodes')
 const modelEdges = defineModel<EdgeType[]>('edges')
+const modelViewport = defineModel<Viewport>('viewport')
 
 // Reuse an ancestor `<VueFlowProvider>`'s store if present; otherwise this `<VueFlow>` owns it —
 // create + provide our own (auto-wrap, like react's `<Wrapper>`). The store is only ever created by a
@@ -89,6 +92,8 @@ useOnInitHandler(vfInstance)
 useStylesLoadedWarning(vfInstance)
 
 const colorModeClass = useColorModeClass(vfInstance)
+
+useViewportSync(modelViewport, vfInstance)
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components

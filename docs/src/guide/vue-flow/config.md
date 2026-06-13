@@ -505,7 +505,21 @@ const edges = ref([
 
 - Details:
 
-  The default viewport when the component is mounted.
+  The default viewport when the component is mounted. Ignored once the user pans/zooms (uncontrolled).
+
+### viewport (optional)
+
+- Type: `Viewport`
+
+- Details:
+
+  Controlled viewport (`v-model:viewport`). Keeps the flow's transform in sync with the bound value —
+  set it to pan/zoom programmatically, and it updates as the user interacts. Use this instead of
+  `default-viewport` when you want to own the viewport state.
+
+  ```vue
+  <VueFlow v-model:viewport="viewport" />
+  ```
 
 ### translate-extent (optional)
 
