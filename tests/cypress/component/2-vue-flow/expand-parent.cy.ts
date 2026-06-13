@@ -9,7 +9,7 @@ describe('expandParent + range-extent', () => {
 
   function mount(childExtra: Record<string, any> = {}, childPosition = { x: 10, y: 10 }) {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         {
           id: 'p',
@@ -110,7 +110,7 @@ describe('expandParent + range-extent', () => {
     // the dimensions-path rect using an unclamped position.
     beforeEach(() => {
       cy.vueFlow({
-        fitViewOnInit: false,
+        fitView: false,
         nodes: [
           { id: 'p', position: { x: 0, y: 0 }, data: {}, width: 200, height: 200, style: { width: '200px', height: '200px' } },
           {

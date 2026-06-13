@@ -67,7 +67,7 @@ function nodeColor(n: Node) {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init :style="{ backgroundColor: bgColor }">
+  <VueFlow :nodes="nodes" :edges="edges" fit-view :style="{ backgroundColor: bgColor }">
     <template #node-colorSelector="props">
       <!-- the `#node-colorSelector` slot only renders for colorSelector nodes, so the wide slot props are
            that node's props at runtime; cast to satisfy the typed child (slot keys can't narrow the type). -->

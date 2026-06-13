@@ -68,7 +68,7 @@ watch(
       :nodes="nodes"
       :edges="edges"
       :pan-on-drag="panOnDrag"
-      fit-view-on-init
+      fit-view
       :connection-mode="ConnectionMode.Loose"
       :zoom-on-scroll="false"
       :prevent-scrolling="false"

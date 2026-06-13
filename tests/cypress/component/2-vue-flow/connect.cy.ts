@@ -6,7 +6,7 @@ describe('Check if nodes can be connected', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         {
           id: '1',

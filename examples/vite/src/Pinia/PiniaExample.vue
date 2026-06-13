@@ -11,7 +11,7 @@ onConnect((params) => addEdges([params]))
 </script>
 
 <template>
-  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" class="pinia-flow" fit-view-on-init>
+  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" class="pinia-flow" fit-view>
     <Panel position="top-right">
       <div class="buttons-panel">
         <button @click="store.updatePositions">

@@ -35,6 +35,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
       [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
       [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
     ],
+    nodeOrigin: [0, 0],
 
     selectionMode: SelectionMode.Full,
     paneDragging: false,
@@ -46,6 +47,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     panOnScrollSpeed: 0.5,
     panOnScrollMode: PanOnScrollMode.Free,
     paneClickDistance: 0,
+    nodeClickDistance: 0,
     panOnDrag: true,
     reconnectRadius: 10,
     onlyRenderVisibleElements: false,
@@ -125,6 +127,7 @@ export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' 
   'minZoom',
   'translateExtent',
   'nodeExtent',
+  'fitView',
   'hooks',
   'defaultEdgeOptions',
 ]

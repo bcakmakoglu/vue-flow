@@ -38,7 +38,7 @@ function updatePos() {
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1" fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1" fit-view>
     <Background />
 
     <Panel position="top-right">

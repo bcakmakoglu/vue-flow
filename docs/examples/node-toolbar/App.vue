@@ -38,7 +38,7 @@ const nodes = ref([
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init>
+  <VueFlow :nodes="nodes" fit-view>
     <template #node-menu="props">
       <ToolbarNode :id="props.id" :data="props.data" />
     </template>

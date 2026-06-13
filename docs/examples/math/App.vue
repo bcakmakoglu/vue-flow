@@ -12,7 +12,7 @@ const edges = ref(initialEdges)
 </script>
 
 <template>
-  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view>
     <template #node-value="props">
       <ValueNode :id="props.id" :data="props.data" />
     </template>

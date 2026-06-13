@@ -42,7 +42,7 @@ function updatePos() {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :min-zoom="0.1" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" :min-zoom="0.1" fit-view>
     <MiniMap />
 
     <Background />

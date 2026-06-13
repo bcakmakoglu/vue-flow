@@ -58,7 +58,7 @@ function onConnect(connection: Connection) {
     v-model:edges="edges"
     :elevate-nodes-on-select="false"
     :default-edge-options="defaultEdgeOptions"
-    fit-view-on-init
+    fit-view
     @connect="onConnect"
   >
     <Background :gap="8" />

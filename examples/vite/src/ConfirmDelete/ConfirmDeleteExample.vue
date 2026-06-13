@@ -60,7 +60,7 @@ onEdgesChange(async (changes) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view class="vue-flow-basic-example">
     <Background />
 
     <Dialog />

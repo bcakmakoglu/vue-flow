@@ -23,7 +23,7 @@ const nodes = ref([
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view-on-init>
+  <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view>
     <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
       <ConnectionLine
         :source-x="sourceX"

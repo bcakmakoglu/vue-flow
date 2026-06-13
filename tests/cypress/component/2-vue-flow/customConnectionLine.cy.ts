@@ -36,7 +36,7 @@ describe('Custom Connection Line', () => {
     cy.vueFlow(
       {
         autoConnect: true,
-        fitViewOnInit: false,
+        fitView: false,
         nodes: [
           {
             id: '1',

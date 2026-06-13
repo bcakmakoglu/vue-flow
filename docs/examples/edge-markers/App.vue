@@ -43,7 +43,7 @@ const edges = ref([
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view>
     <template #edge-custom="edgeProps">
       <CustomEdge v-bind="edgeProps" />
     </template>

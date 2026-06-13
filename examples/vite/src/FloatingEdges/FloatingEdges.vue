@@ -20,7 +20,7 @@ function onConnect(params: Connection) {
 
 <template>
   <div class="floatingedges">
-    <VueFlow ref="flow" v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init @connect="onConnect">
+    <VueFlow ref="flow" v-model:nodes="nodes" v-model:edges="edges" fit-view @connect="onConnect">
       <Background variant="lines" :gap="24" />
 
       <MiniMap />

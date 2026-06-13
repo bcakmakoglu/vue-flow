@@ -36,7 +36,7 @@ function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Re
   cy.mount(VueFlow, {
     props: {
       id: 'test',
-      fitViewOnInit: true,
+      fitView: true,
       ...props,
     } as FlowProps,
     attrs: {

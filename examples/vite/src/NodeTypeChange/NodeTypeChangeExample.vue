@@ -35,7 +35,7 @@ function changeType() {
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
     <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">change type</button>
   </VueFlow>
 </template>

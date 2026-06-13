@@ -15,7 +15,7 @@ const CustomNode: NodeComponent = defineComponent(() => {
 describe('Check if custom nodes are rendered', () => {
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         {
           id: '1',

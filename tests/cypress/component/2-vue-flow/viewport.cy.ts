@@ -9,7 +9,7 @@ describe('Viewport drag / zoom', () => {
   beforeEach(() => {
     cy.vueFlow({
       nodes,
-      fitViewOnInit: false,
+      fitView: false,
     })
     cy.then(() => {
       store = getStore()

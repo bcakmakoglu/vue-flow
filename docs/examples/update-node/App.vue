@@ -26,7 +26,7 @@ function handleUpdate() {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view>
     <Panel position="top-right">
       <div class="field">
         <label for="label">Label:</label>

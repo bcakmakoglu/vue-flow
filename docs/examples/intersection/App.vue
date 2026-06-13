@@ -75,7 +75,7 @@ onNodeDrag(({ node: draggedNode }) => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init>
+  <VueFlow :nodes="nodes" fit-view>
     <Panel ref="panelEl" position="bottom-right" :class="{ intersecting: isIntersectingWithPanel }"> </Panel>
   </VueFlow>
 </template>

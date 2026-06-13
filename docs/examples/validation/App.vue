@@ -57,7 +57,7 @@ function onConnect(params) {
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    fit-view-on-init
+    fit-view
     class="validationflow"
     @connect="onConnect"
     @connect-start="onConnectStart"

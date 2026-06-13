@@ -10,7 +10,7 @@ describe('Check if nodes are draggable', () => {
   beforeEach(() => {
     cy.vueFlow({
       nodes: [nodes[0]],
-      fitViewOnInit: false,
+      fitView: false,
     })
     cy.then(() => {
       store = getStore()

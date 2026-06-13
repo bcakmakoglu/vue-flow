@@ -47,7 +47,7 @@ function onConnect(params) {
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    fit-view-on-init
+    fit-view
     @reconnect="onReconnect"
     @connect="onConnect"
     @reconnect-start="onReconnectStart"

@@ -8,7 +8,7 @@ describe('node event payloads are user nodes', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         { id: '1', type: 'default', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
         { id: '2', type: 'default', position: { x: 200, y: 0 }, data: { label: 'Node 2' } },
