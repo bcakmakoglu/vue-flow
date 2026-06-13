@@ -121,7 +121,10 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   panOnDrag?: boolean | number[]
   minZoom?: number
   maxZoom?: number
+  /** initial viewport for an uncontrolled flow; ignored once the user pans/zooms */
   defaultViewport?: Partial<Viewport>
+  /** controlled viewport (`v-model:viewport`) — keeps the flow's transform in sync with the bound value */
+  viewport?: Viewport
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent | CoordinateExtentRange
   /** origin of all nodes relative to their position — `[0, 0]` top-left, `[0.5, 0.5]` center, `[1, 1]` bottom-right */
@@ -251,6 +254,7 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   /** v-model event definitions */
   (event: 'update:nodes', value: NodeType[]): void
   (event: 'update:edges', value: EdgeType[]): void
+  (event: 'update:viewport', value: Viewport): void
 }
 
 // Slots are optional (a flow needn't define every node-/edge-type slot), so use `Partial<Record<…>>`

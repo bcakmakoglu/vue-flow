@@ -220,6 +220,8 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
         'minZoom',
         'applyDefault',
         'autoConnect',
+        // `viewport` is a read-only computed on the store; `useViewportSync` handles its two-way binding
+        'viewport',
       ]
 
       for (const key of Object.keys(props)) {
