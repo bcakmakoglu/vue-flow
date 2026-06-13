@@ -33,6 +33,32 @@ describe('Viewport Helper: `fitView`', () => {
     })
   })
 
+  it('includes hidden nodes only when `includeHiddenNodes` is set', () => {
+    cy.vueFlow({
+      fitViewOnInit: false,
+      nodes: [
+        { id: 'visible', position: { x: 0, y: 0 }, data: {}, measured: { width: 50, height: 50 } },
+        // truly hidden (no DOM, never DOM-measured) — seed `measured` so it can participate in fitView
+        { id: 'hidden', position: { x: 2000, y: 2000 }, hidden: true, data: {}, measured: { width: 50, height: 50 } },
+      ],
+    })
+
+    cy.then(() => {
+      store = getStore()
+    })
+
+    cy.wrap(null).then(() => {
+      return store.fitView().then(() => {
+        const defaultZoom = store.viewport.value.zoom
+        return store.fitView({ includeHiddenNodes: true }).then(() => {
+          const withHiddenZoom = store.viewport.value.zoom
+          // including the far-away hidden node widens the bounds → zooms further out
+          expect(withHiddenZoom, 'zoom changed once the hidden node is included').to.be.lessThan(defaultZoom)
+        })
+      })
+    })
+  })
+
   it('does not fit view when no node exist', () => {
     cy.vueFlow({
       nodes: [],

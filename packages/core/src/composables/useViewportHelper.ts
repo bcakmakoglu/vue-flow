@@ -101,6 +101,9 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
             duration: options.duration,
             minZoom: options.minZoom,
             maxZoom: options.maxZoom,
+            // `fitViewport` forwards options to `getFitViewNodes`, which reads `includeHiddenNodes`/`nodes`
+            // at runtime — but its type `Omit`s them, so pass via spread (same as `nodes`) to satisfy TS.
+            ...(options.includeHiddenNodes ? { includeHiddenNodes: true } : {}),
             // system expects `(NodeType | { id })[]`; we accept `string[]` for ergonomics.
             ...(options.nodes?.length ? { nodes: options.nodes.map((id) => ({ id })) } : {}),
           },
