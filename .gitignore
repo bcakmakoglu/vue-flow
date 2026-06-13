@@ -104,3 +104,4 @@ typedocs
 
 # TS incremental build cache
 *.tsbuildinfo
+.vf-perf/

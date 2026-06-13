@@ -51,6 +51,8 @@ const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.v
 
 useResizeHandler(zoomPane)
 
+onUnmounted(() => panZoom.value?.destroy())
+
 onMounted(() => {
   if (zoomPane.value) {
     const panZoomInstance = XYPanZoom({
@@ -64,9 +66,10 @@ onMounted(() => {
         emits.moveStart({ event, viewport })
         emits.viewportChangeStart(viewport)
       },
+      // `viewportChange` is emitted once per transform by `onTransformChange` below (which fires for both
+      // user gestures and programmatic changes) — emitting it here too would double-fire it every frame.
       onPanZoom: (event, viewport) => {
         emits.move({ event, viewport })
-        emits.viewportChange(viewport)
       },
       onPanZoomEnd: (event, viewport) => {
         emits.moveEnd({ event, viewport })
@@ -77,10 +80,6 @@ onMounted(() => {
     const initialViewport = panZoomInstance.getViewport()
     transform.value = [initialViewport.x, initialViewport.y, initialViewport.zoom]
     panZoom.value = panZoomInstance
-
-    onUnmounted(() => {
-      panZoom.value?.destroy()
-    })
 
     watch(
       [
