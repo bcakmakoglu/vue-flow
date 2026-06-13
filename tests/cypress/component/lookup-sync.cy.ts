@@ -26,36 +26,41 @@ describe('lookup sync is O(changed)', () => {
   })
 
   it('does not invalidate unrelated lookup keys on a position change', () => {
-    let changedRuns = 0
-    let unrelatedRuns = 0
+    // run inside `cy.then` so `store` is assigned, and assert the change in run-counts caused by the
+    // mutation (a baseline captured right before it) rather than absolute counts — robust to any
+    // mount-time re-adopt that may have already run an effect once.
+    cy.then(() => {
+      let changedRuns = 0
+      let unrelatedRuns = 0
 
-    // watchEffect re-runs on every trigger of its deps, with no value-equality gate — exactly what a
-    // render effect tracking a raw `nodeLookup.get` does
-    watchEffect(
-      () => {
-        store.nodeLookup.get('1')
-        changedRuns++
-      },
-      { flush: 'sync' },
-    )
+      // watchEffect re-runs on every trigger of its deps, with no value-equality gate — exactly what a
+      // render effect tracking a raw `nodeLookup.get` does
+      watchEffect(
+        () => {
+          store.nodeLookup.get('1')
+          changedRuns++
+        },
+        { flush: 'sync' },
+      )
 
-    watchEffect(
-      () => {
-        store.nodeLookup.get('2')
-        unrelatedRuns++
-      },
-      { flush: 'sync' },
-    )
+      watchEffect(
+        () => {
+          store.nodeLookup.get('2')
+          unrelatedRuns++
+        },
+        { flush: 'sync' },
+      )
 
-    expect(changedRuns).to.equal(1)
-    expect(unrelatedRuns).to.equal(1)
+      const changedBefore = changedRuns
+      const unrelatedBefore = unrelatedRuns
 
-    store.applyNodeChanges([{ id: '1', type: 'position', position: { x: 50, y: 50 } }])
+      store.applyNodeChanges([{ id: '1', type: 'position', position: { x: 50, y: 50 } }])
 
-    // the moved node's entry was replaced (new InternalNode) — its key must trigger
-    expect(changedRuns, 'effect tracking the moved node').to.be.greaterThan(1)
-    // the untouched node's InternalNode is reused by reference — its key must NOT trigger
-    expect(unrelatedRuns, 'effect tracking an untouched node').to.equal(1)
+      // the moved node's entry was replaced (new InternalNode) — its key must trigger
+      expect(changedRuns, 'effect tracking the moved node re-ran').to.be.greaterThan(changedBefore)
+      // the untouched node's InternalNode is reused by reference — its key must NOT trigger
+      expect(unrelatedRuns, 'effect tracking an untouched node did not re-run').to.equal(unrelatedBefore)
+    })
   })
 
   it('edge changes do not invalidate unrelated edge lookup keys', () => {
@@ -86,39 +91,45 @@ describe('lookup sync is O(changed)', () => {
         { flush: 'sync' },
       )
 
+      const changedBefore = changedRuns
+      const unrelatedBefore = unrelatedRuns
+
       store.applyEdgeChanges([{ id: 'e1-2', type: 'select', selected: true }])
 
-      expect(changedRuns, 'effect tracking the changed edge').to.be.greaterThan(1)
-      expect(unrelatedRuns, 'effect tracking an untouched edge').to.equal(1)
+      expect(changedRuns, 'effect tracking the changed edge re-ran').to.be.greaterThan(changedBefore)
+      expect(unrelatedRuns, 'effect tracking an untouched edge did not re-run').to.equal(unrelatedBefore)
     })
   })
 
   it('removals only touch the removed key', () => {
-    let removedRuns = 0
-    let unrelatedRuns = 0
+    cy.then(() => {
+      let removedRuns = 0
+      let unrelatedRuns = 0
 
-    watchEffect(
-      () => {
-        store.nodeLookup.get('3')
-        removedRuns++
-      },
-      { flush: 'sync' },
-    )
+      watchEffect(
+        () => {
+          store.nodeLookup.get('3')
+          removedRuns++
+        },
+        { flush: 'sync' },
+      )
 
-    watchEffect(
-      () => {
-        store.nodeLookup.get('2')
-        unrelatedRuns++
-      },
-      { flush: 'sync' },
-    )
+      watchEffect(
+        () => {
+          store.nodeLookup.get('2')
+          unrelatedRuns++
+        },
+        { flush: 'sync' },
+      )
 
-    store.removeNodes(['3'])
+      const removedBefore = removedRuns
+      const unrelatedBefore = unrelatedRuns
 
-    cy.tryAssertion(() => {
-      expect(store.getNode('3')).to.equal(undefined)
-      expect(removedRuns, 'effect tracking the removed node').to.be.greaterThan(1)
-      expect(unrelatedRuns, 'effect tracking an untouched node').to.equal(1)
+      store.removeNodes(['3'])
+
+      expect(store.getNode('3'), 'node removed').to.equal(undefined)
+      expect(removedRuns, 'effect tracking the removed node re-ran').to.be.greaterThan(removedBefore)
+      expect(unrelatedRuns, 'effect tracking an untouched node did not re-run').to.equal(unrelatedBefore)
     })
   })
 })
