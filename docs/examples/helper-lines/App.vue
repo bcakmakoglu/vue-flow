@@ -40,7 +40,7 @@ function onNodesChange(changes: NodeChange[]) {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init @nodes-change="onNodesChange">
+  <VueFlow :nodes="nodes" fit-view @nodes-change="onNodesChange">
     <HelperLines :horizontal="helperLineHorizontal" :vertical="helperLineVertical" />
   </VueFlow>
 </template>

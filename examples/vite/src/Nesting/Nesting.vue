@@ -106,7 +106,7 @@ onMounted(() => {
     ref="flow"
     v-model:nodes="nodes"
     v-model:edges="edges"
-    fit-view-on-init
+    fit-view
     :connection-mode="ConnectionMode.Loose"
     @connect="onConnect"
   >

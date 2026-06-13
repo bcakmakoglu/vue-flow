@@ -6,7 +6,7 @@ describe('Check if edges are reconnectable', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       edgesReconnectable: true,
       nodes: [
         {

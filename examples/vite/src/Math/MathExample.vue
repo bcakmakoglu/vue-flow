@@ -13,7 +13,7 @@ const edges = ref(initialEdges)
 </script>
 
 <template>
-  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view>
     <!-- node slots are keyed by `node-${type | string}`, so their `data` widens to `Record<string, unknown>`;
          narrow it back to each node's concrete data type at the call site. -->
     <template #node-value="props">

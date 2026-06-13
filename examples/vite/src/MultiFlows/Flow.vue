@@ -16,7 +16,7 @@ const edges = ref<Edge[]>(initialElements.filter(isEdge))
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
     <Background />
   </VueFlow>
 </template>

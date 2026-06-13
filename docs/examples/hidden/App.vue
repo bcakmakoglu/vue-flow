@@ -41,7 +41,7 @@ watch(isHidden, () => {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view>
     <Background />
 
     <Panel position="top-right">

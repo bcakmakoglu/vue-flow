@@ -21,7 +21,7 @@ const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', dat
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view>
     <template #edge-loopback="customEdgeProps">
       <LoopbackEdge
         :id="customEdgeProps.id"

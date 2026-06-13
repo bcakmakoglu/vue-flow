@@ -25,7 +25,7 @@ const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" auto-connect fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" auto-connect fit-view>
     <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
       <ConnectionLine
         :source-x="sourceX"

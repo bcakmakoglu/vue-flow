@@ -10,7 +10,7 @@ const CustomEdge: EdgeComponent = (props) => {
 describe('Check if custom nodes are rendered', () => {
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         {
           id: '1',
@@ -56,7 +56,7 @@ describe('EdgeProps surface (xyflow/react parity)', () => {
     }
 
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         { id: '1', data: { label: 'Node 1' }, position: { x: 0, y: 0 } },
         { id: '2', data: { label: 'Node 2' }, position: { x: 300, y: 300 } },

@@ -10,7 +10,7 @@ const edges = ref<Edge[]>(initialElements.filter(isEdge))
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.2" fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.2" fit-view>
     <MiniMap />
     <Controls />
   </VueFlow>

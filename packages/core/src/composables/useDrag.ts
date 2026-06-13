@@ -31,7 +31,9 @@ export function useDrag(params: UseDragParams) {
     noDragClassName,
     nodeLookup,
     nodeExtent,
+    nodeOrigin,
     nodeDragThreshold,
+    nodeClickDistance,
     transform,
     autoPanOnNodeDrag,
     autoPanSpeed,
@@ -79,7 +81,7 @@ export function useDrag(params: UseDragParams) {
           : infiniteExtent) as CoordinateExtent,
         snapGrid: snapGrid.value,
         snapToGrid: snapToGrid.value,
-        nodeOrigin: [0, 0],
+        nodeOrigin: nodeOrigin.value,
         multiSelectionActive: multiSelectionActive.value,
         domNode: vueFlowRef.value,
         transform: transform.value,
@@ -141,7 +143,7 @@ export function useDrag(params: UseDragParams) {
       isSelectable: toValue(selectable),
       nodeId: id,
       domNode: nodeEl,
-      nodeClickDistance: nodeDragThreshold.value,
+      nodeClickDistance: nodeClickDistance.value,
     })
 
     // Handle the "moved slightly but within threshold" click case.

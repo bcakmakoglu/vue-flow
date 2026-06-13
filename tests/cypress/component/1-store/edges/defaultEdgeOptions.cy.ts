@@ -22,7 +22,7 @@ describe('Default Edge Options', () => {
 
   beforeEach(() => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: baseNodes,
       edges: [
         // no own type/class → should render with the DEFAULT type and pick up the default class
@@ -62,7 +62,7 @@ describe('Default Edge Options', () => {
     let captured: Edge | undefined
 
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: baseNodes,
       edges: [{ id: 'cb', source: '1', target: '2' }],
       // a function-form default class — must be invoked with the raw stored edge
@@ -87,7 +87,7 @@ describe('Default Edge Options', () => {
 
   it('resolves markers through defaultEdgeOptions at render', () => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: baseNodes,
       edges: [{ id: 'marked', source: '1', target: '2' }],
       defaultEdgeOptions: { markerEnd: MarkerType.ArrowClosed } as DefaultEdgeOptions,

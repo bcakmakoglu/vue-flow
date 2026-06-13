@@ -57,7 +57,7 @@ function toggleclass() {
     :min-zoom="0.2"
     :max-zoom="4"
     class="vue-flow-basic-example"
-    fit-view-on-init
+    fit-view
     @connect="onConnect"
   >
     <Background />

@@ -82,7 +82,7 @@ const edges = ref([
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init elevate-edges-on-select>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view elevate-edges-on-select>
     <MiniMap />
 
     <Controls />

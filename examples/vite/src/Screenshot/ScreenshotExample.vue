@@ -29,7 +29,7 @@ function doScreenshot() {
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init style="background: white">
+  <VueFlow :nodes="nodes" :edges="edges" fit-view style="background: white">
     <Panel position="top-center">
       <button @click="doScreenshot">Screenshot</button>
     </Panel>

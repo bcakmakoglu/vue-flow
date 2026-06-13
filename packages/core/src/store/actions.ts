@@ -140,7 +140,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
    */
   function commitNodes(nodes: NodeType[]) {
     state.nodes = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
-      nodeOrigin: [0, 0],
+      nodeOrigin: state.nodeOrigin,
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
     })
@@ -223,7 +223,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // re-adopting (`setNodeExtent`) force it.
     if (forceFullPass || systemParentLookup.size > 0) {
       updateAbsolutePositions(systemNodeLookup, systemParentLookup, {
-        nodeOrigin: [0, 0],
+        nodeOrigin: state.nodeOrigin,
         nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
         elevateNodesOnSelect: state.elevateNodesOnSelect,
       })
@@ -369,7 +369,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // grow each parent to fit its `expandParent` children — system returns the parent's position +
     // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, [0, 0]))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin))
     }
 
     if (changes.length) {
@@ -475,11 +475,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
 
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, [0, 0]))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin))
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
-      viewportHelper.value.fitView().then(() => {
+      viewportHelper.value.fitView(state.fitViewOptions).then(() => {
         state.fitViewOnInitDone = true
       })
     }
@@ -962,6 +962,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // we need to set the default opts before setting any elements so the options are applied to the elements on first render
     if (isDef(opts.defaultEdgeOptions)) {
       state.defaultEdgeOptions = opts.defaultEdgeOptions
+    }
+
+    // the `fitView` prop maps to the internal `fitViewOnInit` flag (kept separate from the `fitView()`
+    // action); skipped from the generic loop above via `storeOptionsToSkip`
+    if (isDef(opts.fitView)) {
+      state.fitViewOnInit = opts.fitView
     }
 
     if (isDef(opts.nodes)) {

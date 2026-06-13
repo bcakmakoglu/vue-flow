@@ -14,7 +14,7 @@ import type {
   NodeConnection,
 } from './connection'
 import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge'
-import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node } from './node'
+import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeOrigin } from './node'
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks'
 import type { EdgeChange, NodeChange, NodeDragItem } from './changes'
 import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle'
@@ -30,7 +30,9 @@ export interface UpdateNodeDimensionsParams {
 }
 
 export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edge>
-  extends Omit<FlowProps<NodeType, EdgeType>, 'id' | 'nodes' | 'edges'> {
+  // `fitView` is omitted: the prop maps to the internal `fitViewOnInit` flag (below), keeping the store's
+  // `fitView()` action from colliding with a `fitView` state ref (state spreads after actions).
+  extends Omit<FlowProps<NodeType, EdgeType>, 'id' | 'nodes' | 'edges' | 'fitView'> {
   /** Vue flow element ref */
   vueFlowRef: HTMLDivElement | null
   /** Vue flow viewport element */
@@ -57,6 +59,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent | CoordinateExtentRange
+  nodeOrigin: NodeOrigin
 
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
@@ -111,6 +114,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   panOnScrollSpeed: number
   panOnScrollMode: PanOnScrollMode
   paneClickDistance: number
+  nodeClickDistance: number
   zoomOnDoubleClick: boolean
   preventScrolling: boolean
   paneDragging: boolean
@@ -187,8 +191,13 @@ export type UpdateEdgeData<EdgeType extends Edge = Edge> = (
   options?: { replace: boolean },
 ) => void
 
+// `fitView` lives on `FlowProps`, not `State` (the state keeps a separate `fitViewOnInit` flag so the
+// `fitView()` action isn't clobbered), but it's still a settable prop — accept it on the bridge.
+export type SetStateOptions<NodeType extends Node = Node, EdgeType extends Edge = Edge> = Partial<State<NodeType, EdgeType>> &
+  Partial<Pick<FlowProps<NodeType, EdgeType>, 'fitView'>>
+
 export type SetState<NodeType extends Node = Node, EdgeType extends Edge = Edge> = (
-  state: Partial<State<NodeType, EdgeType>> | ((state: State<NodeType, EdgeType>) => Partial<State<NodeType, EdgeType>>),
+  state: SetStateOptions<NodeType, EdgeType> | ((state: State<NodeType, EdgeType>) => SetStateOptions<NodeType, EdgeType>),
 ) => void
 
 export type UpdateNodePosition = (dragItems: NodeDragItem[], changed: boolean, dragging: boolean) => void

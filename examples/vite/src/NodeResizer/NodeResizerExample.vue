@@ -39,7 +39,7 @@ const edges = ref<Edge[]>([])
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view-on-init class="vue-flow-basic-example">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view class="vue-flow-basic-example">
     <template #node-resizable="resizableNodeProps">
       <ResizableNode :label="resizableNodeProps.data?.label" />
     </template>

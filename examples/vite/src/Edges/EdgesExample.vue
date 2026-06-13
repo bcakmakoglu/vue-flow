@@ -7,7 +7,7 @@ import { initialEdges, initialNodes } from './initial-elements'
 </script>
 
 <template>
-  <VueFlow :edges="initialEdges" :nodes="initialNodes" fit-view-on-init snap-to-grid>
+  <VueFlow :edges="initialEdges" :nodes="initialNodes" fit-view snap-to-grid>
     <template #edge-custom="props">
       <CustomEdge v-bind="props" />
     </template>

@@ -3,7 +3,7 @@ import type { KeyFilter } from '@vueuse/core'
 import type { PanOnScrollMode, Viewport } from '@xyflow/system'
 import type { VueFlowError } from '../utils'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge'
-import type { CoordinateExtent, CoordinateExtentRange, Node, NodeProps } from './node'
+import type { CoordinateExtent, CoordinateExtentRange, Node, NodeOrigin, NodeProps } from './node'
 import type {
   Connection,
   ConnectionLineOptions,
@@ -17,6 +17,7 @@ import type { EdgeMouseEvent, EdgeReconnectEvent, MouseTouchEvent, NodeDragEvent
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
 import type { VueFlowStore } from './store'
+import type { FitViewParams } from './zoom'
 
 // todo: should be object type
 export type ElementData = any
@@ -112,6 +113,8 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   defaultViewport?: Partial<Viewport>
   translateExtent?: CoordinateExtent
   nodeExtent?: CoordinateExtent | CoordinateExtentRange
+  /** origin of all nodes relative to their position — `[0, 0]` top-left, `[0.5, 0.5]` center, `[1, 1]` bottom-right */
+  nodeOrigin?: NodeOrigin
   defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
@@ -123,13 +126,21 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
    * @default 0
    */
   paneClickDistance?: number
+  /**
+   * Distance that the mouse can move between mousedown/up on a node that will trigger a click
+   * @default 0
+   */
+  nodeClickDistance?: number
   zoomOnDoubleClick?: boolean
   /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
   preventScrolling?: boolean
   selectionMode?: SelectionMode
   reconnectRadius?: number
   /** will be renamed to `fitView` */
-  fitViewOnInit?: boolean
+  /** fit the view to the nodes once they're measured on init (xyflow/react's `fitView` prop) */
+  fitView?: boolean
+  /** options for the initial `fitView` (padding, includeHiddenNodes, etc.) */
+  fitViewOptions?: FitViewParams
   /** allow connection with click handlers, i.e. support touch devices */
   connectOnClick?: boolean
   /**

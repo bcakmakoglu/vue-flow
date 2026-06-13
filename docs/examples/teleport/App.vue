@@ -36,7 +36,7 @@ const edges = ref([
 
 <template>
   <div class="teleportflow">
-    <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+    <VueFlow :nodes="nodes" :edges="edges" fit-view>
       <template #node-teleportable="{ id }">
         <TeleportableNode :id="id" />
       </template>

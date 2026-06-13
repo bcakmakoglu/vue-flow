@@ -26,6 +26,7 @@ const {
   transform,
   nodeLookup,
   parentLookup,
+  nodeOrigin,
   snapGrid,
   snapToGrid,
   vueFlowRef,
@@ -53,7 +54,7 @@ watchEffect((onCleanup) => {
       transform: transform.value,
       snapGrid: snapGrid.value,
       snapToGrid: snapToGrid.value,
-      nodeOrigin: [0, 0],
+      nodeOrigin: nodeOrigin.value,
       paneDomNode: vueFlowRef.value,
     }),
     onChange: (changes: XYResizerChange, childChanges: XYResizerChildChange[]) => {
@@ -65,7 +66,7 @@ watchEffect((onCleanup) => {
       let nextY = changes.y
 
       if (node?.expandParent && node.parentId) {
-        const origin = node.origin ?? [0, 0]
+        const origin = node.origin ?? nodeOrigin.value
         const width = changes.width ?? node.measured.width ?? 0
         const height = changes.height ?? node.measured.height ?? 0
 
@@ -86,7 +87,7 @@ watchEffect((onCleanup) => {
           },
         }
 
-        nodeChanges.push(...(handleExpandParent([child], nodeLookup, parentLookup, [0, 0]) as NodeChange[]))
+        nodeChanges.push(...(handleExpandParent([child], nodeLookup, parentLookup, nodeOrigin.value) as NodeChange[]))
 
         // once the parent was expanded, the child clamps to the parent's edge (0,0 for origin [0,0],
         // width/height for [1,1]).

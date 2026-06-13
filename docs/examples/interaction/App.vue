@@ -35,7 +35,7 @@ const edges = ref([
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" class="interaction-flow" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" class="interaction-flow" fit-view>
     <InteractionControls />
   </VueFlow>
 </template>

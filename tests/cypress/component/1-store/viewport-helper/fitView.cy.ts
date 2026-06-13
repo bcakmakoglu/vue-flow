@@ -11,7 +11,7 @@ describe('Viewport Helper: `fitView`', () => {
     cy.vueFlow({
       nodes,
       edges,
-      fitViewOnInit: false,
+      fitView: false,
     })
 
     cy.then(() => {
@@ -35,7 +35,7 @@ describe('Viewport Helper: `fitView`', () => {
 
   it('includes hidden nodes only when `includeHiddenNodes` is set', () => {
     cy.vueFlow({
-      fitViewOnInit: false,
+      fitView: false,
       nodes: [
         { id: 'visible', position: { x: 0, y: 0 }, data: {}, measured: { width: 50, height: 50 } },
         // truly hidden (no DOM, never DOM-measured) — seed `measured` so it can participate in fitView

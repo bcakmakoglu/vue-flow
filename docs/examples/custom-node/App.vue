@@ -65,7 +65,7 @@ function nodeColor(n) {
     class="custom-node-flow"
     :class="[colorSelectorData?.isGradient ? 'animated-bg-gradient' : '']"
     :style="{ backgroundColor: colorSelectorData?.color }"
-    fit-view-on-init
+    fit-view
   >
     <template #node-color-selector="props">
       <ColorSelectorNode :id="props.id" :data="props.data" />
