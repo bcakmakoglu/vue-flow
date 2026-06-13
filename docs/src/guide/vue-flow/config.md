@@ -339,7 +339,7 @@ const edges = ref([
   
   The options include the connection line type, style and possible marker types (marker-end/marker-start).
 
-### fit-view-on-init (optional)
+### fit-view (optional)
 
 - Type: `boolean`
 
@@ -347,7 +347,26 @@ const edges = ref([
 
 - Details:
 
-  Trigger fit view when viewport is mounted.
+  Fit the view to the nodes once they're measured on init.
+
+### fit-view-options (optional)
+
+- Type: `FitViewParams`
+
+- Details:
+
+  Options for the initial `fit-view` (e.g. `padding`, `minZoom`, `maxZoom`, `duration`, `includeHiddenNodes`).
+
+### color-mode (optional)
+
+- Type: `'light' | 'dark' | 'system'`
+
+- Default: `'light'`
+
+- Details:
+
+  Applies the resolved `light`/`dark` class to the flow container. `system` follows the OS
+  `prefers-color-scheme` and reacts to changes at runtime. See [Theming](/guide/theming#color-mode).
 
 ## Viewport Options
 

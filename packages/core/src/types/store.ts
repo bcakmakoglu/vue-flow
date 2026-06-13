@@ -1,6 +1,6 @@
 import type { ComputedRef, DeepReadonly, ToRefs } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
+import type { ColorMode, PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
 import type { Dimensions, FlowExportObject, FlowProps, Rect, SelectionMode, SelectionRect, SnapGrid, XYPosition } from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
@@ -60,6 +60,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   translateExtent: CoordinateExtent
   nodeExtent: CoordinateExtent | CoordinateExtentRange
   nodeOrigin: NodeOrigin
+  colorMode: ColorMode
 
   /** viewport dimensions - do not change! */
   readonly dimensions: Dimensions
