@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
-import type { PanOnScrollMode, Viewport } from '@xyflow/system'
+import type { ColorMode, PanOnScrollMode, Viewport } from '@xyflow/system'
 import type { VueFlowError } from '../utils'
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge'
 import type { CoordinateExtent, CoordinateExtentRange, Node, NodeOrigin, NodeProps } from './node'
@@ -33,6 +33,17 @@ export type CSSVars =
   | '--vf-node-text'
   | '--vf-connection-path'
   | '--vf-handle'
+  | '--vf-handle-border'
+  | '--vf-edge-text'
+  | '--vf-edge-text-bg'
+  | '--vf-background-color'
+  | '--vf-controls-bg'
+  | '--vf-controls-bg-hover'
+  | '--vf-controls-border'
+  | '--vf-controls-color'
+  | '--vf-minimap-bg'
+  | '--vf-minimap-node-bg'
+  | '--vf-minimap-mask'
 
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars
@@ -115,6 +126,8 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   nodeExtent?: CoordinateExtent | CoordinateExtentRange
   /** origin of all nodes relative to their position — `[0, 0]` top-left, `[0.5, 0.5]` center, `[1, 1]` bottom-right */
   nodeOrigin?: NodeOrigin
+  /** light/dark/system — applies the resolved `light`/`dark` class to the flow container; `system` follows `prefers-color-scheme` @default 'light' */
+  colorMode?: ColorMode
   defaultMarkerColor?: string
   zoomOnScroll?: boolean
   zoomOnPinch?: boolean
@@ -136,7 +149,6 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   preventScrolling?: boolean
   selectionMode?: SelectionMode
   reconnectRadius?: number
-  /** will be renamed to `fitView` */
   /** fit the view to the nodes once they're measured on init (xyflow/react's `fitView` prop) */
   fitView?: boolean
   /** options for the initial `fitView` (padding, includeHiddenNodes, etc.) */

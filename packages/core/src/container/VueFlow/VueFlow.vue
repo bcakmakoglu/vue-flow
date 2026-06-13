@@ -6,6 +6,7 @@ import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
 import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowStore } from '../../types'
 import { Slots, VueFlow as VueFlowInjectionKey } from '../../context'
 import { useOnInitHandler } from '../../composables/useOnInitHandler'
+import { useColorModeClass } from '../../composables/useColorModeClass'
 import { useWatchProps } from '../../composables/useWatchProps'
 import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
 import { useHooks } from '../../store/hooks'
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   panOnScroll: undefined,
   panOnDrag: undefined,
   applyDefault: undefined,
+  colorMode: undefined,
   fitView: undefined,
   fitViewOptions: undefined,
   connectOnClick: undefined,
@@ -86,6 +88,8 @@ useOnInitHandler(vfInstance)
 
 useStylesLoadedWarning(vfInstance)
 
+const colorModeClass = useColorModeClass(vfInstance)
+
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
 // as that would require a lot of boilerplate and causes significant performance drops
@@ -104,7 +108,7 @@ export default {
 </script>
 
 <template>
-  <div :ref="vfInstance.vueFlowRef" class="vue-flow">
+  <div :ref="vfInstance.vueFlowRef" class="vue-flow" :class="colorModeClass">
     <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
       <slot v-bind="{} as any" name="zoom-pane" />

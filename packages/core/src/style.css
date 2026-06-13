@@ -246,9 +246,10 @@
 }
 
 .vue-flow__controls-button {
-  background: #fefefe;
+  background: var(--vf-controls-bg, #fefefe);
+  color: var(--vf-controls-color, #111);
   border: none;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--vf-controls-border, #eee);
   box-sizing: content-box;
   display: flex;
   justify-content: center;
@@ -264,10 +265,11 @@
   width: 100%;
   max-width: 12px;
   max-height: 12px;
+  fill: currentColor;
 }
 
 .vue-flow__controls-button:hover {
-  background: #f4f4f4;
+  background: var(--vf-controls-bg-hover, #f4f4f4);
 }
 
 
@@ -280,7 +282,7 @@
 }
 
 .vue-flow__minimap {
-  background-color: #fff;
+  background-color: var(--vf-minimap-bg, #fff);
 }
 
 .vue-flow__minimap.pannable {

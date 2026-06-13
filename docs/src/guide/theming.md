@@ -63,7 +63,7 @@ Here's how you can use CSS classes to add a pop of color or alter the font style
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="elements" fit-view-on-init>
+  <VueFlow v-model="elements" fit-view>
     <template #node-custom="props">
       <CustomNode v-bind="props" />
     </template>
@@ -157,14 +157,52 @@ const nodes = ref([
 
 Here's a concise list of CSS variables you can consider, along with their effects:
 
-| Variable             | Effect                                             |
-|----------------------|----------------------------------------------------|
-| --vf-node-color      | Defines node border, box-shadow, and handle colors |
-| --vf-box-shadow      | Defines color of node box-shadow                   |
-| --vf-node-bg         | Defines node background color                      |
-| --vf-node-text       | Defines node text color                            |
-| --vf-handle          | Defines node handle color                          |
-| --vf-connection-path | Defines connection line color                      |
+| Variable               | Effect                                             |
+|------------------------|----------------------------------------------------|
+| --vf-node-color        | Defines node border, box-shadow, and handle colors |
+| --vf-box-shadow        | Defines color of node box-shadow                   |
+| --vf-node-bg           | Defines node background color                      |
+| --vf-node-text         | Defines node text color                            |
+| --vf-handle            | Defines node handle color                          |
+| --vf-handle-border     | Defines node handle border color                   |
+| --vf-connection-path   | Defines connection line color                      |
+| --vf-edge-text         | Defines edge label text color                      |
+| --vf-edge-text-bg      | Defines edge label background color                |
+| --vf-background-color  | Defines the flow container background color        |
+| --vf-controls-bg       | Defines the `Controls` button background color     |
+| --vf-controls-bg-hover | Defines the `Controls` button hover background     |
+| --vf-controls-border   | Defines the `Controls` button border color         |
+| --vf-controls-color    | Defines the `Controls` button icon color           |
+| --vf-minimap-bg        | Defines the `MiniMap` background color             |
+| --vf-minimap-node-bg   | Defines the default `MiniMap` node color           |
+| --vf-minimap-mask      | Defines the `MiniMap` mask (overlay) color         |
+
+## Color Mode
+
+Vue Flow ships a built-in dark theme. Set the [`colorMode`](/typedocs/interfaces/FlowProps#colormode)
+prop to `dark`, `light` (default) or `system` (follows the OS `prefers-color-scheme`):
+
+```vue
+<template>
+  <VueFlow :nodes="nodes" :edges="edges" color-mode="dark" />
+</template>
+```
+
+The resolved mode is applied as a `light`/`dark` class on the `.vue-flow` container, and the default
+theme overrides the CSS variables above under `.vue-flow.dark`. To theme your own elements for dark
+mode, scope your rules the same way:
+
+```css
+.vue-flow.dark .my-custom-node {
+  background: #1e1e1e;
+  color: #f8f8f8;
+}
+```
+
+::: tip
+`color-mode="system"` reacts to OS theme changes at runtime — switching your system between light and
+dark updates the flow without a remount.
+:::
 
 ## CSS Class Names
 

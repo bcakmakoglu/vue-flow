@@ -81,4 +81,4 @@ export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
 
 export * from './types'
 
-export { type Viewport, PanOnScrollMode } from '@xyflow/system'
+export { type ColorMode, type ColorModeClass, type Viewport, PanOnScrollMode } from '@xyflow/system'
