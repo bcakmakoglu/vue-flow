@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { toRef } from 'vue'
 import type { TeleportProps } from 'vue'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore } from '../../composables'
 
-const { viewportRef } = useVueFlow()
+const { viewportRef } = storeToRefs(useStore())
 
 const teleportTarget = toRef(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0] as TeleportProps['to'])
 </script>

@@ -1,5 +1,5 @@
 <script setup>
-import { connectionExists, getBezierPath, useVueFlow } from '@vue-flow/core'
+import { connectionExists, getBezierPath, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import { computed, reactive, ref, watch } from 'vue'
 
 const props = defineProps({
@@ -29,7 +29,9 @@ const props = defineProps({
   },
 })
 
-const { getNodes, getInternalNode, connectionStartHandle, onConnectEnd, addEdges, edges } = useVueFlow()
+const { getNodes, getInternalNode, onConnectEnd, addEdges } = useVueFlow()
+
+const { connectionStartHandle, edges } = storeToRefs(useStore())
 
 const closest = reactive({
   node: null,

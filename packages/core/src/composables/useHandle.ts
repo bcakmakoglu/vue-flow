@@ -6,6 +6,8 @@ import type { ConnectingHandle, Connection, HandleType, MouseTouchEvent, ValidCo
 import { isValidHandle } from '../utils'
 import { Position } from '../types'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 export interface UseHandleProps {
   handleId: MaybeRefOrGetter<string | null>
@@ -40,8 +42,11 @@ export function useHandle({
   onReconnect,
   onReconnectEnd,
 }: UseHandleProps) {
+  const { id: flowId, getNode, getInternalNode, panBy, startConnection, updateConnection, endConnection, emits } = useVueFlow()
+
+  const { nodeLookup } = useStore()
+
   const {
-    id: flowId,
     vueFlowRef,
     transform,
     connectionMode,
@@ -52,18 +57,10 @@ export function useHandle({
     nodesConnectable,
     autoPanOnConnect,
     autoPanSpeed,
-    getNode,
-    getInternalNode,
-    panBy,
-    startConnection,
-    updateConnection,
-    endConnection,
-    emits,
     edges,
     nodes,
     isValidConnection: isValidConnectionProp,
-    nodeLookup,
-  } = useVueFlow()
+  } = storeToRefs(useStore())
 
   /**
    * Adapt our richer `ValidConnectionFunc` (which receives `{ nodes, edges, sourceNode, targetNode }`)

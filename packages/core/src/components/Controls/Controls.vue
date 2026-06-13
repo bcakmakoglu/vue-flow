@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { toRef } from 'vue'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 import Panel from '../Panel/Panel.vue'
 import type { ControlEmits, ControlProps } from './types'
 import ControlButton from './ControlButton.vue'
@@ -19,18 +19,9 @@ const props = withDefaults(defineProps<ControlProps>(), {
 
 const emit = defineEmits<ControlEmits>()
 
-const {
-  nodesDraggable,
-  nodesConnectable,
-  elementsSelectable,
-  setInteractive,
-  zoomIn,
-  zoomOut,
-  fitView,
-  viewport,
-  minZoom,
-  maxZoom,
-} = useVueFlow()
+const { setInteractive, zoomIn, zoomOut, fitView, viewport } = useVueFlow()
+
+const { nodesDraggable, nodesConnectable, elementsSelectable, minZoom, maxZoom } = storeToRefs(useStore())
 
 const isInteractive = toRef(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
 

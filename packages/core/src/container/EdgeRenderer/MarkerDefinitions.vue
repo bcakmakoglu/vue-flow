@@ -2,10 +2,12 @@
 import { computed } from 'vue'
 import { getMarkerId } from '@xyflow/system'
 import type { EdgeMarkerType, MarkerProps, MarkerType } from '../../types'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 import MarkerSymbols from './MarkerSymbols.vue'
 
-const { id: vueFlowId, edges, connectionLineOptions, defaultEdgeOptions, defaultMarkerColor: defaultColor } = useVueFlow()
+const { id: vueFlowId } = useVueFlow()
+
+const { edges, connectionLineOptions, defaultEdgeOptions, defaultMarkerColor: defaultColor } = storeToRefs(useStore())
 
 const markers = computed(() => {
   const ids: Set<string> = new Set()

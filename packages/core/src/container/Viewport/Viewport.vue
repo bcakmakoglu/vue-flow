@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 
-const { viewport, fitViewOnInit, fitViewOnInitDone } = useVueFlow()
+const { viewport } = useVueFlow()
+
+const { fitViewOnInit, fitViewOnInitDone } = storeToRefs(useStore())
 
 const isHidden = computed(() => {
   if (fitViewOnInit.value) {

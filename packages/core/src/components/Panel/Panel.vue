@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { PanelProps } from '../../types/panel'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore } from '../../composables'
 
 const props = defineProps<PanelProps>()
 
-const { userSelectionActive } = useVueFlow()
+const { userSelectionActive } = storeToRefs(useStore())
 
 const positionClasses = computed(() => `${props.position}`.split('-'))
 </script>

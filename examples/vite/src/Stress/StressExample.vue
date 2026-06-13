@@ -1,5 +1,5 @@
 <script setup>
-import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Panel, VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import { nextTick, shallowRef } from 'vue'
 import { getElements } from './utils'
 
@@ -8,7 +8,9 @@ const { nodes: initialNodes, edges: initialEdges } = getElements(15, 15)
 const nodes = shallowRef(initialNodes)
 const edges = shallowRef(initialEdges)
 
-const { dimensions, fitView } = useVueFlow()
+const { fitView } = useVueFlow()
+
+const { dimensions } = storeToRefs(useStore())
 
 function toggleClass() {
   nodes.value = nodes.value.map((el) => ({

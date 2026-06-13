@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Edge, FlowExportObject, Node } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
+import { storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 
 const flowKey = 'example-flow'
 
@@ -14,7 +14,9 @@ function getNodeId() {
   return `randomnode_${+new Date()}`
 }
 
-const { addNodes, setNodes, setEdges, toObject, dimensions, setViewport } = useVueFlow()
+const { addNodes, setNodes, setEdges, toObject, setViewport } = useVueFlow()
+
+const { dimensions } = storeToRefs(useStore())
 
 function onSave() {
   state.value = toObject()

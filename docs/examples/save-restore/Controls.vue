@@ -1,10 +1,12 @@
 <script setup>
-import { Panel, useVueFlow } from '@vue-flow/core'
+import { Panel, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import Icon from './Icon.vue'
 
 const flowKey = 'vue-flow--save-restore'
 
-const { nodes, addNodes, dimensions, toObject, fromObject } = useVueFlow()
+const { addNodes, toObject, fromObject } = useVueFlow()
+
+const { nodes, dimensions } = storeToRefs(useStore())
 
 function onSave() {
   localStorage.setItem(flowKey, JSON.stringify(toObject()))

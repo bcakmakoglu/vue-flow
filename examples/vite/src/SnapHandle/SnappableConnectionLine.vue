@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { ConnectingHandle, GraphNode, HandleElement, Position } from '@vue-flow/core'
-import { getBezierPath, useVueFlow } from '@vue-flow/core'
+import { getBezierPath, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 
 interface CustomConnectionLineProps {
   sourceX: number
@@ -19,7 +19,9 @@ interface ClosestElements {
 
 const props = defineProps<CustomConnectionLineProps>()
 
-const { getNodes, connectionStartHandle, onConnectEnd, addEdges } = useVueFlow()
+const { getNodes, onConnectEnd, addEdges } = useVueFlow()
+
+const { connectionStartHandle } = storeToRefs(useStore())
 
 const closest = reactive<ClosestElements>({
   node: null,

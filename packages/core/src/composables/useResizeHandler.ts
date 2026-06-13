@@ -3,6 +3,8 @@ import { onBeforeUnmount, onMounted } from 'vue'
 import { getDimensions } from '@xyflow/system'
 import { ErrorCode, VueFlowError } from '../utils'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 /**
  * Composable that handles the resize of the viewport.
@@ -11,7 +13,8 @@ import { useVueFlow } from './useVueFlow'
  * @param viewportEl
  */
 export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
-  const { emits, dimensions } = useVueFlow()
+  const { emits } = useVueFlow()
+  const { dimensions } = storeToRefs(useStore())
 
   let resizeObserver: ResizeObserver
 

@@ -5,37 +5,33 @@ import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
 import type { Edge, EdgeChange, Node, NodeChange } from '../../types'
 import { SelectionMode } from '../../types'
-import { useKeyPress, useVueFlow } from '../../composables'
+import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables'
 import { getSelectionChanges } from '../../utils'
 import { getMousePosition } from './utils'
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()
 
+const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, removeNodes, removeEdges } =
+  useVueFlow()
+
+const { edgeLookup, nodeLookup } = useStore()
+
 const {
   vueFlowRef,
   transform,
-  emits,
   userSelectionActive,
-  removeSelectedNodes,
-  removeSelectedEdges,
   userSelectionRect,
   elementsSelectable,
   nodesSelectionActive,
-  getSelectedEdges,
-  getSelectedNodes,
-  removeNodes,
-  removeEdges,
   selectionMode,
   deleteKeyCode,
   multiSelectionKeyCode,
   multiSelectionActive,
-  edgeLookup,
-  nodeLookup,
   connectionLookup,
   defaultEdgeOptions,
   connectionStartHandle,
   panOnDrag,
-} = useVueFlow()
+} = storeToRefs(useStore())
 
 const container = shallowRef<HTMLDivElement | null>(null)
 

@@ -2,6 +2,8 @@ import type { ComputedRef } from 'vue'
 import { computed } from 'vue'
 import type { ConnectionState, GraphNode, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 const NO_CONNECTION = Object.freeze({
   inProgress: false,
@@ -25,7 +27,8 @@ const NO_CONNECTION = Object.freeze({
  * @returns a `ComputedRef<ConnectionState>` — `inProgress: false` (all-null fields) when idle
  */
 export function useConnection<NodeType extends Node = Node>(): ComputedRef<ConnectionState<NodeType>> {
-  const { connectionStartHandle, connectionEndHandle, connectionPosition, connectionStatus, getInternalNode } = useVueFlow()
+  const { getInternalNode } = useVueFlow()
+  const { connectionStartHandle, connectionEndHandle, connectionPosition, connectionStatus } = storeToRefs(useStore<NodeType>())
 
   return computed<ConnectionState<NodeType>>(() => {
     const fromHandle = connectionStartHandle.value

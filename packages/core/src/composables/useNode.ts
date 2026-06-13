@@ -4,6 +4,8 @@ import type { GraphNode, Node } from '../types'
 import { ErrorCode, VueFlowError } from '../utils'
 import { NodeRef } from '../context'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 import { useNodeId } from './useNodeId'
 
 /**
@@ -21,7 +23,8 @@ export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? ''
   const nodeEl = inject(NodeRef, ref(null))
 
-  const { getInternalNode, edges, emits } = useVueFlow()
+  const { getInternalNode, emits } = useVueFlow()
+  const { edges } = storeToRefs(useStore<NodeType>())
 
   // `node` is the enriched `InternalNode` (it carries `internals`/`measured`, which NodeWrapper + custom
   // nodes read) and a `computed` (not a one-time read) so it re-resolves whenever the store replaces this

@@ -2,7 +2,7 @@ import { computed, defineComponent, getCurrentInstance, h, inject, provide, reso
 import { getHandlePosition, getMarkerId } from '@xyflow/system'
 import type { Connection, Edge, EdgeComponent, HandleType, MouseTouchEvent } from '../../types'
 import { ConnectionMode, Position } from '../../types'
-import { useEdgeHooks, useHandle, useVueFlow } from '../../composables'
+import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables'
 import { EdgeId, EdgeRef, Slots } from '../../context'
 import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle, getEdgeZIndex } from '../../utils'
 import EdgeAnchor from './EdgeAnchor'
@@ -16,18 +16,13 @@ const EdgeWrapper = defineComponent({
   compatConfig: { MODE: 3 },
   props: ['id'],
   setup(props: Props) {
+    const { id: vueFlowId, addSelectedEdges, emits, getEdgeTypes, removeSelectedEdges, getEdge, getInternalNode } = useVueFlow()
+
     const {
-      id: vueFlowId,
-      addSelectedEdges,
       connectionMode,
       reconnectRadius,
-      emits,
       nodesSelectionActive,
       noPanClassName,
-      getEdgeTypes,
-      removeSelectedEdges,
-      getEdge,
-      getInternalNode,
       isValidConnection,
       multiSelectionActive,
       disableKeyboardA11y,
@@ -37,7 +32,7 @@ const EdgeWrapper = defineComponent({
       elevateEdgesOnSelect,
       defaultEdgeOptions,
       hooks,
-    } = useVueFlow()
+    } = storeToRefs(useStore())
 
     const storedEdge = computed(() => getEdge(props.id) as Edge)
 
