@@ -3,7 +3,7 @@ import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch 
 import type { XYMinimapInstance } from '@xyflow/system'
 import { XYMinimap, getBoundsOfRects, getConnectedEdges, getNodeDimensions, getNodesBounds } from '@xyflow/system'
 import type { GraphNode } from '../../types'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 import Panel from '../Panel/Panel.vue'
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types'
 import MiniMapNode from './MiniMapNode.vue'
@@ -39,7 +39,11 @@ const attrs: Record<string, any> = useAttrs()
 const defaultWidth = 200
 const defaultHeight = 150
 
-const { id, edges, nodes, nodeLookup, viewport, transform, translateExtent, dimensions, emits, panZoom } = useVueFlow()
+const { id, viewport, emits } = useVueFlow()
+
+const { nodeLookup } = useStore()
+
+const { edges, nodes, transform, translateExtent, dimensions, panZoom } = storeToRefs(useStore())
 
 const el = ref<SVGElement>()
 

@@ -1,5 +1,5 @@
 <script setup>
-import { Background, MiniMap, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, MiniMap, Panel, VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import { nextTick, ref, watch } from 'vue'
 import { getElements } from './utils.js'
 
@@ -9,7 +9,9 @@ const nodes = ref(initialNodes)
 
 const edges = ref(initialEdges)
 
-const { dimensions, fitView, getSelectedNodes, setEdges } = useVueFlow()
+const { fitView, getSelectedNodes, setEdges } = useVueFlow()
+
+const { dimensions } = storeToRefs(useStore())
 
 // highlight edges that are connected to a selected node
 watch(getSelectedNodes, (selectedNodes) => {

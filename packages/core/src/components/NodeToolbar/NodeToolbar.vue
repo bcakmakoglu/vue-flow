@@ -2,7 +2,7 @@
 import { computed, inject } from 'vue'
 import { getNodeToolbarTransform, getNodesBounds } from '@xyflow/system'
 import type { CSSProperties } from 'vue'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 import { NodeId } from '../../context'
 import type { GraphNode } from '../../types'
 import { Position } from '../../types'
@@ -18,7 +18,11 @@ const props = withDefaults(defineProps<NodeToolbarProps>(), {
 
 const contextNodeId = inject(NodeId, null)
 
-const { viewportRef, viewport, getSelectedNodes, getInternalNode, nodeLookup } = useVueFlow()
+const { viewport, getSelectedNodes, getInternalNode } = useVueFlow()
+
+const { nodeLookup } = useStore()
+
+const { viewportRef } = storeToRefs(useStore())
 
 const nodes = computed(() => {
   const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || '']

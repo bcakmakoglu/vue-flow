@@ -2,6 +2,8 @@ import { getNodeDimensions } from '@xyflow/system'
 import type { NodeDragItem, XYPosition } from '../types'
 import { calcNextPosition } from '../utils'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 /**
  * Composable for updating the position of nodes.
@@ -9,8 +11,8 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, getInternalNode, snapGrid, snapToGrid, nodesDraggable, emits } =
-    useVueFlow()
+  const { getSelectedNodes, updateNodePositions, getInternalNode, emits } = useVueFlow()
+  const { nodeExtent, snapGrid, snapToGrid, nodesDraggable } = storeToRefs(useStore())
 
   return (positionDiff: XYPosition, isShiftPressed = false) => {
     // by default a node moves 5px on each key press, or 20px if shift is pressed

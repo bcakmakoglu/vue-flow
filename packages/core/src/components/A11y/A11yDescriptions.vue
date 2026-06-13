@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import { ARIA_EDGE_DESC_KEY, ARIA_LIVE_MESSAGE, ARIA_NODE_DESC_KEY } from '../../utils/a11y'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 
-const { id, disableKeyboardA11y, ariaLiveMessage } = useVueFlow()
+const { id } = useVueFlow()
+const { disableKeyboardA11y, ariaLiveMessage } = storeToRefs(useStore())
 </script>
 
 <script lang="ts">

@@ -3,7 +3,7 @@ import { computed, onMounted, ref, toRef } from 'vue'
 import { getDimensions, isMouseEvent } from '@xyflow/system'
 import type { HandleProps } from '../../types'
 import { Position } from '../../types'
-import { useHandle, useNode, useVueFlow } from '../../composables'
+import { storeToRefs, useHandle, useNode, useStore, useVueFlow } from '../../composables'
 import { isDef } from '../../utils'
 
 const {
@@ -19,8 +19,9 @@ const type = toRef(() => props.type ?? 'source')
 
 const isValidConnection = toRef(() => props.isValidConnection ?? null)
 
+const { id: flowId } = useVueFlow()
+
 const {
-  id: flowId,
   connectionStartHandle,
   connectionClickStartHandle,
   connectionEndHandle,
@@ -28,7 +29,7 @@ const {
   nodesConnectable,
   noDragClassName,
   noPanClassName,
-} = useVueFlow()
+} = storeToRefs(useStore())
 
 const { id: nodeId, node: nodeRef, nodeEl, connectedEdges } = useNode()
 

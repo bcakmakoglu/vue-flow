@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, toRef, watch } from 'vue'
 import { XYPanZoom } from '@xyflow/system'
-import { useKeyPress, useVueFlow } from '../../composables'
+import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables'
 import { useResizeHandler } from '../../composables/useResizeHandler'
 import Pane from '../Pane/Pane.vue'
 import Viewport from '../Viewport/Viewport.vue'
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
 
+const { id, emits } = useVueFlow()
+
 const {
-  id,
-  emits,
   transform,
   viewportRef: zoomPane,
   panZoom,
@@ -35,7 +35,7 @@ const {
   selectionKeyCode,
   paneClickDistance,
   connectionStartHandle,
-} = useVueFlow()
+} = storeToRefs(useStore())
 
 const zoomActivationKeyPressed = useKeyPress(zoomActivationKeyCode)
 

@@ -2,7 +2,7 @@
 import { XYResizer, evaluateAbsolutePosition, handleExpandParent } from '@xyflow/system'
 import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system'
 import { computed, ref, toRef, watchEffect } from 'vue'
-import { useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables'
 import type { NodeChange, NodeDimensionChange, NodePositionChange } from '../../types'
 import type { NodeResizerEmits, ResizeControlProps } from './types'
 import { ResizeControlVariant } from './types'
@@ -20,18 +20,11 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
 
 const emits = defineEmits<NodeResizerEmits>()
 
-const {
-  emits: triggerEmits,
-  viewport,
-  transform,
-  nodeLookup,
-  parentLookup,
-  nodeOrigin,
-  snapGrid,
-  snapToGrid,
-  vueFlowRef,
-  noDragClassName,
-} = useVueFlow()
+const { emits: triggerEmits, viewport } = useVueFlow()
+
+const { nodeLookup, parentLookup } = useStore()
+
+const { transform, nodeOrigin, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = storeToRefs(useStore())
 
 const resizeControlRef = ref<HTMLDivElement>()
 

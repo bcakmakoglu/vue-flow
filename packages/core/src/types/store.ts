@@ -1,4 +1,4 @@
-import type { ComputedRef, DeepReadonly, ToRefs } from 'vue'
+import type { ComputedRef, DeepReadonly } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { ColorMode, PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
@@ -46,6 +46,12 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   /** all stored edges — the user-facing `Edge`s, stored verbatim (no enriched edge representation) */
   edges: EdgeType[]
 
+  /** id → enriched `InternalNode` (`internals`/`measured`); the canonical source for node-derived data */
+  readonly nodeLookup: NodeLookup<NodeType>
+  /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
+  readonly parentLookup: Map<string, Map<string, GraphNode<NodeType>>>
+  /** id → user-facing `Edge` */
+  readonly edgeLookup: EdgeLookup<EdgeType>
   connectionLookup: ConnectionLookup
 
   /** The panzoom instance */
@@ -352,16 +358,36 @@ export type ComputedGetters<NodeType extends Node = Node, EdgeType extends Edge 
   [key in keyof Getters<NodeType, EdgeType>]: ComputedRef<Getters<NodeType, EdgeType>[key]>
 }
 
-export type VueFlowStore<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
+/**
+ * The reactive state object returned by {@link useStore} — every {@link State} field plus the lookups,
+ * read directly (`store.nodes`, no `.value`, like `xyflow/svelte`'s store / a Pinia store). Use
+ * `storeToRefs(useStore())` to destructure scalar/array fields as refs.
+ */
+export type VueFlowState<NodeType extends Node = Node, EdgeType extends Edge = Edge> = State<NodeType, EdgeType>
+
+/**
+ * The curated instance returned by {@link useVueFlow} — actions, computed getters, and event hooks
+ * (mirrors `useReactFlow` / `useSvelteFlow`). Raw reactive state lives on {@link useStore} instead.
+ */
+export type VueFlowInstance<NodeType extends Node = Node, EdgeType extends Edge = Edge> = {
   readonly id: string
   readonly emits: FlowHooksEmit<NodeType, EdgeType>
-  readonly nodeLookup: NodeLookup<NodeType>
-  /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
-  readonly parentLookup: Map<string, Map<string, GraphNode<NodeType>>>
-  readonly edgeLookup: EdgeLookup<EdgeType>
   /** current vue flow version you're using */
   readonly vueFlowVersion: string
+  /** tear the store down (internal) */
+  $destroy: () => void
 } & FlowHooksOn<NodeType, EdgeType> &
-  ToRefs<State<NodeType, EdgeType>> &
   Readonly<ComputedGetters<NodeType, EdgeType>> &
   Readonly<Actions<NodeType, EdgeType>>
+
+/**
+ * @deprecated the `useVueFlow()` return is now the curated {@link VueFlowInstance}; raw state moved to
+ * `useStore()` ({@link VueFlowState}). Kept as an alias of the instance for the `<VueFlow>` template-ref type.
+ */
+export type VueFlowStore<NodeType extends Node = Node, EdgeType extends Edge = Edge> = VueFlowInstance<NodeType, EdgeType>
+
+/** Internal handle bundling the two views a created store exposes; provided to descendants. */
+export interface VueFlowStoreHandle<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
+  instance: VueFlowInstance<NodeType, EdgeType>
+  state: VueFlowState<NodeType, EdgeType>
+}

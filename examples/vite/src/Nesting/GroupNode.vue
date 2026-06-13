@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { Handle, Position, getNodesInside, useVueFlow } from '@vue-flow/core'
+import { Handle, Position, getNodesInside, useStore, useVueFlow } from '@vue-flow/core'
 import type { NodeProps } from '@vue-flow/core'
 
 const props = defineProps<NodeProps>()
 
-const { onNodeDragStop, nodeLookup, viewport, updateNodeData } = useVueFlow()
+const { onNodeDragStop, viewport, updateNodeData } = useVueFlow()
+
+const { nodeLookup } = useStore()
 
 onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(

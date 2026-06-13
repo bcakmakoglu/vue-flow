@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref } from 'vue'
 import { getNodesBounds } from '@xyflow/system'
-import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
+import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables'
 import { arrowKeyDiffs } from '../../utils'
 import type { GraphNode, Node } from '../../types'
 
-const { emits, viewport, getSelectedNodes, nodeLookup, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
+const { emits, viewport, getSelectedNodes } = useVueFlow()
+
+const { nodeLookup } = useStore()
+
+const { noPanClassName, disableKeyboardA11y, userSelectionActive } = storeToRefs(useStore())
 
 const updatePositions = useUpdateNodePositions()
 

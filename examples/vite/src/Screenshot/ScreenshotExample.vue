@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, VueFlow, storeToRefs, useStore } from '@vue-flow/core'
 import type { Edge, Node } from '@vue-flow/core'
 import { useScreenshot } from './useScreenshot'
 
-const { vueFlowRef } = useVueFlow()
+const { vueFlowRef } = storeToRefs(useStore())
 const { capture } = useScreenshot()
 
 const nodes = ref<Node[]>([

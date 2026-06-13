@@ -63,6 +63,8 @@ export { defaultEdgeTypes, defaultNodeTypes } from './utils/defaultNodesEdges'
 export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
 
 export { useVueFlow } from './composables/useVueFlow'
+export { useStore } from './composables/useStore'
+export { storeToRefs } from './composables/storeToRefs'
 export { useHandle } from './composables/useHandle'
 export { useInternalNode } from './composables/useInternalNode'
 

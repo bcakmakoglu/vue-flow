@@ -3,7 +3,7 @@ import { XYDrag, infiniteExtent, isCoordinateExtent } from '@xyflow/system'
 import type { MaybeRefOrGetter, Ref } from 'vue'
 import { shallowRef, toValue, watchEffect } from 'vue'
 import type { Node, NodeDragEvent, NodeDragItem } from '../types'
-import { useVueFlow } from '.'
+import { storeToRefs, useStore, useVueFlow } from '.'
 
 interface UseDragParams {
   onStart: (event: NodeDragEvent) => void
@@ -24,12 +24,16 @@ interface UseDragParams {
  * @param params
  */
 export function useDrag(params: UseDragParams) {
+  const { panBy, getInternalNode, removeSelectedNodes, removeSelectedEdges, updateNodePositions, getNodes, getEdges } =
+    useVueFlow()
+
+  const { nodeLookup } = useStore()
+
   const {
     vueFlowRef,
     snapToGrid,
     snapGrid,
     noDragClassName,
-    nodeLookup,
     nodeExtent,
     nodeOrigin,
     nodeDragThreshold,
@@ -38,16 +42,9 @@ export function useDrag(params: UseDragParams) {
     autoPanOnNodeDrag,
     autoPanSpeed,
     nodesDraggable,
-    panBy,
-    getInternalNode,
     multiSelectionActive,
     selectNodesOnDrag,
-    removeSelectedNodes,
-    removeSelectedEdges,
-    updateNodePositions,
-    getNodes,
-    getEdges,
-  } = useVueFlow()
+  } = storeToRefs(useStore())
 
   const { onStart, onDrag, onStop, onClick, el, disabled, id, selectable, dragHandle } = params
 

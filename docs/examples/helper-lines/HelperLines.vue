@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useVueFlow } from '@vue-flow/core'
+import { storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import { computed, ref, watch } from 'vue'
 
 interface HelperLinesProps {
@@ -12,7 +12,9 @@ const props = defineProps<HelperLinesProps>()
 const horizontal = computed(() => props.horizontal)
 const vertical = computed(() => props.vertical)
 
-const { viewport, dimensions } = useVueFlow()
+const { viewport } = useVueFlow()
+
+const { dimensions } = storeToRefs(useStore())
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 

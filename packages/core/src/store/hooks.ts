@@ -1,4 +1,3 @@
-import type { Ref } from 'vue'
 import { getCurrentInstance, onBeforeMount, onScopeDispose } from 'vue'
 import type { Edge, FlowEvents, FlowHooks, Node } from '../types'
 import { createExtendedEventHook, warn } from '../utils'
@@ -62,11 +61,11 @@ export function createHooks<NodeType extends Node = Node, EdgeType extends Edge 
 
 export function useHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   emit: (...args: any[]) => void,
-  hooks: Ref<FlowHooks<NodeType, EdgeType>>,
+  hooks: FlowHooks<NodeType, EdgeType>,
 ) {
   const inst = getCurrentInstance()
   onBeforeMount(() => {
-    for (const [key, value] of Object.entries(hooks.value)) {
+    for (const [key, value] of Object.entries(hooks)) {
       const listener = (data: unknown) => {
         emit(key, data)
       }

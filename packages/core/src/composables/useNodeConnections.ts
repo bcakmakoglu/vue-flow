@@ -3,7 +3,8 @@ import { computed, ref, toValue, watch } from 'vue'
 import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
 import type { HandleType, NodeConnection } from '../types'
 import { useNodeId } from './useNodeId'
-import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 export interface UseNodeConnectionsParams {
   handleType?: MaybeRefOrGetter<HandleType | null | undefined>
@@ -29,7 +30,7 @@ export interface UseNodeConnectionsParams {
 export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
   const { handleType, handleId, nodeId, onConnect, onDisconnect } = params
 
-  const { connectionLookup } = useVueFlow()
+  const { connectionLookup } = storeToRefs(useStore())
 
   const _nodeId = useNodeId()
 

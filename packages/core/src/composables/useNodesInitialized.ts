@@ -1,5 +1,7 @@
 import { computed } from 'vue'
 import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 export interface UseNodesInitializedOptions {
   includeHiddenNodes?: boolean
@@ -17,7 +19,8 @@ export interface UseNodesInitializedOptions {
  * @returns boolean indicating whether all nodes are initialized
  */
 export function useNodesInitialized(options: UseNodesInitializedOptions = { includeHiddenNodes: false }) {
-  const { nodes, getInternalNode } = useVueFlow()
+  const { getInternalNode } = useVueFlow()
+  const { nodes } = storeToRefs(useStore())
 
   return computed(() => {
     if (nodes.value.length === 0) {

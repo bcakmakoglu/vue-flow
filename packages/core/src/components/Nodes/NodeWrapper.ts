@@ -14,7 +14,16 @@ import {
 } from 'vue'
 import { ARIA_NODE_DESC_KEY, ErrorCode, VueFlowError, arrowKeyDiffs, elementSelectionKeys, handleNodeClick } from '../../utils'
 import { NodeId, NodeRef, Slots } from '../../context'
-import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
+import {
+  isInputDOMNode,
+  storeToRefs,
+  useDrag,
+  useNode,
+  useNodeHooks,
+  useStore,
+  useUpdateNodePositions,
+  useVueFlow,
+} from '../../composables'
 import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types'
 
 interface Props {
@@ -29,16 +38,19 @@ const NodeWrapper = defineComponent({
   setup(props: Props) {
     const {
       id: vueFlowId,
-      noPanClassName,
-      selectNodesOnDrag,
-      nodesSelectionActive,
-      multiSelectionActive,
       emits,
       removeSelectedNodes,
       addSelectedNodes,
       updateNodeDimensions,
       onUpdateNodeInternals,
       getNodeTypes,
+    } = useVueFlow()
+
+    const {
+      noPanClassName,
+      selectNodesOnDrag,
+      nodesSelectionActive,
+      multiSelectionActive,
       disableKeyboardA11y,
       ariaLiveMessage,
       nodeDragThreshold,
@@ -47,8 +59,9 @@ const NodeWrapper = defineComponent({
       nodesConnectable,
       nodesFocusable,
       hooks,
-      parentLookup,
-    } = useVueFlow()
+    } = storeToRefs(useStore())
+
+    const { parentLookup } = useStore()
 
     const nodeElement = shallowRef<HTMLDivElement | null>(null)
     provide(NodeRef, nodeElement)

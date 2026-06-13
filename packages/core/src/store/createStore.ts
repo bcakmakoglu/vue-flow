@@ -1,6 +1,16 @@
 import type { Ref } from 'vue'
-import { reactive, shallowRef, toRaw, toRefs, watch } from 'vue'
-import type { Edge, EdgeLookup, FlowProps, GraphNode, Node, NodeLookup, VueFlowStore } from '../types'
+import { reactive, shallowRef, toRaw, watch } from 'vue'
+import type {
+  Edge,
+  EdgeLookup,
+  FlowProps,
+  GraphNode,
+  Node,
+  NodeLookup,
+  VueFlowInstance,
+  VueFlowState,
+  VueFlowStoreHandle,
+} from '../types'
 import { useActions } from './actions'
 import { useGetters } from './getters'
 import { useState } from './state'
@@ -29,7 +39,7 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   preloadedState?: FlowProps<NodeType, EdgeType>,
   onDestroy?: (id: string) => void,
   signals?: StoreSignals<NodeType, EdgeType>,
-): VueFlowStore<NodeType, EdgeType> {
+): VueFlowStoreHandle<NodeType, EdgeType> {
   // nodes/edges are backed by (optionally injected) signal refs — the single source of truth. When
   // `<VueFlow>` passes its v-model refs, mutating the store *is* the v-model update (svelte's
   // bindable-prop proxy), so no separate sync layer is needed. Default: internal `shallowRef`s — the
@@ -90,24 +100,18 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
 
   // The lookup maps hold the enriched `InternalNode`s/edges (canonical for `internals`/`measured`); the
   // canonical user-facing `Node`/`Edge` arrays live in `state.nodes`/`state.edges` (the v-model source of
-  // truth). They are held as `reactive(Map)` so Map identity is stable across mutations and `@xyflow/system`
-  // helpers can `.set` clones in place while reads via `.get` stay reactive. The store actions write both in
-  // one imperative pass (`commitNodes` re-adopts the user nodes into the lookup, `commitEdges` mirrors edges)
-  // — no derivation watcher, no rebuild thrash.
+  // truth). They are created as plain `Map`s in `useState` and made reactive by `reactive(state)` above, so
+  // Map identity is stable across mutations (`@xyflow/system` helpers `.set` clones in place while reads via
+  // `.get` stay reactive) AND `useStore()` surfaces them as part of the state. The store actions write both
+  // in one imperative pass (`commitNodes` re-adopts the user nodes into the lookup, `commitEdges` mirrors
+  // edges) — no derivation watcher, no rebuild thrash.
   //
-  // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` return type: over a Map of the *generic*
-  // `GraphNode<NodeType>`, TS can't prove the element type has no refs to unwrap and widens the value
-  // type. At runtime the proxy is exactly a `Map<string, GraphNode>`, so the assertion is sound (this
-  // is the documented Vue + generics friction, not an `any`-style escape hatch).
-  const nodeLookup = reactive(new Map<string, GraphNode<NodeType>>()) as NodeLookup<NodeType>
-  // map parentId -> Map<childId, GraphNode>. Matches `@xyflow/system`'s `ParentLookup` shape so we can
-  // pass it directly into `adoptUserNodes` / `updateAbsolutePositions` / `handleExpandParent` without
-  // translation. `.size` still answers "is this node a parent?" in O(1).
-  const parentLookup = reactive(new Map<string, Map<string, GraphNode<NodeType>>>()) as Map<
-    string,
-    Map<string, GraphNode<NodeType>>
-  >
-  const edgeLookup = reactive(new Map<string, EdgeType>()) as EdgeLookup<EdgeType>
+  // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` widening over a Map of the *generic*
+  // `GraphNode<NodeType>` (TS can't prove the element type has no refs to unwrap); at runtime the proxy is
+  // exactly a `Map<string, GraphNode>`, so the assertion is sound (documented Vue + generics friction).
+  const nodeLookup = reactiveState.nodeLookup as NodeLookup<NodeType>
+  const parentLookup = reactiveState.parentLookup as Map<string, Map<string, GraphNode<NodeType>>>
+  const edgeLookup = reactiveState.edgeLookup as EdgeLookup<EdgeType>
 
   const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup)
 
@@ -141,14 +145,12 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
     })
   }
 
-  const flow: VueFlowStore<NodeType, EdgeType> = {
+  // The curated instance (`useVueFlow()`): actions + getters + event hooks + identity. Raw reactive
+  // state (`useStore()`) is `reactiveState` itself — the two views over one store.
+  const instance: VueFlowInstance<NodeType, EdgeType> = {
     ...hooksOn,
     ...getters,
     ...actions,
-    ...toRefs(reactiveState),
-    nodeLookup,
-    parentLookup,
-    edgeLookup,
     emits,
     id,
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
@@ -157,5 +159,5 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
     },
   }
 
-  return flow as VueFlowStore<NodeType, EdgeType>
+  return { instance, state: reactiveState as VueFlowState<NodeType, EdgeType> }
 }

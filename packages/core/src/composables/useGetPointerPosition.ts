@@ -1,5 +1,6 @@
 import { getEventPosition, pointToRendererPoint, snapPosition } from '@xyflow/system'
-import { useVueFlow } from './useVueFlow'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 /**
  * Composable that returns a function to get the pointer position
@@ -7,7 +8,7 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useGetPointerPosition() {
-  const { transform, snapGrid, snapToGrid, vueFlowRef } = useVueFlow()
+  const { transform, snapGrid, snapToGrid, vueFlowRef } = storeToRefs(useStore())
 
   // returns the pointer position projected to the VF coordinate system
   return (event: any) => {

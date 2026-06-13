@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { NodeWrapper } from '../../components'
-import { useVueFlow } from '../../composables'
+import { useStore, useVueFlow } from '../../composables'
 import { useNodesInitialized } from '../../composables/useNodesInitialized'
 
-const { getNodes, nodeLookup, updateNodeDimensions, emits } = useVueFlow()
+const { getNodes, updateNodeDimensions, emits } = useVueFlow()
+
+const { nodeLookup } = useStore()
 
 const nodesInitialized = useNodesInitialized()
 

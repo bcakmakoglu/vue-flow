@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { Background, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 
-const { nodes, addNodes, addEdges, onConnect, onInit, onNodeDragStop, dimensions } = useVueFlow()
+const { addNodes, addEdges, onConnect, onInit, onNodeDragStop } = useVueFlow()
+
+const { nodes, dimensions } = storeToRefs(useStore())
 
 onConnect(addEdges)
 

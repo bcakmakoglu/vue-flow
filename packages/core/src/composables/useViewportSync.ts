@@ -1,8 +1,9 @@
 import type { Ref } from 'vue'
 import { watch } from 'vue'
 import type { Viewport } from '@xyflow/system'
-import type { Edge, Node, VueFlowStore } from '../types'
-import { useVueFlow } from './useVueFlow'
+import type { Edge, Node, VueFlowState } from '../types'
+import { useStore } from './useStore'
+import { storeToRefs } from './storeToRefs'
 
 function sameViewport(a: Viewport | undefined, b: Viewport | undefined) {
   return !!a && !!b && a.x === b.x && a.y === b.y && a.zoom === b.zoom
@@ -23,9 +24,9 @@ function sameViewport(a: Viewport | undefined, b: Viewport | undefined) {
  */
 export function useViewportSync<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   model: Ref<Viewport | undefined>,
-  vfInstance: VueFlowStore<NodeType, EdgeType> = useVueFlow<NodeType, EdgeType>(),
+  state: VueFlowState<NodeType, EdgeType> = useStore<NodeType, EdgeType>(),
 ) {
-  const { transform, panZoom } = vfInstance
+  const { transform, panZoom } = storeToRefs(state)
 
   // also keyed on `panZoom` so the controlled value is re-applied once the instance mounts (its initial
   // `defaultViewport` seed would otherwise clobber a transform set before mount)

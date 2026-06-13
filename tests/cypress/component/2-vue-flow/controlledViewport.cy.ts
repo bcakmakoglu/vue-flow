@@ -1,11 +1,11 @@
 import type { Ref } from 'vue'
 import { defineComponent, h, ref } from 'vue'
-import type { Viewport, VueFlowStore } from '@vue-flow/core'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import type { Viewport, VueFlowState, VueFlowStore } from '@vue-flow/core'
+import { VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 
 // `v-model:viewport` two-way binds the bound value to the flow's transform (xyflow parity). We drive it
 // through a wrapper holding a reactive `viewport` ref so we can mutate the "prop" and observe emits.
-let store: VueFlowStore
+let store: VueFlowStore & VueFlowState
 let controlledViewport: Ref<Viewport>
 
 const Wrapper = defineComponent({
@@ -15,7 +15,8 @@ const Wrapper = defineComponent({
 
     const Capture = defineComponent({
       setup() {
-        store = useVueFlow()
+        // `transform` is state; `viewport`/`setViewport` are on the instance — merge both for the spec
+        store = { ...useVueFlow(), ...storeToRefs(useStore()) } as unknown as VueFlowStore & VueFlowState
         return () => null
       },
     })
