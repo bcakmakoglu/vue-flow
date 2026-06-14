@@ -1,5 +1,4 @@
 import { computed } from 'vue'
-import type { DeepReadonly } from 'vue'
 import { getNodesInside, isEdgeVisible } from '@xyflow/system'
 import type { ComputedGetters, Edge, Node, NodeLookup, State } from '../types'
 import { defaultEdgeTypes, defaultNodeTypes } from '../utils/defaultNodesEdges'
@@ -59,10 +58,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         },
         state.transform,
         true,
-      ).map((node) => node.internals.userNode) as unknown as DeepReadonly<NodeType[]>
+      ).map((node) => node.internals.userNode) as unknown as readonly NodeType[]
     }
 
-    return state.nodes as unknown as DeepReadonly<NodeType[]>
+    return state.nodes as unknown as readonly NodeType[]
   })
 
   const getEdges: ComputedGetters<NodeType, EdgeType>['getEdges'] = computed(() => {
@@ -91,10 +90,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         }
       }
 
-      return visibleEdges as unknown as DeepReadonly<EdgeType[]>
+      return visibleEdges as unknown as readonly EdgeType[]
     }
 
-    return state.edges as unknown as DeepReadonly<EdgeType[]>
+    return state.edges as unknown as readonly EdgeType[]
   })
 
   const getSelectedNodes: ComputedGetters<NodeType>['getSelectedNodes'] = computed(() => {
@@ -105,7 +104,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    return selectedNodes as unknown as DeepReadonly<NodeType[]>
+    return selectedNodes as unknown as readonly NodeType[]
   })
 
   const getSelectedEdges: ComputedGetters<NodeType, EdgeType>['getSelectedEdges'] = computed(() => {
@@ -116,7 +115,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    return selectedEdges as unknown as DeepReadonly<EdgeType[]>
+    return selectedEdges as unknown as readonly EdgeType[]
   })
 
   // the public `{ x, y, zoom }` shape derived from the canonical `transform` tuple (read-only)
