@@ -1,7 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
+    // this is a Vite app (not a published lib), so resolve like the bundler does — also overrides the
+    // base's deprecated `moduleResolution: "node"`, which errors under TS 6 (vue-tsc 3.3.5)
+    "moduleResolution": "bundler",
     "noEmit": true,
     "declaration": false,
     "resolveJsonModule": true,

@@ -11,6 +11,6 @@
   },
   "devDependencies": {
     "@tooling/eslint-config": "workspace:*",
-    "nuxt": "^3.13.2"
+    "nuxt": "^4.4.8"
   }
 }
