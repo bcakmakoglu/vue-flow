@@ -174,7 +174,9 @@ const NodeWrapper = defineComponent({
 
     const getStyle = computed(() => {
       const node = nodeRef.value
-      const styles = (node?.style instanceof Function ? node.style(node) : node?.style) || {}
+      // clone: never mutate the user's `node.style` (nodes are markRaw, so an in-place write isn't
+      // reactive AND would cache stale width/height onto the user object across renders)
+      const styles = { ...(node?.style instanceof Function ? node.style(node) : node?.style) }
 
       const width = node?.width
       const height = node?.height
@@ -271,22 +273,19 @@ const NodeWrapper = defineComponent({
         },
         [
           h(nodeCmp.value === false ? (getNodeTypes.value.default as NodeComponent<BuiltInNode>) : (nodeCmp.value as any), {
+            // exactly the `NodeProps` surface (xyflow/react parity) — no legacy `connectable`/`position`/
+            // `dimensions`/`parent`/`parentNodeId`/`resizing` duplicates, which bloated every node's props
+            // and leaked onto custom-node DOM as `$attrs`
             id: node.id,
             type: node.type,
             data: node.data,
             selected: !!node.selected,
-            resizing: !!node.resizing,
             dragging: dragging.value,
             isConnectable: isConnectable.value,
-            connectable: isConnectable.value,
-            position: { ...node.internals.positionAbsolute, z: node.internals.z },
             positionAbsoluteX: node.internals.positionAbsolute.x,
             positionAbsoluteY: node.internals.positionAbsolute.y,
             width: node.measured.width,
             height: node.measured.height,
-            dimensions: node.measured,
-            parent: node.parentId,
-            parentNodeId: node.parentId,
             parentId: node.parentId,
             zIndex: node.internals.z ?? zIndex.value,
             selectable: node.selectable ?? true,
