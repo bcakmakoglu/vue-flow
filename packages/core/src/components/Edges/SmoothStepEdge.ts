@@ -3,9 +3,12 @@ import { getSmoothStepPath } from '@xyflow/system'
 import type { SmoothStepEdgeProps } from '../../types'
 import { Position } from '../../types'
 import BaseEdge from './BaseEdge.vue'
+import { baseEdgeProps } from './utils'
 
 const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
   name: 'SmoothStepEdge',
+  // see StraightEdge: keep undeclared attrs (source/target/…) from leaking onto the <path>
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',
@@ -34,13 +37,7 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
         targetPosition: props.targetPosition ?? Position.Top,
       })
 
-      return h(BaseEdge as any, {
-        path,
-        labelX,
-        labelY,
-        ...attrs,
-        ...props,
-      })
+      return h(BaseEdge as any, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
     }
   },
 })

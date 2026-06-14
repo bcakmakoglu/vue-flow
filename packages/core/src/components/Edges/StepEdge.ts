@@ -4,6 +4,8 @@ import SmoothStepEdge from './SmoothStepEdge'
 
 const StepEdge = defineComponent<StepEdgeProps>({
   name: 'StepEdge',
+  // see StraightEdge: keep undeclared attrs from auto-applying to the SmoothStepEdge root
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',

@@ -3,9 +3,12 @@ import { getBezierPath } from '@xyflow/system'
 import type { BezierEdgeProps } from '../../types'
 import { Position } from '../../types'
 import BaseEdge from './BaseEdge.vue'
+import { baseEdgeProps } from './utils'
 
 const BezierEdge = defineComponent<BezierEdgeProps>({
   name: 'BezierEdge',
+  // see StraightEdge: keep undeclared attrs (source/target/…) from leaking onto the <path>
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',
@@ -33,13 +36,7 @@ const BezierEdge = defineComponent<BezierEdgeProps>({
         targetPosition: props.targetPosition ?? Position.Top,
       })
 
-      return h(BaseEdge as any, {
-        path,
-        labelX,
-        labelY,
-        ...attrs,
-        ...props,
-      })
+      return h(BaseEdge as any, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
     }
   },
 })

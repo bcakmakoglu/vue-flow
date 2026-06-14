@@ -22,7 +22,9 @@ const transform = computed(() => `translate(${x - box.value.width / 2} ${y - box
 
 onMounted(getBox)
 
-watch([() => x, () => y, el, () => label], getBox)
+// the text's bounding box depends on its content/font, NOT its x/y position — re-measuring (getBBox forces
+// a reflow) on every move would thrash layout each drag frame for no change, so only watch el + label
+watch([el, () => label], getBox)
 
 function getBox() {
   if (!el.value) {
