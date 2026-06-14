@@ -64,6 +64,10 @@ function changelogSidebarEntries(): DefaultTheme.SidebarItem[] {
 export default defineConfigWithTheme<DefaultTheme.Config>({
   title: 'Vue Flow',
   description: 'Visualize your ideas with Vue Flow, a highly customizable Vue3 Flowchart library.',
+  // `/api-reference/*` is a legacy docs path baked into some `@xyflow/system` JSDoc `@link`s (now under
+  // `/typedocs`); those links are regenerated into the typedocs each build, so ignore that prefix only —
+  // every other dead link still fails the build.
+  ignoreDeadLinks: [/^\/api-reference\//],
   dir: 'ltr',
   lang: 'en-US',
   head: head as HeadConfig[],

@@ -28,7 +28,7 @@
     "dotenv": "^16.4.5",
     "ohmyfetch": "^0.4.21",
     "typedoc": "^0.26.11",
-    "typedoc-plugin-markdown": "^4.2.10",
+    "typedoc-plugin-markdown": "~4.2.10",
     "typedoc-plugin-merge-modules": "^6.0.3",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-icons": "^0.20.0",

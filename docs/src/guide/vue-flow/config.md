@@ -65,7 +65,7 @@ const toggleNodesDraggable = () => {
 
 ### nodes (optional)
 
-- Type: [`Node[]`](/typedocs/interfaces/Node)
+- Type: [`Node[]`](/typedocs/type-aliases/Node)
 
 - Details:
 

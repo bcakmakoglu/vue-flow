@@ -6,12 +6,7 @@
     "typedoc-plugin-markdown"
   ],
   "entryPoints": [
-    "../packages/core/src/index.ts",
-    "../packages/background/src/index.ts",
-    "../packages/controls/src/index.ts",
-    "../packages/minimap/src/index.ts",
-    "../packages/node-toolbar/src/index.ts",
-    "../packages/node-resizer/src/index.ts"
+    "../packages/core/src/index.ts"
   ],
   "categorizeByGroup": true,
   "darkHighlightTheme": "vitesse-dark",

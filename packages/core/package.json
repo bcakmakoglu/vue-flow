@@ -41,7 +41,8 @@
       "require": "./dist/vue-flow-core.js"
     },
     "./dist/style.css": "./dist/style.css",
-    "./dist/theme-default.css": "./dist/theme-default.css"
+    "./dist/theme-default.css": "./dist/theme-default.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
