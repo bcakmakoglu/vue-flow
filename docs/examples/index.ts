@@ -1,32 +1,33 @@
-import { BasicApp, BasicCSS, BasicElements, BasicIcon } from './basic'
+import { BasicApp, BasicCSS, BasicElements, BasicFlow, BasicIcon } from './basic'
 import { ColorPresets, ColorSelectorNode, CustomNodeApp, CustomNodeCSS, OutputNode } from './custom-node'
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline'
 import { CustomEdge, CustomEdgeLabel, EdgeCSS, EdgeWithButton, EdgesApp } from './edges'
 import { NestedApp } from './nested'
-import { StressApp, StressCSS, StressUtils } from './stress'
-import { UpdateEdgeApp } from './update-edge'
-import { UpdateNodeApp, UpdateNodeCSS } from './update-node'
-import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode } from './validation'
+import { StressApp, StressCSS, StressFlow, StressUtils } from './stress'
+import { UpdateEdgeApp, UpdateEdgeFlow } from './update-edge'
+import { UpdateNodeApp, UpdateNodeCSS, UpdateNodeFlow } from './update-node'
+import { ValidationApp, ValidationCSS, ValidationCustomInput, ValidationCustomNode, ValidationFlow } from './validation'
 import { SaveRestoreApp, SaveRestoreCSS, SaveRestoreControls, SaveRestoreIcon } from './save-restore'
-import { DndApp, DndBackground, DndCSS, DndScript, DndSidebar } from './dnd'
+import { DndApp, DndBackground, DndCSS, DndFlow, DndScript, DndSidebar } from './dnd'
 import { HiddenApp } from './hidden'
 import { InteractionApp, InteractionCSS, InteractionControls } from './interaction'
 import { MultiApp, MultiCSS, MultiFlow } from './multi'
 import { TeleportApp, TeleportCSS, TeleportSidebar, TeleportableNode, TeleportableUseTransition } from './teleport'
-import { TransitionApp, TransitionCSS, TransitionEdge } from './transition'
-import { IntersectionApp, IntersectionCSS } from './intersection'
+import { TransitionApp, TransitionCSS, TransitionEdge, TransitionFlow } from './transition'
+import { IntersectionApp, IntersectionCSS, IntersectionFlow } from './intersection'
 import { SnapToHandleApp, SnappableConnectionLine } from './connection-radius'
 import { NodeResizerApp, ResizableNode } from './node-resizer'
 import { ToolbarApp, ToolbarNode } from './node-toolbar'
-import { LayoutApp, LayoutEdge, LayoutElements, LayoutIcon, LayoutNode, useLayout, useRunProcess } from './layout'
-import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutIcon, useSimpleLayout } from './layout-simple'
-import { LoopbackApp, LoopbackCSS, LoopbackEdge } from './loopback'
+import { LayoutApp, LayoutEdge, LayoutElements, LayoutFlow, LayoutIcon, LayoutNode, useLayout, useRunProcess } from './layout'
+import { SimpleLayoutApp, SimpleLayoutElements, SimpleLayoutFlow, SimpleLayoutIcon, useSimpleLayout } from './layout-simple'
+import { LoopbackApp, LoopbackCSS, LoopbackEdge, LoopbackFlow } from './loopback'
 import { MathApp, MathCSS, MathElements, MathIcon, MathOperatorNode, MathResultNode, MathValueNode } from './math'
-import { ConfirmApp, ConfirmDialog, useDialog } from './confirm-delete'
+import { ConfirmApp, ConfirmDialog, ConfirmFlow, useDialog } from './confirm-delete'
 import { EdgeMarkersApp, EdgeMarkersCSS, EdgeMarkersEdge, EdgeMarkersMarker } from './edge-markers'
 import {
   HelperLinesApp,
   HelperLinesComponent,
+  HelperLinesFlow,
   HelperLinesInitialElements,
   HelperLinesStyle,
   HelperLinesUtils,
@@ -35,6 +36,7 @@ import {
 export const exampleImports = {
   basic: {
     'App.vue': BasicApp,
+    'Flow.vue': BasicFlow,
     'Icon.vue': BasicIcon,
     'initial-elements.js': BasicElements,
     'style.css': BasicCSS,
@@ -62,18 +64,22 @@ export const exampleImports = {
   },
   stress: {
     'App.vue': StressApp,
+    'Flow.vue': StressFlow,
     'utils.js': StressUtils,
     'style.css': StressCSS,
   },
   reconnectEdge: {
     'App.vue': UpdateEdgeApp,
+    'Flow.vue': UpdateEdgeFlow,
   },
   updateNode: {
     'App.vue': UpdateNodeApp,
+    'Flow.vue': UpdateNodeFlow,
     'style.css': UpdateNodeCSS,
   },
   validation: {
     'App.vue': ValidationApp,
+    'Flow.vue': ValidationFlow,
     'CustomInput.vue': ValidationCustomInput,
     'CustomNode.vue': ValidationCustomNode,
     'style.css': ValidationCSS,
@@ -86,6 +92,7 @@ export const exampleImports = {
   },
   dnd: {
     'App.vue': DndApp,
+    'Flow.vue': DndFlow,
     'Sidebar.vue': DndSidebar,
     'DropzoneBackground.vue': DndBackground,
     'style.css': DndCSS,
@@ -113,6 +120,7 @@ export const exampleImports = {
   },
   transition: {
     'App.vue': TransitionApp,
+    'Flow.vue': TransitionFlow,
     'TransitionEdge.vue': TransitionEdge,
     'style.css': TransitionCSS,
     'additionalImports': {
@@ -123,6 +131,7 @@ export const exampleImports = {
   },
   intersection: {
     'App.vue': IntersectionApp,
+    'Flow.vue': IntersectionFlow,
     'style.css': IntersectionCSS,
   },
   snappable: {
@@ -139,6 +148,7 @@ export const exampleImports = {
   },
   layout: {
     'App.vue': LayoutApp,
+    'Flow.vue': LayoutFlow,
     'initial-elements.js': LayoutElements,
     'ProcessNode.vue': LayoutNode,
     'AnimationEdge.vue': LayoutEdge,
@@ -151,6 +161,7 @@ export const exampleImports = {
   },
   layoutSimple: {
     'App.vue': SimpleLayoutApp,
+    'Flow.vue': SimpleLayoutFlow,
     'initial-elements.js': SimpleLayoutElements,
     'useLayout.js': useSimpleLayout,
     'Icon.vue': SimpleLayoutIcon,
@@ -169,11 +180,13 @@ export const exampleImports = {
   },
   confirmDelete: {
     'App.vue': ConfirmApp,
+    'Flow.vue': ConfirmFlow,
     'Dialog.vue': ConfirmDialog,
     'useDialog.js': useDialog,
   },
   loopback: {
     'App.vue': LoopbackApp,
+    'Flow.vue': LoopbackFlow,
     'LoopbackEdge.vue': LoopbackEdge,
     'style.css': LoopbackCSS,
   },
@@ -185,6 +198,7 @@ export const exampleImports = {
   },
   helperLines: {
     'App.vue': HelperLinesApp,
+    'Flow.vue': HelperLinesFlow,
     'HelperLines.vue': HelperLinesComponent,
     'utils.ts': HelperLinesUtils,
     'initialElements.ts': HelperLinesInitialElements,

@@ -50,7 +50,7 @@ for (const example of Object.keys(imports).filter((i) => i !== 'additionalImport
   }
 }
 
-await store.setVueVersion('3.4.27')
+await store.setVueVersion('3.5.0')
 
 await store.setFiles(
   {

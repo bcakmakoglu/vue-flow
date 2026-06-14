@@ -11,7 +11,7 @@ for specific edges by using the `reconnectable` attribute.
 <div class="mt-6">
   <ClientOnly>
     <Suspense>
-      <Repl example="updateEdge"></Repl>
+      <Repl example="reconnectEdge"></Repl>
     </Suspense>
   </ClientOnly>
 </div>
