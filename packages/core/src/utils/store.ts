@@ -15,7 +15,7 @@ import type {
   NodeOrigin,
   State,
   ValidConnectionFunc,
-  VueFlowStore,
+  VueFlowInstance,
 } from '../types'
 import { ErrorCode, VueFlowError, connectionExists, isEdge, isNode } from '.'
 
@@ -240,7 +240,7 @@ export function validateEdges<EdgeType extends Edge = Edge>(
   nextEdges: (EdgeType | Connection)[],
   isValidConnection: ValidConnectionFunc | null,
   getInternalNode: Actions['getInternalNode'],
-  onError: VueFlowStore['emits']['error'],
+  onError: VueFlowInstance['emits']['error'],
   defaultEdgeOptions: DefaultEdgeOptions | undefined,
   nodes: Node[],
   edges: EdgeType[],

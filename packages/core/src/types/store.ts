@@ -380,12 +380,6 @@ export type VueFlowInstance<NodeType extends Node = Node, EdgeType extends Edge 
   Readonly<ComputedGetters<NodeType, EdgeType>> &
   Readonly<Actions<NodeType, EdgeType>>
 
-/**
- * @deprecated the `useVueFlow()` return is now the curated {@link VueFlowInstance}; raw state moved to
- * `useStore()` ({@link VueFlowState}). Kept as an alias of the instance for the `<VueFlow>` template-ref type.
- */
-export type VueFlowStore<NodeType extends Node = Node, EdgeType extends Edge = Edge> = VueFlowInstance<NodeType, EdgeType>
-
 /** Internal handle bundling the two views a created store exposes; provided to descendants. */
 export interface VueFlowStoreHandle<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
   instance: VueFlowInstance<NodeType, EdgeType>

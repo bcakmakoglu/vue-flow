@@ -16,7 +16,7 @@ import type { EdgeTypesObject, NodeTypesObject } from './components'
 import type { EdgeMouseEvent, EdgeReconnectEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
 import type { ValidConnectionFunc } from './handle'
 import type { EdgeChange, NodeChange } from './changes'
-import type { VueFlowStore } from './store'
+import type { VueFlowInstance } from './store'
 import type { FitViewParams } from './zoom'
 
 // todo: should be object type
@@ -221,7 +221,7 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   (event: 'viewportChangeStart', viewport: Viewport): void
   (event: 'viewportChange', viewport: Viewport): void
   (event: 'viewportChangeEnd', viewport: Viewport): void
-  (event: 'init', paneEvent: VueFlowStore): void
+  (event: 'init', paneEvent: VueFlowInstance<NodeType, EdgeType>): void
   (event: 'paneScroll', paneEvent: WheelEvent | undefined): void
   (event: 'paneClick', paneEvent: MouseEvent): void
   (event: 'paneContextMenu', paneEvent: MouseEvent): void
