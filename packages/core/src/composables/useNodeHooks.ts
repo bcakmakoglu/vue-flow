@@ -1,4 +1,4 @@
-import type { NodeEventsEmit, VueFlowStore } from '../types'
+import type { NodeEventsEmit, VueFlowInstance } from '../types'
 import { createExtendedEventHook } from '../utils'
 
 function createNodeHooks() {
@@ -20,7 +20,7 @@ function createNodeHooks() {
  *
  * @internal
  */
-export function useNodeHooks(emits: VueFlowStore['emits']): { emit: NodeEventsEmit } {
+export function useNodeHooks(emits: VueFlowInstance['emits']): { emit: NodeEventsEmit } {
   const nodeHooks = createNodeHooks()
 
   nodeHooks.doubleClick.on((event) => {

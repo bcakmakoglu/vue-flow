@@ -4,7 +4,7 @@ import type { Edge } from './edge'
 import type { Node } from './node'
 import type { Connection, OnConnectStartParams } from './connection'
 import type { EdgeChange, NodeChange } from './changes'
-import type { VueFlowStore } from './store'
+import type { VueFlowInstance } from './store'
 
 export type MouseTouchEvent = MouseEvent | TouchEvent
 
@@ -58,7 +58,7 @@ export interface FlowEvents<NodeType extends Node = Node, EdgeType extends Edge 
     event?: MouseEvent | TouchEvent
   } & OnConnectStartParams
   clickConnectEnd: MouseEvent | TouchEvent | undefined
-  init: VueFlowStore<NodeType, EdgeType>
+  init: VueFlowInstance<NodeType, EdgeType>
   move: { event: MouseTouchEvent | null; viewport: Viewport }
   moveStart: { event: MouseTouchEvent | null; viewport: Viewport }
   moveEnd: { event: MouseTouchEvent | null; viewport: Viewport }

@@ -1,5 +1,5 @@
 import { watch } from 'vue'
-import type { Edge, Node, VueFlowStore } from '../types'
+import type { Edge, Node } from '../types'
 import { useVueFlow } from './useVueFlow'
 
 /**
@@ -12,14 +12,13 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useOnInitHandler<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
-  vfInstance: VueFlowStore<NodeType, EdgeType> = useVueFlow<NodeType, EdgeType>(),
+  vfInstance = useVueFlow<NodeType, EdgeType>(),
 ) {
   watch(
     () => vfInstance.viewportHelper.value.viewportInitialized,
     (isInitialized) => {
       if (isInitialized) {
         setTimeout(() => {
-          // `init` hook payload is the non-generic `VueFlowStore`; erase the `NodeType` generic here.
           vfInstance.emits.init(vfInstance)
         }, 1)
       }
