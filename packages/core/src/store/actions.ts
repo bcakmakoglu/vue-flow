@@ -201,8 +201,8 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // its `isCoordinateExtent` treats any non-`'parent'`/non-nullish value as a coordinate-extent array,
     // so it would index `extent[0]` on the range object and crash. Transiently coerce such extents to
     // their `range` (`'parent'` or a plain `CoordinateExtent`, both system-understood) for the system
-    // pass and restore afterwards. NOTE: the range `padding` is not applied by the system clamp — a
-    // known limitation tracked for follow-up (vue-flow's padded-parent-extent is richer than system's).
+    // pass and restore afterwards. The system clamp can't express the range `padding`, so it's re-applied
+    // separately in the padding-clamp pass below (after absolute positions are fresh).
     // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `GraphNode`
     // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
     // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
