@@ -22,6 +22,16 @@ import type { FitViewParams } from './zoom'
 // todo: should be object type
 export type ElementData = any
 
+/**
+ * Consulted before nodes/edges are deleted (via the delete key or `deleteElements`). Receives the full set
+ * about to be removed (the targeted nodes/edges plus connected edges and child nodes). Return `false` to
+ * cancel, `true` to delete that set, or `{ nodes, edges }` to delete only a subset. Mirrors xyflow/react.
+ */
+export type OnBeforeDelete<NodeType extends Node = Node, EdgeType extends Edge = Edge> = (params: {
+  nodes: NodeType[]
+  edges: EdgeType[]
+}) => Promise<boolean | { nodes: NodeType[]; edges: EdgeType[] }>
+
 export interface CustomThemeVars {
   [key: string]: string | number | undefined
 }
@@ -103,6 +113,8 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   connectionLineOptions?: ConnectionLineOptions
   connectionRadius?: number
   isValidConnection?: ValidConnectionFunc | null
+  /** consulted before delete-key/`deleteElements` removals — cancel, confirm, or filter the set */
+  onBeforeDelete?: OnBeforeDelete<NodeType, EdgeType> | null
   deleteKeyCode?: KeyFilter | null
   selectionKeyCode?: KeyFilter | null
   multiSelectionKeyCode?: KeyFilter | null

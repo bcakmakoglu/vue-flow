@@ -11,7 +11,7 @@ import { getMousePosition } from './utils'
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()
 
-const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, removeNodes, removeEdges } =
+const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } =
   useVueFlow()
 
 const { edgeLookup, nodeLookup } = useStore()
@@ -58,9 +58,11 @@ watch(deleteKeyPressed, (isKeyPressed) => {
     return
   }
 
-  removeNodes(getSelectedNodes.value as unknown as Node[])
-
-  removeEdges(getSelectedEdges.value as unknown as Edge[])
+  // routed through `deleteElements` so the `onBeforeDelete` guard (cancel/confirm/filter) is consulted
+  deleteElements({
+    nodes: getSelectedNodes.value as unknown as Node[],
+    edges: getSelectedEdges.value as unknown as Edge[],
+  })
 
   nodesSelectionActive.value = false
 })

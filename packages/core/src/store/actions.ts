@@ -5,6 +5,7 @@ import {
   clampPositionToParent,
   getConnectedEdges as getConnectedEdgesBase,
   getDimensions,
+  getElementsToRemove,
   getHandleBounds,
   getOverlappingArea,
   handleExpandParent,
@@ -734,6 +735,32 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     state.hooks.edgesChange.trigger(changes)
   }
 
+  const deleteElements: Actions<NodeType, EdgeType>['deleteElements'] = async ({ nodes = [], edges = [] }) => {
+    // `getElementsToRemove` (xyflow/system) gathers the full set — the targeted nodes + their child nodes,
+    // plus connected + explicitly-listed edges, skipping `deletable: false` — then consults `onBeforeDelete`
+    // and returns the elements that should actually be removed (`false` → none, an object → that subset).
+    const { nodes: matchingNodes, edges: matchingEdges } = await getElementsToRemove<NodeType, EdgeType>({
+      nodesToRemove: nodes,
+      edgesToRemove: edges,
+      nodes: state.nodes,
+      edges: state.edges,
+      onBeforeDelete: state.onBeforeDelete ?? undefined,
+    })
+
+    // remove exactly that set: `matchingNodes` already includes children and `matchingEdges` the connected
+    // edges (both reflecting any `onBeforeDelete` filtering), so tell `removeNodes` NOT to also pull in
+    // connected edges/children — that would bypass an `onBeforeDelete` that chose to keep some.
+    if (matchingNodes.length) {
+      removeNodes(matchingNodes, false, false)
+    }
+
+    if (matchingEdges.length) {
+      removeEdges(matchingEdges)
+    }
+
+    return { deletedNodes: matchingNodes, deletedEdges: matchingEdges }
+  }
+
   const reconnectEdge: Actions<NodeType, EdgeType>['reconnectEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
     const prevEdge = getEdge(oldEdge.id)
 
@@ -1068,6 +1095,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     addEdges,
     removeNodes,
     removeEdges,
+    deleteElements,
     getNode,
     getInternalNode,
     getEdge,
