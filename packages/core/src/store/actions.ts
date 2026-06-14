@@ -1,18 +1,3 @@
-import { markRaw, toRaw } from 'vue'
-import {
-  clampPosition,
-  clampPositionToParent,
-  getConnectedEdges as getConnectedEdgesBase,
-  getDimensions,
-  getElementsToRemove,
-  getHandleBounds,
-  getOverlappingArea,
-  handleExpandParent,
-  isRectObject,
-  nodeToRect,
-  panBy as panBySystem,
-  updateAbsolutePositions,
-} from '@xyflow/system'
 import type {
   Actions,
   CoordinateExtent,
@@ -32,8 +17,23 @@ import type {
   NodeRemoveChange,
   Rect,
   State,
-} from '../types'
-import { useViewportHelper } from '../composables'
+} from '../types';
+import {
+  clampPosition,
+  clampPositionToParent,
+  getConnectedEdges as getConnectedEdgesBase,
+  getDimensions,
+  getElementsToRemove,
+  getHandleBounds,
+  getOverlappingArea,
+  handleExpandParent,
+  isRectObject,
+  nodeToRect,
+  panBy as panBySystem,
+  updateAbsolutePositions,
+} from '@xyflow/system';
+import { markRaw, toRaw } from 'vue';
+import { useViewportHelper } from '../composables';
 import {
   adoptNodes,
   applyChanges,
@@ -50,8 +50,8 @@ import {
   reconnectEdgeAction,
   updateConnectionLookup,
   validateEdges,
-} from '../utils'
-import { storeOptionsToSkip, useState } from './state'
+} from '../utils';
+import { storeOptionsToSkip, useState } from './state';
 
 export function useActions<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   state: State<NodeType, EdgeType>,
@@ -59,7 +59,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   parentLookup: Map<string, Map<string, GraphNode<NodeType>>>,
   edgeLookup: EdgeLookup<EdgeType>,
 ): Actions<NodeType, EdgeType> {
-  const viewportHelper = useViewportHelper(state, nodeLookup)
+  const viewportHelper = useViewportHelper(state, nodeLookup);
 
   // The system-facing twins of the reactive lookups. `@xyflow/system`'s `adoptUserNodes` re-adopts by
   // clearing + refilling the lookup it's given — on a `reactive(Map)` that's an O(n) trigger storm per
@@ -68,26 +68,26 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   // `checkEquality` reuse intact); `syncLookups` then mirrors the result into the reactive lookups with
   // targeted `.set`/`.delete`, so only entries whose `InternalNode` reference actually changed trigger —
   // per-frame render invalidation stays O(changed) instead of O(n).
-  const systemNodeLookup: NodeLookup<NodeType> = new Map()
-  const systemParentLookup: Map<string, Map<string, GraphNode<NodeType>>> = new Map()
+  const systemNodeLookup: NodeLookup<NodeType> = new Map();
+  const systemParentLookup: Map<string, Map<string, GraphNode<NodeType>>> = new Map();
 
   function sameMapEntries<K, V>(a: Map<K, V>, b: Map<K, V>) {
     if (a.size !== b.size) {
-      return false
+      return false;
     }
 
     for (const [key, value] of a) {
       if (b.get(key) !== value) {
-        return false
+        return false;
       }
     }
 
-    return true
+    return true;
   }
 
   /** Mirror the system lookups into the reactive ones, touching only entries that actually changed. */
   function syncLookups() {
-    const rawNodeLookup = toRaw(nodeLookup)
+    const rawNodeLookup = toRaw(nodeLookup);
 
     for (const [id, internal] of systemNodeLookup) {
       if (rawNodeLookup.get(id) !== internal) {
@@ -95,33 +95,33 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         // changed nodes as fresh plain objects and `updateAbsolutePositions` clones moved children, and
         // without the mark the reactive lookup would deep-proxy them on read. The per-node render
         // computed still re-renders on the `.set` (key-level reactivity is independent of value markRaw).
-        nodeLookup.set(id, markRaw(internal))
+        nodeLookup.set(id, markRaw(internal));
       }
     }
 
     if (rawNodeLookup.size !== systemNodeLookup.size) {
       for (const id of rawNodeLookup.keys()) {
         if (!systemNodeLookup.has(id)) {
-          nodeLookup.delete(id)
+          nodeLookup.delete(id);
         }
       }
     }
 
     // adoption rebuilds every nested child-map instance, so compare content — blindly re-setting an
     // unchanged entry would re-trigger every `parentLookup` subscriber each frame
-    const rawParentLookup = toRaw(parentLookup)
+    const rawParentLookup = toRaw(parentLookup);
 
     for (const [parentId, children] of systemParentLookup) {
-      const prev = rawParentLookup.get(parentId)
+      const prev = rawParentLookup.get(parentId);
       if (!prev || !sameMapEntries(prev, children)) {
-        parentLookup.set(parentId, children)
+        parentLookup.set(parentId, children);
       }
     }
 
     if (rawParentLookup.size !== systemParentLookup.size) {
       for (const parentId of rawParentLookup.keys()) {
         if (!systemParentLookup.has(parentId)) {
-          parentLookup.delete(parentId)
+          parentLookup.delete(parentId);
         }
       }
     }
@@ -143,9 +143,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       nodeOrigin: state.nodeOrigin,
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
-    })
+    });
 
-    recomputeAbsolutePositions()
+    recomputeAbsolutePositions();
   }
 
   /**
@@ -157,33 +157,33 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   function commitEdges(next: EdgeType[]) {
     // targeted sync instead of clear+refill: clearing a `reactive(Map)` invalidates every edge
     // subscriber even when a single edge changed
-    const rawEdgeLookup = toRaw(edgeLookup)
+    const rawEdgeLookup = toRaw(edgeLookup);
 
     for (let i = 0; i < next.length; i++) {
-      const edge = (next[i] = markRaw(toRaw(next[i])))
+      const edge = (next[i] = markRaw(toRaw(next[i])));
       if (rawEdgeLookup.get(edge.id) !== edge) {
-        edgeLookup.set(edge.id, edge)
+        edgeLookup.set(edge.id, edge);
       }
     }
 
     if (rawEdgeLookup.size !== next.length) {
-      const nextIds = new Set<string>()
+      const nextIds = new Set<string>();
       for (const edge of next) {
-        nextIds.add(edge.id)
+        nextIds.add(edge.id);
       }
 
       for (const id of rawEdgeLookup.keys()) {
         if (!nextIds.has(id)) {
-          edgeLookup.delete(id)
+          edgeLookup.delete(id);
         }
       }
     }
 
-    state.edges = next
+    state.edges = next;
 
     // the connection lookup derives 1:1 from the edges array — rebuilding it here keeps every write
     // path (setEdges/applyEdgeChanges/reconnectEdge/$reset) consistent by construction
-    updateConnectionLookup(state.connectionLookup, state.edges)
+    updateConnectionLookup(state.connectionLookup, state.edges);
   }
 
   /**
@@ -207,12 +207,12 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
     // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
     // type can't express this without breaking system compat. We restore the original extent after.
-    const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = []
+    const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = [];
     for (const node of systemNodeLookup.values()) {
-      const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+      const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
       if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
-        coercedExtents.push({ node, extent: node.extent })
-        node.extent = extent.range
+        coercedExtents.push({ node, extent: node.extent });
+        node.extent = extent.range;
       }
     }
 
@@ -226,11 +226,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         nodeOrigin: state.nodeOrigin,
         nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
         elevateNodesOnSelect: state.elevateNodesOnSelect,
-      })
+      });
     }
 
     for (const { node, extent } of coercedExtents) {
-      node.extent = extent
+      node.extent = extent;
     }
 
     // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
@@ -242,22 +242,22 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // and `expandParent` nodes are skipped (they grow the parent instead of being clamped into it).
     for (const { node } of coercedExtents) {
       if (node.expandParent) {
-        continue
+        continue;
       }
 
-      const parent = node.parentId ? systemNodeLookup.get(node.parentId) : undefined
+      const parent = node.parentId ? systemNodeLookup.get(node.parentId) : undefined;
 
       // The padding clamp needs measured dimensions: `getExtent` indexes into the computed extent array
       // and would throw on the unmeasured fallback (the global extent may be undefined). Skip until the
       // node — and, for a `'parent'` range, its parent — are measured; the next recompute (triggered by
       // `updateNodeDimensions` once dimensions land) re-runs this.
       if (!node.measured?.width || !node.measured?.height) {
-        continue
+        continue;
       }
 
-      const extent = node.extent as unknown as CoordinateExtentRange
+      const extent = node.extent as unknown as CoordinateExtentRange;
       if (extent.range === 'parent' && (!parent?.measured?.width || !parent?.measured?.height)) {
-        continue
+        continue;
       }
 
       const { position, computedPosition } = calcNextPosition(
@@ -266,90 +266,90 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         state.hooks.error.trigger,
         state.nodeExtent,
         parent,
-      )
+      );
 
-      node.position = position
+      node.position = position;
       node.internals.positionAbsolute = computedPosition
       // mirror the padding-clamped position onto the user node (the canonical array element) so v-model /
       // getNodes reflect it (the InternalNode's `position` is internal-only otherwise).
-      ;(node.internals.userNode as Node).position = position
+      ;(node.internals.userNode as Node).position = position;
     }
 
-    syncLookups()
+    syncLookups();
   }
 
   const updateNodeInternals: Actions<NodeType>['updateNodeInternals'] = (ids) => {
-    const updateIds = ids ?? []
+    const updateIds = ids ?? [];
 
-    state.hooks.updateNodeInternals.trigger(updateIds)
-  }
+    state.hooks.updateNodeInternals.trigger(updateIds);
+  };
 
   const getConnectedEdges: Actions<NodeType, EdgeType>['getConnectedEdges'] = (nodes) => {
-    return getConnectedEdgesBase(nodes, state.edges)
-  }
+    return getConnectedEdgesBase(nodes, state.edges);
+  };
 
   const getHandleConnections: Actions['getHandleConnections'] = ({ id, type, nodeId }) => {
-    const handleSuffix = id ? `-${type}-${id}` : `-${type}`
-    return Array.from(state.connectionLookup.get(`${nodeId}${handleSuffix}`)?.values() ?? [])
-  }
+    const handleSuffix = id ? `-${type}-${id}` : `-${type}`;
+    return Array.from(state.connectionLookup.get(`${nodeId}${handleSuffix}`)?.values() ?? []);
+  };
 
   const getNode: Actions<NodeType>['getNode'] = (id) => {
     if (!id) {
-      return
+      return;
     }
 
     // The public contract: `getNode` returns the user-facing `Node` (the exact object held in
     // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
     // data (internals/measured) is reached via `getInternalNode`. Don't mutate the result in place — it
     // won't propagate; use the helpers (updateNode/applyNodeChanges/setNodes).
-    return nodeLookup.get(id)?.internals.userNode as NodeType | undefined
-  }
+    return nodeLookup.get(id)?.internals.userNode as NodeType | undefined;
+  };
 
   // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
   // `internals`/`measured`), whereas `getNode` returns the user-facing `Node` (`internals.userNode`).
   // Internal call sites that need `internals`/`measured` use this.
   const getInternalNode: Actions<NodeType>['getInternalNode'] = (id) => {
     if (!id) {
-      return
+      return;
     }
 
-    return nodeLookup.get(id)
-  }
+    return nodeLookup.get(id);
+  };
 
   const getEdge: Actions<NodeType, EdgeType>['getEdge'] = (id) => {
     if (!id) {
-      return
+      return;
     }
 
-    return edgeLookup.get(id)
-  }
+    return edgeLookup.get(id);
+  };
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
-    const changes: (NodePositionChange | NodeDimensionChange)[] = []
-    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = []
+    const changes: (NodePositionChange | NodeDimensionChange)[] = [];
+    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = [];
 
     for (const node of dragItems) {
       // read `expandParent`/`parentId` from the canonical node: drag items carry them, but keyboard-move
       // items (from `useUpdateNodePositions`) do not.
-      const lookupNode = getNode(node.id)
-      const expandParentId = lookupNode?.expandParent ? lookupNode.parentId : undefined
+      const lookupNode = getNode(node.id);
+      const expandParentId = lookupNode?.expandParent ? lookupNode.parentId : undefined;
 
       const change: NodePositionChange = {
         id: node.id,
         type: 'position',
         dragging,
         positionAbsolute: node.internals.positionAbsolute,
-      }
+      };
 
       if (changed) {
         // drag items already carry the parent-RELATIVE position: XYDrag's `calculateNodePosition` and the
         // keyboard path's `calcNextPosition` both subtract the parent offset before handing items here.
-        change.position = node.position
+        change.position = node.position;
 
         if (expandParentId) {
           // pin the child's relative position to >= 0; the parent grows to contain it instead
           // (xyflow/react clamps the same way before collecting the child for expansion).
-          change.position = { x: Math.max(0, change.position.x), y: Math.max(0, change.position.y) }
+          change.position = { x: Math.max(0, change.position.x), y: Math.max(0, change.position.y) };
 
           parentExpandChildren.push({
             id: node.id,
@@ -359,69 +359,69 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
               width: node.measured?.width ?? 0,
               height: node.measured?.height ?? 0,
             },
-          })
+          });
         }
       }
 
-      changes.push(change)
+      changes.push(change);
     }
 
     // grow each parent to fit its `expandParent` children — system returns the parent's position +
     // dimension changes plus counter-offsets for the other children, applied through the same pipeline.
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin));
     }
 
     if (changes.length) {
-      state.hooks.nodesChange.trigger(changes)
+      state.hooks.nodesChange.trigger(changes);
     }
-  }
+  };
 
   const updateNodeDimensions: Actions<NodeType>['updateNodeDimensions'] = (updates) => {
     if (!state.vueFlowRef) {
-      return
+      return;
     }
 
-    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane') as HTMLElement
+    const viewportNode = state.vueFlowRef.querySelector('.vue-flow__transformationpane') as HTMLElement;
 
     if (!viewportNode) {
-      return
+      return;
     }
 
-    const style = window.getComputedStyle(viewportNode)
-    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform)
+    const style = window.getComputedStyle(viewportNode);
+    const { m22: zoom } = new window.DOMMatrixReadOnly(style.transform);
 
-    const changes: (NodeDimensionChange | NodePositionChange)[] = []
-    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = []
+    const changes: (NodeDimensionChange | NodePositionChange)[] = [];
+    const parentExpandChildren: { id: string; parentId: string; rect: Rect }[] = [];
 
     for (const element of updates) {
-      const update = element
+      const update = element;
 
-      const node = getInternalNode(update.id)
+      const node = getInternalNode(update.id);
 
       if (node) {
-        const dimensions = getDimensions(update.nodeElement)
+        const dimensions = getDimensions(update.nodeElement);
 
         const doUpdate = !!(
-          dimensions.width &&
-          dimensions.height &&
-          (node.measured.width !== dimensions.width || node.measured.height !== dimensions.height || update.forceUpdate)
-        )
+          dimensions.width
+          && dimensions.height
+          && (node.measured.width !== dimensions.width || node.measured.height !== dimensions.height || update.forceUpdate)
+        );
 
         if (doUpdate) {
-          const nodeBounds = update.nodeElement.getBoundingClientRect()
-          node.measured = { width: dimensions.width, height: dimensions.height }
+          const nodeBounds = update.nodeElement.getBoundingClientRect();
+          node.measured = { width: dimensions.width, height: dimensions.height };
           if (!node.internals.handleBounds) {
-            node.internals.handleBounds = { source: null, target: null }
+            node.internals.handleBounds = { source: null, target: null };
           }
-          node.internals.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id)
-          node.internals.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id)
+          node.internals.handleBounds.source = getHandleBounds('source', update.nodeElement, nodeBounds, zoom, node.id);
+          node.internals.handleBounds.target = getHandleBounds('target', update.nodeElement, nodeBounds, zoom, node.id);
 
           changes.push({
             id: node.id,
             type: 'dimensions',
             dimensions,
-          })
+          });
 
           // a freshly-measured `expandParent` child grows its parent to fit (mirrors system's own
           // `updateNodeDimensions`). Unlike the drag path (where the position is the user's target), here
@@ -429,36 +429,39 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           // the node's extent BEFORE measuring expansion, exactly as system does. Otherwise a node that
           // merely grew would be treated as overflowing and the parent would expand more than necessary.
           if (node.expandParent && node.parentId) {
-            const parent = getInternalNode(node.parentId)
-            let positionAbsolute = node.internals.positionAbsolute
-            const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+            const parent = getInternalNode(node.parentId);
+            let positionAbsolute = node.internals.positionAbsolute;
+            const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
 
             if (extent === 'parent' && parent) {
-              positionAbsolute = clampPositionToParent(positionAbsolute, dimensions, parent)
-            } else if (Array.isArray(extent)) {
-              positionAbsolute = clampPosition(positionAbsolute, extent, dimensions)
-            } else if (
-              extent &&
-              typeof extent === 'object' &&
-              'range' in extent &&
-              parent?.measured.width &&
-              parent.measured.height
+              positionAbsolute = clampPositionToParent(positionAbsolute, dimensions, parent);
+            }
+            else if (Array.isArray(extent)) {
+              positionAbsolute = clampPosition(positionAbsolute, extent, dimensions);
+            }
+            else if (
+              extent
+              && typeof extent === 'object'
+              && 'range' in extent
+              && parent?.measured.width
+              && parent.measured.height
             ) {
               // vue-flow range form → its padded coordinate extent
               positionAbsolute = clampPosition(
                 positionAbsolute,
                 getExtent(node, state.hooks.error.trigger, state.nodeExtent, parent),
                 dimensions,
-              )
-            } else if (Array.isArray(state.nodeExtent)) {
-              positionAbsolute = clampPosition(positionAbsolute, state.nodeExtent, dimensions)
+              );
+            }
+            else if (Array.isArray(state.nodeExtent)) {
+              positionAbsolute = clampPosition(positionAbsolute, state.nodeExtent, dimensions);
             }
 
             parentExpandChildren.push({
               id: node.id,
               parentId: node.parentId,
               rect: { ...positionAbsolute, width: dimensions.width, height: dimensions.height },
-            })
+            });
           }
 
           // Re-set a fresh entry so the markRaw lookup re-renders this node — in-place `measured`/
@@ -467,116 +470,116 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           // (the 'dimensions' change additionally flows `measured` onto the user node via re-adopt).
           // The fresh entry goes into BOTH maps: the system map is what `adoptUserNodes` reuses via
           // `checkEquality`, so leaving the old object there would let the maps' references diverge.
-          const fresh = markRaw({ ...toRaw(node) })
-          systemNodeLookup.set(node.id, fresh)
-          nodeLookup.set(node.id, fresh)
+          const fresh = markRaw({ ...toRaw(node) });
+          systemNodeLookup.set(node.id, fresh);
+          nodeLookup.set(node.id, fresh);
         }
       }
     }
 
     if (parentExpandChildren.length > 0) {
-      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin))
+      changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin));
     }
 
     if (!state.fitViewOnInitDone && state.fitViewOnInit) {
       viewportHelper.value.fitView(state.fitViewOptions).then(() => {
-        state.fitViewOnInitDone = true
-      })
+        state.fitViewOnInitDone = true;
+      });
     }
 
     if (changes.length) {
-      state.hooks.nodesChange.trigger(changes)
+      state.hooks.nodesChange.trigger(changes);
     }
-  }
+  };
 
   const addSelectedNodes: Actions<NodeType>['addSelectedNodes'] = (nodes) => {
     if (state.multiSelectionActive) {
-      const nodeChanges = nodes.map((node) => createSelectionChange(node.id, true))
-      state.hooks.nodesChange.trigger(nodeChanges)
-      return
+      const nodeChanges = nodes.map(node => createSelectionChange(node.id, true));
+      state.hooks.nodesChange.trigger(nodeChanges);
+      return;
     }
 
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map((n) => n.id))))
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup))
-  }
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set(nodes.map(n => n.id))));
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup));
+  };
 
   const addSelectedEdges: Actions<NodeType, EdgeType>['addSelectedEdges'] = (edges) => {
     if (state.multiSelectionActive) {
-      const changedEdges = edges.map((edge) => createSelectionChange(edge.id, true))
-      state.hooks.edgesChange.trigger(changedEdges as EdgeSelectionChange[])
-      return
+      const changedEdges = edges.map(edge => createSelectionChange(edge.id, true));
+      state.hooks.edgesChange.trigger(changedEdges as EdgeSelectionChange[]);
+      return;
     }
 
-    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup, new Set(edges.map((e) => e.id))))
-    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set()))
-  }
+    state.hooks.edgesChange.trigger(getSelectionChanges(edgeLookup, new Set(edges.map(e => e.id))));
+    state.hooks.nodesChange.trigger(getSelectionChanges(nodeLookup, new Set()));
+  };
 
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
-    const nodesToUnselect = nodes || state.nodes
+    const nodesToUnselect = nodes || state.nodes;
 
     // emit select=false changes only — `applyNodeChanges` applies them immutably + re-adopts. (No in-place
     // `n.selected = false`: it would keep the node's reference, so the re-adopt would reuse the stale entry.)
-    const nodeChanges = nodesToUnselect.map((n) => createSelectionChange(n.id, false))
+    const nodeChanges = nodesToUnselect.map(n => createSelectionChange(n.id, false));
 
-    state.hooks.nodesChange.trigger(nodeChanges)
-  }
+    state.hooks.nodesChange.trigger(nodeChanges);
+  };
 
   const removeSelectedEdges: Actions<NodeType, EdgeType>['removeSelectedEdges'] = (edges) => {
-    const edgesToUnselect = edges || state.edges
+    const edgesToUnselect = edges || state.edges;
 
-    const edgeChanges = edgesToUnselect.map((e) => createSelectionChange(e.id, false))
+    const edgeChanges = edgesToUnselect.map(e => createSelectionChange(e.id, false));
 
-    state.hooks.edgesChange.trigger(edgeChanges)
-  }
+    state.hooks.edgesChange.trigger(edgeChanges);
+  };
 
   const setMinZoom: Actions<NodeType>['setMinZoom'] = (minZoom) => {
-    state.panZoom?.setScaleExtent([minZoom, state.maxZoom])
-    state.minZoom = minZoom
-  }
+    state.panZoom?.setScaleExtent([minZoom, state.maxZoom]);
+    state.minZoom = minZoom;
+  };
 
   const setMaxZoom: Actions<NodeType>['setMaxZoom'] = (maxZoom) => {
-    state.panZoom?.setScaleExtent([state.minZoom, maxZoom])
-    state.maxZoom = maxZoom
-  }
+    state.panZoom?.setScaleExtent([state.minZoom, maxZoom]);
+    state.maxZoom = maxZoom;
+  };
 
   const setTranslateExtent: Actions<NodeType>['setTranslateExtent'] = (translateExtent) => {
-    state.panZoom?.setTranslateExtent(translateExtent)
-    state.translateExtent = translateExtent
-  }
+    state.panZoom?.setTranslateExtent(translateExtent);
+    state.translateExtent = translateExtent;
+  };
 
   const setNodeExtent: Actions<NodeType>['setNodeExtent'] = (nodeExtent) => {
-    state.nodeExtent = nodeExtent
+    state.nodeExtent = nodeExtent;
     // force the full system pass — the extent changed without a re-adoption, so every root needs re-clamping
-    recomputeAbsolutePositions(true)
-    updateNodeInternals()
-  }
+    recomputeAbsolutePositions(true);
+    updateNodeInternals();
+  };
 
   const setPaneClickDistance: Actions<NodeType>['setPaneClickDistance'] = (clickDistance) => {
-    state.panZoom?.setClickDistance(clickDistance)
-  }
+    state.panZoom?.setClickDistance(clickDistance);
+  };
 
   const setInteractive: Actions<NodeType>['setInteractive'] = (isInteractive) => {
-    state.nodesDraggable = isInteractive
-    state.nodesConnectable = isInteractive
-    state.elementsSelectable = isInteractive
-  }
+    state.nodesDraggable = isInteractive;
+    state.nodesConnectable = isInteractive;
+    state.elementsSelectable = isInteractive;
+  };
 
   const setNodes: Actions<NodeType>['setNodes'] = (nodes) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
+    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
 
     if (!state.initialized && !nextNodes.length) {
-      return
+      return;
     }
 
     // `commitNodes` re-adopts the user nodes into the lookup (xyflow-style) and stores them as `state.nodes`
-    commitNodes(nextNodes)
-  }
+    commitNodes(nextNodes);
+  };
 
   const setEdges: Actions<NodeType, EdgeType>['setEdges'] = (edges) => {
-    const nextEdges = edges instanceof Function ? edges(state.edges) : edges
+    const nextEdges = edges instanceof Function ? edges(state.edges) : edges;
 
     if (!state.initialized && !nextEdges.length) {
-      return
+      return;
     }
 
     commitEdges(
@@ -589,31 +592,31 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         state.nodes,
         state.edges,
       ),
-    )
-  }
+    );
+  };
 
   const addNodes: Actions<NodeType>['addNodes'] = (nodes) => {
-    let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
-    nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
+    let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
+    nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes];
 
     // Emit `add` changes for the valid user nodes (filter invalid up front — `applyChanges` would
     // otherwise read `.id` off a non-node and throw; `commitNodes`/`adoptNodes` re-validates on adopt).
-    const changes: NodeAddChange<any>[] = []
+    const changes: NodeAddChange<any>[] = [];
     for (const node of nextNodes) {
       if (!isNode(node)) {
-        continue
+        continue;
       }
-      changes.push(createAdditionChange(node))
+      changes.push(createAdditionChange(node));
     }
 
     if (changes.length) {
-      state.hooks.nodesChange.trigger(changes)
+      state.hooks.nodesChange.trigger(changes);
     }
-  }
+  };
 
   const addEdges: Actions<NodeType, EdgeType>['addEdges'] = (params) => {
-    let nextEdges = params instanceof Function ? params(state.edges) : params
-    nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
+    let nextEdges = params instanceof Function ? params(state.edges) : params;
+    nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges];
 
     // the `add` change items are the validated USER edges (a `Connection` becomes a new edge with
     // `defaultEdgeOptions` merged at creation) — no enrichment leaks into the change event payload
@@ -625,114 +628,114 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       state.defaultEdgeOptions,
       state.nodes,
       state.edges,
-    )
+    );
 
-    const changes: EdgeAddChange<EdgeType>[] = []
+    const changes: EdgeAddChange<EdgeType>[] = [];
     for (const edge of validEdges) {
-      changes.push(createAdditionChange(edge))
+      changes.push(createAdditionChange(edge));
     }
 
     if (changes.length) {
-      state.hooks.edgesChange.trigger(changes)
+      state.hooks.edgesChange.trigger(changes);
     }
-  }
+  };
 
   const removeNodes: Actions<NodeType>['removeNodes'] = (nodes, removeConnectedEdges = true, removeChildren = false) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes
-    const nodesToRemove = Array.isArray(nextNodes) ? nextNodes : [nextNodes]
+    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
+    const nodesToRemove = Array.isArray(nextNodes) ? nextNodes : [nextNodes];
 
-    const nodeChanges: NodeRemoveChange[] = []
-    const edgeChanges: EdgeRemoveChange[] = []
+    const nodeChanges: NodeRemoveChange[] = [];
+    const edgeChanges: EdgeRemoveChange[] = [];
 
     function createEdgeRemovalChanges(nodes: Node[]) {
-      const connectedEdges = getConnectedEdges(nodes)
+      const connectedEdges = getConnectedEdges(nodes);
       for (const edge of connectedEdges) {
         // deletable is no longer stamped onto stored edges — resolve through defaultEdgeOptions at read time
-        const deletable = edge.deletable ?? state.defaultEdgeOptions?.deletable
+        const deletable = edge.deletable ?? state.defaultEdgeOptions?.deletable;
         if (isDef(deletable) ? deletable : true) {
-          edgeChanges.push(createEdgeRemoveChange(edge.id))
+          edgeChanges.push(createEdgeRemoveChange(edge.id));
         }
       }
     }
 
     // recursively get all children and if the child is a parent, get those children as well until all nodes have been removed that are children of the current node
     function createChildrenRemovalChanges(id: string) {
-      const children: NodeType[] = []
+      const children: NodeType[] = [];
       for (const node of state.nodes) {
         if (node.parentId === id) {
-          children.push(node)
+          children.push(node);
         }
       }
 
       if (children.length) {
         for (const child of children) {
-          nodeChanges.push(createNodeRemoveChange(child.id))
+          nodeChanges.push(createNodeRemoveChange(child.id));
         }
 
         if (removeConnectedEdges) {
-          createEdgeRemovalChanges(children)
+          createEdgeRemovalChanges(children);
         }
 
         for (const child of children) {
-          createChildrenRemovalChanges(child.id)
+          createChildrenRemovalChanges(child.id);
         }
       }
     }
 
     for (const item of nodesToRemove) {
-      const currNode = typeof item === 'string' ? getNode(item) : item
+      const currNode = typeof item === 'string' ? getNode(item) : item;
 
       if (!currNode) {
-        continue
+        continue;
       }
 
       if (isDef(currNode.deletable) && !currNode.deletable) {
-        continue
+        continue;
       }
 
-      nodeChanges.push(createNodeRemoveChange(currNode.id))
+      nodeChanges.push(createNodeRemoveChange(currNode.id));
 
       if (removeConnectedEdges) {
-        createEdgeRemovalChanges([currNode as Node])
+        createEdgeRemovalChanges([currNode as Node]);
       }
 
       if (removeChildren) {
-        createChildrenRemovalChanges(currNode.id)
+        createChildrenRemovalChanges(currNode.id);
       }
     }
 
     if (edgeChanges.length) {
-      state.hooks.edgesChange.trigger(edgeChanges)
+      state.hooks.edgesChange.trigger(edgeChanges);
     }
 
     if (nodeChanges.length) {
-      state.hooks.nodesChange.trigger(nodeChanges)
+      state.hooks.nodesChange.trigger(nodeChanges);
     }
-  }
+  };
 
   const removeEdges: Actions<NodeType, EdgeType>['removeEdges'] = (edges) => {
-    const nextEdges = edges instanceof Function ? edges(state.edges) : edges
-    const edgesToRemove = Array.isArray(nextEdges) ? nextEdges : [nextEdges]
+    const nextEdges = edges instanceof Function ? edges(state.edges) : edges;
+    const edgesToRemove = Array.isArray(nextEdges) ? nextEdges : [nextEdges];
 
-    const changes: EdgeRemoveChange[] = []
+    const changes: EdgeRemoveChange[] = [];
 
     for (const item of edgesToRemove) {
-      const currEdge = typeof item === 'string' ? getEdge(item) : item
+      const currEdge = typeof item === 'string' ? getEdge(item) : item;
 
       if (!currEdge) {
-        continue
+        continue;
       }
 
-      const deletable = currEdge.deletable ?? state.defaultEdgeOptions?.deletable
+      const deletable = currEdge.deletable ?? state.defaultEdgeOptions?.deletable;
       if (isDef(deletable) && !deletable) {
-        continue
+        continue;
       }
 
-      changes.push(createEdgeRemoveChange(typeof item === 'string' ? item : item.id))
+      changes.push(createEdgeRemoveChange(typeof item === 'string' ? item : item.id));
     }
 
-    state.hooks.edgesChange.trigger(changes)
-  }
+    state.hooks.edgesChange.trigger(changes);
+  };
 
   const deleteElements: Actions<NodeType, EdgeType>['deleteElements'] = async ({ nodes = [], edges = [] }) => {
     // `getElementsToRemove` (xyflow/system) gathers the full set — the targeted nodes + their child nodes,
@@ -744,34 +747,34 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       nodes: state.nodes,
       edges: state.edges,
       onBeforeDelete: state.onBeforeDelete ?? undefined,
-    })
+    });
 
     // remove exactly that set: `matchingNodes` already includes children and `matchingEdges` the connected
     // edges (both reflecting any `onBeforeDelete` filtering), so tell `removeNodes` NOT to also pull in
     // connected edges/children — that would bypass an `onBeforeDelete` that chose to keep some.
     if (matchingNodes.length) {
-      removeNodes(matchingNodes, false, false)
+      removeNodes(matchingNodes, false, false);
     }
 
     if (matchingEdges.length) {
-      removeEdges(matchingEdges)
+      removeEdges(matchingEdges);
     }
 
-    return { deletedNodes: matchingNodes, deletedEdges: matchingEdges }
-  }
+    return { deletedNodes: matchingNodes, deletedEdges: matchingEdges };
+  };
 
   const reconnectEdge: Actions<NodeType, EdgeType>['reconnectEdge'] = (oldEdge, newConnection, shouldReplaceId = true) => {
-    const prevEdge = getEdge(oldEdge.id)
+    const prevEdge = getEdge(oldEdge.id);
 
     if (!prevEdge) {
-      return false
+      return false;
     }
 
     // resolve by id, not identity — callers commonly pass stale references (e.g. an edge captured in an
     // event payload before an immutable change replaced the stored object)
-    const prevEdgeIndex = state.edges.findIndex((edge) => edge.id === oldEdge.id)
+    const prevEdgeIndex = state.edges.findIndex(edge => edge.id === oldEdge.id);
 
-    const newEdge = reconnectEdgeAction(oldEdge, newConnection, prevEdge as EdgeType, shouldReplaceId, state.hooks.error.trigger)
+    const newEdge = reconnectEdgeAction(oldEdge, newConnection, prevEdge as EdgeType, shouldReplaceId, state.hooks.error.trigger);
 
     if (newEdge) {
       const [validEdge] = validateEdges<EdgeType>(
@@ -782,149 +785,151 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         state.defaultEdgeOptions,
         state.nodes,
         state.edges,
-      )
+      );
 
       if (!validEdge) {
-        return false
+        return false;
       }
 
-      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)))
+      commitEdges(state.edges.map((edge, index) => (index === prevEdgeIndex ? validEdge : edge)));
 
-      return validEdge
+      return validEdge;
     }
 
-    return false
-  }
+    return false;
+  };
 
   const updateEdge: Actions<NodeType, EdgeType>['updateEdge'] = (id, edgeUpdate, options = { replace: false }) => {
-    const edge = getEdge(id)
+    const edge = getEdge(id);
 
     if (!edge) {
-      return
+      return;
     }
 
-    const nextEdge = typeof edgeUpdate === 'function' ? edgeUpdate(edge as EdgeType) : edgeUpdate
+    const nextEdge = typeof edgeUpdate === 'function' ? edgeUpdate(edge as EdgeType) : edgeUpdate;
 
     // immutable: build a NEW edge (full replace or shallow merge) for the target id and recommit
-    const next = state.edges.map((e) => (e.id === id ? ((options.replace ? nextEdge : { ...e, ...nextEdge }) as EdgeType) : e))
-    commitEdges(next)
-  }
+    const next = state.edges.map(e => (e.id === id ? ((options.replace ? nextEdge : { ...e, ...nextEdge }) as EdgeType) : e));
+    commitEdges(next);
+  };
 
   const updateEdgeData: Actions<NodeType, EdgeType>['updateEdgeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const edge = getEdge(id)
+    const edge = getEdge(id);
 
     if (!edge) {
-      return
+      return;
     }
 
-    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge as EdgeType) : dataUpdate
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(edge as EdgeType) : dataUpdate;
 
     // build a NEW edge object — in-place mutation isn't reactive (edges are markRaw'd; renders trigger
     // on lookup replacement)
-    const nextEdge = { ...edge, data: options.replace ? nextData : { ...edge.data, ...nextData } } as EdgeType
+    const nextEdge = { ...edge, data: options.replace ? nextData : { ...edge.data, ...nextData } } as EdgeType;
 
-    commitEdges(state.edges.map((item) => (item.id === id ? nextEdge : item)))
-  }
+    commitEdges(state.edges.map(item => (item.id === id ? nextEdge : item)));
+  };
 
   const applyNodeChanges: Actions<NodeType>['applyNodeChanges'] = (changes) => {
     // Apply changes IMMUTABLY against the canonical user nodes (`applyChanges` returns a new array — new
     // objects for changed nodes, unchanged reused by reference), then re-adopt via `commitNodes`
     // (`adoptUserNodes` reuses unchanged InternalNodes by reference via `checkEquality`).
-    const result = applyChanges(changes, state.nodes)
-    commitNodes(result)
-    return result
-  }
+    const result = applyChanges(changes, state.nodes);
+    commitNodes(result);
+    return result;
+  };
 
   const applyEdgeChanges: Actions<NodeType, EdgeType>['applyEdgeChanges'] = (changes) => {
     // apply immutably against the canonical user edges: new array, new objects for changed edges,
     // unchanged reused by reference
-    const result = applyChanges(changes, state.edges)
-    commitEdges(result)
-    return result
-  }
+    const result = applyChanges(changes, state.edges);
+    commitEdges(result);
+    return result;
+  };
 
   const updateNode: Actions<NodeType>['updateNode'] = (id, nodeUpdate, options = { replace: false }) => {
-    const node = getInternalNode(id)
+    const node = getInternalNode(id);
 
     if (!node) {
-      return
+      return;
     }
 
-    const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate
+    const nextNode = typeof nodeUpdate === 'function' ? nodeUpdate(node) : nodeUpdate;
 
     // Immutable update: build a NEW user node (full replacement or shallow merge) for the target id and
     // re-adopt via `commitNodes`. Mutating in place would keep the reference and re-adopt the stale node.
-    const next = state.nodes.map((n) => (n.id === id ? ((options.replace ? nextNode : { ...n, ...nextNode }) as NodeType) : n))
-    commitNodes(next)
-  }
+    const next = state.nodes.map(n => (n.id === id ? ((options.replace ? nextNode : { ...n, ...nextNode }) as NodeType) : n));
+    commitNodes(next);
+  };
 
   const updateNodeData: Actions<NodeType>['updateNodeData'] = (id, dataUpdate, options = { replace: false }) => {
-    const node = getInternalNode(id)
+    const node = getInternalNode(id);
 
     if (!node) {
-      return
+      return;
     }
 
-    const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate
+    const nextData = typeof dataUpdate === 'function' ? dataUpdate(node) : dataUpdate;
 
     // Immutable: new user node with new `data`, then re-adopt (see {@link updateNode}).
-    const next = state.nodes.map((n) =>
+    const next = state.nodes.map(n =>
       n.id === id ? ({ ...n, data: options.replace ? nextData : { ...n.data, ...nextData } } as NodeType) : n,
-    )
-    commitNodes(next)
-  }
+    );
+    commitNodes(next);
+  };
 
   const startConnection: Actions<NodeType>['startConnection'] = (startHandle, position, isClick = false) => {
     if (isClick) {
-      state.connectionClickStartHandle = startHandle
-    } else {
-      state.connectionStartHandle = startHandle
+      state.connectionClickStartHandle = startHandle;
+    }
+    else {
+      state.connectionStartHandle = startHandle;
     }
 
-    state.connectionEndHandle = null
-    state.connectionStatus = null
+    state.connectionEndHandle = null;
+    state.connectionStatus = null;
 
     if (position) {
-      state.connectionPosition = position
+      state.connectionPosition = position;
     }
-  }
+  };
 
   const updateConnection: Actions<NodeType>['updateConnection'] = (position, result = null, status = null) => {
     if (state.connectionStartHandle) {
-      state.connectionPosition = position
-      state.connectionEndHandle = result
-      state.connectionStatus = status
+      state.connectionPosition = position;
+      state.connectionEndHandle = result;
+      state.connectionStatus = status;
     }
-  }
+  };
 
   const endConnection: Actions<NodeType>['endConnection'] = (event, isClick) => {
-    state.connectionPosition = { x: Number.NaN, y: Number.NaN }
-    state.connectionEndHandle = null
-    state.connectionStatus = null
+    state.connectionPosition = { x: Number.NaN, y: Number.NaN };
+    state.connectionEndHandle = null;
+    state.connectionStatus = null;
 
     if (isClick) {
-      state.connectionClickStartHandle = null
-    } else {
-      state.connectionStartHandle = null
+      state.connectionClickStartHandle = null;
     }
-  }
+    else {
+      state.connectionStartHandle = null;
+    }
+  };
 
   const getNodeRect = (
     nodeOrRect: (Partial<Node> & { id: Node['id'] }) | Rect,
   ): [Rect | null, Node | null | undefined, boolean] => {
-    const isRectObj = isRectObject(nodeOrRect)
+    const isRectObj = isRectObject(nodeOrRect);
     // use `getInternalNode` (not getNode): `nodeToRect` below needs `internals`/`measured`, which live on
     // the InternalNode, not the user `Node` that getNode returns
-    const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id)
+    const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id);
 
     if (!isRectObj && !node) {
-      return [null, null, isRectObj]
+      return [null, null, isRectObj];
     }
 
-    const nodeRect = isRectObj ? nodeOrRect : nodeToRect(node!)
+    const nodeRect = isRectObj ? nodeOrRect : nodeToRect(node!);
 
-    return [nodeRect, node, isRectObj]
-  }
+    return [nodeRect, node, isRectObj];
+  };
 
   const getIntersectingNodes: Actions<NodeType>['getIntersectingNodes'] = (
     nodeOrRect,
@@ -932,130 +937,130 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // defaults to the enriched InternalNodes — intersection geometry needs `internals`/`measured`
     nodes = Array.from(nodeLookup.values()),
   ) => {
-    const [nodeRect, node, isRect] = getNodeRect(nodeOrRect)
+    const [nodeRect, node, isRect] = getNodeRect(nodeOrRect);
 
     if (!nodeRect) {
-      return []
+      return [];
     }
 
-    const intersections: GraphNode<NodeType>[] = []
+    const intersections: GraphNode<NodeType>[] = [];
     for (const n of nodes) {
       if (!isRect && (n.id === node!.id || !n.internals.positionAbsolute)) {
-        continue
+        continue;
       }
 
-      const currNodeRect = nodeToRect(n)
-      const overlappingArea = getOverlappingArea(currNodeRect, nodeRect)
-      const partiallyVisible = partially && overlappingArea > 0
+      const currNodeRect = nodeToRect(n);
+      const overlappingArea = getOverlappingArea(currNodeRect, nodeRect);
+      const partiallyVisible = partially && overlappingArea > 0;
 
       if (
-        partiallyVisible ||
-        overlappingArea >= currNodeRect.width * currNodeRect.height ||
-        overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+        partiallyVisible
+        || overlappingArea >= currNodeRect.width * currNodeRect.height
+        || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
       ) {
-        intersections.push(n)
+        intersections.push(n);
       }
     }
 
-    return intersections
-  }
+    return intersections;
+  };
 
   const isNodeIntersecting: Actions<NodeType>['isNodeIntersecting'] = (nodeOrRect, area, partially = true) => {
-    const [nodeRect] = getNodeRect(nodeOrRect)
+    const [nodeRect] = getNodeRect(nodeOrRect);
 
     if (!nodeRect) {
-      return false
+      return false;
     }
 
-    const overlappingArea = getOverlappingArea(nodeRect, area)
-    const partiallyVisible = partially && overlappingArea > 0
+    const overlappingArea = getOverlappingArea(nodeRect, area);
+    const partiallyVisible = partially && overlappingArea > 0;
 
-    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
-  }
+    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height);
+  };
 
   const panBy: Actions<NodeType>['panBy'] = (delta) => {
-    const { transform, dimensions, translateExtent, panZoom } = state
+    const { transform, dimensions, translateExtent, panZoom } = state;
 
-    return panBySystem({ delta, panZoom, transform, translateExtent, ...dimensions })
-  }
+    return panBySystem({ delta, panZoom, transform, translateExtent, ...dimensions });
+  };
 
   const setState: Actions<NodeType, EdgeType>['setState'] = (options) => {
-    const opts = options instanceof Function ? options(state) : options
+    const opts = options instanceof Function ? options(state) : options;
 
     // these options cannot be set after initialization
-    const exclude: (keyof typeof opts)[] = ['viewportRef', 'vueFlowRef', 'dimensions', 'hooks']
+    const exclude: (keyof typeof opts)[] = ['viewportRef', 'vueFlowRef', 'dimensions', 'hooks'];
 
     // we need to set the default opts before setting any elements so the options are applied to the elements on first render
     if (isDef(opts.defaultEdgeOptions)) {
-      state.defaultEdgeOptions = opts.defaultEdgeOptions
+      state.defaultEdgeOptions = opts.defaultEdgeOptions;
     }
 
     // the `fitView` prop maps to the internal `fitViewOnInit` flag (kept separate from the `fitView()`
     // action); skipped from the generic loop above via `storeOptionsToSkip`
     if (isDef(opts.fitView)) {
-      state.fitViewOnInit = opts.fitView
+      state.fitViewOnInit = opts.fitView;
     }
 
     if (isDef(opts.nodes)) {
-      setNodes(opts.nodes)
+      setNodes(opts.nodes);
     }
 
     if (isDef(opts.edges)) {
-      setEdges(opts.edges)
+      setEdges(opts.edges);
     }
 
     const setSkippedOptions = () => {
       if (isDef(opts.maxZoom)) {
-        setMaxZoom(opts.maxZoom)
+        setMaxZoom(opts.maxZoom);
       }
       if (isDef(opts.minZoom)) {
-        setMinZoom(opts.minZoom)
+        setMinZoom(opts.minZoom);
       }
       if (isDef(opts.translateExtent)) {
-        setTranslateExtent(opts.translateExtent)
+        setTranslateExtent(opts.translateExtent);
       }
       // route through the setter (recomputes absolute positions) instead of the raw generic-loop
       // assignment — runs after `setNodes`, so preloaded nodes get re-clamped to the extent
       if (isDef(opts.nodeExtent)) {
-        setNodeExtent(opts.nodeExtent)
+        setNodeExtent(opts.nodeExtent);
       }
-    }
+    };
 
     for (const o of Object.keys(opts)) {
-      const key = o as keyof State
-      const option = opts[key]
+      const key = o as keyof State;
+      const option = opts[key];
 
       if (![...storeOptionsToSkip, ...exclude].includes(key) && isDef(option)) {
-        ;(<any>state)[key] = option
+        ;(<any>state)[key] = option;
       }
     }
 
     // min/max-zoom + translateExtent setters are panZoom-null-safe (they always write state, and
     // `XYPanZoom` reads those state values when it mounts), so apply them directly — no need to wait
     // for the panZoom instance to exist.
-    setSkippedOptions()
+    setSkippedOptions();
 
     if (!state.initialized) {
-      state.initialized = true
+      state.initialized = true;
     }
-  }
+  };
 
   const toObject: Actions<NodeType>['toObject'] = () => {
-    const nodes: Node[] = []
-    const edges: Edge[] = []
+    const nodes: Node[] = [];
+    const edges: Edge[] = [];
 
     for (const node of state.nodes) {
       // `state.nodes` are already user `Node`s (no `internals`); strip the transient runtime fields for export
-      const { selected: _, resizing: __, dragging: ___, measured: ____, ...rest } = node
+      const { selected: _, resizing: __, dragging: ___, measured: ____, ...rest } = node;
 
-      nodes.push(rest)
+      nodes.push(rest);
     }
 
     for (const edge of state.edges) {
       // `state.edges` are the user `Edge`s verbatim; strip the transient runtime field for export
-      const { selected: _, ...rest } = edge
+      const { selected: _, ...rest } = edge;
 
-      edges.push(rest)
+      edges.push(rest);
     }
 
     // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
@@ -1065,25 +1070,25 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         edges,
         viewport: { x: state.transform[0], y: state.transform[1], zoom: state.transform[2] },
       } as FlowExportObject),
-    )
-  }
+    );
+  };
 
   const $reset: Actions<NodeType, EdgeType>['$reset'] = () => {
-    const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType, EdgeType>()
+    const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType, EdgeType>();
 
-    commitEdges([])
-    commitNodes([])
+    commitEdges([]);
+    commitNodes([]);
 
     if (state.panZoom) {
       state.panZoom.setViewport({
         x: state.defaultViewport.x ?? 0,
         y: state.defaultViewport.y ?? 0,
         zoom: state.defaultViewport.zoom ?? 1,
-      })
+      });
     }
 
-    setState(resetState)
-  }
+    setState(resetState);
+  };
 
   return {
     updateNodePositions,
@@ -1124,20 +1129,20 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     getHandleConnections,
     isNodeIntersecting,
     panBy,
-    fitView: (params) => viewportHelper.value.fitView(params),
-    zoomIn: (transitionOpts) => viewportHelper.value.zoomIn(transitionOpts),
-    zoomOut: (transitionOpts) => viewportHelper.value.zoomOut(transitionOpts),
+    fitView: params => viewportHelper.value.fitView(params),
+    zoomIn: transitionOpts => viewportHelper.value.zoomIn(transitionOpts),
+    zoomOut: transitionOpts => viewportHelper.value.zoomOut(transitionOpts),
     zoomTo: (zoomLevel, transitionOpts) => viewportHelper.value.zoomTo(zoomLevel, transitionOpts),
     setViewport: (params, transitionOpts) => viewportHelper.value.setViewport(params, transitionOpts),
     getViewport: () => viewportHelper.value.getViewport(),
     setCenter: (x, y, opts) => viewportHelper.value.setCenter(x, y, opts),
     fitBounds: (params, opts) => viewportHelper.value.fitBounds(params, opts),
-    screenToFlowPosition: (params) => viewportHelper.value.screenToFlowPosition(params),
-    flowToScreenPosition: (params) => viewportHelper.value.flowToScreenPosition(params),
+    screenToFlowPosition: params => viewportHelper.value.screenToFlowPosition(params),
+    flowToScreenPosition: params => viewportHelper.value.flowToScreenPosition(params),
     toObject,
     updateNodeInternals,
     viewportHelper,
     $reset,
     $destroy: () => {},
-  }
+  };
 }

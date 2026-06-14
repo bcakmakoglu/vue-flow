@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowInstance } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
-import CustomInput from './CustomInput.vue'
-import CustomNode from './CustomNode.vue'
+import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowInstance } from '@vue-flow/core';
+import { VueFlow } from '@vue-flow/core';
+import CustomInput from './CustomInput.vue';
+import CustomNode from './CustomNode.vue';
 
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 const nodes = ref<Node[]>([
   {
@@ -31,19 +31,19 @@ const nodes = ref<Node[]>([
     position: { x: 250, y: 300 },
     data: { isValidSourcePos: (connection: Connection) => connection.target === 'B' },
   },
-])
+]);
 
 function onConnectStart({ nodeId, handleType }: OnConnectStartParams) {
-  return console.log('on connect start', { nodeId, handleType })
+  return console.log('on connect start', { nodeId, handleType });
 }
 
 function onConnectEnd(event: MouseEvent) {
-  return console.log('on connect end', event)
+  return console.log('on connect end', event);
 }
 
 function onConnect(params: Connection) {
-  console.log('on connect', params)
-  flow.value?.addEdges(params)
+  console.log('on connect', params);
+  flow.value?.addEdges(params);
 }
 </script>
 

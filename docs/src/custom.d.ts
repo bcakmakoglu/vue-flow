@@ -1,16 +1,16 @@
-declare const __ANALYTICS_ID__: string
-declare const __VUE_FLOW_VERSION__: string
+declare const __ANALYTICS_ID__: string;
+declare const __VUE_FLOW_VERSION__: string;
 
 declare module 'virtual:icons/*' {
-  import type { FunctionalComponent, SVGAttributes } from 'vue'
+  import type { FunctionalComponent, SVGAttributes } from 'vue';
 
-  const component: FunctionalComponent<SVGAttributes>
-  export default component
+  const component: FunctionalComponent<SVGAttributes>;
+  export default component;
 }
 
 declare module '~icons/*' {
-  import type { FunctionalComponent, SVGAttributes } from 'vue'
+  import type { FunctionalComponent, SVGAttributes } from 'vue';
 
-  const component: FunctionalComponent<SVGAttributes>
-  export default component
+  const component: FunctionalComponent<SVGAttributes>;
+  export default component;
 }

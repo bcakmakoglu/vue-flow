@@ -3,7 +3,7 @@
  *
  * @default 'dots'
  */
-export type BackgroundVariant = 'dots' | 'lines'
+export type BackgroundVariant = 'dots' | 'lines';
 
 export interface BackgroundProps {
   /**
@@ -14,13 +14,13 @@ export interface BackgroundProps {
    *
    * @default `pattern-${vueFlowId}${id ? `-${id}` : ''}`
    */
-  id?: string
+  id?: string;
   /**
    * The background pattern variant {@link BackgroundVariant}
    *
    * @default 'dots'
    */
-  variant?: BackgroundVariant
+  variant?: BackgroundVariant;
   /**
    * The background pattern gap
    *
@@ -28,17 +28,17 @@ export interface BackgroundProps {
    *
    * @default 20
    */
-  gap?: number | number[]
+  gap?: number | number[];
   /**
    * Background pattern size
    *
    * @default 1
    */
-  size?: number
+  size?: number;
   /**
    * @default 1
    */
-  lineWidth?: number
+  lineWidth?: number;
   /**
    * The background pattern color
    *
@@ -46,22 +46,22 @@ export interface BackgroundProps {
    *
    * If you want to change the background color itself, you can apply a bg-color to the `<VueFlow>` element instead
    */
-  color?: string
+  color?: string;
   /**
    * Background x-coordinate (offset x)
    *
    * @default 0
    */
-  x?: number
+  x?: number;
   /**
    * Background y-coordinate (offset y)
    * @default 0
    */
-  y?: number
+  y?: number;
   /**
    * Background pattern offset
    *
    * @default 0
    */
-  offset?: number | [number, number]
+  offset?: number | [number, number];
 }

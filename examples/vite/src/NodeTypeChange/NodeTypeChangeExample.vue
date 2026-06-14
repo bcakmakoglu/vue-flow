@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { Position, VueFlow, isEdge, isNode } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import { isEdge, isNode, Position, VueFlow } from '@vue-flow/core';
 
 const initialElements: (Node | Edge)[] = [
   {
@@ -19,23 +19,25 @@ const initialElements: (Node | Edge)[] = [
     position: { x: 250, y: 0 },
   },
   { id: 'e1-2', source: '1', type: 'smoothstep', target: '2', animated: true },
-]
+];
 
-const nodes = ref<Node[]>(initialElements.filter(isNode))
-const edges = ref<Edge[]>(initialElements.filter(isEdge))
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 
 function changeType() {
   nodes.value.forEach((el) => {
     if (el.type === 'input') {
-      return
+      return;
     }
-    el.type = el.type === 'default' ? 'output' : 'default'
-  })
+    el.type = el.type === 'default' ? 'output' : 'default';
+  });
 }
 </script>
 
 <template>
   <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
-    <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">change type</button>
+    <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">
+      change type
+    </button>
   </VueFlow>
 </template>

@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "ESNext",
+    "incremental": false,
     "target": "es2017",
     "lib": [
       "DOM",
       "ESNext"
     ],
-    "strict": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "skipLibCheck": true,
+    "baseUrl": ".",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "types": [],
-    "noUnusedLocals": false,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
     "paths": {
       "~/*": ["../packages/core/src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "types": [],
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
   "include": [
     "../packages/**/*"

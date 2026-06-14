@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useVueFlow } from '../../composables/useVueFlow'
-import type { BackgroundProps } from './types'
-import { DefaultBgColors, DotPattern, LinePattern } from './patterns'
+import type { BackgroundProps } from './types';
+import { computed } from 'vue';
+import { useVueFlow } from '../../composables/useVueFlow';
+import { DefaultBgColors, DotPattern, LinePattern } from './patterns';
 
 const props = withDefaults(defineProps<BackgroundProps>(), {
   variant: 'dots',
@@ -12,39 +12,39 @@ const props = withDefaults(defineProps<BackgroundProps>(), {
   x: 0,
   y: 0,
   offset: 0,
-})
+});
 
-const { id: vueFlowId, viewport } = useVueFlow()
+const { id: vueFlowId, viewport } = useVueFlow();
 
 const background = computed(() => {
-  const { gap, offset, size } = props
+  const { gap, offset, size } = props;
 
-  const zoom = viewport.value.zoom
-  const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap]
-  const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1]
-  const scaledSize = size * zoom
-  const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset]
+  const zoom = viewport.value.zoom;
+  const [gapX, gapY] = Array.isArray(gap) ? gap : [gap, gap];
+  const scaledGap: [number, number] = [gapX * zoom || 1, gapY * zoom || 1];
+  const scaledSize = size * zoom;
+  const [offsetX, offsetY]: [number, number] = Array.isArray(offset) ? offset : [offset, offset];
 
-  const scaledOffset: [number, number] = [offsetX * zoom || 1 + scaledGap[0] / 2, offsetY * zoom || 1 + scaledGap[1] / 2]
+  const scaledOffset: [number, number] = [offsetX * zoom || 1 + scaledGap[0] / 2, offsetY * zoom || 1 + scaledGap[1] / 2];
 
   return {
     scaledGap,
     offset: scaledOffset,
     size: scaledSize,
-  }
-})
+  };
+});
 
 // when there are multiple flows on a page we need to make sure that every background gets its own pattern.
-const patternId = computed(() => `pattern-${vueFlowId}${props.id ? `-${props.id}` : ''}`)
+const patternId = computed(() => `pattern-${vueFlowId}${props.id ? `-${props.id}` : ''}`);
 
-const patternColor = computed(() => props.color || DefaultBgColors[props.variant || 'dots'])
+const patternColor = computed(() => props.color || DefaultBgColors[props.variant || 'dots']);
 </script>
 
 <script lang="ts">
 export default {
   name: 'Background',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

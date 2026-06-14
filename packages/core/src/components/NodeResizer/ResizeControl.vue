@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { XYResizer, evaluateAbsolutePosition, handleExpandParent } from '@xyflow/system'
-import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system'
-import { computed, ref, toRef, watchEffect } from 'vue'
-import { storeToRefs, useStore, useVueFlow } from '../../composables'
-import type { NodeChange, NodeDimensionChange, NodePositionChange } from '../../types'
-import type { NodeResizerEmits, ResizeControlProps } from './types'
-import { ResizeControlVariant } from './types'
-import { DefaultPositions, StylingProperty } from './utils'
+import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system';
+import type { NodeChange, NodeDimensionChange, NodePositionChange } from '../../types';
+import type { NodeResizerEmits, ResizeControlProps } from './types';
+import { evaluateAbsolutePosition, handleExpandParent, XYResizer } from '@xyflow/system';
+import { computed, ref, toRef, watchEffect } from 'vue';
+import { storeToRefs, useStore, useVueFlow } from '../../composables';
+import { ResizeControlVariant } from './types';
+import { DefaultPositions, StylingProperty } from './utils';
 
 const props = withDefaults(defineProps<ResizeControlProps>(), {
   variant: 'handle' as ResizeControlVariant,
@@ -16,27 +16,27 @@ const props = withDefaults(defineProps<ResizeControlProps>(), {
   maxHeight: Number.MAX_VALUE,
   keepAspectRatio: false,
   autoScale: true,
-})
+});
 
-const emits = defineEmits<NodeResizerEmits>()
+const emits = defineEmits<NodeResizerEmits>();
 
-const { emits: triggerEmits, viewport } = useVueFlow()
+const { emits: triggerEmits, viewport } = useVueFlow();
 
-const { nodeLookup, parentLookup } = useStore()
+const { nodeLookup, parentLookup } = useStore();
 
-const { transform, nodeOrigin, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = storeToRefs(useStore())
+const { transform, nodeOrigin, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = storeToRefs(useStore());
 
-const resizeControlRef = ref<HTMLDivElement>()
+const resizeControlRef = ref<HTMLDivElement>();
 
-const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant])
+const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant]);
 
-const positionClassNames = computed(() => controlPosition.value.split('-'))
+const positionClassNames = computed(() => controlPosition.value.split('-'));
 
-const controlStyle = toRef(() => (props.color ? { [StylingProperty[props.variant]]: props.color } : {}))
+const controlStyle = toRef(() => (props.color ? { [StylingProperty[props.variant]]: props.color } : {}));
 
 watchEffect((onCleanup) => {
   if (!resizeControlRef.value || !props.nodeId) {
-    return
+    return;
   }
 
   const resizerInstance = XYResizer({
@@ -51,17 +51,17 @@ watchEffect((onCleanup) => {
       paneDomNode: vueFlowRef.value,
     }),
     onChange: (changes: XYResizerChange, childChanges: XYResizerChildChange[]) => {
-      const nodeChanges: NodeChange[] = []
-      const node = nodeLookup.get(props.nodeId!)
+      const nodeChanges: NodeChange[] = [];
+      const node = nodeLookup.get(props.nodeId!);
 
       // resolved x/y for the resized node; clamped below when the node expands its parent
-      let nextX = changes.x
-      let nextY = changes.y
+      let nextX = changes.x;
+      let nextY = changes.y;
 
       if (node?.expandParent && node.parentId) {
-        const origin = node.origin ?? nodeOrigin.value
-        const width = changes.width ?? node.measured.width ?? 0
-        const height = changes.height ?? node.measured.height ?? 0
+        const origin = node.origin ?? nodeOrigin.value;
+        const width = changes.width ?? node.measured.width ?? 0;
+        const height = changes.height ?? node.measured.height ?? 0;
 
         // grow the parent to fit the resized child (mirrors xyflow/react's NodeResizeControl)
         const child = {
@@ -78,27 +78,27 @@ watchEffect((onCleanup) => {
               origin,
             ),
           },
-        }
+        };
 
-        nodeChanges.push(...(handleExpandParent([child], nodeLookup, parentLookup, nodeOrigin.value) as NodeChange[]))
+        nodeChanges.push(...(handleExpandParent([child], nodeLookup, parentLookup, nodeOrigin.value) as NodeChange[]));
 
         // once the parent was expanded, the child clamps to the parent's edge (0,0 for origin [0,0],
         // width/height for [1,1]).
-        nextX = typeof changes.x !== 'undefined' ? Math.max(origin[0] * width, changes.x) : undefined
-        nextY = typeof changes.y !== 'undefined' ? Math.max(origin[1] * height, changes.y) : undefined
+        nextX = typeof changes.x !== 'undefined' ? Math.max(origin[0] * width, changes.x) : undefined;
+        nextY = typeof changes.y !== 'undefined' ? Math.max(origin[1] * height, changes.y) : undefined;
       }
 
       if (typeof nextX !== 'undefined' || typeof nextY !== 'undefined') {
         const position = {
           x: nextX ?? node?.position.x ?? 0,
           y: nextY ?? node?.position.y ?? 0,
-        }
+        };
         nodeChanges.push({
           id: props.nodeId!,
           type: 'position',
           position,
           positionAbsolute: position,
-        } as NodePositionChange)
+        } as NodePositionChange);
       }
 
       if (typeof changes.width !== 'undefined' || typeof changes.height !== 'undefined') {
@@ -111,7 +111,7 @@ watchEffect((onCleanup) => {
             width: changes.width ?? 0,
             height: changes.height ?? 0,
           },
-        } as NodeDimensionChange)
+        } as NodeDimensionChange);
       }
 
       for (const child of childChanges) {
@@ -120,11 +120,11 @@ watchEffect((onCleanup) => {
           type: 'position',
           position: child.position,
           positionAbsolute: child.position,
-        } as NodePositionChange)
+        } as NodePositionChange);
       }
 
       if (nodeChanges.length) {
-        triggerEmits.nodesChange(nodeChanges)
+        triggerEmits.nodesChange(nodeChanges);
       }
     },
     onEnd: () => {
@@ -134,9 +134,9 @@ watchEffect((onCleanup) => {
           type: 'dimensions',
           resizing: false,
         } as NodeDimensionChange,
-      ])
+      ]);
     },
-  })
+  });
 
   resizerInstance.update({
     controlPosition: controlPosition.value,
@@ -151,19 +151,19 @@ watchEffect((onCleanup) => {
     onResize: (event, params) => emits('resize', { event, params }),
     onResizeEnd: (event, params) => emits('resizeEnd', { event, params }),
     shouldResize: props.shouldResize,
-  })
+  });
 
   onCleanup(() => {
-    resizerInstance.destroy()
-  })
-})
+    resizerInstance.destroy();
+  });
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'ResizeControl',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

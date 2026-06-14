@@ -7,7 +7,9 @@
   >
     <div class="max-w-5/6 2xl:max-w-7xl mx-auto py-12 md:py-16">
       <div class="flex flex-col items-center justify-center gap-2">
-        <h1 class="text-center">Putting Ideas into Action - The Showcase</h1>
+        <h1 class="text-center">
+          Putting Ideas into Action - The Showcase
+        </h1>
 
         <p class="font-medium max-w-3/4 text-center">
           Whether you're a seasoned developer or just starting your journey with Vue Flow, this showcase offers inspiration and
@@ -21,7 +23,7 @@
             <div
               class="h-[200px] md:min-h-[300px] w-full shadow-xl rounded-xl font-mono uppercase border-1 border-gray overflow-hidden"
             >
-              <img class="object-cover h-full w-full" src="/assets/n8n.webp" alt="n8n" />
+              <img class="object-cover h-full w-full" src="/assets/n8n.webp" alt="n8n">
             </div>
 
             <div class="px-1">
@@ -40,7 +42,7 @@
             <div
               class="h-[200px] md:min-h-[300px] w-full shadow-xl rounded-xl font-mono uppercase border-1 border-gray overflow-hidden"
             >
-              <img class="object-cover h-full w-full" src="/assets/kestra.webp" alt="Kestra" />
+              <img class="object-cover h-full w-full" src="/assets/kestra.webp" alt="Kestra">
             </div>
 
             <div class="px-1">

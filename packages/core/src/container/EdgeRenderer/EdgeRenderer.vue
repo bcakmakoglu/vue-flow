@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import EdgeWrapper from '../../components/Edges/EdgeWrapper'
-import ConnectionLine from '../../components/ConnectionLine'
-import { useVueFlow } from '../../composables'
-import MarkerDefinitions from './MarkerDefinitions.vue'
+import ConnectionLine from '../../components/ConnectionLine';
+import EdgeWrapper from '../../components/Edges/EdgeWrapper';
+import { useVueFlow } from '../../composables';
+import MarkerDefinitions from './MarkerDefinitions.vue';
 
-const { getEdges } = useVueFlow()
+const { getEdges } = useVueFlow();
 </script>
 
 <script lang="ts">
 export default {
   name: 'Edges',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

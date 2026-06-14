@@ -1,12 +1,12 @@
-import type { ValidConnectionFunc, VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../support/component'
+import type { ValidConnectionFunc, VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../support/component';
 
 const isValidConnection: ValidConnectionFunc = (connection) => {
-  return connection.target === 'B' || connection.source === 'B'
-}
+  return connection.target === 'B' || connection.source === 'B';
+};
 
 describe('isValidConnection Prop', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
@@ -31,36 +31,36 @@ describe('isValidConnection Prop', () => {
       autoConnect: true,
       edgesReconnectable: true,
       isValidConnection,
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-      store.onReconnect((params) => store.reconnectEdge(params.edge, params.connection))
-    })
-  })
+      store = getStore();
+      store.onReconnect(params => store.reconnectEdge(params.edge, params.connection));
+    });
+  });
 
   it('only connectable to node with id `B`', () => {
-    cy.connect('A', 'B')
+    cy.connect('A', 'B');
 
-    cy.get('.vue-flow__edge').should('have.length', 1)
+    cy.get('.vue-flow__edge').should('have.length', 1);
 
-    cy.connect('A', 'C')
+    cy.connect('A', 'C');
 
-    cy.get('.vue-flow__edge').should('have.length', 1)
-  })
+    cy.get('.vue-flow__edge').should('have.length', 1);
+  });
 
   it('cannot update to other handles', () => {
-    cy.connect('A', 'B')
+    cy.connect('A', 'B');
 
-    cy.get('.vue-flow__edge').should('have.length', 1)
+    cy.get('.vue-flow__edge').should('have.length', 1);
 
     cy.window().then((win) => {
-      const edgeAnchor = cy.get(`.vue-flow__edgeupdater[data-type="target"]`)
-      const targetHandle = cy.get(`[data-nodeid="C"].target`)
+      const edgeAnchor = cy.get(`.vue-flow__edgeupdater[data-type="target"]`);
+      const targetHandle = cy.get(`[data-nodeid="C"].target`);
 
       targetHandle.then(async (handle) => {
-        const target = handle[0]
-        const { x, y } = target.getBoundingClientRect()
+        const target = handle[0];
+        const { x, y } = target.getBoundingClientRect();
 
         edgeAnchor
           .trigger('mousedown', {
@@ -78,11 +78,11 @@ describe('isValidConnection Prop', () => {
             clientY: y + 5,
             force: true,
             view: win,
-          })
+          });
 
-        cy.get('.vue-flow__edge[data-id="xy-edge__A-B"]').should('exist')
-        cy.get('.vue-flow__edge[data-id="xy-edge__A-C"]').should('not.exist')
-      })
-    })
-  })
-})
+        cy.get('.vue-flow__edge[data-id="xy-edge__A-B"]').should('exist');
+        cy.get('.vue-flow__edge[data-id="xy-edge__A-C"]').should('not.exist');
+      });
+    });
+  });
+});

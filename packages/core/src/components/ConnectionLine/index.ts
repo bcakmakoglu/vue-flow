@@ -1,16 +1,16 @@
-import { computed, defineComponent, h, inject } from 'vue'
-import { getBezierPath, getHandlePosition, getMarkerId, getSmoothStepPath, oppositePosition } from '@xyflow/system'
-import type { HandleElement } from '../../types'
-import { ConnectionLineType, ConnectionMode, Position } from '../../types'
-import { storeToRefs, useStore, useVueFlow } from '../../composables'
-import { Slots } from '../../context'
-import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge'
+import type { HandleElement } from '../../types';
+import { getBezierPath, getHandlePosition, getMarkerId, getSmoothStepPath, oppositePosition } from '@xyflow/system';
+import { computed, defineComponent, h, inject } from 'vue';
+import { storeToRefs, useStore, useVueFlow } from '../../composables';
+import { Slots } from '../../context';
+import { ConnectionLineType, ConnectionMode, Position } from '../../types';
+import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge';
 
 const ConnectionLine = defineComponent({
   name: 'ConnectionLine',
   compatConfig: { MODE: 3 },
   setup() {
-    const { id, viewport, getInternalNode } = useVueFlow()
+    const { id, viewport, getInternalNode } = useVueFlow();
 
     const {
       connectionMode,
@@ -19,77 +19,78 @@ const ConnectionLine = defineComponent({
       connectionPosition,
       connectionLineOptions,
       connectionStatus,
-    } = storeToRefs(useStore())
+    } = storeToRefs(useStore());
 
-    const connectionLineComponent = inject(Slots)?.['connection-line']
+    const connectionLineComponent = inject(Slots)?.['connection-line'];
 
-    const fromNode = computed(() => getInternalNode(connectionStartHandle.value?.nodeId))
+    const fromNode = computed(() => getInternalNode(connectionStartHandle.value?.nodeId));
 
-    const toNode = computed(() => getInternalNode(connectionEndHandle.value?.nodeId) ?? null)
+    const toNode = computed(() => getInternalNode(connectionEndHandle.value?.nodeId) ?? null);
 
     const toXY = computed(() => {
       return {
         x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom,
         y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
-      }
-    })
+      };
+    });
 
     const markerStart = computed(() =>
       connectionLineOptions.value.markerStart ? `url(#${getMarkerId(connectionLineOptions.value.markerStart, id)})` : '',
-    )
+    );
 
     const markerEnd = computed(() =>
       connectionLineOptions.value.markerEnd ? `url(#${getMarkerId(connectionLineOptions.value.markerEnd, id)})` : '',
-    )
+    );
 
     return () => {
       if (!fromNode.value || !connectionStartHandle.value) {
-        return null
+        return null;
       }
 
-      const startHandleId = connectionStartHandle.value.id
+      const startHandleId = connectionStartHandle.value.id;
 
-      const handleType = connectionStartHandle.value.type
+      const handleType = connectionStartHandle.value.type;
 
-      const fromHandleBounds = fromNode.value.internals.handleBounds
-      let handleBounds = fromHandleBounds?.[handleType] ?? []
+      const fromHandleBounds = fromNode.value.internals.handleBounds;
+      let handleBounds = fromHandleBounds?.[handleType] ?? [];
 
       if (connectionMode.value === ConnectionMode.Loose) {
-        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] ?? []
-        handleBounds = [...handleBounds, ...oppositeBounds]
+        const oppositeBounds = fromHandleBounds?.[handleType === 'source' ? 'target' : 'source'] ?? [];
+        handleBounds = [...handleBounds, ...oppositeBounds];
       }
 
-      const fromHandle = (startHandleId ? handleBounds.find((d) => d.id === startHandleId) : handleBounds[0]) ?? null
-      const fromPosition = fromHandle?.position ?? Position.Top
-      const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition)
+      const fromHandle = (startHandleId ? handleBounds.find(d => d.id === startHandleId) : handleBounds[0]) ?? null;
+      const fromPosition = fromHandle?.position ?? Position.Top;
+      const { x: fromX, y: fromY } = getHandlePosition(fromNode.value, fromHandle, fromPosition);
 
-      let toHandle: HandleElement | null = null
+      let toHandle: HandleElement | null = null;
       if (toNode.value) {
         // if connection mode is strict, we only look for handles of the opposite type
         if (connectionMode.value === ConnectionMode.Strict) {
-          toHandle =
-            toNode.value.internals.handleBounds?.[handleType === 'source' ? 'target' : 'source']?.find(
-              (d) => d.id === connectionEndHandle.value?.id,
-            ) || null
-        } else {
+          toHandle
+            = toNode.value.internals.handleBounds?.[handleType === 'source' ? 'target' : 'source']?.find(
+              d => d.id === connectionEndHandle.value?.id,
+            ) || null;
+        }
+        else {
           // if connection mode is loose, look for the handle in both source and target bounds
-          toHandle =
-            [
+          toHandle
+            = [
               ...(toNode.value.internals.handleBounds?.source ?? []),
               ...(toNode.value.internals.handleBounds?.target ?? []),
-            ]?.find((d) => d.id === connectionEndHandle.value?.id) || null
+            ]?.find(d => d.id === connectionEndHandle.value?.id) || null;
         }
       }
 
-      const toPosition = connectionEndHandle.value?.position ?? (fromPosition ? oppositePosition[fromPosition] : null)
+      const toPosition = connectionEndHandle.value?.position ?? (fromPosition ? oppositePosition[fromPosition] : null);
 
       if (!fromPosition || !toPosition) {
-        return null
+        return null;
       }
 
-      const type = connectionLineOptions.value.type ?? ConnectionLineType.Bezier
+      const type = connectionLineOptions.value.type ?? ConnectionLineType.Bezier;
 
-      let dAttr = ''
+      let dAttr = '';
 
       const pathParams = {
         sourceX: fromX,
@@ -98,21 +99,25 @@ const ConnectionLine = defineComponent({
         targetX: toXY.value.x,
         targetY: toXY.value.y,
         targetPosition: toPosition,
-      }
+      };
 
       if (type === ConnectionLineType.Bezier) {
-        ;[dAttr] = getBezierPath(pathParams)
-      } else if (type === ConnectionLineType.Step) {
+        ;[dAttr] = getBezierPath(pathParams);
+      }
+      else if (type === ConnectionLineType.Step) {
         ;[dAttr] = getSmoothStepPath({
           ...pathParams,
           borderRadius: 0,
-        })
-      } else if (type === ConnectionLineType.SmoothStep) {
-        ;[dAttr] = getSmoothStepPath(pathParams)
-      } else if (type === ConnectionLineType.SimpleBezier) {
-        ;[dAttr] = getSimpleBezierPath(pathParams)
-      } else {
-        dAttr = `M${fromX},${fromY} ${toXY.value.x},${toXY.value.y}`
+        });
+      }
+      else if (type === ConnectionLineType.SmoothStep) {
+        ;[dAttr] = getSmoothStepPath(pathParams);
+      }
+      else if (type === ConnectionLineType.SimpleBezier) {
+        ;[dAttr] = getSimpleBezierPath(pathParams);
+      }
+      else {
+        dAttr = `M${fromX},${fromY} ${toXY.value.x},${toXY.value.y}`;
       }
 
       return h(
@@ -147,9 +152,9 @@ const ConnectionLine = defineComponent({
                 'marker-start': markerStart.value,
               }),
         ),
-      )
-    }
+      );
+    };
   },
-})
+});
 
-export default ConnectionLine
+export default ConnectionLine;

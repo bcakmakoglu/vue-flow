@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { SFCOptions } from '@vue/repl'
-import { ReplStore, Repl as VueRepl } from '@vue/repl'
-import CodeMirror from '@vue/repl/codemirror-editor'
-import { exampleImports } from '../examples'
+import type { SFCOptions } from '@vue/repl';
+import { ReplStore, Repl as VueRepl } from '@vue/repl';
+import CodeMirror from '@vue/repl/codemirror-editor';
+import { exampleImports } from '../examples';
 
-const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>()
+const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>();
 
-const vueFlowVersion = __VUE_FLOW_VERSION__
+const vueFlowVersion = __VUE_FLOW_VERSION__;
 
 let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/style.css';
 @import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/theme-default.css';
@@ -31,26 +31,27 @@ body,
   transform: scale(75%);
   transform-origin: bottom right;
 }
-\n`
+\n`;
 
 const store = new ReplStore({
   showOutput: true,
   outputMode: 'preview',
-})
+});
 
-const files: Record<string, (typeof imports)[keyof typeof imports]> = {}
-const imports = exampleImports[props.example]
-const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {}
+const files: Record<string, (typeof imports)[keyof typeof imports]> = {};
+const imports = exampleImports[props.example];
+const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {};
 
-for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
+for (const example of Object.keys(imports).filter(i => i !== 'additionalImports')) {
   if (example.includes('css')) {
-    css += formatCSS(imports[example as keyof typeof imports])
-  } else {
-    files[example] = imports[example as keyof typeof imports]
+    css += formatCSS(imports[example as keyof typeof imports]);
+  }
+  else {
+    files[example] = imports[example as keyof typeof imports];
   }
 }
 
-await store.setVueVersion('3.5.0')
+await store.setVueVersion('3.5.0');
 
 await store.setFiles(
   {
@@ -58,7 +59,7 @@ await store.setFiles(
     'main.css': css,
   },
   props.mainFile ?? 'App.vue',
-)
+);
 
 // pre-set import map
 store.setImportMap({
@@ -66,30 +67,30 @@ store.setImportMap({
     '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
     ...additionalImports,
   },
-})
+});
 
 const sfcOptions = {
   script: {
     propsDestructure: true,
   },
-} as SFCOptions
+} as SFCOptions;
 
 function onKeydown(event: KeyboardEvent) {
   // prevent the browser's save dialog on both Ctrl+S and Cmd+S
   if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-    event.preventDefault()
+    event.preventDefault();
   }
 }
 
 function formatCSS(cssString: string) {
-  let formattedString = cssString
+  let formattedString = cssString;
 
-  formattedString = formattedString.replace(/}/g, '\n}\n\n')
-  formattedString = formattedString.replace(/;/g, ';\n    ')
+  formattedString = formattedString.replace(/\}/g, '\n}\n\n');
+  formattedString = formattedString.replace(/;/g, ';\n    ');
 
-  formattedString = formattedString.replace(/{/g, ' {\n    ')
+  formattedString = formattedString.replace(/\{/g, ' {\n    ');
 
-  return formattedString.trim()
+  return formattedString.trim();
 }
 </script>
 

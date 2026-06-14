@@ -1,19 +1,19 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, ControlButton, Controls, MiniMap, VueFlow } from '@vue-flow/core'
-import { initialEdges, initialNodes } from './initial-elements.js'
-import Icon from './Icon.vue'
+import { Background, ControlButton, Controls, MiniMap, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import Icon from './Icon.vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
 // our dark mode toggle flag
-const dark = ref(false)
+const dark = ref(false);
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to
 // reach the store from the component that renders the flow.
-const flow = ref()
+const flow = ref();
 
 /**
  * onNodeDragStop is called when a node is done being dragged
@@ -25,7 +25,7 @@ const flow = ref()
  * 4. any intersections with other nodes
  */
 function onNodeDragStop({ event, nodes, node, intersections }) {
-  console.log('Node Drag Stop', { event, nodes, node, intersections })
+  console.log('Node Drag Stop', { event, nodes, node, intersections });
 }
 
 /**
@@ -34,7 +34,7 @@ function onNodeDragStop({ event, nodes, node, intersections }) {
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether by not calling `addEdges`
  */
 function onConnect(connection) {
-  flow.value?.addEdges(connection)
+  flow.value?.addEdges(connection);
 }
 
 /**
@@ -51,26 +51,26 @@ function updatePos() {
         x: Math.random() * 400,
         y: Math.random() * 400,
       },
-    }
-  })
+    };
+  });
 }
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
 function logToObject() {
-  console.log(flow.value?.toObject())
+  console.log(flow.value?.toObject());
 }
 
 /**
  * Resets the current viewport transformation (zoom & pan)
  */
 function resetTransform() {
-  flow.value?.setViewport({ x: 0, y: 0, zoom: 1 })
+  flow.value?.setViewport({ x: 0, y: 0, zoom: 1 });
 }
 
 function toggleDarkMode() {
-  dark.value = !dark.value
+  dark.value = !dark.value;
 }
 </script>
 

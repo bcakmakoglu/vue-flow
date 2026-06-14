@@ -1,8 +1,8 @@
-import { computed, inject, ref } from 'vue'
-import type { Edge, Node } from '../types'
-import { ErrorCode, VueFlowError } from '../utils'
-import { EdgeId, EdgeRef } from '../context'
-import { useVueFlow } from './useVueFlow'
+import type { Edge, Node } from '../types';
+import { computed, inject, ref } from 'vue';
+import { EdgeId, EdgeRef } from '../context';
+import { ErrorCode, VueFlowError } from '../utils';
+import { useVueFlow } from './useVueFlow';
 
 /**
  * Composable that provides access to an edge object and it's dom element
@@ -16,22 +16,22 @@ import { useVueFlow } from './useVueFlow'
  * @returns the edge id, the edge (a `ComputedRef`) and the edge dom element
  */
 export function useEdge<EdgeType extends Edge = Edge>(id?: string) {
-  const edgeId = id ?? inject(EdgeId, '')
-  const edgeEl = inject(EdgeRef, ref(null))
+  const edgeId = id ?? inject(EdgeId, '');
+  const edgeEl = inject(EdgeRef, ref(null));
 
-  const { getEdge, emits } = useVueFlow<Node, EdgeType>()
+  const { getEdge, emits } = useVueFlow<Node, EdgeType>();
 
   // a `computed` (not a one-time read) so it re-resolves whenever the store replaces this edge's lookup
   // entry — required for the immutable model where a changed edge is a NEW object (mirrors `useNode`)
-  const edge = computed(() => getEdge(edgeId))
+  const edge = computed(() => getEdge(edgeId));
 
   if (!edge.value) {
-    emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId))
+    emits.error(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edgeId));
   }
 
   return {
     id: edgeId,
     edge,
     edgeEl,
-  }
+  };
 }

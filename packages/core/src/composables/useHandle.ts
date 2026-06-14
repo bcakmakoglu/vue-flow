@@ -1,26 +1,26 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { toValue } from 'vue'
-import type { ConnectionState, IsValidConnection as SystemIsValidConnection } from '@xyflow/system'
-import { XYHandle, getEventPosition, getHostForElement } from '@xyflow/system'
-import type { ConnectingHandle, Connection, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types'
-import { isValidHandle } from '../utils'
-import { Position } from '../types'
-import { useVueFlow } from './useVueFlow'
-import { useStore } from './useStore'
-import { storeToRefs } from './storeToRefs'
+import type { ConnectionState, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
+import type { MaybeRefOrGetter } from 'vue';
+import type { ConnectingHandle, Connection, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types';
+import { getEventPosition, getHostForElement, XYHandle } from '@xyflow/system';
+import { toValue } from 'vue';
+import { Position } from '../types';
+import { isValidHandle } from '../utils';
+import { storeToRefs } from './storeToRefs';
+import { useStore } from './useStore';
+import { useVueFlow } from './useVueFlow';
 
 export interface UseHandleProps {
-  handleId: MaybeRefOrGetter<string | null>
-  nodeId: MaybeRefOrGetter<string>
-  type: MaybeRefOrGetter<HandleType>
-  isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>
-  reconnectHandleType?: MaybeRefOrGetter<HandleType>
-  onReconnect?: (event: MouseTouchEvent, connection: Connection) => void
-  onReconnectEnd?: (event: MouseTouchEvent) => void
+  handleId: MaybeRefOrGetter<string | null>;
+  nodeId: MaybeRefOrGetter<string>;
+  type: MaybeRefOrGetter<HandleType>;
+  isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>;
+  reconnectHandleType?: MaybeRefOrGetter<HandleType>;
+  onReconnect?: (event: MouseTouchEvent, connection: Connection) => void;
+  onReconnectEnd?: (event: MouseTouchEvent) => void;
 }
 
 function alwaysValid() {
-  return true
+  return true;
 }
 
 /**
@@ -42,9 +42,9 @@ export function useHandle({
   onReconnect,
   onReconnectEnd,
 }: UseHandleProps) {
-  const { id: flowId, getNode, getInternalNode, panBy, startConnection, updateConnection, endConnection, emits } = useVueFlow()
+  const { id: flowId, getNode, getInternalNode, panBy, startConnection, updateConnection, endConnection, emits } = useVueFlow();
 
-  const { nodeLookup } = useStore()
+  const { nodeLookup } = useStore();
 
   const {
     vueFlowRef,
@@ -60,7 +60,7 @@ export function useHandle({
     edges,
     nodes,
     isValidConnection: isValidConnectionProp,
-  } = storeToRefs(useStore())
+  } = storeToRefs(useStore());
 
   /**
    * Adapt our richer `ValidConnectionFunc` (which receives `{ nodes, edges, sourceNode, targetNode }`)
@@ -68,15 +68,15 @@ export function useHandle({
    * source/target nodes from `nodeLookup` before delegating to the user's callback.
    */
   function buildSystemIsValidConnection(): SystemIsValidConnection | undefined {
-    const userFn = toValue(isValidConnection) || isValidConnectionProp.value
+    const userFn = toValue(isValidConnection) || isValidConnectionProp.value;
     if (!userFn) {
-      return undefined
+      return undefined;
     }
     return (edge) => {
-      const sourceNode = getInternalNode(edge.source)
-      const targetNode = getInternalNode(edge.target)
+      const sourceNode = getInternalNode(edge.source);
+      const targetNode = getInternalNode(edge.target);
       if (!sourceNode || !targetNode) {
-        return false
+        return false;
       }
       return userFn(
         {
@@ -86,14 +86,14 @@ export function useHandle({
           targetHandle: edge.targetHandle ?? null,
         },
         { nodes: nodes.value, edges: edges.value, sourceNode, targetNode },
-      )
-    }
+      );
+    };
   }
 
   function handlePointerDown(event: MouseTouchEvent) {
-    const handleDomNode = event.currentTarget as Element | null
+    const handleDomNode = event.currentTarget as Element | null;
     if (!handleDomNode || !vueFlowRef.value) {
-      return
+      return;
     }
 
     XYHandle.onPointerDown(event, {
@@ -118,9 +118,9 @@ export function useHandle({
       // store's `connectionStartHandle`, surface it as a system-shaped `Handle`. Width/height aren't
       // tracked on `ConnectingHandle` — fall back to 0; system only reads them for rendering.
       getFromHandle: () => {
-        const h = connectionStartHandle.value
+        const h = connectionStartHandle.value;
         if (!h) {
-          return null
+          return null;
         }
         return {
           id: h.id,
@@ -131,7 +131,7 @@ export function useHandle({
           y: h.y,
           width: 0,
           height: 0,
-        }
+        };
       },
       updateConnection: (state: ConnectionState) => {
         if (state.inProgress) {
@@ -145,7 +145,7 @@ export function useHandle({
               position: state.fromHandle.position,
               x: state.to.x,
               y: state.to.y,
-            })
+            });
           }
           updateConnection(
             state.to,
@@ -160,11 +160,11 @@ export function useHandle({
                 } as ConnectingHandle)
               : null,
             state.isValid !== null ? (state.isValid ? 'valid' : 'invalid') : null,
-          )
+          );
         }
       },
       cancelConnection: () => {
-        endConnection(event, false)
+        endConnection(event, false);
       },
       onConnectStart: (evt, params) => {
         emits.connectStart({
@@ -172,27 +172,28 @@ export function useHandle({
           nodeId: params.nodeId ?? undefined,
           handleId: params.handleId,
           handleType: params.handleType ?? undefined,
-        })
+        });
       },
       onConnect: (connection) => {
         if (onReconnect) {
-          onReconnect(event, connection)
-        } else {
-          emits.connect(connection)
+          onReconnect(event, connection);
+        }
+        else {
+          emits.connect(connection);
         }
       },
       onConnectEnd: (evt) => {
-        emits.connectEnd(evt as MouseTouchEvent)
+        emits.connectEnd(evt as MouseTouchEvent);
         if (reconnectHandleType) {
-          onReconnectEnd?.(evt as MouseTouchEvent)
+          onReconnectEnd?.(evt as MouseTouchEvent);
         }
       },
-    })
+    });
   }
 
   function handleClick(event: MouseEvent) {
     if (!connectOnClick.value) {
-      return
+      return;
     }
 
     if (!connectionClickStartHandle.value) {
@@ -200,7 +201,7 @@ export function useHandle({
         event,
         nodeId: toValue(nodeId),
         handleId: toValue(handleId),
-      })
+      });
 
       startConnection(
         {
@@ -212,20 +213,20 @@ export function useHandle({
         },
         undefined,
         true,
-      )
+      );
 
-      return
+      return;
     }
 
-    const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid
+    const isValidConnectionHandler = toValue(isValidConnection) || isValidConnectionProp.value || alwaysValid;
 
-    const node = getNode(toValue(nodeId))
+    const node = getNode(toValue(nodeId));
 
     if (node && (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable) === false) {
-      return
+      return;
     }
 
-    const doc = getHostForElement(event.target as HTMLElement)
+    const doc = getHostForElement(event.target as HTMLElement);
 
     const result = isValidHandle(
       event,
@@ -250,21 +251,21 @@ export function useHandle({
       nodes.value,
       getInternalNode,
       nodeLookup,
-    )
+    );
 
-    const isOwnHandle = result.connection?.source === result.connection?.target
+    const isOwnHandle = result.connection?.source === result.connection?.target;
 
     if (result.isValid && result.connection && !isOwnHandle) {
-      emits.connect(result.connection)
+      emits.connect(result.connection);
     }
 
-    emits.clickConnectEnd(event)
+    emits.clickConnectEnd(event);
 
-    endConnection(event, true)
+    endConnection(event, true);
   }
 
   return {
     handlePointerDown,
     handleClick,
-  }
+  };
 }

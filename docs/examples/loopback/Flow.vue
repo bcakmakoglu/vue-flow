@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, Panel, Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import LoopbackEdge from './LoopbackEdge.vue'
+import { Background, Panel, Position, useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import LoopbackEdge from './LoopbackEdge.vue';
 
-const { updateEdgeData, updateNode } = useVueFlow()
+const { updateEdgeData, updateNode } = useVueFlow();
 
 const nodes = ref([
   {
@@ -11,13 +11,13 @@ const nodes = ref([
     position: { x: 0, y: 0 },
     data: { label: 'I connect to myself' },
   },
-])
+]);
 
-const pathType = ref('bezier')
+const pathType = ref('bezier');
 
-const isHorizontal = ref(false)
+const isHorizontal = ref(false);
 
-const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', data: { pathType: pathType.value } }])
+const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', data: { pathType: pathType.value } }]);
 </script>
 
 <template>
@@ -41,12 +41,15 @@ const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', dat
 
     <Panel>
       <select v-model="pathType" @change="updateEdgeData('e1-1', { pathType })">
-        <option value="bezier">Bezier</option>
-        <option value="smoothstep">Smoothstep</option>
+        <option value="bezier">
+          Bezier
+        </option>
+        <option value="smoothstep">
+          Smoothstep
+        </option>
       </select>
 
-      <label for="is-horizontal"
-        >{{ isHorizontal ? 'Vertical' : 'Horizontal' }}
+      <label for="is-horizontal">{{ isHorizontal ? 'Vertical' : 'Horizontal' }}
         <input
           id="is-horizontal"
           v-model="isHorizontal"
@@ -57,7 +60,7 @@ const edges = ref([{ id: 'e1-1', type: 'loopback', source: '1', target: '1', dat
               targetPosition: isHorizontal ? Position.Left : Position.Top,
             })
           "
-        />
+        >
       </label>
     </Panel>
   </VueFlow>

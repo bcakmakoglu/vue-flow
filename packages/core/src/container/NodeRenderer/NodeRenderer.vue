@@ -1,53 +1,53 @@
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { NodeWrapper } from '../../components'
-import { useStore, useVueFlow } from '../../composables'
-import { useNodesInitialized } from '../../composables/useNodesInitialized'
+import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { NodeWrapper } from '../../components';
+import { useStore, useVueFlow } from '../../composables';
+import { useNodesInitialized } from '../../composables/useNodesInitialized';
 
-const { getNodes, updateNodeDimensions, emits } = useVueFlow()
+const { getNodes, updateNodeDimensions, emits } = useVueFlow();
 
-const { nodeLookup } = useStore()
+const { nodeLookup } = useStore();
 
-const nodesInitialized = useNodesInitialized()
+const nodesInitialized = useNodesInitialized();
 
-const resizeObserver = ref<ResizeObserver>()
+const resizeObserver = ref<ResizeObserver>();
 
 watch(
   nodesInitialized,
   (isInit) => {
     if (isInit) {
       nextTick(() => {
-        emits.nodesInitialized(Array.from(nodeLookup.values(), (node) => node.internals.userNode))
-      })
+        emits.nodesInitialized(Array.from(nodeLookup.values(), node => node.internals.userNode));
+      });
     }
   },
   { immediate: true },
-)
+);
 
 onMounted(() => {
   resizeObserver.value = new ResizeObserver((entries) => {
     const updates = entries.map((entry) => {
-      const id = entry.target.getAttribute('data-id') as string
+      const id = entry.target.getAttribute('data-id') as string;
 
       return {
         id,
         nodeElement: entry.target as HTMLDivElement,
         forceUpdate: true,
-      }
-    })
+      };
+    });
 
-    nextTick(() => updateNodeDimensions(updates))
-  })
-})
+    nextTick(() => updateNodeDimensions(updates));
+  });
+});
 
-onBeforeUnmount(() => resizeObserver.value?.disconnect())
+onBeforeUnmount(() => resizeObserver.value?.disconnect());
 </script>
 
 <script lang="ts">
 export default {
   name: 'Nodes',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup>
-import { computed, toRef } from 'vue'
-import { Handle, useNodeConnections } from '@vue-flow/core'
-import { ProcessStatus } from './useRunProcess'
+import { Handle, useNodeConnections } from '@vue-flow/core';
+import { computed, toRef } from 'vue';
+import { ProcessStatus } from './useRunProcess';
 
 const props = defineProps({
   data: {
@@ -14,57 +14,57 @@ const props = defineProps({
   targetPosition: {
     type: String,
   },
-})
+});
 
 const sourceConnections = useNodeConnections({
   handleType: 'target',
-})
+});
 
 const targetConnections = useNodeConnections({
   handleType: 'source',
-})
+});
 
-const isStartNode = toRef(() => sourceConnections.value.length <= 0)
+const isStartNode = toRef(() => sourceConnections.value.length <= 0);
 
-const isEndNode = toRef(() => targetConnections.value.length <= 0)
+const isEndNode = toRef(() => targetConnections.value.length <= 0);
 
-const status = toRef(() => props.data.status)
+const status = toRef(() => props.data.status);
 
 const bgColor = computed(() => {
   if (isStartNode.value) {
-    return '#2563eb'
+    return '#2563eb';
   }
 
   switch (status.value) {
     case ProcessStatus.ERROR:
-      return '#f87171'
+      return '#f87171';
     case ProcessStatus.FINISHED:
-      return '#42B983'
+      return '#42B983';
     case ProcessStatus.CANCELLED:
-      return '#fbbf24'
+      return '#fbbf24';
     default:
-      return '#4b5563'
+      return '#4b5563';
   }
-})
+});
 
 const processLabel = computed(() => {
   if (isStartNode.value) {
-    return '📦'
+    return '📦';
   }
 
   switch (status.value) {
     case ProcessStatus.ERROR:
-      return '❌'
+      return '❌';
     case ProcessStatus.SKIPPED:
-      return '🚧'
+      return '🚧';
     case ProcessStatus.CANCELLED:
-      return '🚫'
+      return '🚫';
     case ProcessStatus.FINISHED:
-      return '😎'
+      return '😎';
     default:
-      return '🏠'
+      return '🏠';
   }
-})
+});
 </script>
 
 <template>

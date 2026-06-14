@@ -1,31 +1,31 @@
 <script lang="ts" setup>
-import { getNodeDimensions } from '@xyflow/system'
-import { computed, inject, toRef, watch } from 'vue'
-import { useVueFlow } from '../../composables'
-import { NodeId } from '../../context'
-import type { NodeDimensionChange } from '../../types'
-import ResizeControl from './ResizeControl.vue'
-import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types'
-import { ResizeControlVariant } from './types'
+import type { NodeDimensionChange } from '../../types';
+import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types';
+import { getNodeDimensions } from '@xyflow/system';
+import { computed, inject, toRef, watch } from 'vue';
+import { useVueFlow } from '../../composables';
+import { NodeId } from '../../context';
+import ResizeControl from './ResizeControl.vue';
+import { ResizeControlVariant } from './types';
 
 const props = withDefaults(defineProps<NodeResizerProps>(), {
   isVisible: true,
   autoScale: true,
-})
+});
 
-const emits = defineEmits<NodeResizerEmits>()
+const emits = defineEmits<NodeResizerEmits>();
 
-const { getInternalNode, emits: triggerEmits } = useVueFlow()
+const { getInternalNode, emits: triggerEmits } = useVueFlow();
 
-const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+const handleControls: ControlPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
 
-const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left']
+const lineControls: ControlLinePosition[] = ['top', 'right', 'bottom', 'left'];
 
-const contextNodeId = inject(NodeId, null)
+const contextNodeId = inject(NodeId, null);
 
-const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId ?? undefined))
+const nodeId = toRef(() => (typeof props.nodeId === 'string' ? props.nodeId : contextNodeId ?? undefined));
 
-const node = computed(() => getInternalNode(nodeId.value))
+const node = computed(() => getInternalNode(nodeId.value));
 
 watch(
   [
@@ -36,10 +36,10 @@ watch(
     () => !!node.value?.measured.width && !!node.value.measured.height,
   ],
   ([minWidth, minHeight, maxWidth, maxHeight, isInitialized]) => {
-    const n = node.value
+    const n = node.value;
 
     if (n && isInitialized) {
-      const dimensions = getNodeDimensions(n)
+      const dimensions = getNodeDimensions(n);
 
       const dimensionChange: NodeDimensionChange = {
         id: n.id,
@@ -49,31 +49,31 @@ watch(
           width: dimensions.width,
           height: dimensions.height,
         },
-      }
+      };
 
       if (minWidth && dimensions.width < minWidth) {
-        dimensionChange.dimensions!.width = minWidth
+        dimensionChange.dimensions!.width = minWidth;
       }
 
       if (minHeight && dimensions.height < minHeight) {
-        dimensionChange.dimensions!.height = minHeight
+        dimensionChange.dimensions!.height = minHeight;
       }
 
       if (maxWidth && dimensions.width > maxWidth) {
-        dimensionChange.dimensions!.width = maxWidth
+        dimensionChange.dimensions!.width = maxWidth;
       }
 
       if (maxHeight && dimensions.height > maxHeight) {
-        dimensionChange.dimensions!.height = maxHeight
+        dimensionChange.dimensions!.height = maxHeight;
       }
 
       if (dimensionChange.dimensions!.width !== n.measured.width || dimensionChange.dimensions!.height !== n.measured.height) {
-        triggerEmits.nodesChange([dimensionChange])
+        triggerEmits.nodesChange([dimensionChange]);
       }
     }
   },
   { flush: 'post', immediate: true },
-)
+);
 </script>
 
 <script lang="ts">
@@ -81,7 +81,7 @@ export default {
   name: 'NodeResizer',
   compatConfig: { MODE: 3 },
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

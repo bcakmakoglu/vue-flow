@@ -1,8 +1,8 @@
-import type { Ref, ToRefs } from 'vue'
-import { effectScope, isRef, toRaw, toRef, watch } from 'vue'
-import type { Connection, Edge, FlowProps, Node, VueFlowStoreHandle } from '../types'
-import { isDef } from '../utils'
-import { storeToRefs } from './storeToRefs'
+import type { Ref, ToRefs } from 'vue';
+import type { Connection, Edge, FlowProps, Node, VueFlowStoreHandle } from '../types';
+import { effectScope, isRef, toRaw, toRef, watch } from 'vue';
+import { isDef } from '../utils';
+import { storeToRefs } from './storeToRefs';
 
 /**
  * Two-way bind a `v-model` array ref to the store, identity-in / snapshot-out, with native `watch`.
@@ -22,40 +22,40 @@ function syncModelArray<ModelItem, StoreItem>(
   setItems: (items: ModelItem[]) => void,
 ) {
   if (!model) {
-    return
+    return;
   }
 
   // the array we last pushed store → model; the `in` watcher skips it so the snapshot doesn't loop back
-  let lastSnapshot: ModelItem[] | undefined
+  let lastSnapshot: ModelItem[] | undefined;
 
   watch(
     [storeItems, () => storeItems.value.length],
     () => {
-      lastSnapshot = [...storeItems.value] as unknown as ModelItem[]
-      model.value = lastSnapshot
+      lastSnapshot = [...storeItems.value] as unknown as ModelItem[];
+      model.value = lastSnapshot;
     },
     // seed the model only if the store already holds elements (populated by `setState(props)` on create)
     { immediate: storeItems.value.length > 0 },
-  )
+  );
 
   watch(
     [model, () => model.value?.length],
     ([next]) => {
       if (!Array.isArray(next)) {
-        return
+        return;
       }
 
       // compare raw identities: a deep model `ref` hands our own snapshot back as its reactive proxy,
       // which would fail a plain `===` and loop snapshot → setItems → snapshot forever
-      const nextRaw = toRaw(next)
+      const nextRaw = toRaw(next);
       if (nextRaw === lastSnapshot) {
-        return
+        return;
       }
 
-      setItems(nextRaw)
+      setItems(nextRaw);
     },
     { immediate: true },
-  )
+  );
 }
 
 /**
@@ -73,26 +73,26 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
   handle: VueFlowStoreHandle<NodeType, EdgeType>,
   ownsStore = false,
 ) {
-  const { instance, state } = handle
+  const { instance, state } = handle;
   // refs over the reactive state (writable) so the prop→store sync below can assign as before
-  const storeRefs = storeToRefs(state)
+  const storeRefs = storeToRefs(state);
 
-  const scope = effectScope(true)
+  const scope = effectScope(true);
 
   scope.run(() => {
     // Only when this `<VueFlow>` reuses a provider's store (it didn't create it, so the model refs can't
     // back it). Owned stores are single-source — the models ARE the store's nodes/edges — so these are skipped.
     const watchNodesValue = () => {
       scope.run(() => {
-        syncModelArray(models.nodes, storeRefs.nodes, (nodes) => instance.setNodes(nodes))
-      })
-    }
+        syncModelArray(models.nodes, storeRefs.nodes, nodes => instance.setNodes(nodes));
+      });
+    };
 
     const watchEdgesValue = () => {
       scope.run(() => {
-        syncModelArray(models.edges, storeRefs.edges, (edges) => instance.setEdges(edges))
-      })
-    }
+        syncModelArray(models.edges, storeRefs.edges, edges => instance.setEdges(edges));
+      });
+    };
 
     const watchMaxZoom = () => {
       scope.run(() => {
@@ -100,15 +100,15 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
           () => props.maxZoom,
           () => {
             if (props.maxZoom && isDef(props.maxZoom)) {
-              instance.setMaxZoom(props.maxZoom)
+              instance.setMaxZoom(props.maxZoom);
             }
           },
           {
             immediate: true,
           },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchMinZoom = () => {
       scope.run(() => {
@@ -116,13 +116,13 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
           () => props.minZoom,
           () => {
             if (props.minZoom && isDef(props.minZoom)) {
-              instance.setMinZoom(props.minZoom)
+              instance.setMinZoom(props.minZoom);
             }
           },
           { immediate: true },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchTranslateExtent = () => {
       scope.run(() => {
@@ -130,15 +130,15 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
           () => props.translateExtent,
           () => {
             if (props.translateExtent && isDef(props.translateExtent)) {
-              instance.setTranslateExtent(props.translateExtent)
+              instance.setTranslateExtent(props.translateExtent);
             }
           },
           {
             immediate: true,
           },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchNodeExtent = () => {
       scope.run(() => {
@@ -146,15 +146,15 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
           () => props.nodeExtent,
           () => {
             if (props.nodeExtent && isDef(props.nodeExtent)) {
-              instance.setNodeExtent(props.nodeExtent)
+              instance.setNodeExtent(props.nodeExtent);
             }
           },
           {
             immediate: true,
           },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchApplyDefault = () => {
       scope.run(() => {
@@ -162,57 +162,58 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
           () => props.applyDefault,
           () => {
             if (isDef(props.applyDefault)) {
-              storeRefs.applyDefault.value = props.applyDefault
+              storeRefs.applyDefault.value = props.applyDefault;
             }
           },
           {
             immediate: true,
           },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchAutoConnect = () => {
       scope.run(() => {
         const autoConnector = async (params: Connection) => {
-          let connection: boolean | Connection = params
+          let connection: boolean | Connection = params;
 
           if (typeof props.autoConnect === 'function') {
-            connection = await props.autoConnect(params)
+            connection = await props.autoConnect(params);
           }
 
           if (connection !== false) {
-            instance.addEdges([connection])
+            instance.addEdges([connection]);
           }
-        }
+        };
 
         watch(
           () => props.autoConnect,
           () => {
             if (isDef(props.autoConnect)) {
-              storeRefs.autoConnect.value = props.autoConnect
+              storeRefs.autoConnect.value = props.autoConnect;
             }
           },
           { immediate: true },
-        )
+        );
 
         watch(
           storeRefs.autoConnect,
           (autoConnectEnabled, _, onCleanup) => {
             if (autoConnectEnabled) {
-              instance.onConnect(autoConnector)
-            } else {
-              state.hooks.connect.off(autoConnector)
+              instance.onConnect(autoConnector);
+            }
+            else {
+              state.hooks.connect.off(autoConnector);
             }
 
             onCleanup(() => {
-              state.hooks.connect.off(autoConnector)
-            })
+              state.hooks.connect.off(autoConnector);
+            });
           },
           { immediate: true },
-        )
-      })
-    }
+        );
+      });
+    };
 
     const watchRest = () => {
       const skip: (keyof typeof props)[] = [
@@ -227,14 +228,14 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
         'autoConnect',
         // `viewport` isn't a state field (it's a getter on the instance); `useViewportSync` two-way binds it
         'viewport',
-      ]
+      ];
 
       for (const key of Object.keys(props)) {
-        const propKey = key as keyof typeof props
+        const propKey = key as keyof typeof props;
         if (!skip.includes(propKey)) {
-          const propValue = toRef(() => props[propKey])
+          const propValue = toRef(() => props[propKey]);
 
-          const storeRef = storeRefs[propKey as keyof typeof storeRefs]
+          const storeRef = storeRefs[propKey as keyof typeof storeRefs];
 
           if (isRef(storeRef)) {
             scope.run(() => {
@@ -242,34 +243,34 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
                 propValue,
                 (nextValue) => {
                   if (isDef(nextValue)) {
-                    ;(storeRef.value as any) = nextValue
+                    ;(storeRef.value as any) = nextValue;
                   }
                 },
                 { immediate: true },
-              )
-            })
+              );
+            });
           }
         }
       }
-    }
+    };
 
     const runAll = () => {
       // owned stores bind nodes/edges single-source via signals (createStore); only reused stores sync here
       if (!ownsStore) {
-        watchNodesValue()
-        watchEdgesValue()
+        watchNodesValue();
+        watchEdgesValue();
       }
-      watchMinZoom()
-      watchMaxZoom()
-      watchTranslateExtent()
-      watchNodeExtent()
-      watchApplyDefault()
-      watchAutoConnect()
-      watchRest()
-    }
+      watchMinZoom();
+      watchMaxZoom();
+      watchTranslateExtent();
+      watchNodeExtent();
+      watchApplyDefault();
+      watchAutoConnect();
+      watchRest();
+    };
 
-    runAll()
-  })
+    runAll();
+  });
 
-  return () => scope.stop()
+  return () => scope.stop();
 }

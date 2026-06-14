@@ -1,4 +1,4 @@
-export { default as Controls } from './Controls.vue'
-export { default as ControlButton } from './ControlButton.vue'
+export { default as ControlButton } from './ControlButton.vue';
+export { default as Controls } from './Controls.vue';
 
-export * from './types'
+export * from './types';

@@ -1,11 +1,11 @@
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 /**
  * In a real world example you would want to avoid creating refs in a global scope like this
  */
-const isVisible = ref(false)
-const message = ref('')
-let resolveCallback
+const isVisible = ref(false);
+const message = ref('');
+let resolveCallback;
 
 export function useDialogState() {
   return {
@@ -13,20 +13,20 @@ export function useDialogState() {
     message,
     resolve: (value) => {
       if (resolveCallback) {
-        resolveCallback(value)
+        resolveCallback(value);
       }
     },
-  }
+  };
 }
 
 export function useDialog() {
   return {
     confirm(msg) {
-      isVisible.value = true
-      message.value = msg
+      isVisible.value = true;
+      message.value = msg;
       return new Promise((resolve) => {
-        resolveCallback = resolve
-      })
+        resolveCallback = resolve;
+      });
     },
-  }
+  };
 }

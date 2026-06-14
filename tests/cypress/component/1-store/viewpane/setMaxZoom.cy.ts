@@ -1,26 +1,26 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../../support/component'
-import { getElements } from '../../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
+import { getElements } from '../../../utils';
 
-const { nodes } = getElements()
+const { nodes } = getElements();
 
 describe('Store Action: `setMaxZoom`', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-      store.setMaxZoom(2)
-    })
-  })
+      store = getStore();
+      store.setMaxZoom(2);
+    });
+  });
 
   it('sets max-zoom in store', () => {
-    expect(store.maxZoom.value).to.eq(2)
-  })
+    expect(store.maxZoom.value).to.eq(2);
+  });
 
   it('sets max-zoom in viewpane', () => {
     cy.viewPort().trigger('wheel', {
@@ -29,14 +29,14 @@ describe('Store Action: `setMaxZoom`', () => {
       wheelDeltaX: 0,
       wheelDeltaY: 0,
       bubbles: true,
-    })
+    });
 
     cy.tryAssertion(() => {
       cy.transformationPane().should(
         'have.css',
         'transform',
         `matrix(${store.viewport.value.zoom}, 0, 0, ${store.viewport.value.zoom}, ${store.viewport.value.x}, ${store.viewport.value.y})`,
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

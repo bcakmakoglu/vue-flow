@@ -1,24 +1,24 @@
 <script lang="ts" setup>
-import { Background, Controls, MiniMap, VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
+import { Background, Controls, MiniMap, storeToRefs, useStore, useVueFlow, VueFlow } from '@vue-flow/core';
 
-const { addNodes, addEdges, onConnect, onInit, onNodeDragStop } = useVueFlow()
+const { addNodes, addEdges, onConnect, onInit, onNodeDragStop } = useVueFlow();
 
-const { nodes, dimensions } = storeToRefs(useStore())
+const { nodes, dimensions } = storeToRefs(useStore());
 
-onConnect(addEdges)
+onConnect(addEdges);
 
-onInit((flowInstance) => console.log('flow loaded:', flowInstance))
+onInit(flowInstance => console.log('flow loaded:', flowInstance));
 
-onNodeDragStop((node) => console.log('drag stop', node))
+onNodeDragStop(node => console.log('drag stop', node));
 
 function addRandomNode() {
-  const nodeId = (nodes.value.length + 1).toString()
+  const nodeId = (nodes.value.length + 1).toString();
 
   addNodes({
     id: nodeId,
     data: { label: `Node: ${nodeId}` },
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
-  })
+  });
 }
 </script>
 

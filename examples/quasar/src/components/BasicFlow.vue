@@ -1,23 +1,23 @@
 <script setup>
-import { VueFlow } from '@vue-flow/core'
-import { ref } from 'vue'
-import { initialEdges, initialNodes } from './initial-elements.js'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
 /**
  * Our nodes and edges
  */
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to
 // reach the store from the component that renders the flow.
-const flow = ref()
+const flow = ref();
 
-const dark = ref(false)
+const dark = ref(false);
 
 function onNodeDragStop(e) {
-  console.log('drag stop', e)
+  console.log('drag stop', e);
 }
 
 /**
@@ -25,7 +25,7 @@ function onNodeDragStop(e) {
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether
  */
 function onConnect(params) {
-  flow.value?.addEdges([params])
+  flow.value?.addEdges([params]);
 }
 
 /**
@@ -33,32 +33,32 @@ function onConnect(params) {
  * Changes are reflected on the graph reactively once the bound nodes ref is replaced.
  */
 function updatePos() {
-  nodes.value = nodes.value.map((node) => ({
+  nodes.value = nodes.value.map(node => ({
     ...node,
     position: {
       x: Math.random() * 400,
       y: Math.random() * 400,
     },
-  }))
+  }));
 }
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
 function logToObject() {
-  return console.log(flow.value?.toObject())
+  return console.log(flow.value?.toObject());
 }
 
 /**
  * Resets the current viewpane transformation (zoom & pan)
  */
 function resetTransform() {
-  return flow.value?.setViewport({ x: 0, y: 0, zoom: 1 })
+  return flow.value?.setViewport({ x: 0, y: 0, zoom: 1 });
 }
 
 function toggleClass() {
-  dark.value = !dark.value
-  nodes.value = nodes.value.map((node) => ({ ...node, class: dark.value ? 'dark' : 'light' }))
+  dark.value = !dark.value;
+  nodes.value = nodes.value.map(node => ({ ...node, class: dark.value ? 'dark' : 'light' }));
 }
 </script>
 
@@ -76,8 +76,12 @@ function toggleClass() {
     @connect="onConnect"
   >
     <div class="controls">
-      <button style="background-color: #113285; color: white" @click="resetTransform">reset transform</button>
-      <button style="background-color: #6f3381; color: white" @click="updatePos">update positions</button>
+      <button style="background-color: #113285; color: white" @click="resetTransform">
+        reset transform
+      </button>
+      <button style="background-color: #6f3381; color: white" @click="updatePos">
+        update positions
+      </button>
       <button
         :style="{
           backgroundColor: dark ? '#FFFFFB' : '#1C1C1C',
@@ -87,7 +91,9 @@ function toggleClass() {
       >
         toggle {{ dark ? 'light' : 'dark' }}
       </button>
-      <button @click="logToObject">log toObject</button>
+      <button @click="logToObject">
+        log toObject
+      </button>
     </div>
   </VueFlow>
 </template>

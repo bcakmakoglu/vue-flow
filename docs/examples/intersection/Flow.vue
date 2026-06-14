@@ -1,12 +1,12 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Panel, useVueFlow, VueFlow } from '@vue-flow/core';
+import { computed, ref } from 'vue';
 
 /**
  * You can either use `getIntersectingNodes` to check if a given node intersects with others
  * or `isNodeIntersecting` to check if a node is intersecting with a given area
  */
-const { onNodeDrag, getIntersectingNodes, isNodeIntersecting, updateNode, screenToFlowPosition } = useVueFlow()
+const { onNodeDrag, getIntersectingNodes, isNodeIntersecting, updateNode, screenToFlowPosition } = useVueFlow();
 
 const nodes = ref([
   {
@@ -35,11 +35,11 @@ const nodes = ref([
     data: { label: 'Drag me  over another node' },
     position: { x: 200, y: 200 },
   },
-])
+]);
 
-const panelEl = ref()
+const panelEl = ref();
 
-const isIntersectingWithPanel = ref(false)
+const isIntersectingWithPanel = ref(false);
 
 const panelPosition = computed(() => {
   if (!panelEl.value) {
@@ -48,34 +48,34 @@ const panelPosition = computed(() => {
       y: 0,
       width: 0,
       height: 0,
-    }
+    };
   }
 
-  const { left, top, width, height } = panelEl.value.$el.getBoundingClientRect()
+  const { left, top, width, height } = panelEl.value.$el.getBoundingClientRect();
 
   return {
     ...screenToFlowPosition({ x: left, y: top }),
     width,
     height,
-  }
-})
+  };
+});
 
 onNodeDrag(({ node: draggedNode }) => {
-  const intersections = getIntersectingNodes(draggedNode)
-  const intersectionIds = intersections.map((intersection) => intersection.id)
+  const intersections = getIntersectingNodes(draggedNode);
+  const intersectionIds = intersections.map(intersection => intersection.id);
 
-  isIntersectingWithPanel.value = isNodeIntersecting(draggedNode, panelPosition.value)
+  isIntersectingWithPanel.value = isNodeIntersecting(draggedNode, panelPosition.value);
 
   for (const node of nodes.value) {
-    const isIntersecting = intersectionIds.includes(node.id)
+    const isIntersecting = intersectionIds.includes(node.id);
 
-    updateNode(node.id, { class: isIntersecting ? 'intersecting' : '' })
+    updateNode(node.id, { class: isIntersecting ? 'intersecting' : '' });
   }
-})
+});
 </script>
 
 <template>
   <VueFlow :nodes="nodes" fit-view>
-    <Panel ref="panelEl" position="bottom-right" :class="{ intersecting: isIntersectingWithPanel }"> </Panel>
+    <Panel ref="panelEl" position="bottom-right" :class="{ intersecting: isIntersectingWithPanel }" />
   </VueFlow>
 </template>

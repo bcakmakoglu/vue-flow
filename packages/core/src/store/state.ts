@@ -1,8 +1,8 @@
-import { PanOnScrollMode, isMacOs } from '@xyflow/system'
-import type { Edge, FlowProps, Node, State } from '../types'
-import { ConnectionLineType, ConnectionMode, SelectionMode } from '../types'
+import type { Edge, FlowProps, Node, State } from '../types';
+import { isMacOs, PanOnScrollMode } from '@xyflow/system';
+import { ConnectionLineType, ConnectionMode, SelectionMode } from '../types';
 
-import { createHooks } from './hooks'
+import { createHooks } from './hooks';
 
 export function useState<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): State<NodeType, EdgeType> {
   return {
@@ -117,7 +117,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
 
     disableKeyboardA11y: false,
     ariaLiveMessage: '',
-  }
+  };
 }
 
 // these options will be set using the appropriate methods
@@ -136,4 +136,4 @@ export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' 
   'viewport',
   'hooks',
   'defaultEdgeOptions',
-]
+];

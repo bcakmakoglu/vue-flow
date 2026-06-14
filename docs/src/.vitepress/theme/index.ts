@@ -1,16 +1,16 @@
-import { inject } from '@vercel/analytics'
-import 'virtual:windi.css'
-import '@vue-flow/core/dist/style.css'
-import '@vue-flow/core/dist/theme-default.css'
+import { inject } from '@vercel/analytics';
+import Theme from 'vitepress/theme';
+import Layout from './layouts/default.vue';
+import 'virtual:windi.css';
 
-import Theme from 'vitepress/theme'
-import Layout from './layouts/default.vue'
-import './style.css'
+import '@vue-flow/core/dist/style.css';
+import '@vue-flow/core/dist/theme-default.css';
+import './style.css';
 
 export default {
   extends: Theme,
   Layout,
   enhanceApp() {
-    inject()
+    inject();
   },
-} as typeof Theme
+} as typeof Theme;

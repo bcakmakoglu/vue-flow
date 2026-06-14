@@ -1,9 +1,9 @@
-import type { ProcessNode } from './nodes'
-import type { ProcessEdge } from './edges'
+import type { ProcessEdge } from './edges';
+import type { ProcessNode } from './nodes';
 
-const initialPos = { x: 0, y: 0 }
-const type = 'process'
-const data = { status: null }
+const initialPos = { x: 0, y: 0 };
+const type = 'process';
+const data = { status: null };
 
 export const initialNodes: ProcessNode[] = [
   {
@@ -72,7 +72,7 @@ export const initialNodes: ProcessNode[] = [
     type,
     data,
   },
-]
+];
 
 export const initialEdges: ProcessEdge[] = [
   { id: 'e1-2', source: '1', target: '2', type },
@@ -85,4 +85,4 @@ export const initialEdges: ProcessEdge[] = [
   { id: 'e4-5', source: '4', target: '5', type },
   { id: 'e5-6', source: '5', target: '6', type },
   { id: 'e5-7', source: '5', target: '7', type },
-]
+];

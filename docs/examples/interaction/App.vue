@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import InteractionControls from './InteractionControls.vue'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import InteractionControls from './InteractionControls.vue';
 
 const nodes = ref([
   {
@@ -25,13 +25,13 @@ const nodes = ref([
     data: { label: 'Node 4' },
     position: { x: 400, y: 200 },
   },
-])
+]);
 
 const edges = ref([
   { id: 'e1-2', source: '1', target: '2' },
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e3-4', source: '3', target: '4' },
-])
+]);
 </script>
 
 <template>

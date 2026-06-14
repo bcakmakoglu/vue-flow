@@ -1,17 +1,17 @@
-import type { MaybeRefOrGetter } from 'vue'
-import { computed, ref, toValue, watch } from 'vue'
-import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system'
-import type { HandleType, NodeConnection } from '../types'
-import { useNodeId } from './useNodeId'
-import { useStore } from './useStore'
-import { storeToRefs } from './storeToRefs'
+import type { MaybeRefOrGetter } from 'vue';
+import type { HandleType, NodeConnection } from '../types';
+import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system';
+import { computed, ref, toValue, watch } from 'vue';
+import { storeToRefs } from './storeToRefs';
+import { useNodeId } from './useNodeId';
+import { useStore } from './useStore';
 
 export interface UseNodeConnectionsParams {
-  handleType?: MaybeRefOrGetter<HandleType | null | undefined>
-  handleId?: MaybeRefOrGetter<string | null | undefined>
-  nodeId?: MaybeRefOrGetter<string | null | undefined>
-  onConnect?: (connections: NodeConnection[]) => void
-  onDisconnect?: (connections: NodeConnection[]) => void
+  handleType?: MaybeRefOrGetter<HandleType | null | undefined>;
+  handleId?: MaybeRefOrGetter<string | null | undefined>;
+  nodeId?: MaybeRefOrGetter<string | null | undefined>;
+  onConnect?: (connections: NodeConnection[]) => void;
+  onDisconnect?: (connections: NodeConnection[]) => void;
 }
 
 /**
@@ -28,59 +28,59 @@ export interface UseNodeConnectionsParams {
  * @returns An array of connections
  */
 export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
-  const { handleType, handleId, nodeId, onConnect, onDisconnect } = params
+  const { handleType, handleId, nodeId, onConnect, onDisconnect } = params;
 
-  const { connectionLookup } = storeToRefs(useStore())
+  const { connectionLookup } = storeToRefs(useStore());
 
-  const _nodeId = useNodeId()
+  const _nodeId = useNodeId();
 
-  const prevConnections = ref<Map<string, NodeConnection> | null>(null)
+  const prevConnections = ref<Map<string, NodeConnection> | null>(null);
 
-  const connections = ref<Map<string, NodeConnection>>()
+  const connections = ref<Map<string, NodeConnection>>();
 
   const lookupKey = computed(() => {
-    const currNodeId = toValue(nodeId) ?? _nodeId
-    const currentHandleType = toValue(handleType)
-    const currHandleId = toValue(handleId)
+    const currNodeId = toValue(nodeId) ?? _nodeId;
+    const currentHandleType = toValue(handleType);
+    const currHandleId = toValue(handleId);
 
-    let handleSuffix = ''
+    let handleSuffix = '';
     if (currentHandleType) {
-      handleSuffix = currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`
+      handleSuffix = currHandleId ? `-${currentHandleType}-${currHandleId}` : `-${currentHandleType}`;
     }
 
-    return `${currNodeId}${handleSuffix}`
-  })
+    return `${currNodeId}${handleSuffix}`;
+  });
 
   watch(
     () => connectionLookup.value.get(lookupKey.value),
     (nextConnections) => {
       if (areConnectionMapsEqual(connections.value, nextConnections)) {
-        return
+        return;
       }
 
-      connections.value = nextConnections
+      connections.value = nextConnections;
     },
     { immediate: true },
-  )
+  );
 
   watch(
     [connections, () => typeof onConnect !== 'undefined', () => typeof onDisconnect !== 'undefined'],
     ([currentConnections = new Map<string, NodeConnection>()]) => {
       if (prevConnections.value && prevConnections.value !== currentConnections) {
-        handleConnectionChange(prevConnections.value, currentConnections, onDisconnect)
-        handleConnectionChange(currentConnections, prevConnections.value, onConnect)
+        handleConnectionChange(prevConnections.value, currentConnections, onDisconnect);
+        handleConnectionChange(currentConnections, prevConnections.value, onConnect);
       }
 
-      prevConnections.value = currentConnections
+      prevConnections.value = currentConnections;
     },
     { immediate: true },
-  )
+  );
 
   return computed(() => {
     if (!connections.value) {
-      return []
+      return [];
     }
 
-    return Array.from(connections.value.values())
-  })
+    return Array.from(connections.value.values());
+  });
 }

@@ -1,17 +1,17 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import DropzoneBackground from './DropzoneBackground.vue'
-import Sidebar from './Sidebar.vue'
-import useDragAndDrop from './useDnD'
+import { useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import DropzoneBackground from './DropzoneBackground.vue';
+import Sidebar from './Sidebar.vue';
+import useDragAndDrop from './useDnD';
 
-const { onConnect, addEdges } = useVueFlow()
+const { onConnect, addEdges } = useVueFlow();
 
-const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop()
+const { onDragOver, onDrop, onDragLeave, isDragOver } = useDragAndDrop();
 
-const nodes = ref([])
+const nodes = ref([]);
 
-onConnect(addEdges)
+onConnect(addEdges);
 </script>
 
 <template>
@@ -23,7 +23,9 @@ onConnect(addEdges)
           transition: 'background-color 0.2s ease',
         }"
       >
-        <p v-if="isDragOver">Drop here</p>
+        <p v-if="isDragOver">
+          Drop here
+        </p>
       </DropzoneBackground>
     </VueFlow>
 

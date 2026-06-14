@@ -6,7 +6,7 @@
     "dev": "pnpm run typedoc:md && vitepress dev src",
     "build": "pnpm run typedoc:md && vitepress build src",
     "serve": "vitepress serve src",
-    "lint": "eslint --ext .js,.ts,.vue ./",
+    "lint": "eslint .",
     "typedoc:md": "typedoc --options ./typedoc.md.json",
     "typedocs": "typedoc --options ./typedoc.json"
   },

@@ -1,20 +1,20 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../support/component'
-import { getElements } from '../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../support/component';
+import { getElements } from '../../utils';
 
-const { nodes } = getElements()
+const { nodes } = getElements();
 
 describe('Viewport drag / zoom', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       fitView: false,
-    })
+    });
     cy.then(() => {
-      store = getStore()
-    })
-  })
+      store = getStore();
+    });
+  });
 
   it('drags pane', () => {
     cy.window().then(async (win) => {
@@ -27,7 +27,7 @@ describe('Viewport drag / zoom', () => {
           clientY: store.dimensions.value.height / 2,
           view: win,
         })
-        .trigger('mouseup', { force: true, view: win })
+        .trigger('mouseup', { force: true, view: win });
 
       await cy.tryAssertion(() => {
         cy.transformationPane()
@@ -37,8 +37,8 @@ describe('Viewport drag / zoom', () => {
             'have.css',
             'transform',
             `matrix(${store.viewport.value.zoom}, 0, 0, ${store.viewport.value.zoom}, ${store.viewport.value.x}, ${store.viewport.value.y})`,
-          )
-      })
-    })
-  })
-})
+          );
+      });
+    });
+  });
+});

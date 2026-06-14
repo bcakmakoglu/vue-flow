@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
-import ConnectionLine from './ConnectionLine.vue'
+import type { Edge, Node } from '@vue-flow/core';
+import { VueFlow } from '@vue-flow/core';
+import ConnectionLine from './ConnectionLine.vue';
 
 const nodes = ref<Node[]>([
   {
@@ -10,9 +10,9 @@ const nodes = ref<Node[]>([
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
   },
-])
+]);
 
-const edges = ref<Edge[]>([])
+const edges = ref<Edge[]>([]);
 </script>
 
 <template>

@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import CustomConnectionLine from './CustomConnectionLine.vue'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import CustomConnectionLine from './CustomConnectionLine.vue';
 
 const nodes = ref([
   {
@@ -10,7 +10,7 @@ const nodes = ref([
     data: { label: 'Node 1' },
     position: { x: 250, y: 5 },
   },
-])
+]);
 </script>
 
 <template>

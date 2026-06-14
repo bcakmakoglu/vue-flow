@@ -1,25 +1,25 @@
 <script setup>
-import { nextTick, ref } from 'vue'
-import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
+import { Background, Panel, useVueFlow, VueFlow } from '@vue-flow/core';
+import { nextTick, ref } from 'vue';
+import Icon from './Icon.vue';
 
-import { initialEdges, initialNodes } from './initial-elements.js'
-import { useLayout } from './useLayout'
+import { initialEdges, initialNodes } from './initial-elements.js';
+import { useLayout } from './useLayout';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
-const { layout } = useLayout()
+const { layout } = useLayout();
 
-const { fitView } = useVueFlow()
+const { fitView } = useVueFlow();
 
 async function layoutGraph(direction) {
-  nodes.value = layout(nodes.value, edges.value, direction)
+  nodes.value = layout(nodes.value, edges.value, direction);
 
   nextTick(() => {
-    fitView()
-  })
+    fitView();
+  });
 }
 </script>
 

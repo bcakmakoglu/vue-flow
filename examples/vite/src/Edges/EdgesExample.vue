@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core';
 
-import CustomEdge from './CustomEdge.vue'
-import CustomEdge2 from './CustomEdge2.vue'
-import { initialEdges, initialNodes } from './initial-elements'
+import CustomEdge2 from './CustomEdge2.vue';
+import CustomEdge from './CustomEdge.vue';
+import { initialEdges, initialNodes } from './initial-elements';
 </script>
 
 <template>

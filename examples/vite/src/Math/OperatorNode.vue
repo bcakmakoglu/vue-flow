@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import type { Node, NodeProps } from '@vue-flow/core'
-import { Handle, Position, useVueFlow } from '@vue-flow/core'
-import type { Operator, OperatorNodeData } from './types'
-import Icon from './Icon.vue'
+import type { Node, NodeProps } from '@vue-flow/core';
+import type { Operator, OperatorNodeData } from './types';
+import { Handle, Position, useVueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
 
-const props = defineProps<Pick<NodeProps<Node<OperatorNodeData, 'operator'>>, 'id' | 'data'>>()
+const props = defineProps<Pick<NodeProps<Node<OperatorNodeData, 'operator'>>, 'id' | 'data'>>();
 
-const operators: Operator[] = ['+', '-', '*', '/']
+const operators: Operator[] = ['+', '-', '*', '/'];
 
-const { updateNodeData } = useVueFlow()
+const { updateNodeData } = useVueFlow();
 </script>
 
 <template>

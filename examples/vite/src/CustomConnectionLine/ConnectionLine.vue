@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 interface CustomConnectionLineProps {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
+  sourceX: number;
+  sourceY: number;
+  targetX: number;
+  targetY: number;
 }
 
-const props = defineProps<CustomConnectionLineProps>()
+const props = defineProps<CustomConnectionLineProps>();
 </script>
 
 <template>

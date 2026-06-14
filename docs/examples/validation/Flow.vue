@@ -1,10 +1,10 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import CustomInput from './CustomInput.vue'
-import CustomNode from './CustomNode.vue'
+import { useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import CustomInput from './CustomInput.vue';
+import CustomNode from './CustomNode.vue';
 
-const { addEdges } = useVueFlow()
+const { addEdges } = useVueFlow();
 
 const nodes = ref([
   {
@@ -35,21 +35,21 @@ const nodes = ref([
     // no valid connections can be made for this node
     data: {},
   },
-])
+]);
 
-const edges = ref([])
+const edges = ref([]);
 
 function onConnectStart({ nodeId, handleType }) {
-  console.log('on connect start', { nodeId, handleType })
+  console.log('on connect start', { nodeId, handleType });
 }
 
 function onConnectEnd(event) {
-  console.log('on connect end', event)
+  console.log('on connect end', event);
 }
 
 function onConnect(params) {
-  console.log('on connect', params)
-  addEdges(params)
+  console.log('on connect', params);
+  addEdges(params);
 }
 </script>
 

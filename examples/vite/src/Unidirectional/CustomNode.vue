@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
-import { Handle, Position } from '@vue-flow/core'
+import type { CSSProperties } from 'vue';
+import { Handle, Position } from '@vue-flow/core';
 
 interface Props {
-  id: string
+  id: string;
 }
 
-const props = defineProps<Props>()
-const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' }
+const props = defineProps<Props>();
+const nodeStyles: CSSProperties = { padding: '10px 15px', border: '1px solid #ddd' };
 </script>
 
 <template>

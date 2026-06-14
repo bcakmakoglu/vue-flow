@@ -1,6 +1,6 @@
-const initialPos = { x: 0, y: 0 }
-const type = 'process'
-const data = { status: null }
+const initialPos = { x: 0, y: 0 };
+const type = 'process';
+const data = { status: null };
 
 export const initialNodes = [
   {
@@ -69,7 +69,7 @@ export const initialNodes = [
     type,
     data,
   },
-]
+];
 
 export const initialEdges = [
   { id: 'e1-2', source: '1', target: '2' },
@@ -82,4 +82,4 @@ export const initialEdges = [
   { id: 'e4-5', source: '4', target: '5' },
   { id: 'e5-6', source: '5', target: '6' },
   { id: 'e5-7', source: '5', target: '7' },
-]
+];

@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { useRoute, useRouter } from 'vue-router'
-import { routes } from './router'
+import { useRoute, useRouter } from 'vue-router';
+import { routes } from './router';
 
-const router = useRouter()
+const router = useRouter();
 
-const route = useRoute()
+const route = useRoute();
 
 function onChange(event: Event) {
-  router.push((event.target as HTMLSelectElement).value)
+  router.push((event.target as HTMLSelectElement).value);
 }
 
 const computedRoutes = computed(() =>
   routes
-    .filter((r) => r.path !== '/')
-    .map((r) => ({
+    .filter(r => r.path !== '/')
+    .map(r => ({
       path: r.path,
       label: r.path.substring(1),
     })),
-)
+);
 </script>
 
 <template>

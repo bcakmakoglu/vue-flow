@@ -1,6 +1,6 @@
 <script setup>
-import { Handle, Position, useVueFlow } from '@vue-flow/core'
-import { colors } from './presets.js'
+import { Handle, Position, useVueFlow } from '@vue-flow/core';
+import { colors } from './presets.js';
 
 const props = defineProps({
   id: {
@@ -11,20 +11,20 @@ const props = defineProps({
     type: Object,
     required: true,
   },
-})
+});
 
-const { updateNodeData, getNode, getConnectedEdges, setEdges } = useVueFlow()
+const { updateNodeData, getNode, getConnectedEdges, setEdges } = useVueFlow();
 
 function onSelect(color) {
-  updateNodeData(props.id, { color, isGradient: false })
+  updateNodeData(props.id, { color, isGradient: false });
 
-  const connectedEdgeIds = getConnectedEdges([getNode(props.id)]).map((edge) => edge.id)
+  const connectedEdgeIds = getConnectedEdges([getNode(props.id)]).map(edge => edge.id);
 
-  setEdges((edges) => edges.map((edge) => (connectedEdgeIds.includes(edge.id) ? { ...edge, style: { stroke: color } } : edge)))
+  setEdges(edges => edges.map(edge => (connectedEdgeIds.includes(edge.id) ? { ...edge, style: { stroke: color } } : edge)));
 }
 
 function onGradient() {
-  updateNodeData(props.id, { isGradient: true })
+  updateNodeData(props.id, { isGradient: true });
 }
 </script>
 

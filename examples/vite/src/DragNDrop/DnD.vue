@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { Connection, Node, VueFlowInstance } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
-import Sidebar from './Sidebar.vue'
+import type { Connection, Node, VueFlowInstance } from '@vue-flow/core';
+import { VueFlow } from '@vue-flow/core';
+import Sidebar from './Sidebar.vue';
 
-let id = 0
+let id = 0;
 function getId() {
-  return `dndnode_${id++}`
+  return `dndnode_${id++}`;
 }
 
 const nodes = ref<Node[]>([
@@ -15,36 +15,36 @@ const nodes = ref<Node[]>([
     data: { label: 'input node' },
     position: { x: 250, y: 5 },
   },
-])
+]);
 
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 function onDragOver(event: DragEvent) {
-  event.preventDefault()
+  event.preventDefault();
   if (event.dataTransfer) {
-    event.dataTransfer.dropEffect = 'move'
+    event.dataTransfer.dropEffect = 'move';
   }
 }
 
 function onConnect(connection: Connection) {
-  flow.value?.addEdges([connection])
+  flow.value?.addEdges([connection]);
 }
 
 function onDrop(event: DragEvent) {
-  const type = event.dataTransfer?.getData('application/vueflow')
+  const type = event.dataTransfer?.getData('application/vueflow');
 
   // screenToFlowPosition handles the container-offset internally (replaces the removed `project`)
   const position = flow.value!.screenToFlowPosition({
     x: event.clientX,
     y: event.clientY,
-  })
+  });
 
   flow.value?.addNodes({
     id: getId(),
     type,
     position,
     data: { label: `${type} node` },
-  })
+  });
 }
 </script>
 

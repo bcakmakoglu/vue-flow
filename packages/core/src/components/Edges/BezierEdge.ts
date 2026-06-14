@@ -1,9 +1,9 @@
-import { defineComponent, h } from 'vue'
-import { getBezierPath } from '@xyflow/system'
-import type { BezierEdgeProps } from '../../types'
-import { Position } from '../../types'
-import BaseEdge from './BaseEdge.vue'
-import { baseEdgeProps } from './utils'
+import type { BezierEdgeProps } from '../../types';
+import { getBezierPath } from '@xyflow/system';
+import { defineComponent, h } from 'vue';
+import { Position } from '../../types';
+import BaseEdge from './BaseEdge.vue';
+import { baseEdgeProps } from './utils';
 
 const BezierEdge = defineComponent<BezierEdgeProps>({
   name: 'BezierEdge',
@@ -34,11 +34,11 @@ const BezierEdge = defineComponent<BezierEdgeProps>({
         ...props,
         sourcePosition: props.sourcePosition ?? Position.Bottom,
         targetPosition: props.targetPosition ?? Position.Top,
-      })
+      });
 
-      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
-    }
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) });
+    };
   },
-})
+});
 
-export default BezierEdge
+export default BezierEdge;

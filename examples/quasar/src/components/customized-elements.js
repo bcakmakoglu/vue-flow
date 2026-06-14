@@ -1,4 +1,4 @@
-import { MarkerType } from '@vue-flow/core'
+import { MarkerType } from '@vue-flow/core';
 
 /**
  * Nodes and edges are passed separately to the `nodes` and `edges` props of Vue Flow
@@ -27,7 +27,7 @@ export const initialNodes = [
     position: { x: 300, y: 300 },
     class: 'light',
   },
-]
+];
 
 export const initialEdges = [
   { id: 'e1-2', source: '1', target: '2', animated: true },
@@ -54,4 +54,4 @@ export const initialEdges = [
     source: '3',
     target: '4',
   },
-]
+];

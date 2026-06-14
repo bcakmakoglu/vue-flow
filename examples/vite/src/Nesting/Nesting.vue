@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core'
-import { Background, ConnectionMode, Controls, MiniMap, VueFlow } from '@vue-flow/core'
+import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core';
+import { Background, ConnectionMode, Controls, MiniMap, VueFlow } from '@vue-flow/core';
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
@@ -55,7 +55,7 @@ const nodes = ref<Node[]>([
     class: 'light',
     parentId: '4b',
   },
-])
+]);
 
 const edges = ref<Edge[]>([
   { id: 'e1-2', source: '1', target: '2', animated: true },
@@ -66,14 +66,14 @@ const edges = ref<Edge[]>([
   { id: 'e4a-4b1', source: '4a', target: '4b1' },
   { id: 'e4a-4b2', source: '4a', target: '4b2' },
   { id: 'e4b1-4b2', source: '4b1', target: '4b2' },
-])
+]);
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
 // the store from the component that renders the flow.
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 function onConnect(connection: Connection) {
-  flow.value?.addEdges([connection])
+  flow.value?.addEdges([connection]);
 }
 
 onMounted(() => {
@@ -86,10 +86,10 @@ onMounted(() => {
     class: 'light',
     expandParent: true,
     parentId: '2',
-  })
+  });
 
   setTimeout(() => {
-    const node = flow.value?.getNode('999')
+    const node = flow.value?.getNode('999');
     if (node) {
       flow.value?.updateNode('999', {
         expandParent: false,
@@ -97,10 +97,10 @@ onMounted(() => {
           range: 'parent',
           padding: [10],
         } as any,
-      })
+      });
     }
-  })
-})
+  });
+});
 </script>
 
 <template>

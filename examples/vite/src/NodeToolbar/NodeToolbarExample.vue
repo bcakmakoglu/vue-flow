@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { Position, VueFlow } from '@vue-flow/core'
-import type { ToolbarNodeData } from './types'
-import CustomNode from './CustomNode.vue'
+import type { Edge, Node } from '@vue-flow/core';
+import type { ToolbarNodeData } from './types';
+import { Position, VueFlow } from '@vue-flow/core';
+import CustomNode from './CustomNode.vue';
 
-type ToolbarNode = Node<ToolbarNodeData, 'custom'>
+type ToolbarNode = Node<ToolbarNodeData, 'custom'>;
 
 const defaultNodeStyle = {
   border: '2px solid #ff0071',
   background: 'white',
   borderRadius: '20px',
-}
+};
 
 const nodes = ref<ToolbarNode[]>([
   {
@@ -48,9 +48,9 @@ const nodes = ref<ToolbarNode[]>([
     position: { x: 0, y: -100 },
     style: defaultNodeStyle,
   },
-])
+]);
 
-const edges = ref<Edge[]>([])
+const edges = ref<Edge[]>([]);
 </script>
 
 <template>

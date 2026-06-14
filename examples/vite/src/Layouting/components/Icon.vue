@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-defineProps<{ name: 'play' | 'stop' | 'horizontal' | 'vertical' }>()
+defineProps<{ name: 'play' | 'stop' | 'horizontal' | 'vertical' }>();
 </script>
 
 <template>

@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "noEmit": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "types": ["node"],
+    "noEmit": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "types": ["node"]
+    "skipLibCheck": true
   },
   "include": ["vite.config.ts"]
 }

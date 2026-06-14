@@ -1,62 +1,62 @@
 <script lang="ts" setup>
-import type { Edge, FlowEvents, Node, SnapGrid, Styles, VueFlowInstance } from '@vue-flow/core'
-import { Background, Controls, MarkerType, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, SnapGrid, Styles, VueFlowInstance } from '@vue-flow/core';
+import { Background, Controls, isEdge, isNode, MarkerType, MiniMap, VueFlow } from '@vue-flow/core';
 
 function onNodeDragStart(e: FlowEvents['nodeDragStart']) {
-  return console.log('drag start', e)
+  return console.log('drag start', e);
 }
 function onNodeDrag(e: FlowEvents['nodeDrag']) {
-  return console.log('drag', e)
+  return console.log('drag', e);
 }
 function onNodeDragStop(e: FlowEvents['nodeDragStop']) {
-  return console.log('drag stop', e)
+  return console.log('drag stop', e);
 }
 function onNodeDoubleClick(e: FlowEvents['nodeDoubleClick']) {
-  return console.log('node double click', e)
+  return console.log('node double click', e);
 }
 function onPaneClick(e: FlowEvents['paneClick']) {
-  return console.log('pane click', e)
+  return console.log('pane click', e);
 }
 function onPaneScroll(e: FlowEvents['paneScroll']) {
-  return console.log('pane scroll', e)
+  return console.log('pane scroll', e);
 }
 function onPaneContextMenu(e: FlowEvents['paneContextMenu']) {
-  return console.log('pane context menu', e)
+  return console.log('pane context menu', e);
 }
 function onSelectionDrag(e: FlowEvents['selectionDrag']) {
-  return console.log('selection drag', e)
+  return console.log('selection drag', e);
 }
 function onSelectionDragStart(e: FlowEvents['selectionDragStart']) {
-  return console.log('selection drag start', e)
+  return console.log('selection drag start', e);
 }
 function onSelectionDragStop(e: FlowEvents['selectionDragStop']) {
-  return console.log('selection drag stop', e)
+  return console.log('selection drag stop', e);
 }
 function onSelectionContextMenu(e: FlowEvents['selectionContextMenu']) {
-  return console.log('selection context menu', e)
+  return console.log('selection context menu', e);
 }
 function onLoad(flowInstance: VueFlowInstance) {
-  console.log('flow loaded:', flowInstance)
-  flowInstance.fitView()
+  console.log('flow loaded:', flowInstance);
+  flowInstance.fitView();
 }
 
 function onMoveEnd(e: FlowEvents['moveEnd']) {
-  return console.log('zoom/move end', e.viewport)
+  return console.log('zoom/move end', e.viewport);
 }
 function onEdgeContextMenu(e: FlowEvents['edgeContextMenu']) {
-  return console.log('edge context menu', e)
+  return console.log('edge context menu', e);
 }
 function onEdgeMouseEnter(e: FlowEvents['edgeMouseEnter']) {
-  return console.log('edge mouse enter', e)
+  return console.log('edge mouse enter', e);
 }
 function onEdgeMouseMove(e: FlowEvents['edgeMouseMove']) {
-  return console.log('edge mouse move', e)
+  return console.log('edge mouse move', e);
 }
 function onEdgeMouseLeave(e: FlowEvents['edgeMouseLeave']) {
-  return console.log('edge mouse leave', e)
+  return console.log('edge mouse leave', e);
 }
 function onEdgeDoubleClick(e: FlowEvents['edgeDoubleClick']) {
-  return console.log('edge double click', e)
+  return console.log('edge double click', e);
 }
 
 const initialElements: (Node | Edge)[] = [
@@ -114,37 +114,37 @@ const initialElements: (Node | Edge)[] = [
     animated: true,
     labelStyle: { fill: '#f6ab6c', fontWeight: 700 },
   },
-]
+];
 
-const snapGrid: SnapGrid = [16, 16]
+const snapGrid: SnapGrid = [16, 16];
 
 function nodeStrokeColor(n: Node): string {
   if ((n.style as Styles)?.background) {
-    return (n.style as Styles).background as string
+    return (n.style as Styles).background as string;
   }
   if (n.type === 'input') {
-    return '#0041d0'
+    return '#0041d0';
   }
   if (n.type === 'output') {
-    return '#ff0072'
+    return '#ff0072';
   }
   if (n.type === 'default') {
-    return '#1a192b'
+    return '#1a192b';
   }
 
-  return '#eee'
+  return '#eee';
 }
 
 function nodeColor(n: Node): string {
   if ((n.style as Styles)?.background) {
-    return (n.style as Styles).background as string
+    return (n.style as Styles).background as string;
   }
 
-  return '#fff'
+  return '#fff';
 }
 
-const nodes = ref<Node[]>(initialElements.filter(isNode))
-const edges = ref<Edge[]>(initialElements.filter(isEdge))
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 </script>
 
 <template>

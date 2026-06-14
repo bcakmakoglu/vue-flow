@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref } from 'vue'
-import { TransitionPresets, useDebounceFn, useTransition, watchDebounced } from '@vueuse/core'
-import { getBezierPath, useVueFlow } from '@vue-flow/core'
+import { getBezierPath, useVueFlow } from '@vue-flow/core';
+import { TransitionPresets, useDebounceFn, useTransition, watchDebounced } from '@vueuse/core';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
   id: {
@@ -52,17 +52,17 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-})
+});
 
-const curve = ref()
+const curve = ref();
 
-const dot = ref()
+const dot = ref();
 
-const transform = ref({ x: 0, y: 0 })
+const transform = ref({ x: 0, y: 0 });
 
-const showDot = ref(false)
+const showDot = ref(false);
 
-const { onNodeDoubleClick, fitBounds, fitView } = useVueFlow()
+const { onNodeDoubleClick, fitBounds, fitView } = useVueFlow();
 
 const path = computed(() =>
   getBezierPath({
@@ -73,34 +73,34 @@ const path = computed(() =>
     targetY: props.targetY,
     targetPosition: props.targetPosition,
   }),
-)
+);
 
-const debouncedFitBounds = useDebounceFn(fitBounds, 1, { maxWait: 1 })
+const debouncedFitBounds = useDebounceFn(fitBounds, 1, { maxWait: 1 });
 
 onNodeDoubleClick(({ node }) => {
-  const isSource = props.source === node.id
-  const isTarget = props.target === node.id
+  const isSource = props.source === node.id;
+  const isTarget = props.target === node.id;
 
   if (!showDot.value && (isSource || isTarget)) {
-    showDot.value = true
-    let totalLength = curve.value.getTotalLength()
-    const initialPos = ref(isSource ? 0 : totalLength)
-    let stopHandle
+    showDot.value = true;
+    let totalLength = curve.value.getTotalLength();
+    const initialPos = ref(isSource ? 0 : totalLength);
+    let stopHandle;
 
     const output = useTransition(initialPos, {
       duration: Math.floor(totalLength / 2 / 100) * 1000,
       transition: TransitionPresets.easeOutCubic,
       onFinished: () => {
-        stopHandle?.()
-        showDot.value = false
+        stopHandle?.();
+        showDot.value = false;
         fitView({
           nodes: [isSource ? props.target : props.source],
           duration: 500,
-        })
+        });
       },
-    })
+    });
 
-    transform.value = curve.value.getPointAtLength(output.value)
+    transform.value = curve.value.getPointAtLength(output.value);
 
     debouncedFitBounds(
       {
@@ -110,45 +110,45 @@ onNodeDoubleClick(({ node }) => {
         y: transform.value.y - 100,
       },
       { duration: 500 },
-    )
+    );
 
     setTimeout(() => {
-      initialPos.value = isSource ? totalLength : 0
+      initialPos.value = isSource ? totalLength : 0;
 
       stopHandle = watchDebounced(
         output,
         (next) => {
           if (!showDot.value) {
-            return
+            return;
           }
 
-          const nextLength = curve.value.getTotalLength()
+          const nextLength = curve.value.getTotalLength();
 
           if (totalLength !== nextLength) {
-            totalLength = nextLength
-            initialPos.value = isSource ? totalLength : 0
+            totalLength = nextLength;
+            initialPos.value = isSource ? totalLength : 0;
           }
 
-          transform.value = curve.value.getPointAtLength(next)
+          transform.value = curve.value.getPointAtLength(next);
 
           debouncedFitBounds({
             width: 100,
             height: 200,
             x: transform.value.x - 100,
             y: transform.value.y - 100,
-          })
+          });
         },
         { debounce: 1 },
-      )
-    }, 500)
+      );
+    }, 500);
   }
-})
+});
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

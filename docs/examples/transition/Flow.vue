@@ -1,9 +1,9 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, Position, VueFlow, useVueFlow } from '@vue-flow/core'
-import TransitionEdge from './TransitionEdge.vue'
+import { Background, Position, useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import TransitionEdge from './TransitionEdge.vue';
 
-const { onInit } = useVueFlow()
+const { onInit } = useVueFlow();
 
 const nodes = ref([
   {
@@ -20,13 +20,13 @@ const nodes = ref([
     position: { x: 1000, y: 1000 },
     targetPosition: Position.Left,
   },
-])
+]);
 
-const edges = ref([{ id: 'e1-2', type: 'custom', source: '1', target: '2', style: { stroke: '#fff' } }])
+const edges = ref([{ id: 'e1-2', type: 'custom', source: '1', target: '2', style: { stroke: '#fff' } }]);
 
 onInit(({ fitView }) => {
-  fitView({ nodes: ['1'] })
-})
+  fitView({ nodes: ['1'] });
+});
 </script>
 
 <template>
