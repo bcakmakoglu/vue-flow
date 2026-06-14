@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    // typedoc 0.28 runs under TS 6, which errors on the deprecated `baseUrl` (still needed by the `~/*`
+    // paths alias below) and `moduleResolution: "node"`. This config only feeds typedoc's type analysis,
+    // so silence the deprecation rather than change how modules resolve (keeps the generated API stable).
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "module": "ESNext",
     "target": "es2017",

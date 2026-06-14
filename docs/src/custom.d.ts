@@ -1,4 +1,3 @@
-declare const __ANALYTICS_ID__: string
 declare const __VUE_FLOW_VERSION__: string
 
 declare module 'virtual:icons/*' {
