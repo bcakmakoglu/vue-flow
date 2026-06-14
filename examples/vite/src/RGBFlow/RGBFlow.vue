@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
+import type { Edge, EdgeProps, Node } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import RGBNode from './RGBNode.vue'
 import RGBOutputNode from './RGBOutputNode.vue'
@@ -42,7 +42,10 @@ function onChange({ color: c, val }: { color: Colors; val: number }) {
       </template>
 
       <template #edge-rgb-edge="props">
-        <RGBEdge v-bind="props" :data="{ text: color[props.data?.color as Colors], ...props.data }" />
+        <RGBEdge
+          v-bind="props as unknown as EdgeProps<Edge<{ text?: number; color?: Colors }, 'rgb-edge'>>"
+          :data="{ text: color[props.data?.color as Colors], ...props.data }"
+        />
       </template>
     </VueFlow>
   </div>

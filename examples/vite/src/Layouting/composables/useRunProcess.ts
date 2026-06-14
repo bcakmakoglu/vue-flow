@@ -31,7 +31,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
 
   const isRunning = ref(false)
 
-  const runningTasks = new Map<string, NodeJS.Timeout>()
+  const runningTasks = new Map<string, ReturnType<typeof setTimeout>>()
 
   const executedNodes = new Set<string>()
 
@@ -54,7 +54,7 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
 
     // get all incoming edges to this node
     const node = getNode(nodeId)
-    const connectedEdges = node ? (getConnectedEdges([node]) as ProcessEdge[]) : []
+    const connectedEdges = node ? (getConnectedEdges([node as Node]) as ProcessEdge[]) : []
     const incomers = connectedEdges.filter((connection) => connection.target === nodeId)
 
     // wait for edge animations to finish before starting the process

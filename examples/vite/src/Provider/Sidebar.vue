@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { Node } from '@vue-flow/core'
 import { storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 
 const { addSelectedNodes, getNodes, viewport } = useVueFlow()
@@ -6,7 +7,7 @@ const { addSelectedNodes, getNodes, viewport } = useVueFlow()
 const { nodesSelectionActive } = storeToRefs(useStore())
 
 function selectAll() {
-  addSelectedNodes(getNodes.value)
+  addSelectedNodes(getNodes.value as unknown as Node[])
   nodesSelectionActive.value = true
 }
 </script>

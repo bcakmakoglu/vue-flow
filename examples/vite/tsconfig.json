@@ -7,13 +7,7 @@
     "resolveJsonModule": true,
     "emitDeclarationOnly": false,
     "allowJs": true,
-    "types": [
-      "vite/client"
-    ]
+    "types": ["vite/client"]
   },
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
-  ]
+  "exclude": ["node_modules", "dist", "vite.config.ts"]
 }

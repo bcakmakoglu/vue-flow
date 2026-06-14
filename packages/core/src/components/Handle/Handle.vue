@@ -35,6 +35,16 @@ const { id: nodeId, node: nodeRef, nodeEl, connectedEdges } = useNode()
 
 const handle = ref<HTMLDivElement>()
 
+// `data-id` (queried by handle DOM lookup in `utils/handle.ts`) and the other handle identifiers are
+// typed through a `Record` because this vue version's `HTMLAttributes` lacks the `data-*` index signature
+// that `strictTemplates` needs, so they can't be written as bare `:data-*` attributes in the template.
+const handleDataIds = computed<Record<string, string | null>>(() => ({
+  'data-id': `${flowId}-${nodeId}-${handleId}-${type.value}`,
+  'data-handleid': handleId,
+  'data-nodeid': nodeId,
+  'data-handlepos': position,
+}))
+
 const isConnectableStart = toRef(() => (typeof connectableStart !== 'undefined' ? connectableStart : true))
 
 const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? connectableEnd : true))
@@ -180,10 +190,7 @@ export default {
 <template>
   <div
     ref="handle"
-    :data-id="`${flowId}-${nodeId}-${handleId}-${type}`"
-    :data-handleid="handleId"
-    :data-nodeid="nodeId"
-    :data-handlepos="position"
+    v-bind="handleDataIds"
     class="vue-flow__handle"
     :class="[
       `vue-flow__handle-${position}`,

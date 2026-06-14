@@ -89,7 +89,7 @@ export default {
       :class="{ dragging }"
       class="vue-flow__nodesselection-rect"
       :style="innerStyle"
-      :tabIndex="disableKeyboardA11y ? undefined : -1"
+      :tabindex="disableKeyboardA11y ? undefined : -1"
       @contextmenu="onContextMenu"
       @keydown="onKeyDown"
     />

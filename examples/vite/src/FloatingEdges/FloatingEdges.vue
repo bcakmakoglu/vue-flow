@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core'
 import { Background, Controls, MarkerType, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 import FloatingEdge from './FloatingEdge.vue'
@@ -11,7 +11,7 @@ const initialElements = createElements()
 const nodes = ref<Node[]>(initialElements.filter(isNode) as Node[])
 const edges = ref<Edge[]>(initialElements.filter(isEdge) as Edge[])
 
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 function onConnect(params: Connection) {
   flow.value?.addEdges({ ...params, type: 'floating', markerEnd: MarkerType.Arrow })

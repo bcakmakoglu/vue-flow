@@ -18,8 +18,8 @@ const isTarget = computed(() => connectionStartHandle.value && connectionStartHa
         backgroundColor: isTarget ? '#ffcce3' : '#ccd9f6',
       }"
     >
-      <Handle class="targetHandle" style="z-index: 2" :position="Position.Right" type="source" connectable />
-      <Handle class="targetHandle" :style="{ zIndex: isTarget ? 3 : 1 }" :position="Position.Left" type="target" connectable />
+      <Handle class="targetHandle" style="z-index: 2" :position="Position.Right" type="source" is-connectable />
+      <Handle class="targetHandle" :style="{ zIndex: isTarget ? 3 : 1 }" :position="Position.Left" type="target" is-connectable />
       {{ isTarget ? 'Drop here' : 'Drag to connect' }}
     </div>
   </div>

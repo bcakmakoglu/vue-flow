@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core'
 import { ConnectionMode, Controls, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 const initialElements: (Node | Edge)[] = [
@@ -27,9 +27,9 @@ const nodes = ref<Node[]>(initialElements.filter(isNode))
 const edges = ref<Edge[]>(initialElements.filter(isEdge))
 
 // imperative store access for the component that renders `<VueFlow>` (pure-provider model)
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
-function onLoad(flowInstance: VueFlowStore) {
+function onLoad(flowInstance: VueFlowInstance) {
   return flowInstance.fitView()
 }
 

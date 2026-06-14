@@ -21,6 +21,9 @@
     "jsx": "preserve",
     "types": []
   },
+  "vueCompilerOptions": {
+    "strictTemplates": true
+  },
   "exclude": [
     "node_modules",
     "dist"

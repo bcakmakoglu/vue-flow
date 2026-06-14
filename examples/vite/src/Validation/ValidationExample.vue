@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowInstance } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import CustomInput from './CustomInput.vue'
 import CustomNode from './CustomNode.vue'
 
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 const nodes = ref<Node[]>([
   {

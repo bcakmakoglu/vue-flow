@@ -19,7 +19,7 @@ interface ClosestElements {
 
 const props = defineProps<CustomConnectionLineProps>()
 
-const { getNodes, onConnectEnd, addEdges } = useVueFlow()
+const { getNodes, getInternalNode, onConnectEnd, addEdges } = useVueFlow()
 
 const { connectionStartHandle } = storeToRefs(useStore())
 
@@ -43,13 +43,19 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
     (res, n) => {
       if (n.id !== connectionStartHandle.value?.nodeId) {
-        const dx = props.targetX - (n.internals.positionAbsolute.x + (n.measured.width ?? 0) / 2)
-        const dy = props.targetY - (n.internals.positionAbsolute.y + (n.measured.height ?? 0) / 2)
+        const internalNode = getInternalNode(n.id)
+
+        if (!internalNode) {
+          return res
+        }
+
+        const dx = props.targetX - (internalNode.internals.positionAbsolute.x + (internalNode.measured?.width ?? 0) / 2)
+        const dy = props.targetY - (internalNode.internals.positionAbsolute.y + (internalNode.measured?.height ?? 0) / 2)
         const d = Math.sqrt(dx * dx + dy * dy)
 
         if (d < res.distance && d < MIN_DISTANCE) {
           res.distance = d
-          res.node = n
+          res.node = internalNode
         }
       }
 

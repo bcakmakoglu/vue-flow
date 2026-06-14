@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { Edge, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core'
 import { Background, Controls, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 export default defineComponent({
@@ -7,7 +7,7 @@ export default defineComponent({
   components: { VueFlow, Background, MiniMap, Controls },
   data() {
     return {
-      // NOTE: don't keep the `VueFlowStore` in reactive `data()` — Vue's ref-unwrapping over the store's
+      // NOTE: don't keep the `VueFlowInstance` in reactive `data()` — Vue's ref-unwrapping over the store's
       // many refs breaks `defineComponent`'s type inference. Reach the store via the `<VueFlow>` template
       // ref instead (it exposes the store through `defineExpose`).
       elements: [
@@ -27,15 +27,15 @@ export default defineComponent({
     edges(): Edge[] {
       return this.elements.filter(isEdge)
     },
-    // NOTE: don't expose the `VueFlowStore` via `data()`/`computed` — Vue's ref-unwrapping over the store
+    // NOTE: don't expose the `VueFlowInstance` via `data()`/`computed` — Vue's ref-unwrapping over the store
     // breaks `defineComponent` inference. Reach it inside method bodies via the template ref instead.
   },
   methods: {
     logToObject() {
-      console.log((this.$refs.flow as VueFlowStore | undefined)?.toObject())
+      console.log((this.$refs.flow as VueFlowInstance | undefined)?.toObject())
     },
     resetTransform() {
-      ;(this.$refs.flow as VueFlowStore | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 })
+      ;(this.$refs.flow as VueFlowInstance | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 })
     },
     toggleclass() {
       this.elements = this.elements.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
@@ -56,11 +56,11 @@ export default defineComponent({
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
       console.log('drag stop', e)
     },
-    onInit(instance: VueFlowStore) {
+    onInit(instance: VueFlowInstance) {
       instance.fitView()
     },
     onConnect(params: FlowEvents['connect']) {
-      ;(this.$refs.flow as VueFlowStore | undefined)?.addEdges([params])
+      ;(this.$refs.flow as VueFlowInstance | undefined)?.addEdges([params])
     },
   },
 })
@@ -72,7 +72,7 @@ export default defineComponent({
     :nodes="nodes"
     :edges="edges"
     class="vue-flow-basic-example"
-    :default-zoom="1.5"
+    :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
     :zoom-on-scroll="false"
