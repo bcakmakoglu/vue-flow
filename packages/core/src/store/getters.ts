@@ -58,10 +58,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         },
         state.transform,
         true,
-      ).map((node) => node.internals.userNode) as unknown as readonly NodeType[]
+      ).map((node) => node.internals.userNode)
     }
 
-    return state.nodes as unknown as readonly NodeType[]
+    return state.nodes
   })
 
   const getEdges: ComputedGetters<NodeType, EdgeType>['getEdges'] = computed(() => {
@@ -90,10 +90,10 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
         }
       }
 
-      return visibleEdges as unknown as readonly EdgeType[]
+      return visibleEdges
     }
 
-    return state.edges as unknown as readonly EdgeType[]
+    return state.edges
   })
 
   const getSelectedNodes: ComputedGetters<NodeType>['getSelectedNodes'] = computed(() => {
@@ -104,7 +104,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    return selectedNodes as unknown as readonly NodeType[]
+    return selectedNodes
   })
 
   const getSelectedEdges: ComputedGetters<NodeType, EdgeType>['getSelectedEdges'] = computed(() => {
@@ -115,7 +115,7 @@ export function useGetters<NodeType extends Node = Node, EdgeType extends Edge =
       }
     }
 
-    return selectedEdges as unknown as readonly EdgeType[]
+    return selectedEdges
   })
 
   // the public `{ x, y, zoom }` shape derived from the canonical `transform` tuple (read-only)

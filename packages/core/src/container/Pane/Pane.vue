@@ -3,7 +3,7 @@ import { shallowRef, toRef, watch } from 'vue'
 import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system'
 import UserSelection from '../../components/UserSelection/UserSelection.vue'
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import type { Edge, EdgeChange, Node, NodeChange } from '../../types'
+import type { EdgeChange, NodeChange } from '../../types'
 import { SelectionMode } from '../../types'
 import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables'
 import { getSelectionChanges } from '../../utils'
@@ -59,8 +59,8 @@ watch(deleteKeyPressed, (isKeyPressed) => {
 
   // routed through `deleteElements` so the `onBeforeDelete` guard (cancel/confirm/filter) is consulted
   deleteElements({
-    nodes: getSelectedNodes.value as unknown as Node[],
-    edges: getSelectedEdges.value as unknown as Edge[],
+    nodes: [...getSelectedNodes.value],
+    edges: [...getSelectedEdges.value],
   })
 
   nodesSelectionActive.value = false

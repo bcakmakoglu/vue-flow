@@ -125,11 +125,11 @@ export default {
   <div :ref="stateRefs.vueFlowRef" class="vue-flow" :class="colorModeClass">
     <ZoomPane>
       <!-- This slot is affected by zooming & panning -->
-      <slot v-bind="{} as any" name="zoom-pane" />
+      <slot name="zoom-pane" />
     </ZoomPane>
 
     <!-- This slot is _not_ affected by zooming & panning -->
-    <slot v-bind="{} as any" />
+    <slot />
 
     <A11yDescriptions />
   </div>

@@ -65,13 +65,13 @@ export function useDrag(params: UseDragParams) {
         // lazy getters: XYDrag never destructures `nodes`/`edges` (verified against every getStoreItems
         // call site in system), and getStoreItems runs multiple times per pointermove — eagerly reading
         // the getters here would recompute them per frame (O(n+m) with `onlyRenderVisibleElements`).
-        // getNodes is DeepReadonly (public guard); XYDrag reads node data from nodeLookup, not this array.
+        // getNodes is readonly (public guard); XYDrag reads node data from nodeLookup, not this array.
         get nodes() {
-          return getNodes.value as unknown as NodeBase[]
+          return getNodes.value as NodeBase[]
         },
         nodeLookup,
         get edges() {
-          return getEdges.value as unknown as EdgeBase[]
+          return getEdges.value as EdgeBase[]
         },
         nodeExtent: (isCoordinateExtent(nodeExtent.value as CoordinateExtent)
           ? nodeExtent.value
