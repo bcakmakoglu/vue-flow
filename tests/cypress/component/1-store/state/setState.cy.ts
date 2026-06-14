@@ -89,9 +89,14 @@ describe('Store Action: `setState`', () => {
       ],
     })
 
+    // assert the node was clamped INTO the extent, not the exact corner: the clamped value depends on the
+    // node's measured size (`x_max = extentMaxX - width`), which changes once the ResizeObserver measures
+    // it — so `{100,100}` only held transiently for an unmeasured 0-width node. `<= 100` holds before and
+    // after measurement and still catches the regression (an unclamped node stays at 500).
     cy.tryAssertion(() => {
-      const internal = store.getInternalNode('1')
-      expect(internal?.internals.positionAbsolute).to.deep.equal({ x: 100, y: 100 })
+      const pos = store.getInternalNode('1')?.internals.positionAbsolute
+      expect(pos?.x, 'x clamped into extent').to.be.at.most(100)
+      expect(pos?.y, 'y clamped into extent').to.be.at.most(100)
     })
   })
 })
