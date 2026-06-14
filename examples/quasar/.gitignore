@@ -6,6 +6,9 @@ node_modules
 .quasar
 /dist
 
+# Quasar compiles the config to a temp file on each run (app-vite 2.x)
+quasar.config.*.temporary.compiled*
+
 # Cordova related directories and files
 /src-cordova/node_modules
 /src-cordova/platforms

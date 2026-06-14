@@ -2,13 +2,13 @@ import { ref, toRef, toValue } from 'vue'
 import type { Node } from '@vue-flow/core'
 import { useVueFlow } from '@vue-flow/core'
 import type { MaybeRefOrGetter } from 'vue'
-import type dagre from '@dagrejs/dagre'
+import type { graphlib } from '@dagrejs/dagre'
 import type { ProcessData, ProcessNode } from '../nodes'
 import { ProcessStatus } from '../nodes'
 import type { ProcessEdge } from '../edges'
 
 interface UseRunProcessOptions {
-  graph: MaybeRefOrGetter<dagre.graphlib.Graph<Node>>
+  graph: MaybeRefOrGetter<graphlib.Graph>
   cancelOnError?: MaybeRefOrGetter<boolean>
 }
 

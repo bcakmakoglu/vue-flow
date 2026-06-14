@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noEmit": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "types": ["node"]

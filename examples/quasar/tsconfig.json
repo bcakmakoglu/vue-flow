@@ -1,42 +1,5 @@
 {
-  "extends": "@quasar/app-vite/tsconfig-preset",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "src/*": [
-        "src/*"
-      ],
-      "app/*": [
-        "*"
-      ],
-      "components/*": [
-        "src/components/*"
-      ],
-      "layouts/*": [
-        "src/layouts/*"
-      ],
-      "pages/*": [
-        "src/pages/*"
-      ],
-      "assets/*": [
-        "src/assets/*"
-      ],
-      "boot/*": [
-        "src/boot/*"
-      ],
-      "stores/*": [
-        "src/stores/*"
-      ]
-    }
-  },
-  "exclude": ["node_modules"],
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src-pwa/*.d.ts",
-    "src-bex/*.d.ts",
-    "src-ssr/*.d.ts"
-  ]
+  // app-vite 2.x generates `.quasar/tsconfig.json` (paths, #q-app aliases, lib, …) via `quasar prepare`;
+  // the project config just extends it — see the `postinstall` script that regenerates `.quasar`
+  "extends": "./.quasar/tsconfig.json"
 }
