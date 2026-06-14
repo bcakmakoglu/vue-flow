@@ -13,9 +13,12 @@ const CustomNode = (props) => h('div', [
   h(Handle, { connectable: false, type: 'source', position: Position.Bottom }),
 ]);
 
-const elements = ref([
+const nodes = ref([
   { id: '1', label: 'Node 1', position: { x: 0, y: 0 }, draggable: false, deletable: false, selectable: false, type: 'custom' },
   { id: '2', label: 'Node 2', position: { x: 75, y: 75 }, draggable: false, deletable: false, selectable: false, type: 'custom' },
+])
+
+const edges = ref([
   { id: 'e1-2', source: '1', target: '2', animated: true, selectable: false, deletable: false },
 ])
 </script>
@@ -63,7 +66,7 @@ Here's how you can use CSS classes to add a pop of color or alter the font style
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="elements" fit-view>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
     <template #node-custom="props">
       <CustomNode v-bind="props" />
     </template>

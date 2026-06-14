@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node, Styles, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Edge, Node, Styles, VueFlowInstance } from '@vue-flow/core'
 import { Background, ConnectionLineType, Controls, VueFlow } from '@vue-flow/core'
 
 import Cross from '~icons/mdi/window-close'
@@ -20,7 +20,7 @@ const edgeStyle: Styles = {
 
 // `<VueFlow>` exposes its store via `defineExpose`; reach `viewport`/`addEdges` through a template ref
 // (pure-provider: no `useVueFlow()` outside a provider).
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 const nodes = ref<Node[]>([
   {
@@ -85,7 +85,7 @@ function onConnect(param: Connection) {
   ])
 }
 
-function onInit(instance: VueFlowStore) {
+function onInit(instance: VueFlowInstance) {
   emit('pane', instance)
 }
 </script>

@@ -8,28 +8,28 @@
 
 - Example:
 
-```vue{13}
+```vue{17}
 <script setup>
 import { VueFlow, isEdge } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   { id: '1', position: { x: 250, y: 5 }, },
   { id: '2', position: { x: 100, y: 100 }, },
+])
 
+const edges = ref([
   { id: 'e1-2', source: '1', target: '2', class: 'light' },
 ])
 
 const toggleClass = () => {
-  elements.value.forEach((el) => {
-    if (isEdge(el)) {
-      el.class = el.class === 'light' ? 'dark' : 'light'
-    }
-  })
+  edges.value = edges.value.map((el) =>
+    isEdge(el) ? { ...el, class: el.class === 'light' ? 'dark' : 'light' } : el,
+  )
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges">
     <button @click="toggleClass">Toggle classes</button>
   </VueFlow>
 </template>
@@ -43,28 +43,28 @@ const toggleClass = () => {
 
 - Example:
 
-```vue{13}
+```vue{17}
 <script setup>
 import { VueFlow, isNode } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   { id: '1', label: 'Node 1', position: { x: 250, y: 5 }, class: 'light' },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, class: 'light' },
+])
 
+const edges = ref([
   { id: 'e1-2', source: '1', target: '2' },
 ])
 
 const toggleClass = () => {
-  elements.value.forEach((el) => {
-    if (isNode(el)) {
-      el.class = el.class === 'light' ? 'dark' : 'light'
-    }
-  })
+  nodes.value = nodes.value.map((el) =>
+    isNode(el) ? { ...el, class: el.class === 'light' ? 'dark' : 'light' } : el,
+  )
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements">
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges">
     <button @click="toggleClass">Toggle classes</button>
   </VueFlow>
 </template>

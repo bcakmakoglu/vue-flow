@@ -71,7 +71,7 @@ const toggleNodesDraggable = () => {
 
   An array of nodes.
 
-  Use either the modelValue prop or nodes separately. __Do not mix them!__
+  Pass via the `nodes` prop, or use `v-model:nodes` for two-way binding.
 
 - Example:
 
@@ -118,7 +118,7 @@ const nodes = ref([
 
   An array of edges.
 
-  Use either the modelValue prop or edges separately. __Do not mix them!__
+  Pass via the `edges` prop, or use `v-model:edges` for two-way binding.
 
 - Example:
 
@@ -169,15 +169,12 @@ const edges = ref([
 </template>
 ```
 
-### modelValue (optional) (deprecated)
-
-- Type: [`Elements`](/typedocs/type-aliases/Elements)
+### Two-way binding (`v-model`)
 
 - Details:
 
-  An array of elements (nodes + edges).
-
-  Use either the modelValue prop or nodes/edges separately. __Do not mix them!__
+  For two-way binding, use `v-model:nodes` and `v-model:edges`. The combined `v-model` (the old
+  `modelValue` of mixed nodes + edges) was removed in 2.0 — bind nodes and edges separately.
 
 - Example:
 
@@ -186,18 +183,21 @@ const edges = ref([
 import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+])
+
+const edges = ref([
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e1-2', source: '1', target: '2', animated: true },
 ])
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" />
 </template>
 ```
 

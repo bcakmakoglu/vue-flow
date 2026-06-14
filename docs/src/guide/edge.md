@@ -10,7 +10,7 @@ import Check from '~icons/mdi/check';
 import Close from '~icons/mdi/close';
 import { ref } from 'vue';
 
-const nodes = [
+const nodes = ref([
   {
     id: '1',
     type: 'input',
@@ -22,10 +22,9 @@ const nodes = [
     label: 'Node 2',
     position: { x: 100, y: 125 },
   },
-];
+]);
 
-const bezierEdge = ref([
-  ...nodes,
+const bezierEdges = ref([
   {
     id: 'e1-2',
     source: '1',
@@ -33,8 +32,7 @@ const bezierEdge = ref([
   }
 ]);
 
-const stepEdge = ref([
-  ...nodes,
+const stepEdges = ref([
   {
     id: 'e1-2',
     type: 'step',
@@ -43,8 +41,7 @@ const stepEdge = ref([
   },
 ]);
 
-const smoothStepEdge = ref([
-  ...nodes,
+const smoothStepEdges = ref([
   {
     id: 'e1-2',
     type: 'smoothstep',
@@ -53,7 +50,7 @@ const smoothStepEdge = ref([
   },
 ]);
 
-const straightEdge = ref([
+const straightNodes = ref([
   {
     id: '1',
     type: 'input',
@@ -65,6 +62,9 @@ const straightEdge = ref([
     label: 'Node 2',
     position: { x: 50, y: 125 },
   },
+]);
+
+const straightEdges = ref([
   {
     id: 'e1-2',
     type: 'straight',
@@ -89,7 +89,7 @@ For the full list of options available for an edge, check out the [Edge Type](/t
 
 ## Adding Edges to the Graph
 
-Edges are rendered by passing them to the `edges` prop (or the deprecated `v-model` prop) of the Vue Flow component.
+Edges are rendered by passing them to the `edges` prop (or `v-model:edges` for two-way binding) of the Vue Flow component.
 
 :::warning
 This method will *not* create a change. Check out the [Controlled Flow](/guide/controlled-flow.html) section for more information.
@@ -213,7 +213,7 @@ addEdges([
 
 ## Removing Edges from the Graph
 
-Similar to adding edges, edges can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `edges` prop of the Vue Flow component.
+Similar to adding edges, edges can be removed from the graph by removing them from your bound array (using `v-model:edges`) or from the `edges` prop of the Vue Flow component.
 
 ```vue
 <script setup>
@@ -419,7 +419,7 @@ The included node types are `default` (bezier), `step`, `smoothstep` and `straig
 The default edge is a bezier curve that connects two nodes.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="bezierEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="bezierEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -429,7 +429,7 @@ The default edge is a bezier curve that connects two nodes.
 A step edge has a straight path with a step towards the target.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="stepEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="stepEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -439,7 +439,7 @@ A step edge has a straight path with a step towards the target.
 The same as the step edge though with a border radius on the step (rounded step).
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="smoothStepEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="smoothStepEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -449,7 +449,7 @@ The same as the step edge though with a border radius on the step (rounded step)
 A simple straight path.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="straightEdge">
+  <VueFlow v-model:nodes="straightNodes" v-model:edges="straightEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -910,7 +910,8 @@ function logEvent(eventName, data) {
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
   <VueFlow 
-    v-model="bezierEdge" 
+    v-model:nodes="nodes" 
+    v-model:edges="bezierEdges" 
     @edge-click="logEvent('edge clicked', $event)"
     @edge-double-click="logEvent('edge double clicked', $event)"
     @edge-context-menu="logEvent('edge context menu', $event)"

@@ -24,7 +24,6 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 | Name           | Definition                      | Type                                                | Optional | Default |
 |----------------|---------------------------------|-----------------------------------------------------|----------|---------|
 | id             | Node id                         | string                                              | false    | -       |
-| parentNode     | Parent node id                  | string                                              | true     | -       |
 | selected       | Is node selected                | boolean                                             | true     | false   |
 | dragging       | Is node dragging                | boolean                                             | true     | false   |
 | position       | XY position of node             | [XYPosition](/typedocs/interfaces/XYPosition) | false    | -       |
