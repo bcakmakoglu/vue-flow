@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import type { Edge, EdgeChange, Node, NodeChange } from '@vue-flow/core'
+import type { Edge, Node, OnBeforeDelete } from '@vue-flow/core'
 import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 import { useDialog } from './useDialog'
 import Dialog from './Dialog.vue'
 
-const { onConnect, addEdges, onNodesChange, onEdgesChange, applyNodeChanges, applyEdgeChanges } = useVueFlow()
+const { onConnect, addEdges } = useVueFlow()
 
 const dialog = useDialog({ message: 'Do you really want to delete this item?' })
 
@@ -22,45 +22,13 @@ const edges = ref<Edge[]>([
 
 onConnect(addEdges)
 
-onNodesChange(async (changes) => {
-  const nextChanges: NodeChange[] = []
-
-  for (const change of changes) {
-    if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm()
-
-      if (isConfirmed) {
-        nextChanges.push(change)
-      }
-    } else {
-      nextChanges.push(change)
-    }
-  }
-
-  applyNodeChanges(nextChanges)
-})
-
-onEdgesChange(async (changes) => {
-  const nextChanges: EdgeChange[] = []
-
-  for (const change of changes) {
-    if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm()
-
-      if (isConfirmed) {
-        nextChanges.push(change)
-      }
-    } else {
-      nextChanges.push(change)
-    }
-  }
-
-  applyEdgeChanges(nextChanges)
-})
+// `onBeforeDelete` is consulted once per deletion (a node together with its connected edges) — return
+// `false` to cancel or `true` to proceed. Replaces the old `apply-default="false"` + per-change dialog.
+const onBeforeDelete: OnBeforeDelete = () => dialog.confirm()
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view class="vue-flow-basic-example">
+  <VueFlow :nodes="nodes" :edges="edges" :on-before-delete="onBeforeDelete" fit-view class="vue-flow-basic-example">
     <Background />
 
     <Dialog />
