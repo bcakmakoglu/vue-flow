@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { Background, Panel, VueFlow, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
 import { nextTick, shallowRef } from 'vue'
 import { getElements } from './utils'
 
-const { nodes: initialNodes, edges: initialEdges } = getElements(15, 15)
+const { nodes: initialNodes, edges: initialEdges } = getElements(30, 30)
 
 const nodes = shallowRef(initialNodes)
 const edges = shallowRef(initialEdges)
@@ -40,7 +40,7 @@ function updatePos() {
 </script>
 
 <template>
-  <VueFlow v-model:nodes="nodes" v-model:edges="edges" :min-zoom="0.1" fit-view>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" min-zoom="0.1" fit-view>
     <Background />
 
     <Panel position="top-right">
