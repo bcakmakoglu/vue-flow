@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import type { VueFlowStore } from '@vue-flow/core'
+import type { VueFlowInstance } from '@vue-flow/core'
 import Basic from './flows/Basic.vue'
 import RGB from './flows/RGB.vue'
 import Nested from './flows/Nested.vue'
 import Additional from './flows/Additional.vue'
 
 const el = ref<HTMLDivElement>()
-const instances: VueFlowStore[] = []
+const instances: VueFlowInstance[] = []
 
-function onLoad(instance: VueFlowStore) {
+function onLoad(instance: VueFlowInstance) {
   instances.push(instance)
   instance.fitView()
 }

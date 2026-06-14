@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, MiniMapNodeFunc, Node, VueFlowStore } from '@vue-flow/core'
+import type { Edge, MiniMapNodeFunc, Node, VueFlowInstance } from '@vue-flow/core'
 import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
 import { breakpointsTailwind } from '@vueuse/core'
 
@@ -12,7 +12,7 @@ const emit = defineEmits(['pane'])
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 const panOnDrag = ref(true)
 

@@ -61,7 +61,7 @@ For the full list of options available for a node, check out the [Node Interface
 
 ## Adding Nodes to the Graph
 
-Nodes are rendered by passing them to the `nodes` prop (or the deprecated `v-model` prop) of the Vue Flow component.
+Nodes are rendered by passing them to the `nodes` prop (or `v-model:nodes` for two-way binding) of the Vue Flow component.
 
 :::warning
 This method will *not* create a change. Check out the [Controlled Flow](/guide/controlled-flow.html) section for more information.
@@ -249,7 +249,7 @@ This will allow you to mutate *your* nodes and have the changes reflected in the
 
 ## Removing Nodes from the Graph
 
-Similar to adding nodes, nodes can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `nodes` prop of the Vue Flow component.
+Similar to adding nodes, nodes can be removed from the graph by removing them from your bound array (using `v-model:nodes`) or from the `nodes` prop of the Vue Flow component.
 
 ```vue
 <script setup>
@@ -449,7 +449,7 @@ const nodes = ref([
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="defaultNode">
+  <VueFlow v-model:nodes="defaultNode">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -474,7 +474,7 @@ const nodes = ref([
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="inputNode">
+  <VueFlow v-model:nodes="inputNode">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -499,7 +499,7 @@ const nodes = ref([
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="outputNode">
+  <VueFlow v-model:nodes="outputNode">
      <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -857,7 +857,7 @@ function logEvent(name, data) {
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
   <VueFlow 
-    v-model="defaultNode" 
+    v-model:nodes="defaultNode" 
     @node-drag-start="logEvent('drag start', $event)"
     @node-drag="logEvent('drag', $event)"
     @node-drag-stop="logEvent('drag stop', $event)"
@@ -921,7 +921,7 @@ const listItems = ref(Array.from({ length: 100 }, (_, i) => i))
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow :model-value="[{ id: '1', type: 'scrollable', label: 'Node 1', position: { x: 50, y: 50 } }]">
+  <VueFlow :nodes="[{ id: '1', type: 'scrollable', label: 'Node 1', position: { x: 50, y: 50 } }]">
     <template #node-scrollable>
       <ScrollableNode />
     </template>
@@ -967,7 +967,7 @@ const inputValue = ref('')
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow :model-value="[{ id: '1', type: 'input-field', label: 'Node 1', position: { x: 50, y: 50 } }]">
+  <VueFlow :nodes="[{ id: '1', type: 'input-field', label: 'Node 1', position: { x: 50, y: 50 } }]">
     <template #node-input-field>
       <InputFieldNode />
     </template>

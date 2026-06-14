@@ -1,7 +1,7 @@
 # Viewport Functions
 
 Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#usevueflow)
-utility or with the [`VueFlowStore`](/typedocs/type-aliases/VueFlowStore)
+utility or with the [`VueFlowInstance`](/typedocs/type-aliases/VueFlowInstance)
 instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 
 - Using Event Hooks (Composable)

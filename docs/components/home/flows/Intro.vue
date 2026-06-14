@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, Node, VueFlowStore } from '@vue-flow/core'
+import type { Edge, Node, VueFlowInstance } from '@vue-flow/core'
 import { Background, Handle, Position, VueFlow } from '@vue-flow/core'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import Heart from '~icons/mdi/heart'
@@ -67,7 +67,7 @@ const initialEdges: Edge[] = [
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
 // the store (getNodes/getNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
 // component that renders the flow (no `useVueFlow()` outside a provider needed).
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 const setElements = useDebounceFn(() => {
   if (!flow.value) {

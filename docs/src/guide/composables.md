@@ -24,7 +24,7 @@ snapToGrid.value = true
 
 // any event that is emitted from the `<VueFlow />` component can be listened to using the `onEventName` method
 onInit((instance) => {
-  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
+  // `instance` is the same type as the return of `useVueFlow` (VueFlowInstance)
   
   fitView()
   
@@ -46,7 +46,7 @@ The values are reactive, meaning changing the values returned from `useVueFlow` 
 
 ### State creation and injection
 
-The `useVueFlow` composable creates, on first call, a new instance of the `VueFlowStore` and injects it into the Vue component tree.
+The `useVueFlow` composable creates, on first call, a new `VueFlowInstance` and injects it into the Vue component tree.
 This allows you to access the store from any child component using the `useVueFlow` composable.
 
 This also means that the *first call* of `useVueFlow` is crucial as it determines the state instance that will be used throughout the component tree.
@@ -64,7 +64,7 @@ import { useVueFlow } from '@vue-flow/core'
 const { onInit } = useVueFlow({ id: 'my-flow-instance' })
 
 onInit((instance) => {
-  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
+  // `instance` is the same type as the return of `useVueFlow` (VueFlowInstance)
 })
 ```
 

@@ -49,8 +49,8 @@ const nodes = ref([
 // Here's an example of a valid nested node configuration
 const nodes = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
-  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, parentNode: '1' },
-  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 }, parentNode: '1' },
+  { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, parentId: '1' },
+  { id: '3', type: 'output', label: 'Node 3', position: { x: 400, y: 200 }, parentId: '1' },
 ])
 ```
 
