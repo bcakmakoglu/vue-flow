@@ -11,8 +11,7 @@ import { getMousePosition } from './utils'
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()
 
-const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } =
-  useVueFlow()
+const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } = useVueFlow()
 
 const { edgeLookup, nodeLookup } = useStore()
 
