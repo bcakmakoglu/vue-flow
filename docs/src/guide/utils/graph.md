@@ -88,13 +88,13 @@ const toggleClass = () => {
 
   Returns all connected edges of a node.
 
-## [getTransformForBounds](/typedocs/functions/getTransformForBounds)
+## [getViewportForBounds](/typedocs/functions/getViewportForBounds)
 
 - Details:
 
   Returns a transformation for the viewport according to input bounds.
 
-## [getRectOfNodes](/typedocs/functions/getRectOfNodes)
+## [getNodesBounds](/typedocs/functions/getNodesBounds)
 
 - Details:
 

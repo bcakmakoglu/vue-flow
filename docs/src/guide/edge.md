@@ -770,8 +770,8 @@ But you may wish to expand on these features or implement your business logic in
 | Prop Name        | Description                                | Type                                         | Optional                                   |
 |------------------|--------------------------------------------|----------------------------------------------|--------------------------------------------|
 | id               | Unique edge id                             | string                                       | <Close class="text-red-500" />             |
-| sourceNode       | The originating node                       | [GraphNode](/typedocs/interfaces/GraphNode)  | <Close class="text-red-500" />             |
-| targetNode       | The destination node                       | [GraphNode](/typedocs/interfaces/GraphNode)  | <Close class="text-red-500" />             |
+| sourceNode       | The originating node                       | [GraphNode](/typedocs/type-aliases/GraphNode)  | <Close class="text-red-500" />             |
+| targetNode       | The destination node                       | [GraphNode](/typedocs/type-aliases/GraphNode)  | <Close class="text-red-500" />             |
 | source           | ID of the source node                      | string                                       | <Close class="text-red-500" />             |
 | target           | ID of the target node                      | string                                       | <Close class="text-red-500" />             |
 | type             | Edge Type                                  | string                                       | <Close class="text-red-500" />             |
@@ -899,9 +899,9 @@ function logEvent(eventName, data) {
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @reconnect-start="logEvent(reconnect start, $event)"
+    @reconnect-start="logEvent('reconnect start', $event)"
     @reconnect="logEvent('edge update', $event)"
-    @reconnect-end="logEvent(reconnect end, $event)"
+    @reconnect-end="logEvent('reconnect end', $event)"
   />
 </template>
 ```
@@ -918,9 +918,9 @@ function logEvent(eventName, data) {
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @reconnect-start="logEvent(reconnect start, $event)"
+    @reconnect-start="logEvent('reconnect start', $event)"
     @reconnect="logEvent('edge update', $event)"
-    @reconnect-end="logEvent(reconnect end, $event)"
+    @reconnect-end="logEvent('reconnect end', $event)"
   >
     <Panel position="top-center">
         <p class="text-sm">Interact to see events in browser console</p>

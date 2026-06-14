@@ -57,7 +57,7 @@ through edges to create a data map.
 
 Remember, every node is unique and thus **requires a unique id** and **an [XY-position](/typedocs/interfaces/XYPosition)**.
 
-For the full list of options available for a node, check out the [Node Interface](/typedocs/interfaces/Node).
+For the full list of options available for a node, check out the [Node Interface](/typedocs/type-aliases/Node).
 
 ## Adding Nodes to the Graph
 
@@ -764,7 +764,7 @@ But you may wish to expand on these features or implement your business logic in
 | data                                                        | Additional data of node                                             | any object                                                 | <Close class="text-red-500" />             |
 | events                                                      | Contextual and custom events of node                                | [NodeEventsOn](/typedocs/type-aliases/NodeEventsOn)               | <Close class="text-red-500" />             |
 
-## [Node Events](/typedocs/type-aliases/NodeEventsHandler)
+## [Node Events](/typedocs/interfaces/NodeEventsHandler)
 
 Vue Flow provides two main ways of listening to node events, 
 either by using `useVueFlow` to bind listeners to the event handlers or by binding them to the `<VueFlow>` component.

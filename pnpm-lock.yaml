@@ -70,8 +70,8 @@ importers:
         specifier: ^0.26.11
         version: 0.26.11(typescript@5.9.3)
       typedoc-plugin-markdown:
-        specifier: ^4.2.10
-        version: 4.9.0(typedoc@0.26.11(typescript@5.9.3))
+        specifier: ~4.2.10
+        version: 4.2.10(typedoc@0.26.11(typescript@5.9.3))
       typedoc-plugin-merge-modules:
         specifier: ^6.0.3
         version: 6.1.0(typedoc@0.26.11(typescript@5.9.3))
@@ -7090,11 +7090,11 @@ packages:
   typed-array-length@1.0.4:
     resolution: {integrity: sha512-KjZypGq+I/H7HI5HlOoGHkWUUGq+Q0TPhQurLbyrVrvnKTBgzLhIJ7j6J/XTQOi0d1RjyZ0wdas8bKs2p0x3Ng==}
 
-  typedoc-plugin-markdown@4.9.0:
-    resolution: {integrity: sha512-9Uu4WR9L7ZBgAl60N/h+jqmPxxvnC9nQAlnnO/OujtG2ubjnKTVUFY1XDhcMY+pCqlX3N2HsQM2QTYZIU9tJuw==}
+  typedoc-plugin-markdown@4.2.10:
+    resolution: {integrity: sha512-PLX3pc1/7z13UJm4TDE9vo9jWGcClFUErXXtd5LdnoLjV6mynPpqZLU992DwMGFSRqJFZeKbVyqlNNeNHnk2tQ==}
     engines: {node: '>= 18'}
     peerDependencies:
-      typedoc: 0.28.x
+      typedoc: 0.26.x
 
   typedoc-plugin-merge-modules@6.1.0:
     resolution: {integrity: sha512-AZIyw+H1oG3xpJOq1b2CVnpK7A6OIddi7FsjljsbmQ7vx6dtaorEoz/DQPcGSOzWhWdJPqqdncIzVySuoffS2w==}
@@ -15486,7 +15486,7 @@ snapshots:
       for-each: 0.3.3
       is-typed-array: 1.1.12
 
-  typedoc-plugin-markdown@4.9.0(typedoc@0.26.11(typescript@5.9.3)):
+  typedoc-plugin-markdown@4.2.10(typedoc@0.26.11(typescript@5.9.3)):
     dependencies:
       typedoc: 0.26.11(typescript@5.9.3)
 

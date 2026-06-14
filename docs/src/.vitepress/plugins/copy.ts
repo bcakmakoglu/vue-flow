@@ -13,7 +13,8 @@ function getPublicPath(fileName: string) {
 }
 
 function copyFiles(emit: Emit) {
-  ;['core', 'node-resizer', 'node-toolbar'].forEach((name) => {
+  // 2.0 ships a single `@vue-flow/core` package (node-resizer/node-toolbar/etc. were merged into it)
+  ;['core'].forEach((name) => {
     const fileName = `vue-flow-${name}.mjs`
 
     const filePath = resolve(__dirname, getPkgPath(name, fileName))
