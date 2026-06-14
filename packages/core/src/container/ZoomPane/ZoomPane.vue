@@ -37,11 +37,14 @@ const {
   connectionStartHandle,
 } = storeToRefs(useStore())
 
-const zoomActivationKeyPressed = useKeyPress(zoomActivationKeyCode)
+// `actInsideInputWithModifier: false`: while a modifier is held, don't activate zoom/pan/selection when
+// the event targets a page input — otherwise these keys (e.g. Space for pan) `preventDefault` keystrokes
+// the user is typing into an input anywhere on the page. Mirrors `deleteKeyCode` in `Pane.vue`.
+const zoomActivationKeyPressed = useKeyPress(zoomActivationKeyCode, { actInsideInputWithModifier: false })
 
-const panKeyPressed = useKeyPress(panActivationKeyCode)
+const panKeyPressed = useKeyPress(panActivationKeyCode, { actInsideInputWithModifier: false })
 
-const selectionKeyPressed = useKeyPress(selectionKeyCode)
+const selectionKeyPressed = useKeyPress(selectionKeyCode, { actInsideInputWithModifier: false })
 
 const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
 

@@ -51,7 +51,9 @@ let selectionStarted = false
 
 const deleteKeyPressed = useKeyPress(deleteKeyCode, { actInsideInputWithModifier: false })
 
-const multiSelectKeyPressed = useKeyPress(multiSelectionKeyCode)
+// see `deleteKeyCode` above — don't let the multi-selection key (often Ctrl/Meta) hijack keystrokes like
+// Ctrl+A/C/V while the user is typing in a page input
+const multiSelectKeyPressed = useKeyPress(multiSelectionKeyCode, { actInsideInputWithModifier: false })
 
 watch(deleteKeyPressed, (isKeyPressed) => {
   if (!isKeyPressed) {
