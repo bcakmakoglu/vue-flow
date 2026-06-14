@@ -3,7 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { getNodesBounds } from '@xyflow/system'
 import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables'
 import { arrowKeyDiffs } from '../../utils'
-import type { GraphNode, Node } from '../../types'
+import type { GraphNode } from '../../types'
 
 const { emits, viewport, getSelectedNodes } = useVueFlow()
 
@@ -37,8 +37,8 @@ onMounted(() => {
   }
 })
 
-// getSelectedNodes is DeepReadonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as unknown as GraphNode[], { nodeLookup }))
+// getSelectedNodes is readonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as GraphNode[], { nodeLookup }))
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
@@ -48,7 +48,7 @@ const innerStyle = computed(() => ({
 }))
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] as unknown as Node[] })
+  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] })
 }
 
 function onKeyDown(event: KeyboardEvent) {

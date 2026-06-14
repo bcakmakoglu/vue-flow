@@ -22,9 +22,9 @@ const StepEdge = defineComponent<StepEdgeProps>({
     'markerEnd',
     'markerStart',
     'interactionWidth',
-  ] as any,
+  ],
   setup(props, { attrs }) {
-    return () => h(SmoothStepEdge as any, { ...props, ...attrs, borderRadius: 0 })
+    return () => h(SmoothStepEdge, { ...props, ...attrs, borderRadius: 0 })
   },
 })
 

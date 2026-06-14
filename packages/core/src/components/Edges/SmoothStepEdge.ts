@@ -27,7 +27,7 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
     'markerStart',
     'interactionWidth',
     'offset',
-  ] as any,
+  ],
   compatConfig: { MODE: 3 },
   setup(props, { attrs }) {
     return () => {
@@ -37,7 +37,7 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
         targetPosition: props.targetPosition ?? Position.Top,
       })
 
-      return h(BaseEdge as any, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
     }
   },
 })

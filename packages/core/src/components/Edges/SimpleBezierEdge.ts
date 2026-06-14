@@ -116,7 +116,7 @@ const SimpleBezierEdge = defineComponent<SimpleBezierEdgeProps>({
     'markerEnd',
     'markerStart',
     'interactionWidth',
-  ] as any,
+  ],
   compatConfig: { MODE: 3 },
   setup(props, { attrs }) {
     return () => {
@@ -126,7 +126,7 @@ const SimpleBezierEdge = defineComponent<SimpleBezierEdgeProps>({
         targetPosition: props.targetPosition ?? Position.Top,
       })
 
-      return h(BaseEdge as any, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
     }
   },
 })
