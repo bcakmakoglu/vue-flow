@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "lint": "eslint --ext .js,.ts,.vue ./ && vue-tsc --noEmit"
+    "lint": "eslint --ext .js,.ts,.vue ./ && vue-tsc --noEmit && vue-tsc -p tsconfig.node.json --noEmit"
   },
   "dependencies": {
     "@dagrejs/dagre": "^1.1.4",

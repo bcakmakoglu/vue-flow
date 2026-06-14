@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Panel, useVueFlow } from '@vue-flow/core'
+import { Panel, storeToRefs, useStore } from '@vue-flow/core'
 
 const captureZoomClick = defineModel<boolean>('captureZoomClick', { required: true })
 const captureZoomScroll = defineModel<boolean>('captureZoomScroll', { required: true })
@@ -14,7 +14,7 @@ const {
   panOnScroll,
   panOnScrollMode,
   panOnDrag,
-} = useVueFlow()
+} = storeToRefs(useStore())
 </script>
 
 <template>

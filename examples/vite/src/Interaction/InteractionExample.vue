@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, FlowEvents, Node, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core'
 import { Controls, MiniMap, VueFlow, VueFlowProvider } from '@vue-flow/core'
 import InteractionControls from './InteractionControls.vue'
 
@@ -19,7 +19,7 @@ const captureZoomClick = ref(false)
 
 const captureZoomScroll = ref(false)
 
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 function onConnect(connection: Connection) {
   flow.value?.addEdges([connection])

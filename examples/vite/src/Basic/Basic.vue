@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core'
 import { Background, Controls, MiniMap, Panel, VueFlow, isNode } from '@vue-flow/core'
 
 const nodes = ref<Node[]>([
@@ -16,7 +16,7 @@ const edges = ref<Edge[]>([
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
 // the store from the component that renders the flow (no `useVueFlow()` outside a provider needed).
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 function onConnect(connection: Connection) {
   flow.value?.addEdges([connection])

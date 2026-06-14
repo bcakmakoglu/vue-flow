@@ -24,5 +24,5 @@ function onChange(event: Event) {
   <label :for="`${id}-input`">Value</label>
   <input :id="`${id}-input`" :value="data.value" type="number" class="nodrag" @change="onChange" />
 
-  <Handle type="source" :position="Position.Right" :connectable="false" />
+  <Handle type="source" :position="Position.Right" :is-connectable="false" />
 </template>

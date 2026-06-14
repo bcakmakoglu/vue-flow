@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Edge, FlowEvents, Node, SnapGrid, Styles, VueFlowStore } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, SnapGrid, Styles, VueFlowInstance } from '@vue-flow/core'
 import { Background, Controls, MarkerType, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
 
 function onNodeDragStart(e: FlowEvents['nodeDragStart']) {
@@ -35,7 +35,7 @@ function onSelectionDragStop(e: FlowEvents['selectionDragStop']) {
 function onSelectionContextMenu(e: FlowEvents['selectionContextMenu']) {
   return console.log('selection context menu', e)
 }
-function onLoad(flowInstance: VueFlowStore) {
+function onLoad(flowInstance: VueFlowInstance) {
   console.log('flow loaded:', flowInstance)
   flowInstance.fitView()
 }

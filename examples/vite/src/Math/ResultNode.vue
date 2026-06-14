@@ -69,7 +69,7 @@ const result = computed(() => {
   <Handle
     type="target"
     :position="Position.Left"
-    :connectable="false"
+    :is-connectable="false"
     :style="{ background: result > 0 ? '#5EC697' : '#f15a16' }"
   />
 </template>

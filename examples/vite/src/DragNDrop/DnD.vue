@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Node, VueFlowStore } from '@vue-flow/core'
+import type { Connection, Node, VueFlowInstance } from '@vue-flow/core'
 import { VueFlow } from '@vue-flow/core'
 import Sidebar from './Sidebar.vue'
 
@@ -17,7 +17,7 @@ const nodes = ref<Node[]>([
   },
 ])
 
-const flow = ref<VueFlowStore>()
+const flow = ref<VueFlowInstance>()
 
 function onDragOver(event: DragEvent) {
   event.preventDefault()

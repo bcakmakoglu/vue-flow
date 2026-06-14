@@ -29,7 +29,7 @@ const targetNodeData = computed(() => nodesData.value[0].data)
 const sourceNodeData = computed(() => nodesData.value[1].data)
 
 const isAnimating = computed({
-  get: () => props.data.isAnimating || false,
+  get: () => props.data?.isAnimating || false,
   set: (value) => {
     updateEdgeData(props.id, { isAnimating: value })
   },
