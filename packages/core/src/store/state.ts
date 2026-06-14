@@ -76,6 +76,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     connectOnClick: true,
     connectionStatus: null,
     isValidConnection: null,
+    onBeforeDelete: null,
 
     snapGrid: [15, 15],
     snapToGrid: false,

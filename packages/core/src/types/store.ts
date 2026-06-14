@@ -2,7 +2,17 @@ import type { ComputedRef } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { ColorMode, PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
-import type { Dimensions, FlowExportObject, FlowProps, Rect, SelectionMode, SelectionRect, SnapGrid, XYPosition } from './flow'
+import type {
+  Dimensions,
+  FlowExportObject,
+  FlowProps,
+  OnBeforeDelete,
+  Rect,
+  SelectionMode,
+  SelectionRect,
+  SnapGrid,
+  XYPosition,
+} from './flow'
 import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components'
 import type {
   Connection,
@@ -93,6 +103,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   connectionRadius: number
   connectionStatus: ConnectionStatus | null
   isValidConnection: ValidConnectionFunc | null
+  onBeforeDelete: OnBeforeDelete<NodeType, EdgeType> | null
 
   connectOnClick: boolean
   reconnectRadius: number
@@ -172,6 +183,15 @@ export type RemoveNodes = (
 export type RemoveEdges = (
   edges: (string | Edge) | (Edge | string)[] | ((edges: Edge[]) => (string | Edge) | (Edge | string)[]),
 ) => void
+
+/**
+ * Delete the given nodes/edges along with their connected edges and child nodes, gated by `onBeforeDelete`.
+ * Resolves to the elements actually removed. Mirrors xyflow/react's `deleteElements`.
+ */
+export type DeleteElements<NodeType extends Node = Node, EdgeType extends Edge = Edge> = (elements: {
+  nodes?: (Partial<NodeType> & { id: string })[]
+  edges?: (Partial<EdgeType> & { id: string })[]
+}) => Promise<{ deletedNodes: NodeType[]; deletedEdges: EdgeType[] }>
 
 export type AddEdges<EdgeType extends Edge = Edge> = (
   edgesOrConnections:
@@ -258,6 +278,8 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   removeNodes: RemoveNodes
   /** remove edges from state */
   removeEdges: RemoveEdges
+  /** delete nodes/edges (with connected edges + children), gated by `onBeforeDelete`; mirrors xyflow/react */
+  deleteElements: DeleteElements<NodeType, EdgeType>
   /** find a node by id */
   getNode: GetNode<NodeType>
   /** get the enriched internal node (store-computed `internals` + `measured`) by id */
