@@ -1,4 +1,4 @@
-import type { ComputedRef, DeepReadonly } from 'vue'
+import type { ComputedRef } from 'vue'
 import type { KeyFilter } from '@vueuse/core'
 import type { ColorMode, PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system'
 import type { ViewportHelper } from '../composables'
@@ -213,7 +213,7 @@ export type UpdateNodeDimensions = (updates: UpdateNodeDimensionsParams[]) => vo
 
 export type UpdateNodeInternals = (nodeIds?: string[]) => void
 
-export type GetNode<NodeType extends Node = Node> = (id: string | undefined | null) => DeepReadonly<NodeType> | undefined
+export type GetNode<NodeType extends Node = Node> = (id: string | undefined | null) => NodeType | undefined
 
 /**
  * Returns the enriched {@link InternalNode} (`internals.{positionAbsolute, z, handleBounds, userNode}` +
@@ -222,7 +222,7 @@ export type GetNode<NodeType extends Node = Node> = (id: string | undefined | nu
  */
 export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined
 
-export type GetEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => DeepReadonly<EdgeType> | undefined
+export type GetEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => EdgeType | undefined
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
   node: (Partial<NodeType> & { id: NodeType['id'] }) | Rect,
@@ -341,15 +341,16 @@ export interface Getters<NodeType extends Node = Node, EdgeType extends Edge = E
   /** returns object containing current node types */
   getNodeTypes: Record<keyof DefaultNodeTypes | string, NodeComponent<NodeType | BuiltInNode>>
   /** all visible nodes (user-facing `Node`s; use `getInternalNode`/`nodeLookup` for enriched data) */
-  getNodes: DeepReadonly<NodeType[]>
-  // NOTE: DeepReadonly is a TYPE-only guard (zero runtime) — mutating a node read here is a compile error
-  // pointing users at the helpers (updateNode/updateNodeData/applyNodeChanges/setNodes); see #40.
+  getNodes: readonly NodeType[]
+  // the returned list is `readonly` — change nodes via setNodes/updateNode/applyNodeChanges (an in-place
+  // mutation to a node read here won't propagate). NOTE: shallow `readonly`, not `DeepReadonly`: the latter
+  // recurses into `Edge.label`'s VNode/Component types and trips TS2589 on a plain `.filter()` (#1886).
   /** all visible edges (user-facing `Edge`s) */
-  getEdges: DeepReadonly<EdgeType[]>
+  getEdges: readonly EdgeType[]
   /** returns all currently selected nodes (user-facing `Node`s) */
-  getSelectedNodes: DeepReadonly<NodeType[]>
+  getSelectedNodes: readonly NodeType[]
   /** returns all currently selected edges */
-  getSelectedEdges: DeepReadonly<EdgeType[]>
+  getSelectedEdges: readonly EdgeType[]
   /** the viewport as `{ x, y, zoom }`, derived from the canonical `transform` — read-only; set via `setViewport`/`zoom*`/`fitView` */
   viewport: Viewport
 }

@@ -1,4 +1,3 @@
-import type { DeepReadonly } from 'vue'
 import { markRaw, toRaw } from 'vue'
 import {
   clampPosition,
@@ -300,9 +299,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // The public contract: `getNode` returns the user-facing `Node` (the exact object held in
     // `state.nodes`/v-model), which the store keeps on the InternalNode as `internals.userNode`. Enriched
-    // data (internals/measured) is reached via `getInternalNode`. Typed `DeepReadonly` (zero runtime) so
-    // mutating the result is a compile error → use the helpers (updateNode/applyNodeChanges/setNodes).
-    return nodeLookup.get(id)?.internals.userNode as DeepReadonly<NodeType> | undefined
+    // data (internals/measured) is reached via `getInternalNode`. Don't mutate the result in place — it
+    // won't propagate; use the helpers (updateNode/applyNodeChanges/setNodes).
+    return nodeLookup.get(id)?.internals.userNode as NodeType | undefined
   }
 
   // The enriched-node accessor (xyflow/react parity): returns the lookup `InternalNode` (enriched
@@ -321,7 +320,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return
     }
 
-    return edgeLookup.get(id) as DeepReadonly<EdgeType> | undefined
+    return edgeLookup.get(id)
   }
 
   const updateNodePositions: Actions<NodeType>['updateNodePositions'] = (dragItems, changed, dragging) => {
