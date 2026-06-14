@@ -4,9 +4,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
-})
+});
 </script>
 
 <template>
-  <tspan dy="10" x="0">{{ props.label }}</tspan>
+  <tspan dy="10" x="0">
+    {{ props.label }}
+  </tspan>
 </template>

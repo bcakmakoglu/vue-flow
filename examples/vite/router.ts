@@ -1,5 +1,5 @@
-import type { RouterOptions } from 'vue-router'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import type { RouterOptions } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 export const routes: RouterOptions['routes'] = [
   {
@@ -138,9 +138,9 @@ export const routes: RouterOptions['routes'] = [
     path: '/confirm-delete',
     component: () => import('./src/ConfirmDelete/ConfirmDeleteExample.vue'),
   },
-]
+];
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes,
-})
+});

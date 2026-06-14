@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { ARIA_EDGE_DESC_KEY, ARIA_LIVE_MESSAGE, ARIA_NODE_DESC_KEY } from '../../utils/a11y'
-import { storeToRefs, useStore, useVueFlow } from '../../composables'
+import { storeToRefs, useStore, useVueFlow } from '../../composables';
+import { ARIA_EDGE_DESC_KEY, ARIA_LIVE_MESSAGE, ARIA_NODE_DESC_KEY } from '../../utils/a11y';
 
-const { id } = useVueFlow()
-const { disableKeyboardA11y, ariaLiveMessage } = storeToRefs(useStore())
+const { id } = useVueFlow();
+const { disableKeyboardA11y, ariaLiveMessage } = storeToRefs(useStore());
 </script>
 
 <script lang="ts">
 export default {
   name: 'A11yDescriptions',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

@@ -1,12 +1,12 @@
-import { computed, inject, ref } from 'vue'
-import { getConnectedEdges } from '@xyflow/system'
-import type { GraphNode, Node } from '../types'
-import { ErrorCode, VueFlowError } from '../utils'
-import { NodeRef } from '../context'
-import { useVueFlow } from './useVueFlow'
-import { useStore } from './useStore'
-import { storeToRefs } from './storeToRefs'
-import { useNodeId } from './useNodeId'
+import type { GraphNode, Node } from '../types';
+import { getConnectedEdges } from '@xyflow/system';
+import { computed, inject, ref } from 'vue';
+import { NodeRef } from '../context';
+import { ErrorCode, VueFlowError } from '../utils';
+import { storeToRefs } from './storeToRefs';
+import { useNodeId } from './useNodeId';
+import { useStore } from './useStore';
+import { useVueFlow } from './useVueFlow';
 
 /**
  * Composable that provides access to a node object, parent node object, connected edges and it's dom element
@@ -20,19 +20,19 @@ import { useNodeId } from './useNodeId'
  * @returns the node id, the node (a `ComputedRef`), the node dom element, it's parent and connected edges
  */
 export function useNode<NodeType extends Node = Node>(id?: string) {
-  const nodeId = id ?? useNodeId() ?? ''
-  const nodeEl = inject(NodeRef, ref(null))
+  const nodeId = id ?? useNodeId() ?? '';
+  const nodeEl = inject(NodeRef, ref(null));
 
-  const { getInternalNode, emits } = useVueFlow()
-  const { edges } = storeToRefs(useStore<NodeType>())
+  const { getInternalNode, emits } = useVueFlow();
+  const { edges } = storeToRefs(useStore<NodeType>());
 
   // `node` is the enriched `InternalNode` (it carries `internals`/`measured`, which NodeWrapper + custom
   // nodes read) and a `computed` (not a one-time read) so it re-resolves whenever the store replaces this
   // node's lookup entry — required for the immutable re-adopt model where a changed node is a NEW object.
-  const node = computed(() => getInternalNode(nodeId) as GraphNode<NodeType> | undefined)
+  const node = computed(() => getInternalNode(nodeId) as GraphNode<NodeType> | undefined);
 
   if (!node.value) {
-    emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
+    emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId));
   }
 
   return {
@@ -41,5 +41,5 @@ export function useNode<NodeType extends Node = Node>(id?: string) {
     node,
     parentNode: computed(() => (node.value ? getInternalNode(node.value.parentId) : undefined)),
     connectedEdges: computed(() => (node.value ? getConnectedEdges([node.value], edges.value) : [])),
-  }
+  };
 }

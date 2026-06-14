@@ -1,4 +1,4 @@
-import App from './App.vue'
+import App from './App.vue';
 
 describe('Render Controls', () => {
   beforeEach(() => {
@@ -9,10 +9,10 @@ describe('Render Controls', () => {
           height: '100vh',
         },
       },
-    })
-  })
+    });
+  });
 
   it('renders controls', () => {
-    cy.get('.vue-flow__controls').should('exist')
-  })
-})
+    cy.get('.vue-flow__controls').should('exist');
+  });
+});

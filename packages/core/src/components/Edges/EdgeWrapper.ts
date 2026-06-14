@@ -1,26 +1,26 @@
-import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue'
-import { getHandlePosition, getMarkerId } from '@xyflow/system'
-import type { Connection, Edge, EdgeComponent, GraphNode, HandleType, MouseTouchEvent } from '../../types'
-import { ConnectionMode, Position } from '../../types'
-import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables'
-import { EdgeId, EdgeRef, Slots } from '../../context'
-import { ARIA_EDGE_DESC_KEY, ErrorCode, VueFlowError, elementSelectionKeys, getEdgeHandle, getEdgeZIndex } from '../../utils'
-import EdgeAnchor from './EdgeAnchor'
+import type { Connection, Edge, EdgeComponent, GraphNode, HandleType, MouseTouchEvent } from '../../types';
+import { getHandlePosition, getMarkerId } from '@xyflow/system';
+import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue';
+import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables';
+import { EdgeId, EdgeRef, Slots } from '../../context';
+import { ConnectionMode, Position } from '../../types';
+import { ARIA_EDGE_DESC_KEY, elementSelectionKeys, ErrorCode, getEdgeHandle, getEdgeZIndex, VueFlowError } from '../../utils';
+import EdgeAnchor from './EdgeAnchor';
 
 interface Props {
-  id: string
+  id: string;
 }
 
 // candidate handles for one end of an edge: strict mode = only the matching side; loose mode = both
 // sides, matching side first (so `getEdgeHandle` prefers it)
 function getNodeHandles(node: GraphNode, side: 'source' | 'target', strict: boolean) {
-  const bounds = node.internals.handleBounds
+  const bounds = node.internals.handleBounds;
   if (strict) {
-    return bounds?.[side] ?? null
+    return bounds?.[side] ?? null;
   }
 
-  const other = side === 'source' ? 'target' : 'source'
-  return [...(bounds?.[side] || []), ...(bounds?.[other] || [])]
+  const other = side === 'source' ? 'target' : 'source';
+  return [...(bounds?.[side] || []), ...(bounds?.[other] || [])];
 }
 
 const EdgeWrapper = defineComponent({
@@ -28,7 +28,7 @@ const EdgeWrapper = defineComponent({
   compatConfig: { MODE: 3 },
   props: ['id'],
   setup(props: Props) {
-    const { id: vueFlowId, addSelectedEdges, emits, getEdgeTypes, removeSelectedEdges, getEdge, getInternalNode } = useVueFlow()
+    const { id: vueFlowId, addSelectedEdges, emits, getEdgeTypes, removeSelectedEdges, getEdge, getInternalNode } = useVueFlow();
 
     const {
       connectionMode,
@@ -44,88 +44,88 @@ const EdgeWrapper = defineComponent({
       elevateEdgesOnSelect,
       defaultEdgeOptions,
       hooks,
-    } = storeToRefs(useStore())
+    } = storeToRefs(useStore());
 
-    const storedEdge = computed(() => getEdge(props.id) as Edge)
+    const storedEdge = computed(() => getEdge(props.id) as Edge);
 
     const edge = computed<Edge>(() => {
-      const defaults = defaultEdgeOptions.value
-      return defaults ? ({ ...(defaults as Edge), ...storedEdge.value } as Edge) : storedEdge.value
-    })
+      const defaults = defaultEdgeOptions.value;
+      return defaults ? ({ ...(defaults as Edge), ...storedEdge.value } as Edge) : storedEdge.value;
+    });
 
     // resolved per edge (value-gated computed) so the z-tracking of BOTH endpoint lookup keys lives in
     // this component's scope — resolving it in EdgeRenderer's v-for made the whole renderer re-render
     // (all edge vnodes) whenever ANY node entry was replaced, i.e. every drag frame
-    const zIndex = computed(() => getEdgeZIndex(edge.value, getInternalNode, elevateEdgesOnSelect.value))
+    const zIndex = computed(() => getEdgeZIndex(edge.value, getInternalNode, elevateEdgesOnSelect.value));
 
-    const { emit } = useEdgeHooks(emits)
+    const { emit } = useEdgeHooks(emits);
 
-    const slots = inject(Slots)
+    const slots = inject(Slots);
 
-    const instance = getCurrentInstance()
+    const instance = getCurrentInstance();
 
-    const mouseOver = shallowRef(false)
+    const mouseOver = shallowRef(false);
 
-    const updating = shallowRef(false)
+    const updating = shallowRef(false);
 
-    const nodeId = shallowRef('')
+    const nodeId = shallowRef('');
 
-    const handleId = shallowRef<string | null>(null)
+    const handleId = shallowRef<string | null>(null);
 
-    const reconnectHandleType = shallowRef<HandleType>('source')
+    const reconnectHandleType = shallowRef<HandleType>('source');
 
-    const edgeEl = shallowRef<SVGElement | null>(null)
+    const edgeEl = shallowRef<SVGElement | null>(null);
 
     const isSelectable = toRef(() =>
       typeof edge.value.selectable === 'undefined' ? elementsSelectable.value : edge.value.selectable,
-    )
+    );
 
     const isReconnectable = toRef(() =>
       typeof edge.value.reconnectable === 'undefined' ? edgesReconnectable.value : edge.value.reconnectable,
-    )
+    );
 
-    const isFocusable = toRef(() => (typeof edge.value.focusable === 'undefined' ? edgesFocusable.value : edge.value.focusable))
+    const isFocusable = toRef(() => (typeof edge.value.focusable === 'undefined' ? edgesFocusable.value : edge.value.focusable));
 
-    provide(EdgeId, props.id)
-    provide(EdgeRef, edgeEl)
+    provide(EdgeId, props.id);
+    provide(EdgeRef, edgeEl);
 
     // the class/style callbacks receive the RAW stored edge (like every event payload + selection action),
     // not the internal `{ ...defaultEdgeOptions, ...edge }` render view — only the resolved fn is read off
     // the merged view so a defaults-provided callback still applies
     const edgeClass = computed(() =>
       edge.value.class instanceof Function ? edge.value.class(storedEdge.value) : edge.value.class,
-    )
+    );
     const edgeStyle = computed(() =>
       edge.value.style instanceof Function ? edge.value.style(storedEdge.value) : edge.value.style,
-    )
+    );
 
     const edgeCmp = computed(() => {
-      const name = edge.value.type || 'default'
+      const name = edge.value.type || 'default';
 
-      const slot = slots?.[`edge-${name}`]
+      const slot = slots?.[`edge-${name}`];
       if (slot) {
-        return slot
+        return slot;
       }
 
-      let edgeType = edge.value.template ?? getEdgeTypes.value[name]
+      let edgeType = edge.value.template ?? getEdgeTypes.value[name];
 
       if (typeof edgeType === 'string') {
         if (instance) {
-          const components = Object.keys(instance.appContext.components)
+          const components = Object.keys(instance.appContext.components);
           if (components && components.includes(name)) {
-            edgeType = resolveComponent(name, false) as EdgeComponent
+            edgeType = resolveComponent(name, false) as EdgeComponent;
           }
         }
       }
 
       if (edgeType && typeof edgeType !== 'string') {
-        return edgeType
+        return edgeType;
       }
 
-      emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType))
+      emits.error(new VueFlowError(ErrorCode.EDGE_TYPE_MISSING, edgeType));
 
-      return false
-    })
+      return false;
+    });
 
     const { handlePointerDown } = useHandle({
       nodeId,
@@ -135,54 +135,54 @@ const EdgeWrapper = defineComponent({
       reconnectHandleType,
       onReconnect,
       onReconnectEnd,
-    })
+    });
 
     return () => {
       // bail if the edge was removed between a lookup update and this wrapper unmounting — otherwise the
       // derefs below throw when no `defaultEdgeOptions` mask the now-undefined edge
       if (!storedEdge.value) {
-        return null
+        return null;
       }
 
-      const sourceNode = getInternalNode(edge.value.source)
-      const targetNode = getInternalNode(edge.value.target)
-      const pathOptions = 'pathOptions' in edge.value ? edge.value.pathOptions : {}
+      const sourceNode = getInternalNode(edge.value.source);
+      const targetNode = getInternalNode(edge.value.target);
+      const pathOptions = 'pathOptions' in edge.value ? edge.value.pathOptions : {};
 
       if (!sourceNode && !targetNode) {
-        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.value.id, edge.value.source, edge.value.target))
+        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.value.id, edge.value.source, edge.value.target));
 
-        return null
+        return null;
       }
 
       if (!sourceNode) {
-        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.value.id, edge.value.source))
+        emits.error(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.value.id, edge.value.source));
 
-        return null
+        return null;
       }
 
       if (!targetNode) {
-        emits.error(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.value.id, edge.value.target))
+        emits.error(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.value.id, edge.value.target));
 
-        return null
+        return null;
       }
 
       if (!edge.value || edge.value.hidden || sourceNode.hidden || targetNode.hidden) {
-        return null
+        return null;
       }
 
       // strict mode considers only the matching side's handles; loose mode considers both (matching first)
-      const strict = connectionMode.value === ConnectionMode.Strict
-      const sourceHandle = getEdgeHandle(getNodeHandles(sourceNode, 'source', strict), edge.value.sourceHandle)
-      const targetHandle = getEdgeHandle(getNodeHandles(targetNode, 'target', strict), edge.value.targetHandle)
+      const strict = connectionMode.value === ConnectionMode.Strict;
+      const sourceHandle = getEdgeHandle(getNodeHandles(sourceNode, 'source', strict), edge.value.sourceHandle);
+      const targetHandle = getEdgeHandle(getNodeHandles(targetNode, 'target', strict), edge.value.targetHandle);
 
-      const sourcePosition = sourceHandle?.position || Position.Bottom
+      const sourcePosition = sourceHandle?.position || Position.Bottom;
 
-      const targetPosition = targetHandle?.position || Position.Top
+      const targetPosition = targetHandle?.position || Position.Top;
 
       // positions are render-local — computed each render and passed to the edge component as props,
       // never stored on the edge
-      const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition)
-      const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition)
+      const { x: sourceX, y: sourceY } = getHandlePosition(sourceNode, sourceHandle, sourcePosition);
+      const { x: targetX, y: targetY } = getHandlePosition(targetNode, targetHandle, targetPosition);
 
       // the full-container svg wrapper (one stacking context per edge zIndex) is rendered here rather
       // than in EdgeRenderer's v-for so its node-lookup tracking stays scoped to this edge
@@ -307,103 +307,105 @@ const EdgeWrapper = defineComponent({
             ],
           ],
         ),
-      )
-    }
+      );
+    };
 
     function onReconnectMouseEnter() {
-      mouseOver.value = true
+      mouseOver.value = true;
     }
 
     function onReconnectMouseOut() {
-      mouseOver.value = false
+      mouseOver.value = false;
     }
 
     function onReconnect(event: MouseTouchEvent, connection: Connection) {
-      emit.reconnect({ event, edge: storedEdge.value, connection })
+      emit.reconnect({ event, edge: storedEdge.value, connection });
     }
 
     function onReconnectEnd(event: MouseTouchEvent) {
-      emit.reconnectEnd({ event, edge: storedEdge.value })
-      updating.value = false
+      emit.reconnectEnd({ event, edge: storedEdge.value });
+      updating.value = false;
     }
 
     function handleReconnect(event: MouseEvent, isSourceHandle: boolean) {
       if (event.button !== 0) {
-        return
+        return;
       }
 
-      updating.value = true
+      updating.value = true;
 
-      nodeId.value = isSourceHandle ? edge.value.target : edge.value.source
-      handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? null
+      nodeId.value = isSourceHandle ? edge.value.target : edge.value.source;
+      handleId.value = (isSourceHandle ? edge.value.targetHandle : edge.value.sourceHandle) ?? null;
 
-      reconnectHandleType.value = isSourceHandle ? 'target' : 'source'
+      reconnectHandleType.value = isSourceHandle ? 'target' : 'source';
 
-      emit.reconnectStart({ event, edge: storedEdge.value })
+      emit.reconnectStart({ event, edge: storedEdge.value });
 
-      handlePointerDown(event)
+      handlePointerDown(event);
     }
 
     function onEdgeClick(event: MouseEvent) {
-      const data = { event, edge: storedEdge.value }
+      const data = { event, edge: storedEdge.value };
 
       if (isSelectable.value) {
-        nodesSelectionActive.value = false
+        nodesSelectionActive.value = false;
 
         if (edge.value.selected && multiSelectionActive.value) {
-          removeSelectedEdges([storedEdge.value])
+          removeSelectedEdges([storedEdge.value]);
 
-          edgeEl.value?.blur()
-        } else {
-          addSelectedEdges([storedEdge.value])
+          edgeEl.value?.blur();
+        }
+        else {
+          addSelectedEdges([storedEdge.value]);
         }
       }
 
-      emit.click(data)
+      emit.click(data);
     }
 
     function onEdgeContextMenu(event: MouseEvent) {
-      emit.contextMenu({ event, edge: storedEdge.value })
+      emit.contextMenu({ event, edge: storedEdge.value });
     }
 
     function onDoubleClick(event: MouseEvent) {
-      emit.doubleClick({ event, edge: storedEdge.value })
+      emit.doubleClick({ event, edge: storedEdge.value });
     }
 
     function onEdgeMouseEnter(event: MouseEvent) {
-      emit.mouseEnter({ event, edge: storedEdge.value })
+      emit.mouseEnter({ event, edge: storedEdge.value });
     }
 
     function onEdgeMouseMove(event: MouseEvent) {
-      emit.mouseMove({ event, edge: storedEdge.value })
+      emit.mouseMove({ event, edge: storedEdge.value });
     }
 
     function onEdgeMouseLeave(event: MouseEvent) {
-      emit.mouseLeave({ event, edge: storedEdge.value })
+      emit.mouseLeave({ event, edge: storedEdge.value });
     }
 
     function onReconnectSourceMouseDown(event: MouseEvent) {
-      handleReconnect(event, true)
+      handleReconnect(event, true);
     }
 
     function onReconnectTargetMouseDown(event: MouseEvent) {
-      handleReconnect(event, false)
+      handleReconnect(event, false);
     }
 
     function onKeyDown(event: KeyboardEvent) {
       if (!disableKeyboardA11y.value && elementSelectionKeys.includes(event.key) && isSelectable.value) {
-        const unselect = event.key === 'Escape'
+        const unselect = event.key === 'Escape';
 
         if (unselect) {
-          edgeEl.value?.blur()
+          edgeEl.value?.blur();
 
-          removeSelectedEdges([storedEdge.value])
-        } else {
-          addSelectedEdges([storedEdge.value])
+          removeSelectedEdges([storedEdge.value]);
+        }
+        else {
+          addSelectedEdges([storedEdge.value]);
         }
       }
     }
   },
-})
+});
 
-export default EdgeWrapper
+export default EdgeWrapper;

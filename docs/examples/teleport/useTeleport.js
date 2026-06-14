@@ -1,5 +1,5 @@
-import { getConnectedEdges, useVueFlow } from '@vue-flow/core'
-import { nextTick, ref } from 'vue'
+import { getConnectedEdges, useVueFlow } from '@vue-flow/core';
+import { nextTick, ref } from 'vue';
 
 /**
  * Utility composable for specifying animations
@@ -8,11 +8,11 @@ import { nextTick, ref } from 'vue'
  * Otherwise edges do not connect properly
  */
 export function useTeleport(id) {
-  const animation = ref('fade')
-  const transition = ref(false)
-  const teleport = ref(null)
+  const animation = ref('fade');
+  const transition = ref(false);
+  const teleport = ref(null);
 
-  const { updateNodeInternals, updateNodeData, getNode, edges, setEdges } = useVueFlow()
+  const { updateNodeInternals, updateNodeData, getNode, edges, setEdges } = useVueFlow();
 
   /**
    * specify a selector to teleport to
@@ -23,40 +23,40 @@ export function useTeleport(id) {
   const fade = (destination, onFinish) => {
     setTimeout(() => {
       // teleport to destination or disable teleport
-      teleport.value = destination
+      teleport.value = destination;
 
       setTimeout(() => {
-        transition.value = false
+        transition.value = false;
 
         // if destination is null, defer hiding edges until node is teleported back
         if (!destination) {
-          onFinish()
+          onFinish();
         }
-      }, 500)
-    }, 500)
-  }
+      }, 500);
+    }, 500);
+  };
 
   const shrink = (destination, onFinish) => {
     setTimeout(() => {
       // teleport to destination or disable teleport
-      teleport.value = destination
+      teleport.value = destination;
 
       setTimeout(() => {
-        transition.value = false
+        transition.value = false;
 
         setTimeout(() => {
           // if destination is null, defer hiding edges until node is teleported back
           if (!destination) {
-            updateNodeInternals([id])
+            updateNodeInternals([id]);
 
             nextTick(() => {
-              onFinish()
-            })
+              onFinish();
+            });
           }
-        }, 500)
-      }, 500)
-    }, 500)
-  }
+        }, 500);
+      }, 500);
+    }, 500);
+  };
 
   /**
    * specify a selector to teleport to
@@ -65,49 +65,49 @@ export function useTeleport(id) {
    * i.e. if they emit events, they will still emit them up their regular tree
    */
   const onClick = (destination) => {
-    const node = getNode(id)
+    const node = getNode(id);
 
-    transition.value = true
+    transition.value = true;
 
     // save current teleport destination to data of node
-    updateNodeData(id, { destination })
+    updateNodeData(id, { destination });
 
     // hide connected edges when teleporting
-    const connectedEdgeIds = getConnectedEdges([node], edges.value).map((edge) => edge.id)
+    const connectedEdgeIds = getConnectedEdges([node], edges.value).map(edge => edge.id);
 
     // check if nodes connected to edge are teleported and hide edge if one of them is
     const updateHiddenEdges = () => {
-      setEdges((eds) =>
-        eds.map((edge) =>
+      setEdges(eds =>
+        eds.map(edge =>
           connectedEdgeIds.includes(edge.id)
             ? { ...edge, hidden: !!getNode(edge.source).data.destination || !!getNode(edge.target).data.destination }
             : edge,
         ),
-      )
-    }
+      );
+    };
 
     // if destination is not null, hide edges immediately
     if (destination) {
-      updateHiddenEdges()
+      updateHiddenEdges();
     }
 
     const onFinish = () => {
-      updateHiddenEdges()
-    }
+      updateHiddenEdges();
+    };
 
     switch (animation.value) {
       case 'fade':
-        fade(destination, onFinish)
-        break
+        fade(destination, onFinish);
+        break;
       case 'shrink':
-        shrink(destination, onFinish)
+        shrink(destination, onFinish);
     }
-  }
+  };
 
   return {
     animation,
     transition,
     teleport,
     onClick,
-  }
+  };
 }

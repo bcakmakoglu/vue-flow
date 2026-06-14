@@ -1,35 +1,35 @@
 <script setup>
-import { Panel, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
+import { Panel, storeToRefs, useStore, useVueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
 
-const flowKey = 'vue-flow--save-restore'
+const flowKey = 'vue-flow--save-restore';
 
-const { addNodes, toObject, fromObject } = useVueFlow()
+const { addNodes, toObject, fromObject } = useVueFlow();
 
-const { nodes, dimensions } = storeToRefs(useStore())
+const { nodes, dimensions } = storeToRefs(useStore());
 
 function onSave() {
-  localStorage.setItem(flowKey, JSON.stringify(toObject()))
+  localStorage.setItem(flowKey, JSON.stringify(toObject()));
 }
 
 function onRestore() {
-  const flow = JSON.parse(localStorage.getItem(flowKey))
+  const flow = JSON.parse(localStorage.getItem(flowKey));
 
   if (flow) {
-    fromObject(flow)
+    fromObject(flow);
   }
 }
 
 function onAdd() {
-  const id = nodes.value.length + 1
+  const id = nodes.value.length + 1;
 
   const newNode = {
     id: `random_node-${id}`,
     label: `Node ${id}`,
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
-  }
+  };
 
-  addNodes([newNode])
+  addNodes([newNode]);
 }
 </script>
 

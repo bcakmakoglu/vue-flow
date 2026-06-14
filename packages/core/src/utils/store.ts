@@ -1,6 +1,4 @@
-import { markRaw, toRaw, unref } from 'vue'
-import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system'
-import { adoptUserNodes, getEdgeId } from '@xyflow/system'
+import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system';
 import type {
   Actions,
   Connection,
@@ -16,15 +14,17 @@ import type {
   State,
   ValidConnectionFunc,
   VueFlowInstance,
-} from '../types'
-import { ErrorCode, VueFlowError, connectionExists, isEdge, isNode } from '.'
+} from '../types';
+import { adoptUserNodes, getEdgeId } from '@xyflow/system';
+import { markRaw, toRaw, unref } from 'vue';
+import { connectionExists, ErrorCode, isEdge, isNode, VueFlowError } from '.';
 
-type NonUndefined<T> = T extends undefined ? never : T
+type NonUndefined<T> = T extends undefined ? never : T;
 
 export function isDef<T>(val: T): val is NonUndefined<T> {
-  const unrefVal = unref(val)
+  const unrefVal = unref(val);
 
-  return typeof unrefVal !== 'undefined'
+  return typeof unrefVal !== 'undefined';
 }
 
 /**
@@ -39,26 +39,27 @@ export function addEdgeToStore<EdgeType extends Edge = Edge>(
   defaultEdgeOptions?: DefaultEdgeOptions,
 ): EdgeType | false {
   if (!edgeParams || !edgeParams.source || !edgeParams.target) {
-    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as undefined | Edge)?.id ?? `[ID UNKNOWN]`))
-    return false
+    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, (edgeParams as undefined | Edge)?.id ?? `[ID UNKNOWN]`));
+    return false;
   }
 
-  let edge: EdgeType
+  let edge: EdgeType;
   if (isEdge<EdgeType>(edgeParams)) {
-    edge = edgeParams
-  } else {
+    edge = edgeParams;
+  }
+  else {
     edge = {
       ...defaultEdgeOptions,
       ...edgeParams,
       id: getEdgeId(edgeParams),
-    } as EdgeType
+    } as EdgeType;
   }
 
   if (connectionExists(edge, edges)) {
-    return false
+    return false;
   }
 
-  return edge
+  return edge;
 }
 
 export function reconnectEdgeAction(
@@ -69,16 +70,16 @@ export function reconnectEdgeAction(
   triggerError: State['hooks']['error']['trigger'],
 ) {
   if (!newConnection.source || !newConnection.target) {
-    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))
-    return false
+    triggerError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id));
+    return false;
   }
 
   if (!prevEdge) {
-    triggerError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id))
-    return false
+    triggerError(new VueFlowError(ErrorCode.EDGE_NOT_FOUND, edge.id));
+    return false;
   }
 
-  const { id, ...rest } = edge
+  const { id, ...rest } = edge;
 
   return {
     ...rest,
@@ -87,13 +88,13 @@ export function reconnectEdgeAction(
     target: newConnection.target,
     sourceHandle: newConnection.sourceHandle,
     targetHandle: newConnection.targetHandle,
-  }
+  };
 }
 
 export interface CreateGraphNodesOptions {
-  nodeOrigin?: NodeOrigin
-  nodeExtent?: CoordinateExtent
-  elevateNodesOnSelect?: boolean
+  nodeOrigin?: NodeOrigin;
+  nodeExtent?: CoordinateExtent;
+  elevateNodesOnSelect?: boolean;
 }
 
 /**
@@ -117,15 +118,15 @@ export function adoptNodes<NodeType extends Node = Node>(
   triggerError: State['hooks']['error']['trigger'],
   options?: CreateGraphNodesOptions,
 ): NodeType[] {
-  const validNodes: NodeType[] = []
+  const validNodes: NodeType[] = [];
   for (let i = 0; i < nodes.length; ++i) {
-    const node = nodes[i]
+    const node = nodes[i];
 
     if (!isNode(node)) {
       triggerError(
         new VueFlowError(ErrorCode.NODE_INVALID, (node as undefined | Record<any, any>)?.id ?? `[ID UNKNOWN|INDEX ${i}]`),
-      )
-      continue
+      );
+      continue;
     }
 
     // `markRaw` the user node so Vue never deep-proxies it (the perf goal — large `data` objects stay
@@ -133,7 +134,7 @@ export function adoptNodes<NodeType extends Node = Node>(
     // every node enters `state.nodes`/`nodeLookup`. Reactivity for the UI comes from re-adopting (the
     // lookup `.set` + the per-node render computed), not from deep-proxying. Idempotent across re-adopts,
     // so `checkEquality` (reference identity) keeps matching for unchanged nodes.
-    validNodes.push(markRaw(toRaw(node)))
+    validNodes.push(markRaw(toRaw(node)));
   }
 
   // `@xyflow/system`'s `adoptUserNodes` (and the `clampPosition` it calls) only understand
@@ -141,40 +142,40 @@ export function adoptNodes<NodeType extends Node = Node>(
   // make `clampPosition` index `extent[0][0]` on the object and throw. Feed `adoptUserNodes` shallow
   // copies whose extent is coerced to the bare `range`, then restore the original range+padding onto the
   // adopted `InternalNode` below — the padding inset is applied later by `recomputeAbsolutePositions`.
-  const rangeExtents = new Map<string, CoordinateExtentRange>()
+  const rangeExtents = new Map<string, CoordinateExtentRange>();
   const adoptable = validNodes.map((node): NodeType => {
-    const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined
+    const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
     if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
-      rangeExtents.set(node.id, extent)
-      return { ...node, extent: extent.range }
+      rangeExtents.set(node.id, extent);
+      return { ...node, extent: extent.range };
     }
-    return node
-  })
+    return node;
+  });
 
-  adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true })
+  adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true });
 
   // For range-extent nodes we fed `adoptUserNodes` a COPY (different reference): restore the original
   // `{ range, padding }` extent and re-point `internals.userNode` at the un-coerced node so
   // `getNode`/`getNodes` surface the exact user object the array holds.
   for (const node of validNodes) {
-    const range = rangeExtents.get(node.id)
+    const range = rangeExtents.get(node.id);
     if (!range) {
-      continue
+      continue;
     }
-    const internal = nodeLookup.get(node.id)
+    const internal = nodeLookup.get(node.id);
     if (internal) {
       ;(internal as { extent?: CoordinateExtentRange }).extent = range
-      ;(internal.internals as { userNode: Node }).userNode = node
+      ;(internal.internals as { userNode: Node }).userNode = node;
     }
   }
 
   for (const node of validNodes) {
     if (node.parentId && !nodeLookup.has(node.parentId)) {
-      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId))
+      triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId));
     }
   }
 
-  return validNodes
+  return validNodes;
 }
 
 /**
@@ -198,33 +199,33 @@ function addConnectionToLookup(
   // We add the connection to the connectionLookup at the following keys
   // 1. nodeId, 2. nodeId-type, 3. nodeId-type-handleId
   // If the key already exists, we add the connection to the existing map
-  let key = nodeId
-  const nodeMap = connectionLookup.get(key) || new Map()
-  connectionLookup.set(key, nodeMap.set(connectionKey, connection))
+  let key = nodeId;
+  const nodeMap = connectionLookup.get(key) || new Map();
+  connectionLookup.set(key, nodeMap.set(connectionKey, connection));
 
-  key = `${nodeId}-${type}`
-  const typeMap = connectionLookup.get(key) || new Map()
-  connectionLookup.set(key, typeMap.set(connectionKey, connection))
+  key = `${nodeId}-${type}`;
+  const typeMap = connectionLookup.get(key) || new Map();
+  connectionLookup.set(key, typeMap.set(connectionKey, connection));
 
   if (handleId) {
-    key = `${nodeId}-${type}-${handleId}`
-    const handleMap = connectionLookup.get(key) || new Map()
-    connectionLookup.set(key, handleMap.set(connectionKey, connection))
+    key = `${nodeId}-${type}-${handleId}`;
+    const handleMap = connectionLookup.get(key) || new Map();
+    connectionLookup.set(key, handleMap.set(connectionKey, connection));
   }
 }
 
 export function updateConnectionLookup(connectionLookup: ConnectionLookup, edges: Edge[]) {
-  connectionLookup.clear()
+  connectionLookup.clear();
 
   for (const edge of edges) {
-    const { source: sourceNode, target: targetNode, sourceHandle = null, targetHandle = null } = edge
+    const { source: sourceNode, target: targetNode, sourceHandle = null, targetHandle = null } = edge;
 
-    const connection = { edgeId: edge.id, source: sourceNode, target: targetNode, sourceHandle, targetHandle }
-    const sourceKey = `${sourceNode}-${sourceHandle}--${targetNode}-${targetHandle}`
-    const targetKey = `${targetNode}-${targetHandle}--${sourceNode}-${sourceHandle}`
+    const connection = { edgeId: edge.id, source: sourceNode, target: targetNode, sourceHandle, targetHandle };
+    const sourceKey = `${sourceNode}-${sourceHandle}--${targetNode}-${targetHandle}`;
+    const targetKey = `${targetNode}-${targetHandle}--${sourceNode}-${sourceHandle}`;
 
-    addConnectionToLookup('source', connection, targetKey, connectionLookup, sourceNode, sourceHandle)
-    addConnectionToLookup('target', connection, sourceKey, connectionLookup, targetNode, targetHandle)
+    addConnectionToLookup('source', connection, targetKey, connectionLookup, sourceNode, sourceHandle);
+    addConnectionToLookup('target', connection, sourceKey, connectionLookup, targetNode, targetHandle);
   }
 }
 
@@ -245,33 +246,33 @@ export function validateEdges<EdgeType extends Edge = Edge>(
   nodes: Node[],
   edges: EdgeType[],
 ): EdgeType[] {
-  const validEdges: EdgeType[] = []
+  const validEdges: EdgeType[] = [];
 
   for (const edgeOrConnection of nextEdges) {
     const edge = isEdge<EdgeType>(edgeOrConnection)
       ? edgeOrConnection
-      : addEdgeToStore(edgeOrConnection, edges, onError, defaultEdgeOptions)
+      : addEdgeToStore(edgeOrConnection, edges, onError, defaultEdgeOptions);
 
     if (!edge) {
-      continue
+      continue;
     }
 
-    const sourceNode = getInternalNode(edge.source)
-    const targetNode = getInternalNode(edge.target)
+    const sourceNode = getInternalNode(edge.source);
+    const targetNode = getInternalNode(edge.target);
 
     if (!sourceNode && !targetNode) {
-      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target))
-      continue
+      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_TARGET_MISSING, edge.id, edge.source, edge.target));
+      continue;
     }
 
     if (!sourceNode) {
-      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source))
-      continue
+      onError(new VueFlowError(ErrorCode.EDGE_SOURCE_MISSING, edge.id, edge.source));
+      continue;
     }
 
     if (!targetNode) {
-      onError(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target))
-      continue
+      onError(new VueFlowError(ErrorCode.EDGE_TARGET_MISSING, edge.id, edge.target));
+      continue;
     }
 
     if (isValidConnection) {
@@ -288,16 +289,16 @@ export function validateEdges<EdgeType extends Edge = Edge>(
           sourceNode,
           targetNode,
         },
-      )
+      );
 
       if (!isValid) {
-        onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id))
-        continue
+        onError(new VueFlowError(ErrorCode.EDGE_INVALID, edge.id));
+        continue;
       }
     }
 
-    validEdges.push(edge)
+    validEdges.push(edge);
   }
 
-  return validEdges
+  return validEdges;
 }

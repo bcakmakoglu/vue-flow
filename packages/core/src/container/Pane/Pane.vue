@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import { shallowRef, toRef, watch } from 'vue'
-import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system'
-import UserSelection from '../../components/UserSelection/UserSelection.vue'
-import NodesSelection from '../../components/NodesSelection/NodesSelection.vue'
-import type { EdgeChange, NodeChange } from '../../types'
-import { SelectionMode } from '../../types'
-import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables'
-import { getSelectionChanges } from '../../utils'
-import { getMousePosition } from './utils'
+import type { EdgeChange, NodeChange } from '../../types';
+import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system';
+import { shallowRef, toRef, watch } from 'vue';
+import NodesSelection from '../../components/NodesSelection/NodesSelection.vue';
+import UserSelection from '../../components/UserSelection/UserSelection.vue';
+import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables';
+import { SelectionMode } from '../../types';
+import { getSelectionChanges } from '../../utils';
+import { getMousePosition } from './utils';
 
-const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>()
+const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>();
 
-const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } = useVueFlow()
+const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } = useVueFlow();
 
-const { edgeLookup, nodeLookup } = useStore()
+const { edgeLookup, nodeLookup } = useStore();
 
 const {
   vueFlowRef,
@@ -30,105 +30,105 @@ const {
   defaultEdgeOptions,
   connectionStartHandle,
   panOnDrag,
-} = storeToRefs(useStore())
+} = storeToRefs(useStore());
 
-const container = shallowRef<HTMLDivElement | null>(null)
+const container = shallowRef<HTMLDivElement | null>(null);
 
-const selectedNodeIds = shallowRef<Set<string>>(new Set())
+const selectedNodeIds = shallowRef<Set<string>>(new Set());
 
-const selectedEdgeIds = shallowRef<Set<string>>(new Set())
+const selectedEdgeIds = shallowRef<Set<string>>(new Set());
 
-const containerBounds = shallowRef<DOMRect | null>(null)
+const containerBounds = shallowRef<DOMRect | null>(null);
 
-const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value))
+const hasActiveSelection = toRef(() => elementsSelectable.value && (isSelecting || userSelectionActive.value));
 
-const connectionInProgress = toRef(() => connectionStartHandle.value !== null)
+const connectionInProgress = toRef(() => connectionStartHandle.value !== null);
 
 // Used to prevent click events when the user lets go of the selectionKey during a selection
-let selectionInProgress = false
-let selectionStarted = false
+let selectionInProgress = false;
+let selectionStarted = false;
 
-const deleteKeyPressed = useKeyPress(deleteKeyCode, { actInsideInputWithModifier: false })
+const deleteKeyPressed = useKeyPress(deleteKeyCode, { actInsideInputWithModifier: false });
 
-const multiSelectKeyPressed = useKeyPress(multiSelectionKeyCode)
+const multiSelectKeyPressed = useKeyPress(multiSelectionKeyCode);
 
 watch(deleteKeyPressed, (isKeyPressed) => {
   if (!isKeyPressed) {
-    return
+    return;
   }
 
   // routed through `deleteElements` so the `onBeforeDelete` guard (cancel/confirm/filter) is consulted
   deleteElements({
     nodes: [...getSelectedNodes.value],
     edges: [...getSelectedEdges.value],
-  })
+  });
 
-  nodesSelectionActive.value = false
-})
+  nodesSelectionActive.value = false;
+});
 
 watch(multiSelectKeyPressed, (isKeyPressed) => {
-  multiSelectionActive.value = isKeyPressed
-})
+  multiSelectionActive.value = isKeyPressed;
+});
 
 function wrapHandler(handler: Function, containerRef: HTMLDivElement | null) {
   return (event: MouseEvent) => {
     if (event.target !== containerRef) {
-      return
+      return;
     }
 
-    handler?.(event)
-  }
+    handler?.(event);
+  };
 }
 
 function onClick(event: MouseEvent) {
   if (selectionInProgress || connectionInProgress.value) {
-    selectionInProgress = false
-    return
+    selectionInProgress = false;
+    return;
   }
 
-  emits.paneClick(event)
+  emits.paneClick(event);
 
-  removeSelectedNodes()
-  removeSelectedEdges()
+  removeSelectedNodes();
+  removeSelectedEdges();
 
-  nodesSelectionActive.value = false
+  nodesSelectionActive.value = false;
 }
 
 function onContextMenu(event: MouseEvent) {
   if (Array.isArray(panOnDrag.value) && panOnDrag.value?.includes(2)) {
-    event.preventDefault()
-    return
+    event.preventDefault();
+    return;
   }
 
-  emits.paneContextMenu(event)
+  emits.paneContextMenu(event);
 }
 
 function onWheel(event: WheelEvent) {
-  emits.paneScroll(event)
+  emits.paneScroll(event);
 }
 
 function onPointerDown(event: PointerEvent) {
-  containerBounds.value = vueFlowRef.value?.getBoundingClientRect() ?? null
+  containerBounds.value = vueFlowRef.value?.getBoundingClientRect() ?? null;
 
   if (
-    !elementsSelectable.value ||
-    !isSelecting ||
-    event.button !== 0 ||
-    event.target !== container.value ||
-    !containerBounds.value
+    !elementsSelectable.value
+    || !isSelecting
+    || event.button !== 0
+    || event.target !== container.value
+    || !containerBounds.value
   ) {
-    return
+    return;
   }
 
-  ;(event.target as Element)?.setPointerCapture?.(event.pointerId)
+  ;(event.target as Element)?.setPointerCapture?.(event.pointerId);
 
-  const { x, y } = getMousePosition(event, containerBounds.value)
+  const { x, y } = getMousePosition(event, containerBounds.value);
 
-  selectionStarted = true
-  selectionInProgress = false
+  selectionStarted = true;
+  selectionInProgress = false;
 
-  removeSelectedNodes()
-  removeSelectedEdges()
+  removeSelectedNodes();
+  removeSelectedEdges();
 
   userSelectionRect.value = {
     width: 0,
@@ -137,20 +137,20 @@ function onPointerDown(event: PointerEvent) {
     startY: y,
     x,
     y,
-  }
+  };
 
-  emits.selectionStart(event)
+  emits.selectionStart(event);
 }
 
 function onPointerMove(event: PointerEvent) {
   if (!containerBounds.value || !userSelectionRect.value) {
-    return
+    return;
   }
 
-  selectionInProgress = true
+  selectionInProgress = true;
 
-  const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value)
-  const { startX = 0, startY = 0 } = userSelectionRect.value
+  const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value);
+  const { startX = 0, startY = 0 } = userSelectionRect.value;
 
   const nextUserSelectRect = {
     startX,
@@ -159,75 +159,75 @@ function onPointerMove(event: PointerEvent) {
     y: mouseY < startY ? mouseY : startY,
     width: Math.abs(mouseX - startX),
     height: Math.abs(mouseY - startY),
-  }
+  };
 
-  const prevSelectedNodeIds = selectedNodeIds.value
-  const prevSelectedEdgeIds = selectedEdgeIds.value
+  const prevSelectedNodeIds = selectedNodeIds.value;
+  const prevSelectedEdgeIds = selectedEdgeIds.value;
   selectedNodeIds.value = new Set(
     getNodesInside(nodeLookup, nextUserSelectRect, transform.value, selectionMode.value === SelectionMode.Partial, true).map(
-      (node) => node.id,
+      node => node.id,
     ),
-  )
+  );
 
-  selectedEdgeIds.value = new Set()
+  selectedEdgeIds.value = new Set();
   // resolution order mirrors EdgeWrapper's isSelectable: edge.selectable ?? defaults ?? global flag
-  const edgesSelectable = defaultEdgeOptions.value?.selectable ?? elementsSelectable.value
+  const edgesSelectable = defaultEdgeOptions.value?.selectable ?? elementsSelectable.value;
 
   // We look for all edges connected to the selected nodes
   for (const nodeId of selectedNodeIds.value) {
-    const connections = connectionLookup.value.get(nodeId)
+    const connections = connectionLookup.value.get(nodeId);
     if (!connections) {
-      continue
+      continue;
     }
     for (const { edgeId } of connections.values()) {
-      const edge = edgeLookup.get(edgeId)
+      const edge = edgeLookup.get(edgeId);
       if (edge && (edge.selectable ?? edgesSelectable)) {
-        selectedEdgeIds.value.add(edgeId)
+        selectedEdgeIds.value.add(edgeId);
       }
     }
   }
 
   if (!areSetsEqual(prevSelectedNodeIds, selectedNodeIds.value)) {
-    const changes = getSelectionChanges(nodeLookup, selectedNodeIds.value) as NodeChange[]
-    emits.nodesChange(changes)
+    const changes = getSelectionChanges(nodeLookup, selectedNodeIds.value) as NodeChange[];
+    emits.nodesChange(changes);
   }
 
   if (!areSetsEqual(prevSelectedEdgeIds, selectedEdgeIds.value)) {
-    const changes = getSelectionChanges(edgeLookup, selectedEdgeIds.value) as EdgeChange[]
-    emits.edgesChange(changes)
+    const changes = getSelectionChanges(edgeLookup, selectedEdgeIds.value) as EdgeChange[];
+    emits.edgesChange(changes);
   }
 
-  userSelectionRect.value = nextUserSelectRect
-  userSelectionActive.value = true
-  nodesSelectionActive.value = false
+  userSelectionRect.value = nextUserSelectRect;
+  userSelectionActive.value = true;
+  nodesSelectionActive.value = false;
 }
 
 function onPointerUp(event: PointerEvent) {
   if (event.button !== 0 || !selectionStarted) {
-    return
+    return;
   }
 
-  ;(event.target as Element)?.releasePointerCapture(event.pointerId)
+  ;(event.target as Element)?.releasePointerCapture(event.pointerId);
 
   // We only want to trigger click functions when in selection mode if
   // the user did not move the mouse.
   if (!userSelectionActive.value && userSelectionRect.value && event.target === container.value) {
-    onClick(event)
+    onClick(event);
   }
 
-  userSelectionActive.value = false
-  userSelectionRect.value = null
-  nodesSelectionActive.value = selectedNodeIds.value.size > 0
+  userSelectionActive.value = false;
+  userSelectionRect.value = null;
+  nodesSelectionActive.value = selectedNodeIds.value.size > 0;
 
-  emits.selectionEnd(event)
+  emits.selectionEnd(event);
 
   // If the user kept holding the selectionKey during the selection,
   // we need to reset the selectionInProgress, so the next click event is not prevented
   if (selectionKeyPressed) {
-    selectionInProgress = false
+    selectionInProgress = false;
   }
 
-  selectionStarted = false
+  selectionStarted = false;
 }
 </script>
 
@@ -235,7 +235,7 @@ function onPointerUp(event: PointerEvent) {
 export default {
   name: 'Pane',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

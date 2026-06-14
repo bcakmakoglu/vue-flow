@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core'
-import { Background, Controls, MiniMap, VueFlow, isEdge, isNode } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core';
+import { Background, Controls, isEdge, isNode, MiniMap, VueFlow } from '@vue-flow/core';
 
 export default defineComponent({
   name: 'BasicOptionsAPI',
@@ -18,30 +18,30 @@ export default defineComponent({
         { id: 'e1-2', source: '1', target: '2', animated: true },
         { id: 'e1-3', source: '1', target: '3' },
       ] as (Node | Edge)[],
-    }
+    };
   },
   computed: {
     nodes(): Node[] {
-      return this.elements.filter(isNode)
+      return this.elements.filter(isNode);
     },
     edges(): Edge[] {
-      return this.elements.filter(isEdge)
+      return this.elements.filter(isEdge);
     },
     // NOTE: don't expose the `VueFlowInstance` via `data()`/`computed` — Vue's ref-unwrapping over the store
     // breaks `defineComponent` inference. Reach it inside method bodies via the template ref instead.
   },
   methods: {
     logToObject() {
-      console.log((this.$refs.flow as VueFlowInstance | undefined)?.toObject())
+      console.log((this.$refs.flow as VueFlowInstance | undefined)?.toObject());
     },
     resetTransform() {
-      ;(this.$refs.flow as VueFlowInstance | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 })
+      ;(this.$refs.flow as VueFlowInstance | undefined)?.setViewport({ x: 0, y: 0, zoom: 1 });
     },
     toggleclass() {
-      this.elements = this.elements.map((el) => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }))
+      this.elements = this.elements.map(el => ({ ...el, class: el.class === 'light' ? 'dark' : 'light' }));
     },
     updatePos() {
-      this.elements = this.elements.map((el) =>
+      this.elements = this.elements.map(el =>
         isNode(el)
           ? {
               ...el,
@@ -51,19 +51,19 @@ export default defineComponent({
               },
             }
           : el,
-      )
+      );
     },
     onNodeDragStop(e: FlowEvents['nodeDragStop']) {
-      console.log('drag stop', e)
+      console.log('drag stop', e);
     },
     onInit(instance: VueFlowInstance) {
-      instance.fitView()
+      instance.fitView();
     },
     onConnect(params: FlowEvents['connect']) {
-      ;(this.$refs.flow as VueFlowInstance | undefined)?.addEdges([params])
+      ;(this.$refs.flow as VueFlowInstance | undefined)?.addEdges([params]);
     },
   },
-})
+});
 </script>
 
 <template>
@@ -85,10 +85,18 @@ export default defineComponent({
     <MiniMap />
     <Controls />
     <div style="position: absolute; right: 10px; top: 10px; z-index: 4">
-      <button style="margin-right: 5px" @click="resetTransform">reset transform</button>
-      <button style="margin-right: 5px" @click="updatePos">change pos</button>
-      <button style="margin-right: 5px" @click="toggleclass">toggle class</button>
-      <button @click="logToObject">toObject</button>
+      <button style="margin-right: 5px" @click="resetTransform">
+        reset transform
+      </button>
+      <button style="margin-right: 5px" @click="updatePos">
+        change pos
+      </button>
+      <button style="margin-right: 5px" @click="toggleclass">
+        toggle class
+      </button>
+      <button @click="logToObject">
+        toObject
+      </button>
     </div>
   </VueFlow>
 </template>

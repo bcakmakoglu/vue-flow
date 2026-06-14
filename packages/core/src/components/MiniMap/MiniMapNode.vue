@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { inject, useAttrs } from 'vue'
-import type { MiniMapNodeEmits, MiniMapNodeProps } from './types'
-import { Slots } from './types'
+import type { MiniMapNodeEmits, MiniMapNodeProps } from './types';
+import { inject, useAttrs } from 'vue';
+import { Slots } from './types';
 
-const props = defineProps<MiniMapNodeProps>()
+const props = defineProps<MiniMapNodeProps>();
 
-const emits = defineEmits<MiniMapNodeEmits>()
+const emits = defineEmits<MiniMapNodeEmits>();
 
-const miniMapSlots = inject(Slots)!
+const miniMapSlots = inject(Slots)!;
 
-const attrs = useAttrs() as Record<string, any>
+const attrs = useAttrs() as Record<string, any>;
 </script>
 
 <script lang="ts">
@@ -17,7 +17,7 @@ export default {
   name: 'MiniMapNode',
   compatConfig: { MODE: 3 },
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

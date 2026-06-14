@@ -1,4 +1,4 @@
-import type { Edge, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
 
 export const initialNodes: Node[] = [
   {
@@ -31,6 +31,6 @@ export const initialNodes: Node[] = [
     style: { width: '300px', height: '120px', backgroundColor: '#FBC2EB' },
     data: { label: 'Move me around' },
   },
-]
+];
 
-export const initialEdges: Edge[] = []
+export const initialEdges: Edge[] = [];

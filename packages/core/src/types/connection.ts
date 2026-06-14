@@ -1,8 +1,8 @@
-import type { CSSProperties } from 'vue'
-import type { Position, XYPosition } from './flow'
-import type { GraphNode, Node } from './node'
-import type { ConnectingHandle, HandleElement, HandleType } from './handle'
-import type { Edge, EdgeMarkerType } from './edge'
+import type { CSSProperties } from 'vue';
+import type { Edge, EdgeMarkerType } from './edge';
+import type { Position, XYPosition } from './flow';
+import type { ConnectingHandle, HandleElement, HandleType } from './handle';
+import type { GraphNode, Node } from './node';
 
 /** Connection line types (same as default edge types */
 export enum ConnectionLineType {
@@ -14,91 +14,91 @@ export enum ConnectionLineType {
 }
 
 export interface ConnectionLineOptions {
-  type?: ConnectionLineType
-  style?: CSSProperties
-  class?: string
-  markerEnd?: EdgeMarkerType
-  markerStart?: EdgeMarkerType
+  type?: ConnectionLineType;
+  style?: CSSProperties;
+  class?: string;
+  markerEnd?: EdgeMarkerType;
+  markerStart?: EdgeMarkerType;
 }
 
 /** Connection params that are passed when onConnect is called */
 export interface Connection {
   /** Source node id */
-  source: string
+  source: string;
   /** Target node id */
-  target: string
+  target: string;
   /** Source handle id (null when the connection isn't tied to a specific handle) */
-  sourceHandle: string | null
+  sourceHandle: string | null;
   /** Target handle id (null when the connection isn't tied to a specific handle) */
-  targetHandle: string | null
+  targetHandle: string | null;
 }
 
 export type NodeConnection = Connection & {
-  edgeId: string
-}
+  edgeId: string;
+};
 
 export type Connector = (
   params: Connection,
-) => Promise<(Connection & Partial<Edge>) | false> | ((Connection & Partial<Edge>) | false)
+) => Promise<(Connection & Partial<Edge>) | false> | ((Connection & Partial<Edge>) | false);
 
-export type ConnectionStatus = 'valid' | 'invalid'
+export type ConnectionStatus = 'valid' | 'invalid';
 
 /**
  * An ongoing connection, mirroring xyflow/react's `ConnectionState` (returned by `useConnection`).
  * Handles are vue-flow `ConnectingHandle`s and nodes are `GraphNode`s (the resolved `InternalNode`s).
  */
 export interface ConnectionInProgress<NodeType extends Node = Node> {
-  inProgress: true
+  inProgress: true;
   /** `true`/`false` when over a handle or inside the connection radius, otherwise `null` */
-  isValid: boolean | null
+  isValid: boolean | null;
   /** xy start position of the connection */
-  from: XYPosition
+  from: XYPosition;
   /** the handle the connection started from */
-  fromHandle: ConnectingHandle
+  fromHandle: ConnectingHandle;
   /** the side of the start handle */
-  fromPosition: Position
+  fromPosition: Position;
   /** the node the connection started from */
-  fromNode: GraphNode<NodeType>
+  fromNode: GraphNode<NodeType>;
   /** xy end position of the connection (the current pointer position) */
-  to: XYPosition
+  to: XYPosition;
   /** the handle the connection currently ends on, or `null` */
-  toHandle: ConnectingHandle | null
+  toHandle: ConnectingHandle | null;
   /** the side of the end handle, or `null` */
-  toPosition: Position | null
+  toPosition: Position | null;
   /** the node the connection currently ends on, or `null` */
-  toNode: GraphNode<NodeType> | null
+  toNode: GraphNode<NodeType> | null;
   /** the current pointer position */
-  pointer: XYPosition
+  pointer: XYPosition;
 }
 
 /** No connection in progress — the resting `ConnectionState`. */
 export interface NoConnection {
-  inProgress: false
-  isValid: null
-  from: null
-  fromHandle: null
-  fromPosition: null
-  fromNode: null
-  to: null
-  toHandle: null
-  toPosition: null
-  toNode: null
-  pointer: null
+  inProgress: false;
+  isValid: null;
+  from: null;
+  fromHandle: null;
+  fromPosition: null;
+  fromNode: null;
+  to: null;
+  toHandle: null;
+  toPosition: null;
+  toNode: null;
+  pointer: null;
 }
 
 /**
  * The full connection state bundled for `useConnection`, mirroring xyflow/react's `ConnectionState`.
  */
-export type ConnectionState<NodeType extends Node = Node> = ConnectionInProgress<NodeType> | NoConnection
+export type ConnectionState<NodeType extends Node = Node> = ConnectionInProgress<NodeType> | NoConnection;
 
 /** The source nodes params when connection is initiated */
 export interface OnConnectStartParams {
   /** Source node id */
-  nodeId?: string
+  nodeId?: string;
   /** Source handle id */
-  handleId: string | null
+  handleId: string | null;
   /** Source handle type */
-  handleType?: HandleType
+  handleType?: HandleType;
 }
 
 /** Connection modes, when set to loose all handles are treated as source */
@@ -109,31 +109,31 @@ export enum ConnectionMode {
 
 export interface ConnectionLineProps {
   /** Source X position of the connection line */
-  sourceX: number
+  sourceX: number;
   /** Source Y position of the connection line */
-  sourceY: number
+  sourceY: number;
   /** Source position of the connection line */
-  sourcePosition: Position
+  sourcePosition: Position;
   /** Target X position of the connection line */
-  targetX: number
+  targetX: number;
   /** Target Y position of the connection line */
-  targetY: number
+  targetY: number;
   /** Target position of the connection line */
-  targetPosition: Position
+  targetPosition: Position;
   /** The source node of the connection line */
-  sourceNode: GraphNode
+  sourceNode: GraphNode;
   /** The source handle element (not the DOM element) of the connection line */
-  sourceHandle: HandleElement | null
+  sourceHandle: HandleElement | null;
   /** The target node of the connection line */
-  targetNode: GraphNode | null
+  targetNode: GraphNode | null;
   /** The target handle element (not the DOM element) of the connection line */
-  targetHandle: HandleElement | null
+  targetHandle: HandleElement | null;
   /** marker url */
-  markerStart: string
+  markerStart: string;
   /** marker url */
-  markerEnd: string
+  markerEnd: string;
   /** status of the connection (valid, invalid) */
-  connectionStatus: ConnectionStatus | null
+  connectionStatus: ConnectionStatus | null;
 }
 
-export type ConnectionLookup = Map<string, Map<string, NodeConnection>>
+export type ConnectionLookup = Map<string, Map<string, NodeConnection>>;

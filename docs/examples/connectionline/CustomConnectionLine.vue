@@ -16,7 +16,7 @@ defineProps({
     type: Number,
     required: true,
   },
-})
+});
 </script>
 
 <template>

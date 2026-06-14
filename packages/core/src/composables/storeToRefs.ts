@@ -1,6 +1,6 @@
-import type { ToRefs } from 'vue'
-import { toRefs } from 'vue'
-import type { Edge, Node, VueFlowState } from '../types'
+import type { ToRefs } from 'vue';
+import type { Edge, Node, VueFlowState } from '../types';
+import { toRefs } from 'vue';
 
 /**
  * Destructure the reactive state from {@link useStore} into refs without losing reactivity (Pinia's
@@ -19,5 +19,5 @@ import type { Edge, Node, VueFlowState } from '../types'
 export function storeToRefs<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   store: VueFlowState<NodeType, EdgeType>,
 ): ToRefs<VueFlowState<NodeType, EdgeType>> {
-  return toRefs(store)
+  return toRefs(store);
 }

@@ -1,12 +1,12 @@
 <script setup>
-import { Handle, Position, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
+import { Handle, Position, useVueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
 
-const props = defineProps(['id', 'data'])
+const props = defineProps(['id', 'data']);
 
-const operators = ['+', '-', '*', '/']
+const operators = ['+', '-', '*', '/'];
 
-const { updateNodeData } = useVueFlow()
+const { updateNodeData } = useVueFlow();
 </script>
 
 <template>

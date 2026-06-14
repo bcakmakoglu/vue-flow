@@ -1,26 +1,26 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../../support/component'
-import { getElements } from '../../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
+import { getElements } from '../../../utils';
 
-const { nodes, edges } = getElements()
+const { nodes, edges } = getElements();
 
 describe('Store State: `selectionKeyCode`', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       edges,
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-    })
-  })
+      store = getStore();
+    });
+  });
 
   it('triggers selection', () => {
     cy.window().then((win) => {
-      cy.get('body').trigger('keydown', { key: 'Shift', release: false })
+      cy.get('body').trigger('keydown', { key: 'Shift', release: false });
 
       cy.get('.vue-flow__pane')
         .should('exist')
@@ -34,20 +34,20 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
-      cy.get('body').trigger('keyup', { key: 'Shift', release: true })
+      cy.get('body').trigger('keyup', { key: 'Shift', release: true });
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0)
-      })
-    })
-  })
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
 
   it('changes keycode', () => {
     cy.window().then((win) => {
-      store.selectionKeyCode.value = 'Control'
-      cy.get('body').trigger('keydown', { key: 'Control', release: false })
+      store.selectionKeyCode.value = 'Control';
+      cy.get('body').trigger('keydown', { key: 'Control', release: false });
 
       cy.get('.vue-flow__pane')
         .should('exist')
@@ -61,15 +61,15 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
-      cy.get('body').trigger('keyup', { key: 'Control', release: true })
+      cy.get('body').trigger('keyup', { key: 'Control', release: true });
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0)
-      })
-    })
-  })
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
 
   it('allows `true` as keycode', () => {
     // `selectionKeyCode === true` only enters selection mode while NOT panning on drag (see
@@ -80,7 +80,7 @@ describe('Store State: `selectionKeyCode`', () => {
       edges,
       panOnDrag: false,
       selectionKeyCode: true,
-    })
+    });
 
     cy.window().then((win) => {
       cy.get('.vue-flow__pane')
@@ -95,12 +95,12 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
       cy.tryAssertion(() => {
-        const s = getStore()
-        expect(s.getSelectedNodes.value.length + s.getSelectedEdges.value.length).to.be.greaterThan(0)
-      })
-    })
-  })
-})
+        const s = getStore();
+        expect(s.getSelectedNodes.value.length + s.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
+});

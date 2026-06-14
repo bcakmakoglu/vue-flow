@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import { Handle, Position, storeToRefs, useStore } from '@vue-flow/core'
-import { computed } from 'vue'
+import { Handle, Position, storeToRefs, useStore } from '@vue-flow/core';
+import { computed } from 'vue';
 
-const props = defineProps<{ id: string }>()
+const props = defineProps<{ id: string }>();
 
-const { connectionStartHandle } = storeToRefs(useStore())
+const { connectionStartHandle } = storeToRefs(useStore());
 
-const isTarget = computed(() => connectionStartHandle.value && connectionStartHandle.value.nodeId !== props.id)
+const isTarget = computed(() => connectionStartHandle.value && connectionStartHandle.value.nodeId !== props.id);
 </script>
 
 <template>

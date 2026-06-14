@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { ConnectionLineType, ConnectionMode, MarkerType, VueFlow, isEdge, isNode } from '@vue-flow/core'
-import CustomNode from './CustomNode.vue'
+import type { Edge, Node } from '@vue-flow/core';
+import { ConnectionLineType, ConnectionMode, isEdge, isNode, MarkerType, VueFlow } from '@vue-flow/core';
+import CustomNode from './CustomNode.vue';
 
 const initialElements: (Node | Edge)[] = [
   {
@@ -166,10 +166,10 @@ const initialElements: (Node | Edge)[] = [
     type: 'step',
     markerEnd: MarkerType.Arrow,
   },
-]
+];
 
-const nodes = ref<Node[]>(initialElements.filter(isNode))
-const edges = ref<Edge[]>(initialElements.filter(isEdge))
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 </script>
 
 <template>

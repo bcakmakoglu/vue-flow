@@ -1,45 +1,46 @@
-import { copyFile, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs'
-import { resolve } from 'node:path'
+import { copyFile, existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 interface ChangelogFile {
-  path: string
-  pkgName: string
+  path: string;
+  pkgName: string;
 }
 
-const skip = ['node_modules', 'dist', 'turbo']
+const skip = ['node_modules', 'dist', 'turbo'];
 
-const getAllFiles = function (dirPath: string, needle?: string, arrayOfFiles: ChangelogFile[] = [], pkgName?: string) {
+function getAllFiles(dirPath: string, needle?: string, arrayOfFiles: ChangelogFile[] = [], pkgName?: string) {
   readdirSync(dirPath).forEach((file) => {
     if (skip.includes(file)) {
-      return
+      return;
     }
 
     if (statSync(`${dirPath}/${file}`).isDirectory()) {
-      getAllFiles(`${dirPath}/${file}`, needle, arrayOfFiles, file)
-    } else {
+      getAllFiles(`${dirPath}/${file}`, needle, arrayOfFiles, file);
+    }
+    else {
       if (file.includes('CHANGELOG')) {
-        arrayOfFiles.push({ path: `${dirPath}/${file}`, pkgName })
+        arrayOfFiles.push({ path: `${dirPath}/${file}`, pkgName });
       }
     }
-  })
+  });
 
-  return arrayOfFiles
+  return arrayOfFiles;
 }
 
-export const files = getAllFiles(resolve(__dirname, '../../../../packages'), 'CHANGELOG')
+export const files = getAllFiles(resolve(__dirname, '../../../../packages'), 'CHANGELOG');
 
-const changelogDirPath = resolve(__dirname, `../../changelog/`)
+const changelogDirPath = resolve(__dirname, `../../changelog/`);
 
 if (!existsSync(changelogDirPath)) {
-  mkdirSync(changelogDirPath)
+  mkdirSync(changelogDirPath);
 }
 
 files.forEach(({ path, pkgName }) => {
-  const isCore = pkgName === 'core'
+  const isCore = pkgName === 'core';
 
-  const filePath = resolve(__dirname, `${path}`)
+  const filePath = resolve(__dirname, `${path}`);
 
-  copyFile(filePath, `${changelogDirPath}/${isCore ? 'index' : pkgName}.md`, () => {})
+  copyFile(filePath, `${changelogDirPath}/${isCore ? 'index' : pkgName}.md`, () => {});
 
-  console.log(`Copied ${pkgName}/CHANGELOG.md to docs/changelog/${isCore ? 'index' : pkgName}.md`)
-})
+  console.log(`Copied ${pkgName}/CHANGELOG.md to docs/changelog/${isCore ? 'index' : pkgName}.md`);
+});

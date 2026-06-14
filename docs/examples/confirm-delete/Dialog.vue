@@ -1,16 +1,16 @@
 <script setup>
-import { useDialogState } from './useDialog.js'
+import { useDialogState } from './useDialog.js';
 
-const { isVisible, message, resolve } = useDialogState()
+const { isVisible, message, resolve } = useDialogState();
 
 function confirm() {
-  resolve(true)
-  isVisible.value = false
+  resolve(true);
+  isVisible.value = false;
 }
 
 function cancel() {
-  resolve(false)
-  isVisible.value = false
+  resolve(false);
+  isVisible.value = false;
 }
 </script>
 
@@ -24,12 +24,18 @@ function cancel() {
         />
       </svg>
 
-      <p v-if="typeof message === 'string'">{{ message }}</p>
+      <p v-if="typeof message === 'string'">
+        {{ message }}
+      </p>
       <component :is="message" v-else />
 
       <div class="actions">
-        <button @click="confirm">Confirm</button>
-        <button @click="cancel">Cancel</button>
+        <button @click="confirm">
+          Confirm
+        </button>
+        <button @click="cancel">
+          Cancel
+        </button>
       </div>
     </div>
   </div>

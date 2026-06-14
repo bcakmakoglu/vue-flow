@@ -33,7 +33,7 @@ defineProps({
     required: false,
     default: 12.5,
   },
-})
+});
 </script>
 
 <template>

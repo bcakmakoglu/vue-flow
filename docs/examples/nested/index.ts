@@ -1,1 +1,1 @@
-export { default as NestedApp } from './App.vue?raw'
+export { default as NestedApp } from './App.vue?raw';

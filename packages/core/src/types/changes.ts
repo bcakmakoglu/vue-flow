@@ -1,6 +1,6 @@
-import type { XYPosition } from './flow'
-import type { Edge } from './edge'
-import type { Node, NodeOrigin } from './node'
+import type { Edge } from './edge';
+import type { XYPosition } from './flow';
+import type { Node, NodeOrigin } from './node';
 
 /**
  * Drag-item shape used by the drag pipeline.
@@ -9,20 +9,20 @@ import type { Node, NodeOrigin } from './node'
  * system types.
  */
 export interface NodeDragItem {
-  id: string
+  id: string;
   /** relative node position (to parent) */
-  position: XYPosition
+  position: XYPosition;
   /** distance from the mouse cursor to the node when start dragging */
-  distance: XYPosition
+  distance: XYPosition;
 
-  measured: { width: number; height: number }
-  internals: { positionAbsolute: XYPosition }
+  measured: { width: number; height: number };
+  internals: { positionAbsolute: XYPosition };
 
-  extent?: Node['extent']
-  expandParent?: boolean
-  dragging?: boolean
-  origin?: NodeOrigin
-  parentId?: string
+  extent?: Node['extent'];
+  expandParent?: boolean;
+  dragging?: boolean;
+  origin?: NodeOrigin;
+  parentId?: string;
 }
 
 /**
@@ -37,55 +37,55 @@ export interface NodeDragItem {
  * Item shapes on add changes are the user-provided `Node` / `Edge` types (not the internal `GraphNode`).
  */
 export interface NodeDimensionChange {
-  id: string
-  type: 'dimensions'
-  dimensions?: { width: number; height: number }
-  resizing?: boolean
-  setAttributes?: boolean | 'width' | 'height'
+  id: string;
+  type: 'dimensions';
+  dimensions?: { width: number; height: number };
+  resizing?: boolean;
+  setAttributes?: boolean | 'width' | 'height';
 }
 
 export interface NodePositionChange {
-  id: string
-  type: 'position'
-  position?: XYPosition
-  positionAbsolute?: XYPosition
-  dragging?: boolean
+  id: string;
+  type: 'position';
+  position?: XYPosition;
+  positionAbsolute?: XYPosition;
+  dragging?: boolean;
 }
 
 export interface NodeSelectionChange {
-  id: string
-  type: 'select'
-  selected: boolean
+  id: string;
+  type: 'select';
+  selected: boolean;
 }
 
 export interface NodeRemoveChange {
-  id: string
-  type: 'remove'
+  id: string;
+  type: 'remove';
 }
 
 export interface NodeAddChange<NodeType extends Node = Node> {
-  item: NodeType
-  type: 'add'
-  index?: number
+  item: NodeType;
+  type: 'add';
+  index?: number;
 }
 
-export type NodeChange<NodeType extends Node = Node> =
-  | NodeDimensionChange
-  | NodePositionChange
-  | NodeSelectionChange
-  | NodeRemoveChange
-  | NodeAddChange<NodeType>
+export type NodeChange<NodeType extends Node = Node>
+  = | NodeDimensionChange
+    | NodePositionChange
+    | NodeSelectionChange
+    | NodeRemoveChange
+    | NodeAddChange<NodeType>;
 
-export type EdgeSelectionChange = NodeSelectionChange
+export type EdgeSelectionChange = NodeSelectionChange;
 
-export type EdgeRemoveChange = NodeRemoveChange
+export type EdgeRemoveChange = NodeRemoveChange;
 
 export interface EdgeAddChange<EdgeType extends Edge = Edge> {
-  item: EdgeType
-  type: 'add'
-  index?: number
+  item: EdgeType;
+  type: 'add';
+  index?: number;
 }
 
-export type EdgeChange<EdgeType extends Edge = Edge> = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange<EdgeType>
+export type EdgeChange<EdgeType extends Edge = Edge> = EdgeSelectionChange | EdgeRemoveChange | EdgeAddChange<EdgeType>;
 
-export type ElementChange = NodeChange | EdgeChange
+export type ElementChange = NodeChange | EdgeChange;

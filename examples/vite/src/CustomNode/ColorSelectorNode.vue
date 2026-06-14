@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import type { CSSProperties } from 'vue'
-import { Handle, Position } from '@vue-flow/core'
-import type { ColorSelectorNodeProps } from './types'
+import type { CSSProperties } from 'vue';
+import type { ColorSelectorNodeProps } from './types';
+import { Handle, Position } from '@vue-flow/core';
 
-defineProps<ColorSelectorNodeProps>()
+defineProps<ColorSelectorNodeProps>();
 
 const emits = defineEmits<{
-  change: [color: string]
-}>()
+  change: [color: string];
+}>();
 
-const targetHandleStyle: CSSProperties = { background: '#555' }
-const sourceHandleStyleA: CSSProperties = { ...targetHandleStyle, top: '10px' }
-const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px', top: 'auto' }
+const targetHandleStyle: CSSProperties = { background: '#555' };
+const sourceHandleStyleA: CSSProperties = { ...targetHandleStyle, top: '10px' };
+const sourceHandleStyleB: CSSProperties = { ...targetHandleStyle, bottom: '10px', top: 'auto' };
 </script>
 
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>
@@ -31,7 +31,7 @@ export default {
     Custom Color Picker Node: <strong>{{ data.color }}</strong>
   </div>
 
-  <input class="nodrag" type="color" :value="data.color" @input="emits('change', ($event.target as HTMLInputElement).value)" />
+  <input class="nodrag" type="color" :value="data.color" @input="emits('change', ($event.target as HTMLInputElement).value)">
   <Handle id="a" type="source" :position="Position.Right" :style="sourceHandleStyleA" />
   <Handle id="b" type="source" :position="Position.Right" :style="sourceHandleStyleB" />
 </template>

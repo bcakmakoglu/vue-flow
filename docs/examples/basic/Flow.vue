@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, ControlButton, Controls, MiniMap, VueFlow, useVueFlow } from '@vue-flow/core'
-import { initialEdges, initialNodes } from './initial-elements.js'
-import Icon from './Icon.vue'
+import { Background, ControlButton, Controls, MiniMap, useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import Icon from './Icon.vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
 /**
  * `useVueFlow` provides:
@@ -10,14 +10,14 @@ import Icon from './Icon.vue'
  * 2. a set of event-hooks to listen to VueFlow events (like `onInit`, `onNodeDragStop`, `onConnect`, etc)
  * 3. the internal state of the VueFlow instance (like `nodes`, `edges`, `viewport`, etc)
  */
-const { onInit, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
+const { onInit, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow();
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
 // our dark mode toggle flag
-const dark = ref(false)
+const dark = ref(false);
 
 /**
  * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
@@ -27,8 +27,8 @@ const dark = ref(false)
  */
 onInit((vueFlowInstance) => {
   // instance is the same as the return of `useVueFlow`
-  vueFlowInstance.fitView()
-})
+  vueFlowInstance.fitView();
+});
 
 /**
  * onNodeDragStop is called when a node is done being dragged
@@ -40,8 +40,8 @@ onInit((vueFlowInstance) => {
  * 4. any intersections with other nodes
  */
 onNodeDragStop(({ event, nodes, node }) => {
-  console.log('Node Drag Stop', { event, nodes, node })
-})
+  console.log('Node Drag Stop', { event, nodes, node });
+});
 
 /**
  * onConnect is called when a new connection is created.
@@ -49,8 +49,8 @@ onNodeDragStop(({ event, nodes, node }) => {
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether by not calling `addEdges`
  */
 onConnect((connection) => {
-  addEdges(connection)
-})
+  addEdges(connection);
+});
 
 /**
  * To update a node or multiple nodes, you can
@@ -66,26 +66,26 @@ function updatePos() {
         x: Math.random() * 400,
         y: Math.random() * 400,
       },
-    }
-  })
+    };
+  });
 }
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
 function logToObject() {
-  console.log(toObject())
+  console.log(toObject());
 }
 
 /**
  * Resets the current viewport transformation (zoom & pan)
  */
 function resetTransform() {
-  setViewport({ x: 0, y: 0, zoom: 1 })
+  setViewport({ x: 0, y: 0, zoom: 1 });
 }
 
 function toggleDarkMode() {
-  dark.value = !dark.value
+  dark.value = !dark.value;
 }
 </script>
 

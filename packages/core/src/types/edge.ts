@@ -1,7 +1,7 @@
-import type { EdgeBase } from '@xyflow/system'
-import type { CSSProperties, Component, SVGAttributes, VNode } from 'vue'
-import type { ElementData, Position, Styles } from './flow'
-import type { EdgeComponent, EdgeTextProps } from './components'
+import type { EdgeBase } from '@xyflow/system';
+import type { Component, CSSProperties, SVGAttributes, VNode } from 'vue';
+import type { EdgeComponent, EdgeTextProps } from './components';
+import type { ElementData, Position, Styles } from './flow';
 
 /** Edge markers */
 export enum MarkerType {
@@ -12,49 +12,49 @@ export enum MarkerType {
 /** Edge marker definition */
 export interface EdgeMarker {
   /** Unique marker id */
-  id?: string
+  id?: string;
   /** Marker type */
-  type: MarkerType
+  type: MarkerType;
   /** Marker color */
-  color?: string
+  color?: string;
   /** Marker width */
-  width?: number
+  width?: number;
   /** Marker height */
-  height?: number
+  height?: number;
   /** Marker units */
-  markerUnits?: string
+  markerUnits?: string;
   /** Marker orientation */
-  orient?: string
+  orient?: string;
   /** Marker stroke width */
-  strokeWidth?: number
+  strokeWidth?: number;
 }
 
 export interface MarkerProps {
-  id: string
-  type: MarkerType | string
-  color?: string
-  width?: number
-  height?: number
-  markerUnits?: string
-  orient?: string
-  strokeWidth?: number
+  id: string;
+  type: MarkerType | string;
+  color?: string;
+  width?: number;
+  height?: number;
+  markerUnits?: string;
+  orient?: string;
+  strokeWidth?: number;
 }
 
-export type EdgeMarkerType = string | MarkerType | EdgeMarker
+export type EdgeMarkerType = string | MarkerType | EdgeMarker;
 
-export type EdgeReconnectable = boolean | 'target' | 'source'
+export type EdgeReconnectable = boolean | 'target' | 'source';
 
 export interface EdgeLabelOptions {
   /** Label styles (CSSProperties) */
-  labelStyle?: CSSProperties
+  labelStyle?: CSSProperties;
   /** Show label bg */
-  labelShowBg?: boolean
+  labelShowBg?: boolean;
   /** Label Bg styles (CSSProperties) */
-  labelBgStyle?: CSSProperties
+  labelBgStyle?: CSSProperties;
   /** Label Bg padding */
-  labelBgPadding?: [number, number]
+  labelBgPadding?: [number, number];
   /** Label Bg border radius */
-  labelBgBorderRadius?: number
+  labelBgBorderRadius?: number;
 }
 
 /**
@@ -64,23 +64,23 @@ export interface EdgeLabelOptions {
  */
 export interface DefaultEdge<Data extends Record<string, unknown> = ElementData, Type extends string = string>
   extends EdgeBase<Data, Type>,
-    EdgeLabelOptions {
+  EdgeLabelOptions {
   /** An edge label */
-  label?: string | VNode | Component<EdgeTextProps>
+  label?: string | VNode | Component<EdgeTextProps>;
   /** EdgeMarker — vue-flow's `EdgeMarkerType` (own `MarkerType` enum + `EdgeMarker`), overriding `EdgeBase`'s */
-  markerStart?: EdgeMarkerType
+  markerStart?: EdgeMarkerType;
   /** EdgeMarker */
-  markerEnd?: EdgeMarkerType
+  markerEnd?: EdgeMarkerType;
   /** Disable/enable updating edge */
-  reconnectable?: EdgeReconnectable
+  reconnectable?: EdgeReconnectable;
   /** Disable/enable focusing edge (a11y) */
-  focusable?: boolean
+  focusable?: boolean;
   /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | string[] | Record<string, any>
+  class?: string | string[] | Record<string, any>;
   /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
-  style?: Styles
+  style?: Styles;
   /** Overwrites current edge type */
-  template?: EdgeComponent
+  template?: EdgeComponent;
   /**
    * General escape hatch for adding custom attributes to the edge's DOM element.
    */
@@ -98,44 +98,44 @@ export interface DefaultEdge<Data extends Record<string, unknown> = ElementData,
     | 'onContextmenu'
     | 'onDblclick'
     | 'onKeyDown'
-  >
+  >;
 }
 
 export interface SmoothStepPathOptions {
-  offset?: number
-  borderRadius?: number
+  offset?: number;
+  borderRadius?: number;
 }
 
 export type SmoothStepEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
-  type: 'smoothstep'
-  pathOptions?: SmoothStepPathOptions
-}
+  type: 'smoothstep';
+  pathOptions?: SmoothStepPathOptions;
+};
 
 export interface BezierPathOptions {
-  curvature?: number
+  curvature?: number;
 }
 
 export type BezierEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
-  type: 'default'
-  pathOptions?: BezierPathOptions
-}
+  type: 'default';
+  pathOptions?: BezierPathOptions;
+};
 
-export type Edge<Data extends Record<string, unknown> = ElementData, Type extends string = string> =
-  | DefaultEdge<Data, Type>
-  | SmoothStepEdgeType<Data>
-  | BezierEdgeType<Data>
+export type Edge<Data extends Record<string, unknown> = ElementData, Type extends string = string>
+  = | DefaultEdge<Data, Type>
+    | SmoothStepEdgeType<Data>
+    | BezierEdgeType<Data>;
 
-export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'selected'>
+export type DefaultEdgeOptions = Omit<Edge, 'id' | 'source' | 'target' | 'sourceHandle' | 'targetHandle' | 'selected'>;
 
 /**
  * The computed positions an edge renders with — a render-OUTPUT type (xyflow's `EdgePosition`),
  * computed per render from the source/target `InternalNode`s. Never stored on an edge.
  */
 export interface EdgePositions {
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
+  sourceX: number;
+  sourceY: number;
+  targetX: number;
+  targetY: number;
 }
 
 /**
@@ -143,57 +143,57 @@ export interface EdgePositions {
  * handles are exposed as `sourceHandleId`/`targetHandleId`; markers are pre-resolved to url strings.
  */
 export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOptions, EdgePositions {
-  id: string
-  source: string
-  target: string
+  id: string;
+  source: string;
+  target: string;
   // optional, matching the verbatim model + RF's Pick: defaults are no longer stamped onto stored edges,
   // so `type`/`data` are genuinely undefined at runtime when the user didn't set them
-  type?: EdgeType['type']
-  label?: string | VNode | Component<EdgeTextProps> | object
-  style?: CSSProperties
-  selected?: boolean
-  selectable?: boolean
-  deletable?: boolean
-  sourcePosition: Position
-  targetPosition: Position
-  sourceHandleId?: string | null
-  targetHandleId?: string | null
-  animated?: boolean
-  reconnectable?: EdgeReconnectable
-  markerStart: string
-  markerEnd: string
-  curvature?: number
-  interactionWidth?: number
-  data?: EdgeType['data']
+  type?: EdgeType['type'];
+  label?: string | VNode | Component<EdgeTextProps> | object;
+  style?: CSSProperties;
+  selected?: boolean;
+  selectable?: boolean;
+  deletable?: boolean;
+  sourcePosition: Position;
+  targetPosition: Position;
+  sourceHandleId?: string | null;
+  targetHandleId?: string | null;
+  animated?: boolean;
+  reconnectable?: EdgeReconnectable;
+  markerStart: string;
+  markerEnd: string;
+  curvature?: number;
+  interactionWidth?: number;
+  data?: EdgeType['data'];
 }
 
 export interface BaseEdgeProps extends EdgeLabelOptions {
-  id?: string
-  labelX?: number
-  labelY?: number
-  path: string
-  label?: any
-  markerStart?: string
-  markerEnd?: string
-  interactionWidth?: number
+  id?: string;
+  labelX?: number;
+  labelY?: number;
+  path: string;
+  label?: any;
+  markerStart?: string;
+  markerEnd?: string;
+  interactionWidth?: number;
 }
 
-export type BezierEdgeProps = EdgePositions &
-  BezierPathOptions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type BezierEdgeProps = EdgePositions
+  & BezierPathOptions
+  & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+  & Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>;
 
-export type SimpleBezierEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type SimpleBezierEdgeProps = EdgePositions
+  & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+  & Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>;
 
-export type StraightEdgeProps = EdgePositions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+export type StraightEdgeProps = EdgePositions & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>;
 
-export type StepEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+export type StepEdgeProps = EdgePositions
+  & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+  & Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>;
 
-export type SmoothStepEdgeProps = EdgePositions &
-  Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'> &
-  Pick<EdgeProps, 'sourcePosition' | 'targetPosition'> &
-  SmoothStepPathOptions
+export type SmoothStepEdgeProps = EdgePositions
+  & Omit<BaseEdgeProps, 'labelX' | 'labelY' | 'path'>
+  & Pick<EdgeProps, 'sourcePosition' | 'targetPosition'>
+  & SmoothStepPathOptions;

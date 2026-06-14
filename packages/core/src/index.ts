@@ -3,84 +3,84 @@
  * @module vue-flow
  */
 
-export { default as VueFlow } from './container/VueFlow/VueFlow.vue'
+export * from './components/Background';
 
-export { default as VueFlowProvider } from './container/VueFlowProvider/VueFlowProvider.vue'
+export * from './components/Controls';
 
-export { default as Handle } from './components/Handle/Handle.vue'
+export { default as BaseEdge } from './components/Edges/BaseEdge.vue';
 
-export { default as Panel } from './components/Panel/Panel.vue'
+export { default as BezierEdge } from './components/Edges/BezierEdge';
 
-export { default as StraightEdge } from './components/Edges/StraightEdge'
-export { default as StepEdge } from './components/Edges/StepEdge'
-export { default as BezierEdge } from './components/Edges/BezierEdge'
-export { default as SimpleBezierEdge } from './components/Edges/SimpleBezierEdge'
-export { default as SmoothStepEdge } from './components/Edges/SmoothStepEdge'
-export { default as BaseEdge } from './components/Edges/BaseEdge.vue'
-export { default as EdgeText } from './components/Edges/EdgeText.vue'
-export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue'
+export { default as EdgeLabelRenderer } from './components/Edges/EdgeLabelRenderer.vue';
+export { default as EdgeText } from './components/Edges/EdgeText.vue';
+export { default as SimpleBezierEdge } from './components/Edges/SimpleBezierEdge';
+export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge';
+export { default as SmoothStepEdge } from './components/Edges/SmoothStepEdge';
+export { default as StepEdge } from './components/Edges/StepEdge';
+export { default as StraightEdge } from './components/Edges/StraightEdge';
+export { default as Handle } from './components/Handle/Handle.vue';
 
-export * from './components/Background'
-export * from './components/Controls'
-export * from './components/MiniMap'
-export * from './components/NodeResizer'
-export * from './components/NodeToolbar'
+export * from './components/MiniMap';
+export * from './components/NodeResizer';
+export * from './components/NodeToolbar';
+export { default as Panel } from './components/Panel/Panel.vue';
+export { storeToRefs } from './composables/storeToRefs';
 
-// re-export these utils from system
-export { getBezierPath, getSmoothStepPath, getStraightPath, getBezierEdgeCenter } from '@xyflow/system'
-export { getSimpleBezierPath } from './components/Edges/SimpleBezierEdge'
+export { useConnection } from './composables/useConnection';
+export { useEdge } from './composables/useEdge';
 
-// re-export graph utils
-export {
-  clamp,
-  getBoundsOfRects,
-  getBoundsOfBoxes,
-  rendererPointToPoint,
-  getMarkerId,
-  isMacOs,
-  pointToRendererPoint,
-  getIncomers,
-  getOutgoers,
-  getNodesBounds,
-  getViewportForBounds,
-  isEdgeBase,
-  isNodeBase,
-  getConnectionStatus,
-  getConnectedEdges,
-  getNodesInside,
-} from '@xyflow/system'
+export { useEdgesData } from './composables/useEdgesData';
 
-export { isNode, isEdge, isGraphNode, connectionExists } from './utils/graph'
+export { useGetPointerPosition } from './composables/useGetPointerPosition';
 
+export { useHandle } from './composables/useHandle';
+
+export { useInternalNode } from './composables/useInternalNode';
+
+export { useKeyPress } from './composables/useKeyPress';
+
+export { useNode } from './composables/useNode';
+export { useNodeConnections } from './composables/useNodeConnections';
+export { useNodeId } from './composables/useNodeId';
+export { useNodesData } from './composables/useNodesData';
+export { useNodesInitialized } from './composables/useNodesInitialized';
+
+export { useStore } from './composables/useStore';
+export { useVueFlow } from './composables/useVueFlow';
+export { default as VueFlow } from './container/VueFlow/VueFlow.vue';
+export { default as VueFlowProvider } from './container/VueFlowProvider/VueFlowProvider.vue';
+export { NodeId as NodeIdInjection, VueFlow as VueFlowInjection } from './context';
+export * from './types';
 /**
  * @deprecated Prefer the store instance's `applyChanges`/`applyNodeChanges`/`applyEdgeChanges` (from
  * `useVueFlow`, or the instance received by `onInit`). Kept for the options API.
  */
-export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes'
+export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes';
+export { defaultEdgeTypes, defaultNodeTypes } from './utils/defaultNodesEdges';
+export { ErrorCode, isErrorOfType, VueFlowError } from './utils/errors';
+export { connectionExists, isEdge, isGraphNode, isNode } from './utils/graph';
 
-export { defaultEdgeTypes, defaultNodeTypes } from './utils/defaultNodesEdges'
+// re-export these utils from system
+export { getBezierEdgeCenter, getBezierPath, getSmoothStepPath, getStraightPath } from '@xyflow/system';
 
-export { VueFlow as VueFlowInjection, NodeId as NodeIdInjection } from './context'
+// re-export graph utils
+export {
+  clamp,
+  getBoundsOfBoxes,
+  getBoundsOfRects,
+  getConnectedEdges,
+  getConnectionStatus,
+  getIncomers,
+  getMarkerId,
+  getNodesBounds,
+  getNodesInside,
+  getOutgoers,
+  getViewportForBounds,
+  isEdgeBase,
+  isMacOs,
+  isNodeBase,
+  pointToRendererPoint,
+  rendererPointToPoint,
+} from '@xyflow/system';
 
-export { useVueFlow } from './composables/useVueFlow'
-export { useStore } from './composables/useStore'
-export { storeToRefs } from './composables/storeToRefs'
-export { useHandle } from './composables/useHandle'
-export { useInternalNode } from './composables/useInternalNode'
-
-export { useNode } from './composables/useNode'
-export { useEdge } from './composables/useEdge'
-export { useGetPointerPosition } from './composables/useGetPointerPosition'
-export { useNodeId } from './composables/useNodeId'
-export { useConnection } from './composables/useConnection'
-export { useNodeConnections } from './composables/useNodeConnections'
-export { useNodesData } from './composables/useNodesData'
-export { useEdgesData } from './composables/useEdgesData'
-export { useNodesInitialized } from './composables/useNodesInitialized'
-export { useKeyPress } from './composables/useKeyPress'
-
-export { VueFlowError, ErrorCode, isErrorOfType } from './utils/errors'
-
-export * from './types'
-
-export { type ColorMode, type ColorModeClass, type Viewport, PanOnScrollMode } from '@xyflow/system'
+export { type ColorMode, type ColorModeClass, PanOnScrollMode, type Viewport } from '@xyflow/system';

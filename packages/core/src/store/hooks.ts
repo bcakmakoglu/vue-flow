@@ -1,6 +1,6 @@
-import { getCurrentInstance, onBeforeMount, onScopeDispose } from 'vue'
-import type { Edge, FlowEvents, FlowHooks, Node } from '../types'
-import { createExtendedEventHook, warn } from '../utils'
+import type { Edge, FlowEvents, FlowHooks, Node } from '../types';
+import { getCurrentInstance, onBeforeMount, onScopeDispose } from 'vue';
+import { createExtendedEventHook, warn } from '../utils';
 
 export function createHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): FlowHooks<NodeType, EdgeType> {
   return {
@@ -55,35 +55,35 @@ export function createHooks<NodeType extends Node = Node, EdgeType extends Edge 
     reconnect: createExtendedEventHook(),
     reconnectEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
-    error: createExtendedEventHook((err) => warn(err.message)),
-  }
+    error: createExtendedEventHook(err => warn(err.message)),
+  };
 }
 
 export function useHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   emit: (...args: any[]) => void,
   hooks: FlowHooks<NodeType, EdgeType>,
 ) {
-  const inst = getCurrentInstance()
+  const inst = getCurrentInstance();
   onBeforeMount(() => {
     for (const [key, value] of Object.entries(hooks)) {
       const listener = (data: unknown) => {
-        emit(key, data)
-      }
+        emit(key, data);
+      };
 
       // push into fns instead of using `on` to avoid overwriting default handlers - the emitter should be called in addition to the default handlers
-      value.setEmitter(listener)
-      onScopeDispose(value.removeEmitter, true)
+      value.setEmitter(listener);
+      onScopeDispose(value.removeEmitter, true);
 
-      value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents))
-      onScopeDispose(value.removeHasEmitListeners, true)
+      value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents));
+      onScopeDispose(value.removeHasEmitListeners, true);
     }
-  })
+  });
 
   function hasVNodeListener(event: keyof FlowEvents) {
-    const key = toHandlerKey(event)
+    const key = toHandlerKey(event);
     // listeners live on vnode.props; value can be a Function or an array of Functions
-    const h = inst?.vnode.props?.[key]
-    return !!h
+    const h = inst?.vnode.props?.[key];
+    return !!h;
   }
 }
 
@@ -95,7 +95,7 @@ export function useHooks<NodeType extends Node = Node, EdgeType extends Edge = E
  * @returns The corresponding handler key.
  */
 function toHandlerKey(event: string) {
-  const [head, ...rest] = event.split(':')
-  const camel = head.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase())
-  return `on${camel}${rest.length ? `:${rest.join(':')}` : ''}`
+  const [head, ...rest] = event.split(':');
+  const camel = head.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase());
+  return `on${camel}${rest.length ? `:${rest.join(':')}` : ''}`;
 }

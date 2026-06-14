@@ -1,11 +1,11 @@
 <script setup>
-import { Handle, NodeToolbar, Position, useVueFlow } from '@vue-flow/core'
+import { Handle, NodeToolbar, Position, useVueFlow } from '@vue-flow/core';
 
-const props = defineProps(['id', 'data'])
+const props = defineProps(['id', 'data']);
 
-const actions = ['👎', '✋', '👍']
+const actions = ['👎', '✋', '👍'];
 
-const { updateNodeData } = useVueFlow()
+const { updateNodeData } = useVueFlow();
 </script>
 
 <template>

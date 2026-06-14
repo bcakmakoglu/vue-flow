@@ -1,5 +1,5 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../../support/component'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
 
 /**
  * Regression: drag items arrive with parent-RELATIVE positions (XYDrag's `calculateNodePosition` and the
@@ -8,7 +8,7 @@ import { getStore } from '../../../support/component'
  * at the origin landed at `position - parentAbsolute`.
  */
 describe('Store Action: `updateNodePositions`', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
@@ -28,12 +28,12 @@ describe('Store Action: `updateNodePositions`', () => {
           data: { label: 'Child' },
         },
       ],
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-    })
-  })
+      store = getStore();
+    });
+  });
 
   it('keeps a child drag item parent-relative (no double parent-offset subtraction)', () => {
     // the exact shape `useDrag` forwards from XYDrag: position is parent-relative,
@@ -51,14 +51,14 @@ describe('Store Action: `updateNodePositions`', () => {
       ],
       true,
       true,
-    )
+    );
 
     cy.tryAssertion(() => {
-      const child = store.getNode('child')
-      expect(child?.position).to.deep.equal({ x: 30, y: 70 })
+      const child = store.getNode('child');
+      expect(child?.position).to.deep.equal({ x: 30, y: 70 });
 
-      const internalChild = store.getInternalNode('child')
-      expect(internalChild?.internals.positionAbsolute).to.deep.equal({ x: 130, y: 170 })
-    })
-  })
-})
+      const internalChild = store.getInternalNode('child');
+      expect(internalChild?.internals.positionAbsolute).to.deep.equal({ x: 130, y: 170 });
+    });
+  });
+});

@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Background, VueFlow } from '@vue-flow/core'
-import { initialEdges, initialNodes } from './initialElements'
-import type { OperatorNodeData, ValueNodeData } from './types'
-import ValueNode from './ValueNode.vue'
-import OperatorNode from './OperatorNode.vue'
-import ResultNode from './ResultNode.vue'
-import './styles.css'
+import type { OperatorNodeData, ValueNodeData } from './types';
+import { Background, VueFlow } from '@vue-flow/core';
+import { initialEdges, initialNodes } from './initialElements';
+import OperatorNode from './OperatorNode.vue';
+import ResultNode from './ResultNode.vue';
+import ValueNode from './ValueNode.vue';
+import './styles.css';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 </script>
 
 <template>

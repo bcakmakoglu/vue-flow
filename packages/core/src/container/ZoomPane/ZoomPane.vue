@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, toRef, watch } from 'vue'
-import { XYPanZoom } from '@xyflow/system'
-import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables'
-import { useResizeHandler } from '../../composables/useResizeHandler'
-import Pane from '../Pane/Pane.vue'
-import Viewport from '../Viewport/Viewport.vue'
-import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
-import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
+import { XYPanZoom } from '@xyflow/system';
+import { onMounted, onUnmounted, toRef, watch } from 'vue';
+import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables';
+import { useResizeHandler } from '../../composables/useResizeHandler';
+import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue';
+import NodeRenderer from '../NodeRenderer/NodeRenderer.vue';
+import Pane from '../Pane/Pane.vue';
+import Viewport from '../Viewport/Viewport.vue';
 
-const { id, emits } = useVueFlow()
+const { id, emits } = useVueFlow();
 
 const {
   transform,
@@ -35,23 +35,23 @@ const {
   selectionKeyCode,
   paneClickDistance,
   connectionStartHandle,
-} = storeToRefs(useStore())
+} = storeToRefs(useStore());
 
-const zoomActivationKeyPressed = useKeyPress(zoomActivationKeyCode)
+const zoomActivationKeyPressed = useKeyPress(zoomActivationKeyCode);
 
-const panKeyPressed = useKeyPress(panActivationKeyCode)
+const panKeyPressed = useKeyPress(panActivationKeyCode);
 
-const selectionKeyPressed = useKeyPress(selectionKeyCode)
+const selectionKeyPressed = useKeyPress(selectionKeyCode);
 
-const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value))
+const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed.value || panOnDrag.value));
 
-const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value)
+const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value);
 
-const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true))
+const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true));
 
-useResizeHandler(zoomPane)
+useResizeHandler(zoomPane);
 
-onUnmounted(() => panZoom.value?.destroy())
+onUnmounted(() => panZoom.value?.destroy());
 
 onMounted(() => {
   if (zoomPane.value) {
@@ -61,25 +61,25 @@ onMounted(() => {
       maxZoom: maxZoom.value,
       translateExtent: translateExtent.value,
       viewport: { x: transform.value[0], y: transform.value[1], zoom: transform.value[2], ...defaultViewport.value },
-      onDraggingChange: (isDraggingPane) => (paneDragging.value = isDraggingPane),
+      onDraggingChange: isDraggingPane => (paneDragging.value = isDraggingPane),
       onPanZoomStart: (event, viewport) => {
-        emits.moveStart({ event, viewport })
-        emits.viewportChangeStart(viewport)
+        emits.moveStart({ event, viewport });
+        emits.viewportChangeStart(viewport);
       },
       // `viewportChange` is emitted once per transform by `onTransformChange` below (which fires for both
       // user gestures and programmatic changes) — emitting it here too would double-fire it every frame.
       onPanZoom: (event, viewport) => {
-        emits.move({ event, viewport })
+        emits.move({ event, viewport });
       },
       onPanZoomEnd: (event, viewport) => {
-        emits.moveEnd({ event, viewport })
-        emits.viewportChangeEnd(viewport)
+        emits.moveEnd({ event, viewport });
+        emits.viewportChangeEnd(viewport);
       },
-    })
+    });
 
-    const initialViewport = panZoomInstance.getViewport()
-    transform.value = [initialViewport.x, initialViewport.y, initialViewport.zoom]
-    panZoom.value = panZoomInstance
+    const initialViewport = panZoomInstance.getViewport();
+    transform.value = [initialViewport.x, initialViewport.y, initialViewport.zoom];
+    panZoom.value = panZoomInstance;
 
     watch(
       [
@@ -114,23 +114,23 @@ onMounted(() => {
           noWheelClassName: noWheelClassName.value,
           paneClickDistance: paneClickDistance.value,
           onTransformChange: (nextTransform) => {
-            emits.viewportChange({ x: nextTransform[0], y: nextTransform[1], zoom: nextTransform[2] })
-            transform.value = nextTransform
+            emits.viewportChange({ x: nextTransform[0], y: nextTransform[1], zoom: nextTransform[2] });
+            transform.value = nextTransform;
           },
           connectionInProgress: !!connectionStartHandle.value,
           lib: 'vue',
-        })
+        });
       },
       { immediate: true },
-    )
+    );
   }
-})
+});
 </script>
 
 <script lang="ts">
 export default {
   name: 'ZoomPane',
-}
+};
 </script>
 
 <template>

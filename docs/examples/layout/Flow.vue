@@ -1,36 +1,36 @@
 <script setup>
-import { nextTick, ref } from 'vue'
-import { Background, Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
-import ProcessNode from './ProcessNode.vue'
-import AnimationEdge from './AnimationEdge.vue'
+import { Background, Panel, useVueFlow, VueFlow } from '@vue-flow/core';
+import { nextTick, ref } from 'vue';
+import AnimationEdge from './AnimationEdge.vue';
+import Icon from './Icon.vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
-import { initialEdges, initialNodes } from './initial-elements.js'
-import { useRunProcess } from './useRunProcess'
-import { useLayout } from './useLayout'
+import ProcessNode from './ProcessNode.vue';
+import { useLayout } from './useLayout';
+import { useRunProcess } from './useRunProcess';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
-const cancelOnError = ref(true)
+const cancelOnError = ref(true);
 
-const { graph, layout } = useLayout()
+const { graph, layout } = useLayout();
 
-const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
+const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError });
 
-const { fitView } = useVueFlow()
+const { fitView } = useVueFlow();
 
 async function layoutGraph(direction) {
-  await stop()
+  await stop();
 
-  reset(nodes.value)
+  reset(nodes.value);
 
-  nodes.value = layout(nodes.value, edges.value, direction)
+  nodes.value = layout(nodes.value, edges.value, direction);
 
   nextTick(() => {
-    fitView()
-  })
+    fitView();
+  });
 }
 </script>
 
@@ -84,7 +84,7 @@ async function layoutGraph(direction) {
 
         <div class="checkbox-panel">
           <label>Cancel on error</label>
-          <input v-model="cancelOnError" type="checkbox" />
+          <input v-model="cancelOnError" type="checkbox">
         </div>
       </Panel>
     </VueFlow>

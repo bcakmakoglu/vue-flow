@@ -1,26 +1,26 @@
 <script lang="ts" setup>
-import type { Connection, Edge, Node, Styles, VueFlowInstance } from '@vue-flow/core'
-import { Background, ConnectionLineType, Controls, VueFlow } from '@vue-flow/core'
+import type { Connection, Edge, Node, Styles, VueFlowInstance } from '@vue-flow/core';
+import { Background, ConnectionLineType, Controls, VueFlow } from '@vue-flow/core';
 
-import Cross from '~icons/mdi/window-close'
+import Cross from '~icons/mdi/window-close';
 
-const emit = defineEmits(['pane'])
+const emit = defineEmits(['pane']);
 
 // In 2.0 `class`/`style` are plain values (the `ClassFunc`/`StyleFunc` callback types are gone).
 // The base classes/styles are applied statically here; selection-dependent styling is handled in CSS
 // via the `.selected` class Vue Flow adds to node/edge wrappers (see the `<style>` block below).
-const nodeClass = 'font-semibold !border-2 transition-colors duration-300 ease-in-out'
+const nodeClass = 'font-semibold !border-2 transition-colors duration-300 ease-in-out';
 
-const edgeClass = 'transition-colors duration-300'
+const edgeClass = 'transition-colors duration-300';
 
 const edgeStyle: Styles = {
   transition: 'stroke ease-in-out 300ms',
   strokeWidth: 2,
-}
+};
 
 // `<VueFlow>` exposes its store via `defineExpose`; reach `viewport`/`addEdges` through a template ref
 // (pure-provider: no `useVueFlow()` outside a provider).
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 const nodes = ref<Node[]>([
   {
@@ -44,7 +44,7 @@ const nodes = ref<Node[]>([
     position: { x: 250, y: 225 },
     class: nodeClass,
   },
-])
+]);
 
 const edges = ref<Edge[]>([
   {
@@ -73,7 +73,7 @@ const edges = ref<Edge[]>([
     class: edgeClass,
     style: edgeStyle,
   },
-])
+]);
 
 function onConnect(param: Connection) {
   flow.value?.addEdges([
@@ -82,11 +82,11 @@ function onConnect(param: Connection) {
       type: 'smoothstep',
       animated: true,
     },
-  ])
+  ]);
 }
 
 function onInit(instance: VueFlowInstance) {
-  emit('pane', instance)
+  emit('pane', instance);
 }
 </script>
 

@@ -1,20 +1,20 @@
-import { computed } from 'vue'
-import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system'
-import type { Edge, Node, NodeLookup, State, ViewportFunctions, ViewportPositionFunc } from '../types'
-import { warn } from '../utils'
+import type { Edge, Node, NodeLookup, State, ViewportFunctions, ViewportPositionFunc } from '../types';
+import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system';
+import { computed } from 'vue';
+import { warn } from '../utils';
 
 export interface ViewportHelper extends ViewportFunctions {
-  viewportInitialized: boolean
-  screenToFlowPosition: ViewportPositionFunc
-  flowToScreenPosition: ViewportPositionFunc
+  viewportInitialized: boolean;
+  screenToFlowPosition: ViewportPositionFunc;
+  flowToScreenPosition: ViewportPositionFunc;
 }
 
-const DEFAULT_PADDING = 0.1
+const DEFAULT_PADDING = 0.1;
 
 async function noop() {
-  warn('Viewport not initialized yet.')
+  warn('Viewport not initialized yet.');
 
-  return false
+  return false;
 }
 
 const initialViewportHelper: ViewportHelper = {
@@ -24,12 +24,12 @@ const initialViewportHelper: ViewportHelper = {
   fitView: noop,
   setCenter: noop,
   fitBounds: noop,
-  screenToFlowPosition: (position) => position,
-  flowToScreenPosition: (position) => position,
+  screenToFlowPosition: position => position,
+  flowToScreenPosition: position => position,
   setViewport: noop,
   getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
   viewportInitialized: false,
-}
+};
 
 /**
  * Composable that provides viewport helper functions.
@@ -42,22 +42,22 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
   nodeLookup: NodeLookup<NodeType>,
 ) {
   return computed<ViewportHelper>(() => {
-    const panZoom = state.panZoom
-    const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height
+    const panZoom = state.panZoom;
+    const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height;
 
     if (!isInitialized) {
-      return initialViewportHelper
+      return initialViewportHelper;
     }
 
     return {
       viewportInitialized: true,
       // todo: allow passing scale as option
-      zoomIn: async (options) => (panZoom ? panZoom.scaleBy(1.2, options) : false),
-      zoomOut: async (options) => (panZoom ? panZoom.scaleBy(1 / 1.2, options) : false),
+      zoomIn: async options => (panZoom ? panZoom.scaleBy(1.2, options) : false),
+      zoomOut: async options => (panZoom ? panZoom.scaleBy(1 / 1.2, options) : false),
       zoomTo: async (zoomLevel, options) => (panZoom ? panZoom.scaleTo(zoomLevel, options) : false),
       setViewport: async (viewport, options) => {
         if (!panZoom) {
-          return false
+          return false;
         }
 
         await panZoom.setViewport(
@@ -67,9 +67,9 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
             zoom: viewport.zoom ?? state.transform[2],
           },
           options,
-        )
+        );
 
-        return true
+        return true;
       },
       getViewport: () => ({
         x: state.transform[0],
@@ -84,7 +84,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
         },
       ) => {
         if (!panZoom) {
-          return false
+          return false;
         }
 
         const ok = await fitViewport(
@@ -105,13 +105,13 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
             // at runtime — but its type `Omit`s them, so pass via spread (same as `nodes`) to satisfy TS.
             ...(options.includeHiddenNodes ? { includeHiddenNodes: true } : {}),
             // system expects `(NodeType | { id })[]`; we accept `string[]` for ergonomics.
-            ...(options.nodes?.length ? { nodes: options.nodes.map((id) => ({ id })) } : {}),
+            ...(options.nodes?.length ? { nodes: options.nodes.map(id => ({ id })) } : {}),
           },
-        )
+        );
 
         // vue-flow-only `offset` extension — apply on top of fitViewport's result.
         if (ok && options.offset && (options.offset.x || options.offset.y)) {
-          const [currentX, currentY, currentZoom] = state.transform
+          const [currentX, currentY, currentZoom] = state.transform;
           await panZoom.setViewport(
             {
               x: currentX + (options.offset.x ?? 0),
@@ -119,27 +119,27 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
               zoom: currentZoom,
             },
             { duration: 0 },
-          )
+          );
         }
 
-        return ok
+        return ok;
       },
       setCenter: async (x, y, options) => {
         if (!panZoom) {
-          return false
+          return false;
         }
 
-        const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom
-        const centerX = state.dimensions.width / 2 - x * nextZoom
-        const centerY = state.dimensions.height / 2 - y * nextZoom
+        const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom;
+        const centerX = state.dimensions.width / 2 - x * nextZoom;
+        const centerY = state.dimensions.height / 2 - y * nextZoom;
 
-        await panZoom.setViewport({ x: centerX, y: centerY, zoom: nextZoom }, options)
+        await panZoom.setViewport({ x: centerX, y: centerY, zoom: nextZoom }, options);
 
-        return true
+        return true;
       },
       fitBounds: async (bounds, options = { padding: DEFAULT_PADDING }) => {
         if (!panZoom) {
-          return false
+          return false;
         }
 
         const { x, y, zoom } = getViewportForBounds(
@@ -149,40 +149,40 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
           state.minZoom,
           state.maxZoom,
           options.padding ?? DEFAULT_PADDING,
-        )
+        );
 
-        await panZoom.setViewport({ x, y, zoom }, options)
+        await panZoom.setViewport({ x, y, zoom }, options);
 
-        return true
+        return true;
       },
       screenToFlowPosition: (position) => {
         if (state.vueFlowRef) {
-          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
+          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect();
 
           const correctedPosition = {
             x: position.x - domX,
             y: position.y - domY,
-          }
+          };
 
-          return pointToRendererPoint(correctedPosition, state.transform, state.snapToGrid, state.snapGrid)
+          return pointToRendererPoint(correctedPosition, state.transform, state.snapToGrid, state.snapGrid);
         }
 
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       },
       flowToScreenPosition: (position) => {
         if (state.vueFlowRef) {
-          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
+          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect();
 
           const correctedPosition = {
             x: position.x + domX,
             y: position.y + domY,
-          }
+          };
 
-          return rendererPointToPoint(correctedPosition, state.transform)
+          return rendererPointToPoint(correctedPosition, state.transform);
         }
 
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       },
-    }
-  })
+    };
+  });
 }

@@ -1,6 +1,6 @@
-import type { Ref } from 'vue'
-import { nextTick } from 'vue'
-import type { Actions, GraphNode } from '../types'
+import type { Ref } from 'vue';
+import type { Actions, GraphNode } from '../types';
+import { nextTick } from 'vue';
 
 export function handleNodeClick(
   node: GraphNode,
@@ -11,15 +11,16 @@ export function handleNodeClick(
   unselect = false,
   nodeEl: HTMLDivElement,
 ) {
-  nodesSelectionActive.value = false
+  nodesSelectionActive.value = false;
 
   if (!node.selected) {
-    addSelectedNodes([node])
-  } else if (unselect || (node.selected && multiSelectionActive)) {
-    removeSelectedNodes([node])
+    addSelectedNodes([node]);
+  }
+  else if (unselect || (node.selected && multiSelectionActive)) {
+    removeSelectedNodes([node]);
 
     nextTick(() => {
-      nodeEl.blur()
-    })
+      nodeEl.blur();
+    });
   }
 }

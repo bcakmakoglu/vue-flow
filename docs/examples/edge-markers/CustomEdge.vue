@@ -1,7 +1,7 @@
 <script setup>
-import { BaseEdge, getBezierPath, useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
-import CustomMarker from './CustomMarker.vue'
+import { BaseEdge, getBezierPath, useVueFlow } from '@vue-flow/core';
+import { computed } from 'vue';
+import CustomMarker from './CustomMarker.vue';
 
 const props = defineProps({
   id: {
@@ -44,49 +44,49 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-})
+});
 
-const { getNode } = useVueFlow()
+const { getNode } = useVueFlow();
 
-const path = computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props));
 
-const markerId = computed(() => `${props.id}-marker`)
+const markerId = computed(() => `${props.id}-marker`);
 
 const markerColor = computed(() => {
-  const sourceNode = getNode(props.source)
-  const targetNode = getNode(props.target)
+  const sourceNode = getNode(props.source);
+  const targetNode = getNode(props.target);
 
   if (sourceNode.selected) {
-    return '#ff0072'
+    return '#ff0072';
   }
 
   if (targetNode.selected) {
-    return '#2563eb'
+    return '#2563eb';
   }
 
-  return '#4a5568'
-})
+  return '#4a5568';
+});
 
 const markerType = computed(() => {
-  const sourceNode = getNode(props.source)
-  const targetNode = getNode(props.target)
+  const sourceNode = getNode(props.source);
+  const targetNode = getNode(props.target);
 
   if (sourceNode.selected) {
-    return 'diamond'
+    return 'diamond';
   }
 
   if (targetNode.selected) {
-    return 'circle'
+    return 'circle';
   }
 
-  return 'square'
-})
+  return 'square';
+});
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

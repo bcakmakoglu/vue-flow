@@ -1,7 +1,7 @@
-import { inject } from 'vue'
-import type { Edge, Node, VueFlowInstance } from '../types'
-import { VueFlow } from '../context'
-import { ErrorCode, VueFlowError } from '../utils/errors'
+import type { Edge, Node, VueFlowInstance } from '../types';
+import { inject } from 'vue';
+import { VueFlow } from '../context';
+import { ErrorCode, VueFlowError } from '../utils/errors';
 
 /**
  * Access the VueFlow instance for the surrounding flow — actions, computed getters, and event hooks
@@ -20,11 +20,11 @@ import { ErrorCode, VueFlowError } from '../utils/errors'
  * @returns the VueFlow instance for the current context
  */
 export function useVueFlow<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): VueFlowInstance<NodeType, EdgeType> {
-  const instance = inject(VueFlow, null) as VueFlowInstance<NodeType, EdgeType> | null
+  const instance = inject(VueFlow, null) as VueFlowInstance<NodeType, EdgeType> | null;
 
   if (!instance) {
-    throw new VueFlowError(ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER)
+    throw new VueFlowError(ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER);
   }
 
-  return instance
+  return instance;
 }

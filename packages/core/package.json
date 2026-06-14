@@ -2,14 +2,14 @@
   "name": "@vue-flow/core",
   "version": "1.48.2",
   "private": false,
-  "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "license": "MIT",
+  "homepage": "https://vueflow.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bcakmakoglu/vue-flow",
     "directory": "packages/core"
   },
-  "homepage": "https://vueflow.dev",
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
@@ -29,11 +29,9 @@
     "vueflow",
     "typescript"
   ],
-  "main": "./dist/vue-flow-core.js",
-  "module": "./dist/vue-flow-core.mjs",
-  "types": "./dist/index.d.ts",
-  "unpkg": "./dist/vue-flow-core.iife.js",
-  "jsdelivr": "./dist/vue-flow-core.iife.js",
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -44,12 +42,14 @@
     "./dist/theme-default.css": "./dist/theme-default.css",
     "./package.json": "./package.json"
   },
+  "main": "./dist/vue-flow-core.js",
+  "module": "./dist/vue-flow-core.mjs",
+  "unpkg": "./dist/vue-flow-core.iife.js",
+  "jsdelivr": "./dist/vue-flow-core.iife.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist",
-    "*.d.ts"
-  ],
-  "sideEffects": [
-    "*.css"
+    "*.d.ts",
+    "dist"
   ],
   "publishConfig": {
     "access": "public",
@@ -62,7 +62,7 @@
     "types": "vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
     "types:watch": "vue-tsc --declaration --emitDeclarationOnly --watch & tsc -p ./tsconfig.build.json --watch",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext .js,.ts,.vue ./",
+    "lint": "eslint .",
     "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
     "prepublishOnly": "shx cp ../../README.md .",
     "postpublish": "shx rm README.md",
@@ -73,8 +73,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^14.3.0",
-    "d3-interpolate": "^3.0.1",
-    "@xyflow/system": "^0.0.77"
+    "@xyflow/system": "^0.0.77",
+    "d3-interpolate": "^3.0.1"
   },
   "devDependencies": {
     "@rollup/plugin-replace": "^6.0.3",

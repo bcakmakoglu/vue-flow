@@ -1,42 +1,42 @@
-import { defineComponent, h } from 'vue'
-import { getBezierEdgeCenter } from '@xyflow/system'
-import type { SimpleBezierEdgeProps } from '../../types'
-import { Position } from '../../types'
-import BaseEdge from './BaseEdge.vue'
-import { baseEdgeProps } from './utils'
+import type { SimpleBezierEdgeProps } from '../../types';
+import { getBezierEdgeCenter } from '@xyflow/system';
+import { defineComponent, h } from 'vue';
+import { Position } from '../../types';
+import BaseEdge from './BaseEdge.vue';
+import { baseEdgeProps } from './utils';
 
 export interface GetSimpleBezierPathParams {
-  sourceX: number
-  sourceY: number
-  sourcePosition?: Position
-  targetX: number
-  targetY: number
-  targetPosition?: Position
+  sourceX: number;
+  sourceY: number;
+  sourcePosition?: Position;
+  targetX: number;
+  targetY: number;
+  targetPosition?: Position;
 }
 
 interface GetControlParams {
-  pos: Position
-  x1: number
-  y1: number
-  x2: number
-  y2: number
+  pos: Position;
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 }
 
 function getControl({ pos, x1, y1, x2, y2 }: GetControlParams): [number, number] {
-  let ctX: number, ctY: number
+  let ctX: number, ctY: number;
   switch (pos) {
     case Position.Left:
     case Position.Right:
-      ctX = 0.5 * (x1 + x2)
-      ctY = y1
-      break
+      ctX = 0.5 * (x1 + x2);
+      ctY = y1;
+      break;
     case Position.Top:
     case Position.Bottom:
-      ctX = x1
-      ctY = 0.5 * (y1 + y2)
-      break
+      ctX = x1;
+      ctY = 0.5 * (y1 + y2);
+      break;
   }
-  return [ctX, ctY]
+  return [ctX, ctY];
 }
 
 /**
@@ -66,7 +66,7 @@ export function getSimpleBezierPath({
     y1: sourceY,
     x2: targetX,
     y2: targetY,
-  })
+  });
 
   const [targetControlX, targetControlY] = getControl({
     pos: targetPosition,
@@ -74,7 +74,7 @@ export function getSimpleBezierPath({
     y1: targetY,
     x2: sourceX,
     y2: sourceY,
-  })
+  });
 
   const [labelX, labelY, offsetX, offsetY] = getBezierEdgeCenter({
     sourceX,
@@ -85,7 +85,7 @@ export function getSimpleBezierPath({
     sourceControlY,
     targetControlX,
     targetControlY,
-  })
+  });
 
   return [
     `M${sourceX},${sourceY} C${sourceControlX},${sourceControlY} ${targetControlX},${targetControlY} ${targetX},${targetY}`,
@@ -93,7 +93,7 @@ export function getSimpleBezierPath({
     labelY,
     offsetX,
     offsetY,
-  ]
+  ];
 }
 
 const SimpleBezierEdge = defineComponent<SimpleBezierEdgeProps>({
@@ -124,11 +124,11 @@ const SimpleBezierEdge = defineComponent<SimpleBezierEdgeProps>({
         ...props,
         sourcePosition: props.sourcePosition ?? Position.Bottom,
         targetPosition: props.targetPosition ?? Position.Top,
-      })
+      });
 
-      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) })
-    }
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) });
+    };
   },
-})
+});
 
-export default SimpleBezierEdge
+export default SimpleBezierEdge;

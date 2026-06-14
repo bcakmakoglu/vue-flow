@@ -1,56 +1,56 @@
 <script lang="ts" setup>
-import { toRef } from 'vue'
-import { storeToRefs, useStore, useVueFlow } from '../../composables'
-import Panel from '../Panel/Panel.vue'
-import type { ControlEmits, ControlProps } from './types'
-import ControlButton from './ControlButton.vue'
-import PlusIcon from './icons/plus.svg'
-import MinusIcon from './icons/minus.svg'
-import FitView from './icons/fitview.svg'
-import Lock from './icons/lock.svg'
-import Unlock from './icons/unlock.svg'
+import type { ControlEmits, ControlProps } from './types';
+import { toRef } from 'vue';
+import { storeToRefs, useStore, useVueFlow } from '../../composables';
+import Panel from '../Panel/Panel.vue';
+import ControlButton from './ControlButton.vue';
+import FitView from './icons/fitview.svg';
+import Lock from './icons/lock.svg';
+import MinusIcon from './icons/minus.svg';
+import PlusIcon from './icons/plus.svg';
+import Unlock from './icons/unlock.svg';
 
 const props = withDefaults(defineProps<ControlProps>(), {
   showZoom: true,
   showFitView: true,
   showInteractive: true,
   position: 'bottom-left',
-})
+});
 
-const emit = defineEmits<ControlEmits>()
+const emit = defineEmits<ControlEmits>();
 
-const { setInteractive, zoomIn, zoomOut, fitView, viewport } = useVueFlow()
+const { setInteractive, zoomIn, zoomOut, fitView, viewport } = useVueFlow();
 
-const { nodesDraggable, nodesConnectable, elementsSelectable, minZoom, maxZoom } = storeToRefs(useStore())
+const { nodesDraggable, nodesConnectable, elementsSelectable, minZoom, maxZoom } = storeToRefs(useStore());
 
-const isInteractive = toRef(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value)
+const isInteractive = toRef(() => nodesDraggable.value || nodesConnectable.value || elementsSelectable.value);
 
-const minZoomReached = toRef(() => viewport.value.zoom <= minZoom.value)
+const minZoomReached = toRef(() => viewport.value.zoom <= minZoom.value);
 
-const maxZoomReached = toRef(() => viewport.value.zoom >= maxZoom.value)
+const maxZoomReached = toRef(() => viewport.value.zoom >= maxZoom.value);
 
 function onZoomInHandler() {
-  zoomIn()
+  zoomIn();
 
-  emit('zoomIn')
+  emit('zoomIn');
 }
 
 function onZoomOutHandler() {
-  zoomOut()
+  zoomOut();
 
-  emit('zoomOut')
+  emit('zoomOut');
 }
 
 function onFitViewHandler() {
-  fitView(props.fitViewParams)
+  fitView(props.fitViewParams);
 
-  emit('fitView')
+  emit('fitView');
 }
 
 function onInteractiveChangeHandler() {
-  setInteractive(!isInteractive.value)
+  setInteractive(!isInteractive.value);
 
-  emit('interactionChange', !isInteractive.value)
+  emit('interactionChange', !isInteractive.value);
 }
 </script>
 
@@ -58,7 +58,7 @@ function onInteractiveChangeHandler() {
 export default {
   name: 'Controls',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

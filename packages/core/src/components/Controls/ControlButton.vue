@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 defineProps<{
-  disabled?: boolean
-}>()
+  disabled?: boolean;
+}>();
 
 defineEmits<{
-  (event: 'click', payload: MouseEvent): void
-}>()
+  (event: 'click', payload: MouseEvent): void;
+}>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'ControlButton',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

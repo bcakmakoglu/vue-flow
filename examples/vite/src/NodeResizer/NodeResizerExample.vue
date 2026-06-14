@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { VueFlow } from '@vue-flow/core'
-import ResizableNode from './ResizableNode.vue'
-import ResizableNodeSelected from './ResizableNodeSelected.vue'
+import type { Edge, Node } from '@vue-flow/core';
+import { VueFlow } from '@vue-flow/core';
+import ResizableNode from './ResizableNode.vue';
+import ResizableNodeSelected from './ResizableNodeSelected.vue';
 
 const nodes = ref<Node[]>([
   {
@@ -33,9 +33,9 @@ const nodes = ref<Node[]>([
       height: '100px',
     },
   },
-])
+]);
 
-const edges = ref<Edge[]>([])
+const edges = ref<Edge[]>([]);
 </script>
 
 <template>

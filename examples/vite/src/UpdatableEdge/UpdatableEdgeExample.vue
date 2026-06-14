@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core'
-import { ConnectionMode, Controls, VueFlow, isEdge, isNode } from '@vue-flow/core'
+import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core';
+import { ConnectionMode, Controls, isEdge, isNode, VueFlow } from '@vue-flow/core';
 
 const initialElements: (Node | Edge)[] = [
   {
@@ -21,28 +21,28 @@ const initialElements: (Node | Edge)[] = [
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
   { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', reconnectable: 'target' },
-]
+];
 
-const nodes = ref<Node[]>(initialElements.filter(isNode))
-const edges = ref<Edge[]>(initialElements.filter(isEdge))
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 
 // imperative store access for the component that renders `<VueFlow>` (pure-provider model)
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 function onLoad(flowInstance: VueFlowInstance) {
-  return flowInstance.fitView()
+  return flowInstance.fitView();
 }
 
 function onReconnectStart({ edge }: FlowEvents['reconnectStart']) {
-  return console.log('start update', edge)
+  return console.log('start update', edge);
 }
 
 function onReconnectEnd({ edge }: FlowEvents['reconnectEnd']) {
-  return console.log('end update', edge)
+  return console.log('end update', edge);
 }
 
 function onReconnect({ edge, connection }: FlowEvents['reconnect']) {
-  return flow.value?.reconnectEdge(edge, connection)
+  return flow.value?.reconnectEdge(edge, connection);
 }
 </script>
 

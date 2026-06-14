@@ -1,5 +1,5 @@
-import type { EdgeEventsEmit, VueFlowInstance } from '../types'
-import { createExtendedEventHook } from '../utils'
+import type { EdgeEventsEmit, VueFlowInstance } from '../types';
+import { createExtendedEventHook } from '../utils';
 
 function createEdgeHooks() {
   return {
@@ -12,7 +12,7 @@ function createEdgeHooks() {
     reconnectStart: createExtendedEventHook(),
     reconnect: createExtendedEventHook(),
     reconnectEnd: createExtendedEventHook(),
-  }
+  };
 }
 
 /**
@@ -21,52 +21,52 @@ function createEdgeHooks() {
  * @internal
  */
 export function useEdgeHooks(emits: VueFlowInstance['emits']): {
-  emit: EdgeEventsEmit
+  emit: EdgeEventsEmit;
 } {
-  const edgeHooks = createEdgeHooks()
+  const edgeHooks = createEdgeHooks();
 
   edgeHooks.doubleClick.on((event) => {
-    emits.edgeDoubleClick(event)
-  })
+    emits.edgeDoubleClick(event);
+  });
 
   edgeHooks.click.on((event) => {
-    emits.edgeClick(event)
-  })
+    emits.edgeClick(event);
+  });
 
   edgeHooks.mouseEnter.on((event) => {
-    emits.edgeMouseEnter(event)
-  })
+    emits.edgeMouseEnter(event);
+  });
 
   edgeHooks.mouseMove.on((event) => {
-    emits.edgeMouseMove(event)
-  })
+    emits.edgeMouseMove(event);
+  });
 
   edgeHooks.mouseLeave.on((event) => {
-    emits.edgeMouseLeave(event)
-  })
+    emits.edgeMouseLeave(event);
+  });
 
   edgeHooks.contextMenu.on((event) => {
-    emits.edgeContextMenu(event)
-  })
+    emits.edgeContextMenu(event);
+  });
 
   edgeHooks.reconnectStart.on((event) => {
-    emits.reconnectStart(event)
-  })
+    emits.reconnectStart(event);
+  });
 
   edgeHooks.reconnect.on((event) => {
-    emits.reconnect(event)
-  })
+    emits.reconnect(event);
+  });
 
   edgeHooks.reconnectEnd.on((event) => {
-    emits.reconnectEnd(event)
-  })
+    emits.reconnectEnd(event);
+  });
 
   return Object.entries(edgeHooks).reduce(
     (hooks, [key, value]) => {
-      hooks.emit[key as keyof EdgeEventsEmit] = value.trigger
+      hooks.emit[key as keyof EdgeEventsEmit] = value.trigger;
 
-      return hooks
+      return hooks;
     },
     { emit: {} as EdgeEventsEmit },
-  )
+  );
 }

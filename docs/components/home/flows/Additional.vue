@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import type { Edge, Node } from '@vue-flow/core'
-import { Background, Controls, MiniMap, Position, VueFlow } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import { Background, Controls, MiniMap, Position, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
 
-const emit = defineEmits(['pane'])
+const emit = defineEmits(['pane']);
 
 const nodes = ref<Node[]>([
   {
@@ -70,7 +70,7 @@ const nodes = ref<Node[]>([
     position: { x: 500, y: 120 },
     style: { width: '75px' },
   },
-])
+]);
 
 const edges = ref<Edge[]>([
   { id: 'e1-2', type: 'step', source: '1', target: '2' },
@@ -81,7 +81,7 @@ const edges = ref<Edge[]>([
   { id: 'e5-6', type: 'step', source: '5', target: '6', animated: true },
   { id: 'e6-7', type: 'step', source: '6', target: '7', animated: true },
   { id: 'e6-8', type: 'step', source: '7', target: '8', animated: true },
-])
+]);
 </script>
 
 <template>
@@ -107,7 +107,7 @@ const edges = ref<Edge[]>([
       <p>
         On top of all the features Vue Flow comes with several components like a Background, Minimap or Controls.
 
-        <br />
+        <br>
         Plus it's built for composition, making the access of the internal state easy as can be!
       </p>
 

@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'vue'
+import type { CSSProperties } from 'vue';
 
 /**
  * The props `BaseEdge` actually renders (label/marker/interaction) plus genuine `style`/`class`
@@ -21,5 +21,5 @@ export function baseEdgeProps(props: Record<string, any>, attrs: Record<string, 
     interactionWidth: props.interactionWidth,
     style: attrs.style as CSSProperties | undefined,
     class: attrs.class,
-  }
+  };
 }

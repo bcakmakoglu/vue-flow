@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "quasar dev",
-    "lint": "eslint --ext .js,.ts,.vue ./",
+    "lint": "eslint .",
     "postinstall": "quasar prepare"
   },
   "dependencies": {
@@ -18,7 +18,6 @@
     "@quasar/app-vite": "^2.6.2",
     "@tooling/eslint-config": "workspace:*",
     "@types/node": "^25.9.3",
-    "eslint": "8.51.0",
     "@vitejs/plugin-vue": "^6.0.7",
     "autoprefixer": "^10.5.0",
     "vite": "^8.0.16"

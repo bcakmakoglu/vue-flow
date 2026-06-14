@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import type { Edge, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 const useStore = defineStore('vue-flow-pinia', () => {
   const nodes = ref<Node[]>([
@@ -29,31 +29,31 @@ const useStore = defineStore('vue-flow-pinia', () => {
       position: { x: 400, y: 200 },
       class: 'light',
     },
-  ])
+  ]);
 
   const edges = ref<Edge[]>([
     { id: 'e1-2', source: '1', target: '2' },
     { id: 'e1-3', source: '1', target: '3' },
     { id: 'e3-4', source: '3', target: '4' },
-  ])
+  ]);
 
   const reset = () => {
-    edges.value = []
-    nodes.value = []
-  }
+    edges.value = [];
+    nodes.value = [];
+  };
 
   const log = () => {
-    console.log('nodes', nodes.value, 'edges', edges.value)
-  }
+    console.log('nodes', nodes.value, 'edges', edges.value);
+  };
 
   const toggleClass = () => {
     nodes.value = nodes.value.map((node) => {
       return {
         ...node,
         class: node.class === 'dark' ? 'light' : 'dark',
-      }
-    })
-  }
+      };
+    });
+  };
 
   const updatePositions = () => {
     nodes.value = nodes.value.map((node) => {
@@ -63,9 +63,9 @@ const useStore = defineStore('vue-flow-pinia', () => {
           x: Math.random() * 400,
           y: Math.random() * 400,
         },
-      }
-    })
-  }
+      };
+    });
+  };
 
   return {
     nodes,
@@ -74,7 +74,7 @@ const useStore = defineStore('vue-flow-pinia', () => {
     log,
     toggleClass,
     updatePositions,
-  }
-})
+  };
+});
 
-export default useStore
+export default useStore;
