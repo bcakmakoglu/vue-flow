@@ -4,7 +4,7 @@ import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
 import { useDialog } from './useDialog'
 import Dialog from './Dialog.vue'
 
-const { onConnect, addEdges, onNodesChange, onEdgesChange, applyNodeChanges, applyEdgeChanges } = useVueFlow()
+const { onConnect, addEdges } = useVueFlow()
 
 const dialog = useDialog()
 
@@ -15,7 +15,7 @@ const nodes = ref([
 
 const edges = ref([{ id: 'e1-2', source: '1', target: '2' }])
 
-function dialogMsg(id) {
+function dialogMsg(ids) {
   return h(
     'span',
     {
@@ -26,51 +26,23 @@ function dialogMsg(id) {
         gap: '8px',
       },
     },
-    [`Are you sure?`, h('br'), h('span', `[ELEMENT_ID: ${id}]`)],
+    [`Are you sure?`, h('br'), h('span', `[ELEMENTS: ${ids.join(', ')}]`)],
   )
 }
 
 onConnect(addEdges)
 
-onNodesChange(async (changes) => {
-  const nextChanges = []
+// `onBeforeDelete` is consulted once for the whole deletion (the node plus its connected edges) — return
+// `false` to cancel or `true` to proceed, instead of intercepting individual change events.
+async function onBeforeDelete({ nodes, edges }) {
+  const ids = [...nodes.map((node) => node.id), ...edges.map((edge) => edge.id)]
 
-  for (const change of changes) {
-    if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm(dialogMsg(change.id))
-
-      if (isConfirmed) {
-        nextChanges.push(change)
-      }
-    } else {
-      nextChanges.push(change)
-    }
-  }
-
-  applyNodeChanges(nextChanges)
-})
-
-onEdgesChange(async (changes) => {
-  const nextChanges = []
-
-  for (const change of changes) {
-    if (change.type === 'remove') {
-      const isConfirmed = await dialog.confirm(dialogMsg(change.id))
-
-      if (isConfirmed) {
-        nextChanges.push(change)
-      }
-    } else {
-      nextChanges.push(change)
-    }
-  }
-
-  applyEdgeChanges(nextChanges)
-})
+  return dialog.confirm(dialogMsg(ids))
+}
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" fit-view class="confirm-flow">
+  <VueFlow :nodes="nodes" :edges="edges" :on-before-delete="onBeforeDelete" fit-view class="confirm-flow">
     <Background />
 
     <Dialog />
