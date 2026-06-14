@@ -150,6 +150,7 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
           items: [
             { text: 'Introduction', link: '/guide/' },
             { text: 'Getting Started', link: '/guide/getting-started' },
+            { text: 'Migrating to 2.0', link: '/guide/migration' },
             { text: 'Theming', link: '/guide/theming' },
             { text: 'Nodes', link: '/guide/node' },
             { text: 'Edges', link: '/guide/edge' },
