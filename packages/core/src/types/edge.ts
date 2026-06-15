@@ -160,8 +160,12 @@ export interface EdgeProps<EdgeType extends Edge = Edge> extends EdgeLabelOption
   targetHandleId?: string | null;
   animated?: boolean;
   reconnectable?: EdgeReconnectable;
-  markerStart: string;
-  markerEnd: string;
+  // optional: an edge without markers has none at runtime, and `EdgeWrapper` passes them through
+  // verbatim. Typed as required, a custom edge's `defineProps<EdgeProps>()` generates required runtime
+  // props and Vue warns "Invalid prop 'markerStart' … Expected String, got Undefined". (Matches `Edge`,
+  // `BaseEdgeProps` and xyflow/react, which all have these optional.)
+  markerStart?: string;
+  markerEnd?: string;
   curvature?: number;
   interactionWidth?: number;
   data?: EdgeType['data'];
