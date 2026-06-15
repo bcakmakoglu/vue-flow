@@ -13,24 +13,30 @@ function getPublicPath(fileName: string) {
 }
 
 function copyFiles(emit: Emit) {
-  // 2.0 ships a single `@vue-flow/core` package (node-resizer/node-toolbar/etc. were merged into it)
-  ;['core'].forEach((name) => {
-    const fileName = `vue-flow-${name}.mjs`
+  // 2.0 ships a single `@vue-flow/core` package (node-resizer/node-toolbar/etc. were merged into it).
+  // The REPL sandbox loads the runtime AND styles from these local copies (not a CDN), so the
+  // playground tracks the in-repo 2.0 build instead of the last published 1.x release.
+  const assets = [
+    { from: 'vue-flow-core.mjs', to: 'vue-flow-core.mjs' },
+    { from: 'style.css', to: 'vue-flow-core.css' },
+    { from: 'theme-default.css', to: 'vue-flow-core-theme-default.css' },
+  ]
 
-    const filePath = resolve(__dirname, getPkgPath(name, fileName))
+  assets.forEach(({ from, to }) => {
+    const filePath = getPkgPath('core', from)
 
     if (!existsSync(filePath)) {
-      throw new Error(`${name} not built. ` + `Run "pnpm -w build" first.`)
+      throw new Error(`core not built. Run "pnpm -w build" first.`)
     }
 
     emit({
       type: 'asset',
-      fileName,
+      fileName: to,
       filePath,
       source: readFileSync(filePath, 'utf-8'),
     })
 
-    console.log(`Copied ${fileName} to /public/${fileName}`)
+    console.log(`Copied ${from} to /public/${to}`)
   })
 }
 export function copyVueFlowPlugin(): Plugin {
