@@ -138,7 +138,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   paneDragging: boolean;
 
   initialized: boolean;
-  applyDefault: boolean;
+  autoApplyChanges: boolean;
   autoConnect: boolean | Connector;
 
   fitViewOnInit: boolean;

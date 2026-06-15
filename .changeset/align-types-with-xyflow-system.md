@@ -43,7 +43,7 @@ The `NodeChange` / `EdgeChange` families mirror `@xyflow/system` exactly (no `re
 
 The deprecated `paneReady` event is gone — listen to `init` (or `onInit`) instead. The deprecated mixed-elements API (`<VueFlow v-model="elements">`, `setElements`, `addSelectedElements`, `removeSelectedElements`, `getElements`, `getSelectedElements`) is removed — use the separate `nodes` / `edges` props and `setNodes` / `setEdges` / `addSelectedNodes` / `addSelectedEdges` / `removeSelectedNodes` / `removeSelectedEdges` / `getNodes` / `getEdges` / `getSelectedNodes` / `getSelectedEdges` actions and getters.
 
-Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are wired automatically when the store is created (gated on `applyDefault`), so `addNodes` / `addEdges` mutate the store — matching xyflow/react.
+Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are wired automatically when the store is created (gated on `autoApplyChanges`), so `addNodes` / `addEdges` mutate the store — matching xyflow/react.
 
 ### Built-in nodes (label rendering)
 

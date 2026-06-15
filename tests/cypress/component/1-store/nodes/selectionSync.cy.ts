@@ -6,7 +6,7 @@ const nodes = [
 ];
 
 describe('selection sync (getSelectionChanges no longer mutates the lookup in place)', () => {
-  it('single-select replaces the previous selection (applyDefault: true)', () => {
+  it('single-select replaces the previous selection (autoApplyChanges: true)', () => {
     cy.vueFlow({ nodes });
 
     cy.then(() => {
@@ -28,13 +28,13 @@ describe('selection sync (getSelectionChanges no longer mutates the lookup in pl
     });
   });
 
-  it('does not desync the lookup from the user node under applyDefault: false', () => {
-    cy.vueFlow({ nodes, applyDefault: false });
+  it('does not desync the lookup from the user node under autoApplyChanges: false', () => {
+    cy.vueFlow({ nodes, autoApplyChanges: false });
 
     cy.then(() => {
       const store = getStore();
 
-      // with applyDefault:false and no user change handler, the emitted select change is NOT applied —
+      // with autoApplyChanges:false and no user change handler, the emitted select change is NOT applied —
       // selection state must not change, and the lookup must stay consistent with the user node
       store.addSelectedNodes([store.getNode('1')!]);
 

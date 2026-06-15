@@ -23,7 +23,7 @@ const edges = ref<Edge[]>([
 onConnect(addEdges);
 
 // `onBeforeDelete` is consulted once per deletion (a node together with its connected edges) — return
-// `false` to cancel or `true` to proceed. Replaces the old `apply-default="false"` + per-change dialog.
+// `false` to cancel or `true` to proceed. Replaces the old `auto-apply-changes="false"` + per-change dialog.
 const onBeforeDelete: OnBeforeDelete = () => dialog.confirm();
 </script>
 

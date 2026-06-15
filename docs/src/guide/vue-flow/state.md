@@ -97,12 +97,12 @@ the last one that has been injected.
 ## State Updates
 
 State updates like removing elements or updating positions are applied by default.
-If you want to strictly control state changes you can disable this behavior by setting the `applyDefault` option/prop
+If you want to strictly control state changes you can disable this behavior by setting the `autoApplyChanges` option/prop
 to `false`.
 
 ```vue
 <template>
-    <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
+    <VueFlow :nodes="nodes" :edges="edges" :auto-apply-changes="false" />
 </template>
 ```
 
