@@ -1,4 +1,5 @@
-import type { Connection, Edge, GraphNode, Node } from '../types';
+import type { Connection } from '@xyflow/system';
+import type { Edge, GraphNode, Node } from '../types';
 import { isEdgeBase, isInternalNodeBase, isNodeBase } from '@xyflow/system';
 
 export function isEdge<EdgeType extends Edge = Edge>(element: unknown): element is EdgeType {

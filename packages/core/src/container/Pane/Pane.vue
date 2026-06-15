@@ -1,11 +1,10 @@
 <script lang="ts" setup>
 import type { EdgeChange, NodeChange } from '../../types';
-import { areSetsEqual, getEventPosition, getNodesInside } from '@xyflow/system';
+import { areSetsEqual, getEventPosition, getNodesInside, SelectionMode } from '@xyflow/system';
 import { shallowRef, toRef, watch } from 'vue';
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue';
 import UserSelection from '../../components/UserSelection/UserSelection.vue';
 import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables';
-import { SelectionMode } from '../../types';
 import { getSelectionChanges } from '../../utils';
 import { getMousePosition } from './utils';
 

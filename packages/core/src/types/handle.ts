@@ -1,9 +1,6 @@
-import type { Connection, ConnectionMode } from './connection';
+import type { Connection, ConnectionMode, Dimensions, HandleType, Position, XYPosition } from '@xyflow/system';
 import type { Edge } from './edge';
-import type { Dimensions, Position, XYPosition } from './flow';
 import type { GraphNode, Node } from './node';
-
-export type HandleType = 'source' | 'target';
 
 export interface HandleElement extends XYPosition, Dimensions {
   id?: string | null;

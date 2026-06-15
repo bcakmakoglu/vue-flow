@@ -1,7 +1,7 @@
 import type { Component, FunctionalComponent } from 'vue';
 import type { BuiltInNode, NodeProps } from '../../types';
+import { Position } from '@xyflow/system';
 import { Fragment, h } from 'vue';
-import { Position } from '../../types';
 import Handle from '../Handle/Handle.vue';
 
 const DefaultNode: FunctionalComponent<NodeProps<BuiltInNode>> = function ({

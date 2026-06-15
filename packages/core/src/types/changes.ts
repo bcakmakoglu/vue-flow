@@ -1,5 +1,13 @@
+import type {
+  EdgeRemoveChange,
+  EdgeSelectionChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  NodeRemoveChange,
+  NodeSelectionChange,
+  XYPosition,
+} from '@xyflow/system';
 import type { Edge } from './edge';
-import type { XYPosition } from './flow';
 import type { Node, NodeOrigin } from './node';
 
 /**
@@ -36,33 +44,6 @@ export interface NodeDragItem {
  *
  * Item shapes on add changes are the user-provided `Node` / `Edge` types (not the internal `GraphNode`).
  */
-export interface NodeDimensionChange {
-  id: string;
-  type: 'dimensions';
-  dimensions?: { width: number; height: number };
-  resizing?: boolean;
-  setAttributes?: boolean | 'width' | 'height';
-}
-
-export interface NodePositionChange {
-  id: string;
-  type: 'position';
-  position?: XYPosition;
-  positionAbsolute?: XYPosition;
-  dragging?: boolean;
-}
-
-export interface NodeSelectionChange {
-  id: string;
-  type: 'select';
-  selected: boolean;
-}
-
-export interface NodeRemoveChange {
-  id: string;
-  type: 'remove';
-}
-
 export interface NodeAddChange<NodeType extends Node = Node> {
   item: NodeType;
   type: 'add';
@@ -75,10 +56,6 @@ export type NodeChange<NodeType extends Node = Node>
     | NodeSelectionChange
     | NodeRemoveChange
     | NodeAddChange<NodeType>;
-
-export type EdgeSelectionChange = NodeSelectionChange;
-
-export type EdgeRemoveChange = NodeRemoveChange;
 
 export interface EdgeAddChange<EdgeType extends Edge = Edge> {
   item: EdgeType;

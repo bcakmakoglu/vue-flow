@@ -1,5 +1,5 @@
-import type { PaddingWithUnit } from '@xyflow/system';
-import type { CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '../types';
+import type { PaddingWithUnit, XYPosition } from '@xyflow/system';
+import type { CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State } from '../types';
 import { clampPosition, getNodeDimensions } from '@xyflow/system';
 import { ErrorCode, VueFlowError } from '.';
 

@@ -1,6 +1,6 @@
-import type { Actions, Connection, Edge, HandleElement, HandleType, IsValidParams, Node, NodeLookup, Result } from '../types';
-import { getEventPosition, getHandlePosition } from '@xyflow/system';
-import { ConnectionMode } from '../types';
+import type { Connection, HandleType } from '@xyflow/system';
+import type { Actions, Edge, HandleElement, IsValidParams, Node, NodeLookup, Result } from '../types';
+import { ConnectionMode, getEventPosition, getHandlePosition } from '@xyflow/system';
 
 const alwaysValid = () => true;
 

@@ -1,4 +1,5 @@
-import type { NodeDragItem, XYPosition } from '../types';
+import type { XYPosition } from '@xyflow/system';
+import type { NodeDragItem } from '../types';
 import { getNodeDimensions } from '@xyflow/system';
 import { calcNextPosition } from '../utils';
 import { storeToRefs } from './storeToRefs';

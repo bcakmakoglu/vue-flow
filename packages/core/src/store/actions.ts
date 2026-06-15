@@ -1,21 +1,23 @@
 import type {
+  EdgeRemoveChange,
+  EdgeSelectionChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  NodeRemoveChange,
+  Rect,
+} from '@xyflow/system';
+import type {
   Actions,
   CoordinateExtent,
   CoordinateExtentRange,
   Edge,
   EdgeAddChange,
   EdgeLookup,
-  EdgeRemoveChange,
-  EdgeSelectionChange,
   FlowExportObject,
   GraphNode,
   Node,
   NodeAddChange,
-  NodeDimensionChange,
   NodeLookup,
-  NodePositionChange,
-  NodeRemoveChange,
-  Rect,
   State,
 } from '../types';
 import {

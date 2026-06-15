@@ -1,7 +1,8 @@
+import type { Connection, HandleType, NodeConnection, Position, XYPosition } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { Edge, EdgeMarkerType } from './edge';
-import type { ClassValue, Position, XYPosition } from './flow';
-import type { ConnectingHandle, HandleElement, HandleType } from './handle';
+import type { ClassValue } from './flow';
+import type { ConnectingHandle, HandleElement } from './handle';
 import type { GraphNode, Node } from './node';
 
 /** Connection line types (same as default edge types */
@@ -20,22 +21,6 @@ export interface ConnectionLineOptions {
   markerEnd?: EdgeMarkerType;
   markerStart?: EdgeMarkerType;
 }
-
-/** Connection params that are passed when onConnect is called */
-export interface Connection {
-  /** Source node id */
-  source: string;
-  /** Target node id */
-  target: string;
-  /** Source handle id (null when the connection isn't tied to a specific handle) */
-  sourceHandle: string | null;
-  /** Target handle id (null when the connection isn't tied to a specific handle) */
-  targetHandle: string | null;
-}
-
-export type NodeConnection = Connection & {
-  edgeId: string;
-};
 
 export type Connector = (
   params: Connection,
@@ -99,12 +84,6 @@ export interface OnConnectStartParams {
   handleId: string | null;
   /** Source handle type */
   handleType?: HandleType;
-}
-
-/** Connection modes, when set to loose all handles are treated as source */
-export enum ConnectionMode {
-  Strict = 'strict',
-  Loose = 'loose',
 }
 
 export interface ConnectionLineProps {
