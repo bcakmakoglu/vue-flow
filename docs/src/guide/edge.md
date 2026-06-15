@@ -14,12 +14,12 @@ const nodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 100, y: 125 },
   },
 ]);
@@ -54,12 +54,12 @@ const straightNodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 50, y: 125 },
   },
 ]);
@@ -558,18 +558,17 @@ import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 import SpecialEdge from './SpecialEdge.vue'
 
-// You can pass 3 optional generic arguments to the Edge type, allowing you to define:
+// You can pass 2 optional generic arguments to the `Edge` type:
 // 1. The data object type
-// 2. The events object type
-// 3. The possible edge types
+// 2. The possible edge-type string union
 
-interface CustomData {
+export interface CustomData {
     hello: string
 }
 
 type CustomEdgeTypes = 'custom' | 'special'
 
-type CustomEdge = Edge<CustomData, any, CustomEdgeTypes>
+export type CustomEdge = Edge<CustomData, CustomEdgeTypes>
 
 export const edges = ref<CustomEdge[]>([
     {
@@ -639,12 +638,12 @@ const nodes = ref([
 import type { EdgeProps } from '@vue-flow/core';
 import { BezierEdge } from '@vue-flow/core';
 
-import { CustomData } from './edges'
+import type { CustomEdge } from './edges'
 
-// props were passed from the slot using `v-bind="customEdgeProps"`
-const props = defineProps<EdgeProps<CustomData>>();
+// props were passed from the slot using `v-bind="customEdgeProps"` — `EdgeProps` takes the edge type
+const props = defineProps<EdgeProps<CustomEdge>>();
 
-console.log(props.data.hello) // 'world'
+console.log(props.data?.hello)
 </script>
 
 <script lang="ts">
@@ -770,26 +769,34 @@ But you may wish to expand on these features or implement your business logic in
 | Prop Name        | Description                                | Type                                         | Optional                                   |
 |------------------|--------------------------------------------|----------------------------------------------|--------------------------------------------|
 | id               | Unique edge id                             | string                                       | <Close class="text-red-500" />             |
-| sourceNode       | The originating node                       | [GraphNode](/typedocs/type-aliases/GraphNode)  | <Close class="text-red-500" />             |
-| targetNode       | The destination node                       | [GraphNode](/typedocs/type-aliases/GraphNode)  | <Close class="text-red-500" />             |
 | source           | ID of the source node                      | string                                       | <Close class="text-red-500" />             |
 | target           | ID of the target node                      | string                                       | <Close class="text-red-500" />             |
-| type             | Edge Type                                  | string                                       | <Close class="text-red-500" />             |
-| label            | Edge label, can be a string or a VNode     | string \| VNode \| Component \| Object       | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourcePosition   | Source handle position                     | [Position](/typedocs/enumerations/Position)  | <Close class="text-red-500" />             |
+| targetPosition   | Target handle position                     | [Position](/typedocs/enumerations/Position)  | <Close class="text-red-500" />             |
+| sourceX          | Source x coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| sourceY          | Source y coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| targetX          | Target x coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| targetY          | Target y coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| type             | Edge type                                  | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| data             | Custom edge data                           | object                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| label            | Edge label (string or VNode)               | string \| VNode \| Component \| Object       | <Check class="text-[var(--vp-c-brand)]" /> |
 | style            | CSS properties                             | CSSProperties                                | <Check class="text-[var(--vp-c-brand)]" /> |
-| selected         | Is edge selected                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| sourcePosition   | Source position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
-| targetPosition   | Target position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
+| selected         | Is the edge selected                       | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| selectable       | Can the edge be selected                   | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| deletable        | Can the edge be deleted                    | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
 | sourceHandleId   | ID of the source handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | targetHandleId   | ID of the target handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| animated         | Is edge animated                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| reconnectable    | Is edge reconnectable                      | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| markerStart      | Start marker                               | string                                       | <Close class="text-red-500" />             |
-| markerEnd        | End marker                                 | string                                       | <Close class="text-red-500" />             |
+| animated         | Is the edge animated                       | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| reconnectable    | Is the edge reconnectable                  | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerStart      | Start marker (resolved url string)         | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerEnd        | End marker (resolved url string)           | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | curvature        | The curvature of the edge                  | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | interactionWidth | Width of the interaction area for the edge | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| data             | Additional data of edge                    | any object                                   | <Close class="text-red-500" />             |
-| events           | Contextual and custom events of edge       | [EdgeEventsOn](/typedocs/type-aliases/EdgeEventsOn) | <Close class="text-red-500" />             |
+
+::: tip
+There's no `sourceNode` / `targetNode` on `EdgeProps` anymore — resolve the connected nodes with
+`useInternalNode(() => props.source)` / `useInternalNode(() => props.target)`.
+:::
 
 ## Edge Events
 
@@ -900,7 +907,7 @@ function logEvent(eventName, data) {
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
     @reconnect-start="logEvent('reconnect start', $event)"
-    @reconnect="logEvent('edge update', $event)"
+    @reconnect="logEvent('reconnect', $event)"
     @reconnect-end="logEvent('reconnect end', $event)"
   />
 </template>
@@ -919,7 +926,7 @@ function logEvent(eventName, data) {
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
     @reconnect-start="logEvent('reconnect start', $event)"
-    @reconnect="logEvent('edge update', $event)"
+    @reconnect="logEvent('reconnect', $event)"
     @reconnect-end="logEvent('reconnect end', $event)"
   >
     <Panel position="top-center">
