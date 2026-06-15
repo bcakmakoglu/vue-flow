@@ -1,4 +1,4 @@
-import type { InternalNodeBase, NodeBase } from '@xyflow/system';
+import type { InternalNodeBase, NodeBase, Padding } from '@xyflow/system';
 import type { HTMLAttributes } from 'vue';
 import type { Styles } from './flow';
 import type { HandleElement } from './handle';
@@ -8,13 +8,12 @@ export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], exte
 
 export interface CoordinateExtentRange {
   range: 'parent' | CoordinateExtent;
-  /** Values are top, right, bottom, left, you can use these the same as CSS padding */
-  padding:
-    | number
-    | [padding: number]
-    | [paddingY: number, paddingX: number]
-    | [paddingTop: number, paddingX: number, paddingBottom: number]
-    | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number];
+  /**
+   * Padding inside the parent's bounds (`@xyflow/system`'s `Padding`). A single value applies to all
+   * sides; the object form sets sides individually (`x`/`y` are horizontal/vertical shorthands). A `%`
+   * value resolves against the parent's width/height.
+   */
+  padding: Padding;
 }
 
 /**
