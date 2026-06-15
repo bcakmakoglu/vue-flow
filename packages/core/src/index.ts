@@ -84,4 +84,30 @@ export {
   rendererPointToPoint,
 } from '@xyflow/system';
 
-export { type ColorMode, type ColorModeClass, type Padding, type PaddingUnit, type PaddingWithUnit, PanOnScrollMode, type Viewport } from '@xyflow/system';
+export {
+  type Align,
+  type ColorMode,
+  type ColorModeClass,
+  type Connection,
+  ConnectionMode,
+  type Dimensions,
+  type EdgeRemoveChange,
+  type EdgeSelectionChange,
+  type HandleType,
+  type NodeConnection,
+  type NodeDimensionChange,
+  type NodePositionChange,
+  type NodeRemoveChange,
+  type NodeSelectionChange,
+  type Padding,
+  type PaddingUnit,
+  type PaddingWithUnit,
+  PanOnScrollMode,
+  Position,
+  type Rect,
+  SelectionMode,
+  type SelectionRect,
+  type SnapGrid,
+  type Viewport,
+  type XYPosition,
+} from '@xyflow/system';

@@ -1,9 +1,9 @@
-import type { Connection, Edge, EdgeComponent, GraphNode, HandleType, MouseTouchEvent } from '../../types';
-import { getHandlePosition, getMarkerId } from '@xyflow/system';
+import type { Connection, HandleType } from '@xyflow/system';
+import type { Edge, EdgeComponent, GraphNode, MouseTouchEvent } from '../../types';
+import { ConnectionMode, getHandlePosition, getMarkerId, Position } from '@xyflow/system';
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue';
 import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables';
 import { EdgeId, EdgeRef, Slots } from '../../context';
-import { ConnectionMode, Position } from '../../types';
 import { ARIA_EDGE_DESC_KEY, elementSelectionKeys, ErrorCode, getEdgeHandle, getEdgeZIndex, VueFlowError } from '../../utils';
 import EdgeAnchor from './EdgeAnchor';
 

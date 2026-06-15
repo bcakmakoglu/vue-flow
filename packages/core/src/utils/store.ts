@@ -1,7 +1,11 @@
-import type { NodeLookup as SystemNodeLookup, ParentLookup as SystemParentLookup } from '@xyflow/system';
+import type {
+  Connection,
+  NodeConnection,
+  NodeLookup as SystemNodeLookup,
+  ParentLookup as SystemParentLookup,
+} from '@xyflow/system';
 import type {
   Actions,
-  Connection,
   ConnectionLookup,
   CoordinateExtent,
   CoordinateExtentRange,
@@ -9,7 +13,6 @@ import type {
   Edge,
   GraphNode,
   Node,
-  NodeConnection,
   NodeOrigin,
   State,
   ValidConnectionFunc,

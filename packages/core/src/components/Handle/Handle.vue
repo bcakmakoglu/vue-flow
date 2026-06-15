@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { HandleProps } from '../../types';
-import { getDimensions, isMouseEvent } from '@xyflow/system';
+import { getDimensions, isMouseEvent, Position } from '@xyflow/system';
 import { computed, onMounted, ref, toRef } from 'vue';
 import { storeToRefs, useHandle, useNode, useStore, useVueFlow } from '../../composables';
-import { Position } from '../../types';
 import { isDef } from '../../utils';
 
 const {

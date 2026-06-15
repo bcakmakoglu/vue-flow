@@ -1,5 +1,4 @@
-import type { Padding, Viewport } from '@xyflow/system';
-import type { Rect, XYPosition } from './flow';
+import type { Padding, Rect, Viewport, XYPosition } from '@xyflow/system';
 
 export interface TransitionOptions {
   duration?: number;

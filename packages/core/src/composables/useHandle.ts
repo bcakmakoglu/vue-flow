@@ -1,9 +1,8 @@
-import type { ConnectionState, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
+import type { Connection, ConnectionState, HandleType, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
 import type { MaybeRefOrGetter } from 'vue';
-import type { ConnectingHandle, Connection, HandleType, MouseTouchEvent, ValidConnectionFunc } from '../types';
-import { getEventPosition, getHostForElement, XYHandle } from '@xyflow/system';
+import type { ConnectingHandle, MouseTouchEvent, ValidConnectionFunc } from '../types';
+import { getEventPosition, getHostForElement, Position, XYHandle } from '@xyflow/system';
 import { toValue } from 'vue';
-import { Position } from '../types';
 import { isValidHandle } from '../utils';
 import { storeToRefs } from './storeToRefs';
 import { useStore } from './useStore';

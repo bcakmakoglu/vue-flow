@@ -1,6 +1,6 @@
 import type { FunctionalComponent, HTMLAttributes } from 'vue';
+import { Position } from '@xyflow/system';
 import { h } from 'vue';
-import { Position } from '../../types';
 
 interface Props extends HTMLAttributes {
   position: Position;

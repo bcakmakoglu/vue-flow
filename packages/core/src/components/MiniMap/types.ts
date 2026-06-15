@@ -1,5 +1,6 @@
+import type { Dimensions, XYPosition } from '@xyflow/system';
 import type { CSSProperties, InjectionKey } from 'vue';
-import type { Dimensions, GraphNode, NodeMouseEvent, PanelPositionType, XYPosition } from '../../types';
+import type { GraphNode, NodeMouseEvent, PanelPositionType } from '../../types';
 
 /** expects a node and returns a color value */
 export type MiniMapNodeFunc = (node: GraphNode) => string;

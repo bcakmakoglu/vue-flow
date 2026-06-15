@@ -2,12 +2,10 @@
 import type { CSSProperties } from 'vue';
 import type { GraphNode } from '../../types';
 import type { NodeToolbarProps } from './types';
-import { getNodesBounds, getNodeToolbarTransform } from '@xyflow/system';
+import { getNodesBounds, getNodeToolbarTransform, Position } from '@xyflow/system';
 import { computed, inject } from 'vue';
 import { storeToRefs, useStore, useVueFlow } from '../../composables';
 import { NodeId } from '../../context';
-
-import { Position } from '../../types';
 
 const props = withDefaults(defineProps<NodeToolbarProps>(), {
   position: Position.Top,

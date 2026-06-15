@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { NodeDimensionChange } from '../../types';
+import type { NodeDimensionChange } from '@xyflow/system';
 import type { ControlLinePosition, ControlPosition, NodeResizerEmits, NodeResizerProps } from './types';
 import { getNodeDimensions } from '@xyflow/system';
 import { computed, inject, toRef, watch } from 'vue';

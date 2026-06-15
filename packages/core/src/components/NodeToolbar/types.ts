@@ -1,4 +1,4 @@
-import type { Position } from '../../types';
+import type { Position } from '@xyflow/system';
 
 export interface NodeToolbarProps {
   nodeId?: string | string[];
@@ -7,5 +7,3 @@ export interface NodeToolbarProps {
   offset?: number;
   align?: 'center' | 'start' | 'end';
 }
-
-export type Align = 'center' | 'start' | 'end';

@@ -1,5 +1,5 @@
+import type { HandleType, NodeConnection } from '@xyflow/system';
 import type { MaybeRefOrGetter } from 'vue';
-import type { HandleType, NodeConnection } from '../types';
 import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system';
 import { computed, ref, toValue, watch } from 'vue';
 import { storeToRefs } from './storeToRefs';

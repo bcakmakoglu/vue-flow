@@ -1,5 +1,6 @@
+import type { Connection } from '@xyflow/system';
 import type { Ref, ToRefs } from 'vue';
-import type { Connection, Edge, FlowProps, Node, VueFlowStoreHandle } from '../types';
+import type { Edge, FlowProps, Node, VueFlowStoreHandle } from '../types';
 import { effectScope, isRef, toRaw, toRef, watch } from 'vue';
 import { isDef } from '../utils';
 import { storeToRefs } from './storeToRefs';

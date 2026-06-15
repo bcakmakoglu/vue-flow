@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { XYResizerChange, XYResizerChildChange } from '@xyflow/system';
-import type { NodeChange, NodeDimensionChange, NodePositionChange } from '../../types';
+import type { NodeDimensionChange, NodePositionChange, XYResizerChange, XYResizerChildChange } from '@xyflow/system';
+import type { NodeChange } from '../../types';
 import type { NodeResizerEmits, ResizeControlProps } from './types';
 import { evaluateAbsolutePosition, handleExpandParent, XYResizer } from '@xyflow/system';
 import { computed, ref, toRef, watchEffect } from 'vue';

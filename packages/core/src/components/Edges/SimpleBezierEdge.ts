@@ -1,7 +1,6 @@
 import type { SimpleBezierEdgeProps } from '../../types';
-import { getBezierEdgeCenter } from '@xyflow/system';
+import { getBezierEdgeCenter, Position } from '@xyflow/system';
 import { defineComponent, h } from 'vue';
-import { Position } from '../../types';
 import BaseEdge from './BaseEdge.vue';
 import { baseEdgeProps } from './utils';
 

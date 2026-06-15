@@ -1,7 +1,7 @@
-import type { EdgeBase } from '@xyflow/system';
+import type { EdgeBase, Position } from '@xyflow/system';
 import type { Component, CSSProperties, SVGAttributes, VNode } from 'vue';
 import type { EdgeComponent, EdgeTextProps } from './components';
-import type { ClassValue, Position, Styles } from './flow';
+import type { ClassValue, Styles } from './flow';
 
 /** Edge markers */
 export enum MarkerType {

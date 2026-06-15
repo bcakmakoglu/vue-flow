@@ -1,9 +1,9 @@
 import type { HandleElement } from '../../types';
-import { getBezierPath, getHandlePosition, getMarkerId, getSmoothStepPath, oppositePosition } from '@xyflow/system';
+import { ConnectionMode, getBezierPath, getHandlePosition, getMarkerId, getSmoothStepPath, oppositePosition, Position } from '@xyflow/system';
 import { computed, defineComponent, h, inject } from 'vue';
 import { storeToRefs, useStore, useVueFlow } from '../../composables';
 import { Slots } from '../../context';
-import { ConnectionLineType, ConnectionMode, Position } from '../../types';
+import { ConnectionLineType } from '../../types';
 import { getSimpleBezierPath } from '../Edges/SimpleBezierEdge';
 
 const ConnectionLine = defineComponent({

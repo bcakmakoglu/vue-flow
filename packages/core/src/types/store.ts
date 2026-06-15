@@ -1,31 +1,29 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, PanOnScrollMode, PanZoomInstance, Transform, Viewport } from '@xyflow/system';
-import type { ComputedRef } from 'vue';
-import type { ViewportHelper } from '../composables';
-import type { EdgeChange, NodeChange, NodeDragItem } from './changes';
-import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components';
 import type {
+  ColorMode,
   Connection,
-  ConnectionLineOptions,
-  ConnectionLookup,
   ConnectionMode,
-  ConnectionStatus,
-  Connector,
-  NodeConnection,
-} from './connection';
-import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge';
-import type {
   Dimensions,
-  FlowExportObject,
-  FlowProps,
-  OnBeforeDelete,
+  HandleType,
+  NodeConnection,
+  PanOnScrollMode,
+  PanZoomInstance,
   Rect,
   SelectionMode,
   SelectionRect,
   SnapGrid,
+  Transform,
+  Viewport,
   XYPosition,
-} from './flow';
-import type { ConnectingHandle, HandleType, ValidConnectionFunc } from './handle';
+} from '@xyflow/system';
+import type { ComputedRef } from 'vue';
+import type { ViewportHelper } from '../composables';
+import type { EdgeChange, NodeChange, NodeDragItem } from './changes';
+import type { DefaultEdgeTypes, DefaultNodeTypes, EdgeComponent, NodeComponent } from './components';
+import type { ConnectionLineOptions, ConnectionLookup, ConnectionStatus, Connector } from './connection';
+import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge';
+import type { FlowExportObject, FlowProps, OnBeforeDelete } from './flow';
+import type { ConnectingHandle, ValidConnectionFunc } from './handle';
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks';
 import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeOrigin } from './node';
 

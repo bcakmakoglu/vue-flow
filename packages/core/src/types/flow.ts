@@ -1,17 +1,10 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, PanOnScrollMode, Viewport } from '@xyflow/system';
+import type { ColorMode, Connection, ConnectionMode, PanOnScrollMode, SelectionMode, SnapGrid, Viewport } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { VueFlowError } from '../utils';
 import type { EdgeChange, NodeChange } from './changes';
 import type { EdgeTypesObject, NodeTypesObject } from './components';
-import type {
-  Connection,
-  ConnectionLineOptions,
-  ConnectionLineProps,
-  ConnectionMode,
-  Connector,
-  OnConnectStartParams,
-} from './connection';
+import type { ConnectionLineOptions, ConnectionLineProps, Connector, OnConnectStartParams } from './connection';
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge';
 import type { ValidConnectionFunc } from './handle';
 import type { EdgeMouseEvent, EdgeReconnectEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks';
@@ -57,38 +50,6 @@ export type Styles = CSSProperties & ThemeVars & CustomThemeVars;
 
 // Vue does not publicly export ClassValue, so we define it here to match its class binding type
 export type ClassValue = string | Record<string, boolean> | ClassValue[];
-
-/** Handle Positions */
-export enum Position {
-  Left = 'left',
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-}
-
-export interface XYPosition {
-  x: number;
-  y: number;
-}
-
-export interface Dimensions {
-  width: number;
-  height: number;
-}
-
-export interface Rect extends Dimensions, XYPosition {}
-
-export type SnapGrid = [x: number, y: number];
-
-export interface SelectionRect extends Rect {
-  startX: number;
-  startY: number;
-}
-
-export enum SelectionMode {
-  Partial = 'partial',
-  Full = 'full',
-}
 
 export interface FlowExportObject {
   /** exported nodes */

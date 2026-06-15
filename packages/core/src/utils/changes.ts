@@ -1,16 +1,18 @@
 import type {
+  EdgeRemoveChange,
+  EdgeSelectionChange,
+  NodeRemoveChange,
+  NodeSelectionChange,
+} from '@xyflow/system';
+import type {
   Edge,
   EdgeAddChange,
   EdgeChange,
-  EdgeRemoveChange,
-  EdgeSelectionChange,
   ElementChange,
   GraphNode,
   Node,
   NodeAddChange,
   NodeChange,
-  NodeRemoveChange,
-  NodeSelectionChange,
 } from '../types';
 import { isNode } from '.';
 
