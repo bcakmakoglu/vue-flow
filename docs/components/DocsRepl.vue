@@ -7,10 +7,10 @@ import { exampleImports } from '../examples'
 
 const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>()
 
-const vueFlowVersion = __VUE_FLOW_VERSION__
-
-let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/theme-default.css';
+// load the in-repo 2.0 core styles served from /public (see .vitepress/plugins/copy.ts) rather than
+// the CDN — the CDN only has the last published 1.x release, which mismatches the local 2.0 runtime
+let css = `@import '${location.origin}/vue-flow-core.css';
+@import '${location.origin}/vue-flow-core-theme-default.css';
 
 html,
 body,
