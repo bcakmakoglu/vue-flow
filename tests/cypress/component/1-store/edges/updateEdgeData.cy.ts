@@ -101,11 +101,11 @@ describe('Store Action: `updateEdgeData`', () => {
     cy.get('.vue-flow__edge').should('contain.text', 'updated');
   });
 
-  it('works with `applyDefault: false` (commit bypasses the changes pipeline)', () => {
+  it('works with `autoApplyChanges: false` (commit bypasses the changes pipeline)', () => {
     cy.vueFlow({
       nodes,
       edges,
-      applyDefault: false,
+      autoApplyChanges: false,
     });
 
     cy.then(() => {

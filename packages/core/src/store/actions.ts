@@ -466,7 +466,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
           // Re-set a fresh entry so the markRaw lookup re-renders this node — in-place `measured`/
           // `handleBounds` writes don't trigger the per-node render computed (markRaw values aren't deep
-          // tracked; only the lookup `.set` is). This makes measurement reflect even with `applyDefault:false`
+          // tracked; only the lookup `.set` is). This makes measurement reflect even with `autoApplyChanges:false`
           // (the 'dimensions' change additionally flows `measured` onto the user node via re-adopt).
           // The fresh entry goes into BOTH maps: the system map is what `adoptUserNodes` reuses via
           // `checkEquality`, so leaving the old object there would let the maps' references diverge.

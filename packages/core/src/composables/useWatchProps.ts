@@ -159,10 +159,10 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
     const watchApplyDefault = () => {
       scope.run(() => {
         watch(
-          () => props.applyDefault,
+          () => props.autoApplyChanges,
           () => {
-            if (isDef(props.applyDefault)) {
-              storeRefs.applyDefault.value = props.applyDefault;
+            if (isDef(props.autoApplyChanges)) {
+              storeRefs.autoApplyChanges.value = props.autoApplyChanges;
             }
           },
           {
@@ -224,7 +224,7 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
         'nodes',
         'maxZoom',
         'minZoom',
-        'applyDefault',
+        'autoApplyChanges',
         'autoConnect',
         // `viewport` isn't a state field (it's a getter on the instance); `useViewportSync` two-way binds it
         'viewport',

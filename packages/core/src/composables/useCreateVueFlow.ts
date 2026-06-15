@@ -23,10 +23,10 @@ export function useCreateVueFlow<NodeType extends Node = Node, EdgeType extends 
 
   /**
    * Register default change handlers so `addNodes`/`addEdges`/etc. mutate the store. Disabling
-   * `applyDefault` (the user handles changes manually) removes them. Mirrors xyflow/react.
+   * `autoApplyChanges` (the user handles changes manually) removes them. Mirrors xyflow/react.
    */
   watch(
-    () => state.applyDefault,
+    () => state.autoApplyChanges,
     (shouldApplyDefault, _prev, onCleanup) => {
       const nodesChangeHandler = (changes: NodeChange[]) => {
         instance.applyNodeChanges(changes as NodeChange<NodeType>[]);

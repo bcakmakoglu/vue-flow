@@ -296,7 +296,7 @@ const edges = ref([
 </template>
 ```
 
-### apply-default (optional)
+### auto-apply-changes (optional)
 
 - Type: `boolean`
 
@@ -315,7 +315,7 @@ const edges = ref([
 
 ```vue
 <template>
-  <VueFlow :apply-default="false" />
+  <VueFlow :auto-apply-changes="false" />
 </template>
 ```
 

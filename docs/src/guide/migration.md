@@ -238,7 +238,7 @@ far the pointer may move and still count as a node click.
   removeChildren = false)`). Pass `false` to keep the edges.
 - New **`onBeforeDelete`** prop — a guard consulted before delete-key / `deleteElements` removals; return
   `false` to cancel, `true` to proceed, or `{ nodes, edges }` to delete a subset. Replaces the old
-  `apply-default="false"` + change-interception pattern for delete confirmation.
+  `auto-apply-changes="false"` + change-interception pattern for delete confirmation.
 - New **`deleteElements({ nodes, edges })`** action — deletes the given elements plus their connected edges
   and children (gated by `onBeforeDelete`), resolving to the removed set.
 

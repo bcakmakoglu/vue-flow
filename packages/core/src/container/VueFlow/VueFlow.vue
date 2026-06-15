@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   zoomOnDoubleClick: undefined,
   panOnScroll: undefined,
   panOnDrag: undefined,
-  applyDefault: undefined,
+  autoApplyChanges: undefined,
   colorMode: undefined,
   fitView: undefined,
   fitViewOptions: undefined,
