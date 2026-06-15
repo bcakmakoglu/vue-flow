@@ -24,11 +24,5 @@ export default antfu({
     // misfires on the documented overloaded composables (useNodesData/useEdgesData): the shared JSDoc
     // block sits above the first overload, so `@param guard` reads as "not matching" a parameter
     'jsdoc/check-param-names': 'off',
-    // Keep these OFF: their `--fix` rewrites *existing* code in behaviour-changing ways. `||` → `??`
-    // (antfu's e18e plugin) differs for `0` / `''` / `false` — it silently broke viewport/measurement
-    // math — and `instanceof Function` → `typeof x === 'function'` narrows non-function-typed values to
-    // `never`. Adopt `??` / `typeof` deliberately if wanted, not via a blanket reformat.
-    'e18e/prefer-nullish-coalescing': 'off',
-    'unicorn/no-instanceof-builtins': 'off',
   },
 });

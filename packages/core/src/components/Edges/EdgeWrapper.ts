@@ -20,7 +20,7 @@ function getNodeHandles(node: GraphNode, side: 'source' | 'target', strict: bool
   }
 
   const other = side === 'source' ? 'target' : 'source';
-  return [...(bounds?.[side] || []), ...(bounds?.[other] || [])];
+  return [...(bounds?.[side] ?? []), ...(bounds?.[other] ?? [])];
 }
 
 const EdgeWrapper = defineComponent({
@@ -93,9 +93,11 @@ const EdgeWrapper = defineComponent({
     // not the internal `{ ...defaultEdgeOptions, ...edge }` render view — only the resolved fn is read off
     // the merged view so a defaults-provided callback still applies
     const edgeClass = computed(() =>
-      edge.value.class instanceof Function ? edge.value.class(storedEdge.value) : edge.value.class,
+      typeof edge.value.class === 'function' ? edge.value.class(storedEdge.value) : edge.value.class,
     );
     const edgeStyle = computed(() =>
+      // `edge.style` can be a function at runtime (a style callback); the type doesn't model it
+      // eslint-disable-next-line unicorn/no-instanceof-builtins
       edge.value.style instanceof Function ? edge.value.style(storedEdge.value) : edge.value.style,
     );
 
