@@ -89,17 +89,8 @@ const EdgeWrapper = defineComponent({
     provide(EdgeId, props.id);
     provide(EdgeRef, edgeEl);
 
-    // the class/style callbacks receive the RAW stored edge (like every event payload + selection action),
-    // not the internal `{ ...defaultEdgeOptions, ...edge }` render view — only the resolved fn is read off
-    // the merged view so a defaults-provided callback still applies
-    const edgeClass = computed(() =>
-      typeof edge.value.class === 'function' ? edge.value.class(storedEdge.value) : edge.value.class,
-    );
-    const edgeStyle = computed(() =>
-      // `edge.style` can be a function at runtime (a style callback); the type doesn't model it
-      // eslint-disable-next-line unicorn/no-instanceof-builtins
-      edge.value.style instanceof Function ? edge.value.style(storedEdge.value) : edge.value.style,
-    );
+    const edgeClass = computed(() => edge.value.class);
+    const edgeStyle = computed(() => edge.value.style);
 
     const edgeCmp = computed(() => {
       const name = edge.value.type || 'default';

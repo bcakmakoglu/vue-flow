@@ -1,6 +1,6 @@
 import type { InternalNodeBase, NodeBase, Padding } from '@xyflow/system';
 import type { HTMLAttributes } from 'vue';
-import type { Styles } from './flow';
+import type { ClassValue, Styles } from './flow';
 import type { HandleElement } from './handle';
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
@@ -40,7 +40,7 @@ export type Node<
   NodeData extends Record<string, unknown> = Record<string, unknown>,
   NodeType extends string | undefined = string | undefined,
 > = NodeBase<NodeData, NodeType> & {
-  class?: string | string[] | Record<string, any>;
+  class?: ClassValue;
   style?: Styles;
   resizing?: boolean;
   focusable?: boolean;

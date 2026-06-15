@@ -58,6 +58,9 @@ export type CSSVars
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] };
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars;
 
+// Vue does not publicly export ClassValue, so we define it here to match its class binding type
+export type ClassValue = string | Record<string, boolean> | ClassValue[];
+
 /** Handle Positions */
 export enum Position {
   Left = 'left',
