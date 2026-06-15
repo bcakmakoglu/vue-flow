@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Rect as RectType } from '@xyflow/system';
 import type { EdgeTextProps } from '../../types/components';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, shallowRef, watch } from 'vue';
 
 const {
   x,
@@ -14,13 +14,22 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>();
 
-const box = ref<RectType>({ x: 0, y: 0, width: 0, height: 0 });
+const box = shallowRef<RectType>({ x: 0, y: 0, width: 0, height: 0 });
 
-const el = ref<SVGTextElement | null>(null);
+const el = shallowRef<SVGTextElement | null>(null);
 
 const transform = computed(() => `translate(${x - box.value.width / 2} ${y - box.value.height / 2})`);
 
-onMounted(getBox);
+onMounted(() => {
+  getBox();
+
+  // The first measurement can run before the theme stylesheet (`font-size`) and web font are applied,
+  // sizing the box for the wrong (default 16px) font. Since we deliberately don't re-measure on x/y
+  // changes (that would force a reflow every drag frame — see the watch below), it would never self-
+  // correct. Re-measure once after a frame and once fonts settle so the box snaps to the real text size.
+  requestAnimationFrame(getBox);
+  document.fonts?.ready?.then(getBox);
+});
 
 // the text's bounding box depends on its content/font, NOT its x/y position — re-measuring (getBBox forces
 // a reflow) on every move would thrash layout each drag frame for no change, so only watch el + label
@@ -47,7 +56,7 @@ export default {
 </script>
 
 <template>
-  <g :transform="transform" class="vue-flow__edge-textwrapper">
+  <g :transform="transform" :visibility="box.width ? 'visible' : 'hidden'" class="vue-flow__edge-textwrapper">
     <rect
       v-if="labelShowBg"
       class="vue-flow__edge-textbg"
