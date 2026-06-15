@@ -31,7 +31,8 @@ import { NodeResizer, NodeToolbar } from '@vue-flow/core'
 import '@vue-flow/core/dist/style.css' // ships the resize-control styles too
 ```
 
-Uninstall the old packages and bump the peer: Vue Flow 2.0 requires **`@vueuse/core` v14**.
+Uninstall the old packages and bump the peers: Vue Flow 2.0 requires **Vue `>=3.5`** (it uses `useId()`) and
+**`@vueuse/core` v14**.
 
 ## 2. Binding nodes & edges
 
@@ -121,8 +122,10 @@ Field moves on the node:
 | `node.label` (top-level) | `node.data.label` |
 
 > Custom node components are unaffected — they still receive `position`, dimensions, etc. through their
-> props. And drag/selection/context-menu **event payloads still emit the enriched `InternalNode`**, so
-> handlers reading `node.computedPosition` from an event keep working.
+> props. But **node event payloads now carry the user `Node`, not the `InternalNode`** (xyflow parity) —
+> `onNodeClick`, `onNodeDrag*`, the minimap node events, `nodesInitialized`, etc. emit your raw node. If a
+> handler read store-computed fields off the event node (`computedPosition` / `internals.positionAbsolute`,
+> authoritative `measured`, `internals.handleBounds`), resolve the enriched node by id: `getInternalNode(node.id)`.
 
 ## 5. The edge shape: no more `GraphEdge`
 
@@ -135,6 +138,9 @@ Edges are stored verbatim as your plain `Edge` objects — there is no enriched 
 - **`EdgeProps`** drops `sourceNode`/`targetNode`, exposes handles as `sourceHandleId`/`targetHandleId`,
   gains `selectable`/`deletable`, and makes `type`/`data` optional.
 - `useEdge().edge` is now a `ComputedRef`.
+- **Auto-generated edge IDs use the `xy-edge__` prefix** (was `vueflow__edge-`), matching react/svelte — this
+  only affects edges created without an explicit `id`. Update any CSS/selectors or persisted references that
+  matched `vueflow__edge-`.
 
 ## 6. The store split: `useVueFlow` + `useStore`
 
@@ -211,7 +217,11 @@ fromPosition, fromNode, to, toHandle, toPosition, toNode, pointer }` — instead
 status, position }`.
 
 **`VueFlowStore` → `VueFlowInstance`** (the type returned by `useVueFlow()` / exposed by a `<VueFlow>` template
-ref). `VueFlowStore` is kept as an alias.
+ref). The old `VueFlowStore` name is removed.
+
+**`applyDefault` → `autoApplyChanges`** — the prop/option that toggles whether Vue Flow automatically applies
+node/edge changes (drag, resize, select, add/remove) back to your arrays. Same default (`true`); rename the
+prop `:apply-default` → `:auto-apply-changes`.
 
 ## 9. `connectionMode` defaults to `strict`
 
@@ -253,6 +263,9 @@ far the pointer may move and still count as a node click.
 | `paneReady` event | `init` (`@init` / `onInit`) |
 | `FlowExportObject.position` / `.zoom` | `FlowExportObject.viewport` (`{ x, y, zoom }`) |
 | `GraphEdge.events` | edge events via the store (`onEdgeClick`, …) |
+| `addEdge` / `updateEdge` standalone utils | the `addEdges` / `updateEdge` / `reconnectEdge` store actions |
+| `useZoomPanHelper` | `useVueFlow()` zoom/pan actions (`zoomIn`, `zoomOut`, `fitView`, `setViewport`) |
+| `useVueFlow().fromObject()` / `FlowImportObject` | removed — restore manually after `onInit` (set `nodes`/`edges` + `setViewport`); `toObject()` is unchanged |
 
 ## 13. Types & change shapes
 
@@ -300,6 +313,8 @@ NodeProps<Data>        → NodeProps<Node<Data, 'type'>>
 node.x = …             → updateNode(id, { x: … }) / immutable reassignment
 removeNodes(id)        → also removes connected edges (pass `false` to keep them)
 connectionMode         → defaults to 'strict'
+applyDefault           → autoApplyChanges  (:apply-default → :auto-apply-changes)
+node event payload     → user Node (was InternalNode); getInternalNode(id) for internals
 ```
 
 Hitting something this guide doesn't cover? [Open an issue](https://github.com/bcakmakoglu/vue-flow/issues) —
