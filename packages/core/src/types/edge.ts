@@ -40,7 +40,7 @@ export interface MarkerProps {
   strokeWidth?: number;
 }
 
-export type EdgeMarkerType = string | MarkerType | EdgeMarker;
+export type EdgeMarkerType = string | EdgeMarker;
 
 export type EdgeReconnectable = boolean | 'target' | 'source';
 
