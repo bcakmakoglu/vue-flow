@@ -1,8 +1,8 @@
-import { defineComponent, h, watch } from 'vue'
-import type { ConnectionLineProps } from '@vue-flow/core'
-import { BaseEdge, getBezierPath } from '@vue-flow/core'
+import type { ConnectionLineProps } from '@vue-flow/core';
+import { BaseEdge, getBezierPath } from '@vue-flow/core';
+import { defineComponent, h, watch } from 'vue';
 
-const connectionLineId = 'test-custom-connection-line'
+const connectionLineId = 'test-custom-connection-line';
 
 describe('Custom Connection Line', () => {
   it('renders a custom connection line component', () => {
@@ -18,20 +18,20 @@ describe('Custom Connection Line', () => {
               sourceHandleId: currProps.sourceHandle?.id ?? null,
               targetNodeId: currProps.targetNode?.id,
               targetHandleId: currProps.targetHandle?.id ?? null,
-            })
+            });
           },
           { immediate: true, deep: true },
-        )
+        );
 
         return () => {
-          const path = getBezierPath(props)
+          const path = getBezierPath(props);
 
-          return h(BaseEdge, { path: path[0], class: connectionLineId })
-        }
+          return h(BaseEdge, { path: path[0], class: connectionLineId });
+        };
       },
-    })
+    });
 
-    const onChangeSpy = cy.spy().as('onChangeSpy')
+    const onChangeSpy = cy.spy().as('onChangeSpy');
 
     cy.vueFlow(
       {
@@ -53,63 +53,63 @@ describe('Custom Connection Line', () => {
       },
       {},
       { 'connection-line': (props: ConnectionLineProps) => h(CustomConnectionLine, { ...props, onChange: onChangeSpy }) },
-    )
+    );
 
     // Native drag (no chained `cy.trigger`, which can cancel the in-progress connection): dispatch
     // mousedown + smooth moves to leave the connection IN PROGRESS, assert the custom line mid-drag, then
     // mouseup natively. Settles via `setTimeout` (rAF throttles headless).
     cy.get(`[data-nodeid="1"].source`).then(($src) => {
       cy.get(`[data-nodeid="2"].target`).then(($tgt) => {
-        const src = $src[0]
-        const tgt = $tgt[0]
-        const win = src.ownerDocument.defaultView as Window
-        const doc = src.ownerDocument
-        const s = src.getBoundingClientRect()
-        const t = tgt.getBoundingClientRect()
-        const sx = s.x + s.width / 2
-        const sy = s.y + s.height / 2
-        const tx = t.x + t.width / 2
-        const ty = t.y + t.height / 2
+        const src = $src[0];
+        const tgt = $tgt[0];
+        const win = src.ownerDocument.defaultView as Window;
+        const doc = src.ownerDocument;
+        const s = src.getBoundingClientRect();
+        const t = tgt.getBoundingClientRect();
+        const sx = s.x + s.width / 2;
+        const sy = s.y + s.height / 2;
+        const tx = t.x + t.width / 2;
+        const ty = t.y + t.height / 2;
         const fire = (target: EventTarget, type: string, x: number, y: number, b: number) =>
-          target.dispatchEvent(new win.MouseEvent(type, { bubbles: true, cancelable: true, view: win, button: 0, buttons: b, clientX: x, clientY: y }))
-        const settle = () => new Promise<void>((r) => win.setTimeout(r, 24))
+          target.dispatchEvent(new win.MouseEvent(type, { bubbles: true, cancelable: true, view: win, button: 0, buttons: b, clientX: x, clientY: y }));
+        const settle = () => new Promise<void>(r => win.setTimeout(r, 24));
 
         return (async () => {
-          fire(src, 'mousedown', sx, sy, 1)
-          await settle()
+          fire(src, 'mousedown', sx, sy, 1);
+          await settle();
           for (let i = 1; i <= 5; i++) {
-            fire(doc, 'mousemove', sx + ((tx - sx) * i) / 5, sy + ((ty - sy) * i) / 5, 1)
-            await settle()
+            fire(doc, 'mousemove', sx + ((tx - sx) * i) / 5, sy + ((ty - sy) * i) / 5, 1);
+            await settle();
           }
-          fire(tgt, 'mousemove', tx, ty, 1)
-          await settle()
-        })()
-      })
-    })
+          fire(tgt, 'mousemove', tx, ty, 1);
+          await settle();
+        })();
+      });
+    });
 
     // connection is in progress → the custom line is rendered and onChange has fired with the resolved ends
-    cy.get(`.${connectionLineId}`).should('have.length', 1)
+    cy.get(`.${connectionLineId}`).should('have.length', 1);
     cy.get('@onChangeSpy').should('have.been.calledWith', {
       sourceNodeId: '1',
       sourceHandleId: null,
       targetNodeId: '2',
       targetHandleId: null,
-    })
+    });
 
     // finish the drag (mouseup over the target) → line removed, edge committed
     cy.get(`[data-nodeid="2"].target`).then(($tgt) => {
-      const tgt = $tgt[0]
-      const win = tgt.ownerDocument.defaultView as Window
-      const t = tgt.getBoundingClientRect()
-      const tx = t.x + t.width / 2
-      const ty = t.y + t.height / 2
+      const tgt = $tgt[0];
+      const win = tgt.ownerDocument.defaultView as Window;
+      const t = tgt.getBoundingClientRect();
+      const tx = t.x + t.width / 2;
+      const ty = t.y + t.height / 2;
       const up = (target: EventTarget) =>
-        target.dispatchEvent(new win.MouseEvent('mouseup', { bubbles: true, cancelable: true, view: win, button: 0, buttons: 0, clientX: tx, clientY: ty }))
-      up(tgt)
-      up(tgt.ownerDocument)
-    })
+        target.dispatchEvent(new win.MouseEvent('mouseup', { bubbles: true, cancelable: true, view: win, button: 0, buttons: 0, clientX: tx, clientY: ty }));
+      up(tgt);
+      up(tgt.ownerDocument);
+    });
 
-    cy.get(`.${connectionLineId}`).should('have.length', 0)
-    cy.get('.vue-flow__edge').should('have.length', 1)
-  })
-})
+    cy.get(`.${connectionLineId}`).should('have.length', 0);
+    cy.get('.vue-flow__edge').should('have.length', 1);
+  });
+});

@@ -1,41 +1,41 @@
 <script lang="ts" setup>
-import type { Edge, Node, VueFlowInstance } from '@vue-flow/core'
-import { Background, Handle, Position, VueFlow } from '@vue-flow/core'
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import Heart from '~icons/mdi/heart'
+import type { Edge, Node, VueFlowInstance } from '@vue-flow/core';
+import { Background, Handle, Position, VueFlow } from '@vue-flow/core';
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import Heart from '~icons/mdi/heart';
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
-const currentBreakpoint = ref<string | null>(null)
+const currentBreakpoint = ref<string | null>(null);
 
-const isDark = ref(false)
+const isDark = ref(false);
 
 onMounted(() => {
-  const html = document.getElementsByTagName('html')![0]
+  const html = document.getElementsByTagName('html')![0];
 
-  isDark.value = html.classList.contains('dark')
+  isDark.value = html.classList.contains('dark');
 
   const observer = new MutationObserver(() => {
-    isDark.value = html.classList.contains('dark')
-  })
+    isDark.value = html.classList.contains('dark');
+  });
 
   observer.observe(html, {
     attributes: true,
     attributeOldValue: true,
     attributeFilter: ['class'],
-  })
+  });
 
   onBeforeUnmount(() => {
-    observer.disconnect()
-  })
-})
+    observer.disconnect();
+  });
+});
 
 const initialNodes: Node[] = [
   { id: 'intro', type: 'box', position: { x: 0, y: 0 }, data: {} },
   { id: 'examples', type: 'box', position: { x: -50, y: 400 }, data: {} },
   { id: 'documentation', type: 'box', position: { x: 300, y: 400 }, data: {} },
   { id: 'acknowledgement', type: 'box', position: { x: 150, y: 500 }, data: {} },
-]
+];
 
 const initialEdges: Edge[] = [
   {
@@ -62,32 +62,32 @@ const initialEdges: Edge[] = [
     animated: true,
     style: { strokeWidth: 4, stroke: '#0ea5e9' },
   },
-]
+];
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
 // the store (getNodes/getNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
 // component that renders the flow (no `useVueFlow()` outside a provider needed).
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 const setElements = useDebounceFn(() => {
   if (!flow.value) {
-    return
+    return;
   }
 
-  const { getNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value
+  const { getNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value;
 
-  const offsetX = dimensions.value.width / 2
-  const offsetY = dimensions.value.height / 4
+  const offsetX = dimensions.value.width / 2;
+  const offsetY = dimensions.value.height / 4;
 
   if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
-    const mainNode = getNode('intro')!
-    const mainInternal = getInternalNode('intro')!
+    const mainNode = getNode('intro')!;
+    const mainInternal = getInternalNode('intro')!;
 
-    currentBreakpoint.value = 'sm'
+    currentBreakpoint.value = 'sm';
 
-    setNodes((nodes) =>
+    setNodes(nodes =>
       nodes.map((node) => {
-        const internal = getInternalNode(node.id)!
+        const internal = getInternalNode(node.id)!;
 
         switch (node.id) {
           case 'intro':
@@ -97,7 +97,7 @@ const setElements = useDebounceFn(() => {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
                 y: offsetY - (internal.measured.height ?? 0) / 2,
               },
-            }
+            };
           case 'examples':
             return {
               ...node,
@@ -105,7 +105,7 @@ const setElements = useDebounceFn(() => {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
               },
-            }
+            };
           case 'documentation':
             return {
               ...node,
@@ -113,7 +113,7 @@ const setElements = useDebounceFn(() => {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2 + 50,
               },
-            }
+            };
           case 'acknowledgement':
             return {
               ...node,
@@ -121,12 +121,12 @@ const setElements = useDebounceFn(() => {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 3,
               },
-            }
+            };
           default:
-            return node
+            return node;
         }
       }),
-    )
+    );
 
     setEdges(() => {
       return [
@@ -152,24 +152,25 @@ const setElements = useDebounceFn(() => {
           animated: true,
           style: { strokeWidth: 4, stroke: '#0ea5e9' },
         },
-      ]
-    })
-  } else if (!breakpoints.isSmaller('md')) {
-    currentBreakpoint.value = 'md'
+      ];
+    });
+  }
+  else if (!breakpoints.isSmaller('md')) {
+    currentBreakpoint.value = 'md';
 
-    const mainNode = getNode('intro')!
-    const mainInternal = getInternalNode('intro')!
+    const mainNode = getNode('intro')!;
+    const mainInternal = getInternalNode('intro')!;
 
-    setNodes((nodes) =>
+    setNodes(nodes =>
       nodes.map((node) => {
-        const internal = getInternalNode(node.id)!
+        const internal = getInternalNode(node.id)!;
 
         switch (node.id) {
           case 'intro':
             return {
               ...node,
               position: { x: offsetX - (internal.measured.width ?? 0) / 2, y: offsetY - (internal.measured.height ?? 0) / 2 },
-            }
+            };
           case 'examples':
             return {
               ...node,
@@ -177,7 +178,7 @@ const setElements = useDebounceFn(() => {
                 x: mainNode.position.x - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
               },
-            }
+            };
           case 'documentation':
             return {
               ...node,
@@ -185,7 +186,7 @@ const setElements = useDebounceFn(() => {
                 x: mainNode.position.x + (mainInternal.measured.width ?? 0) - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
               },
-            }
+            };
           case 'acknowledgement':
             return {
               ...node,
@@ -193,28 +194,28 @@ const setElements = useDebounceFn(() => {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
                 y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2,
               },
-            }
+            };
           default:
-            return node
+            return node;
         }
       }),
-    )
+    );
 
-    setEdges(initialEdges)
+    setEdges(initialEdges);
   }
 
   nextTick(() => {
-    updateNodeInternals()
-  })
-}, 1)
+    updateNodeInternals();
+  });
+}, 1);
 
-useResizeObserver(() => flow.value?.vueFlowRef.value ?? null, setElements)
+useResizeObserver(() => flow.value?.vueFlowRef.value ?? null, setElements);
 
 function scrollTo() {
-  const el = document.getElementById('acknowledgement')
+  const el = document.getElementById('acknowledgement');
 
   if (el) {
-    el.scrollIntoView({ behavior: 'smooth' })
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 }
 </script>
@@ -241,7 +242,9 @@ function scrollTo() {
         <div class="box max-w-75 md:max-w-125">
           <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
             <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
-              <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">Vue Flow</h1>
+              <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">
+                Vue Flow
+              </h1>
 
               <h2 class="!text-lg !lg:text-xl !tracking-normal !font-normal !p-0 !m-0 !border-0 !mb-4">
                 The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
@@ -298,7 +301,9 @@ function scrollTo() {
 
       <template v-else-if="props.id === 'acknowledgement'">
         <div class="flex" @click="scrollTo">
-          <button class="intro-link group bg-sky-500"><Heart class="text-red-500" /> Acknowledgement</button>
+          <button class="intro-link group bg-sky-500">
+            <Heart class="text-red-500" /> Acknowledgement
+          </button>
         </div>
 
         <Handle

@@ -1,9 +1,9 @@
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-import type { ConnectionState, GraphNode, Node } from '../types'
-import { useVueFlow } from './useVueFlow'
-import { useStore } from './useStore'
-import { storeToRefs } from './storeToRefs'
+import type { ComputedRef } from 'vue';
+import type { ConnectionState, GraphNode, Node } from '../types';
+import { computed } from 'vue';
+import { storeToRefs } from './storeToRefs';
+import { useStore } from './useStore';
+import { useVueFlow } from './useVueFlow';
 
 const NO_CONNECTION = Object.freeze({
   inProgress: false,
@@ -17,7 +17,7 @@ const NO_CONNECTION = Object.freeze({
   toPosition: null,
   toNode: null,
   pointer: null,
-} as const)
+} as const);
 
 /**
  * Access the currently ongoing connection, composed from the store's split connection fields into a
@@ -27,20 +27,20 @@ const NO_CONNECTION = Object.freeze({
  * @returns a `ComputedRef<ConnectionState>` — `inProgress: false` (all-null fields) when idle
  */
 export function useConnection<NodeType extends Node = Node>(): ComputedRef<ConnectionState<NodeType>> {
-  const { getInternalNode } = useVueFlow()
-  const { connectionStartHandle, connectionEndHandle, connectionPosition, connectionStatus } = storeToRefs(useStore<NodeType>())
+  const { getInternalNode } = useVueFlow();
+  const { connectionStartHandle, connectionEndHandle, connectionPosition, connectionStatus } = storeToRefs(useStore<NodeType>());
 
   return computed<ConnectionState<NodeType>>(() => {
-    const fromHandle = connectionStartHandle.value
-    const fromNode = fromHandle ? getInternalNode(fromHandle.nodeId) : undefined
+    const fromHandle = connectionStartHandle.value;
+    const fromNode = fromHandle ? getInternalNode(fromHandle.nodeId) : undefined;
 
     // no connection (or its source node vanished) → the resting state
     if (!fromHandle || !fromNode) {
-      return NO_CONNECTION
+      return NO_CONNECTION;
     }
 
-    const toHandle = connectionEndHandle.value
-    const pointer = connectionPosition.value
+    const toHandle = connectionEndHandle.value;
+    const pointer = connectionPosition.value;
 
     return {
       inProgress: true,
@@ -55,6 +55,6 @@ export function useConnection<NodeType extends Node = Node>(): ComputedRef<Conne
       toPosition: toHandle?.position ?? null,
       toNode: ((toHandle ? getInternalNode(toHandle.nodeId) : undefined) ?? null) as GraphNode<NodeType> | null,
       pointer,
-    }
-  })
+    };
+  });
 }

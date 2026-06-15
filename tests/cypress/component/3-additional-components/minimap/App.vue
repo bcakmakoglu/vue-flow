@@ -1,5 +1,5 @@
 <script setup>
-import { MiniMap, VueFlow } from '@vue-flow/core'
+import { MiniMap, VueFlow } from '@vue-flow/core';
 
 defineProps({
   nodes: {
@@ -10,7 +10,7 @@ defineProps({
     type: Array,
     default: () => [],
   },
-})
+});
 </script>
 
 <template>

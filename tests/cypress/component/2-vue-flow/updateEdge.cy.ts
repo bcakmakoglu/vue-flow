@@ -1,8 +1,8 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../support/component'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../support/component';
 
 describe('Check if edges are reconnectable', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
@@ -33,22 +33,22 @@ describe('Check if edges are reconnectable', () => {
         },
       ],
       autoConnect: true,
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-      store.onReconnect((params) => store.reconnectEdge(params.edge, params.connection))
-    })
-  })
+      store = getStore();
+      store.onReconnect(params => store.reconnectEdge(params.edge, params.connection));
+    });
+  });
 
   it('updates edge', () => {
     cy.window().then((win) => {
-      const edgeAnchor = cy.get('.vue-flow__edgeupdater[data-type="target"]')
-      const targetHandle = cy.get(`[data-nodeid="3"].target`)
+      const edgeAnchor = cy.get('.vue-flow__edgeupdater[data-type="target"]');
+      const targetHandle = cy.get(`[data-nodeid="3"].target`);
 
       targetHandle.then(async (handle) => {
-        const target = handle[0]
-        const { x, y } = target.getBoundingClientRect()
+        const target = handle[0];
+        const { x, y } = target.getBoundingClientRect();
 
         edgeAnchor
           .trigger('mousedown', {
@@ -66,15 +66,15 @@ describe('Check if edges are reconnectable', () => {
             clientY: y,
             force: true,
             view: win,
-          })
+          });
 
         await cy.tryAssertion(() => {
-          const storedEdges = store.edges.value
-          expect(storedEdges).to.have.length(1)
-          expect(storedEdges[0].target).to.equal('3')
-          expect(storedEdges[0].source).to.equal('1')
-        })
-      })
-    })
-  })
-})
+          const storedEdges = store.edges.value;
+          expect(storedEdges).to.have.length(1);
+          expect(storedEdges[0].target).to.equal('3');
+          expect(storedEdges[0].source).to.equal('1');
+        });
+      });
+    });
+  });
+});

@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, VueFlow, useVueFlow } from '@vue-flow/core'
+import { Background, useVueFlow, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
 
-const { reconnectEdge, addEdges } = useVueFlow()
+const { reconnectEdge, addEdges } = useVueFlow();
 
 const nodes = ref([
   {
@@ -22,24 +22,24 @@ const nodes = ref([
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
-])
+]);
 
-const edges = ref([{ id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', reconnectable: true }])
+const edges = ref([{ id: 'e1-2', source: '1', target: '2', label: 'Updateable edge', reconnectable: true }]);
 
 function onReconnectStart(edge) {
-  console.log('start update', edge)
+  console.log('start update', edge);
 }
 
 function onReconnectEnd(edge) {
-  console.log('end update', edge)
+  console.log('end update', edge);
 }
 
 function onReconnect({ edge, connection }) {
-  reconnectEdge(edge, connection)
+  reconnectEdge(edge, connection);
 }
 
 function onConnect(params) {
-  addEdges([params])
+  addEdges([params]);
 }
 </script>
 

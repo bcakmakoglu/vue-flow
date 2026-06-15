@@ -1,6 +1,6 @@
-import type { Edge, Node } from '@vue-flow/core'
-import { MarkerType } from '@vue-flow/core'
-import CustomLabel from './CustomLabel.vue'
+import type { Edge, Node } from '@vue-flow/core';
+import { MarkerType } from '@vue-flow/core';
+import CustomLabel from './CustomLabel.vue';
 
 export const initialNodes: Node[] = [
   { id: '1', type: 'input', data: { label: 'Input 1' }, position: { x: 250, y: 0 } },
@@ -14,7 +14,7 @@ export const initialNodes: Node[] = [
   { id: '7', type: 'output', data: { label: 'Output 7' }, position: { x: 250, y: 550 } },
   { id: '8', type: 'output', data: { label: 'Output 8' }, position: { x: 525, y: 600 } },
   { id: '9', type: 'output', data: { label: 'Output 9' }, position: { x: 675, y: 500 } },
-]
+];
 
 export const initialEdges: Edge[] = [
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
@@ -62,4 +62,4 @@ export const initialEdges: Edge[] = [
     type: 'custom2',
     data: { text: 'custom edge 2' },
   },
-]
+];

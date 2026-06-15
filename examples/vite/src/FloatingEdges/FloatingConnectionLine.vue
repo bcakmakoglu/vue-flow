@@ -1,27 +1,27 @@
 <script lang="ts" setup>
-import type { GraphNode, Position } from '@vue-flow/core'
-import { getBezierPath } from '@vue-flow/core'
-import { getEdgeParams } from './floating-edge-utils'
+import type { GraphNode, Position } from '@vue-flow/core';
+import { getBezierPath } from '@vue-flow/core';
+import { getEdgeParams } from './floating-edge-utils';
 
 interface FloatingConnectionLineProps {
-  targetX: number
-  targetY: number
-  sourcePosition: Position
-  targetPosition: Position
-  sourceNode: GraphNode
+  targetX: number;
+  targetY: number;
+  sourcePosition: Position;
+  targetPosition: Position;
+  sourceNode: GraphNode;
 }
 
-const props = defineProps<FloatingConnectionLineProps>()
+const props = defineProps<FloatingConnectionLineProps>();
 
 const targetNode = computed(() => {
   return {
     id: 'connection-target',
     internals: { positionAbsolute: { x: props.targetX, y: props.targetY }, z: 0 },
     measured: { width: 1, height: 1 },
-  } as unknown as GraphNode
-})
+  } as unknown as GraphNode;
+});
 
-const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value))
+const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value));
 
 const edgePath = computed(() =>
   getBezierPath({
@@ -29,7 +29,7 @@ const edgePath = computed(() =>
     sourceY: edgeParams.value.sy,
     ...props,
   }),
-)
+);
 </script>
 
 <template>

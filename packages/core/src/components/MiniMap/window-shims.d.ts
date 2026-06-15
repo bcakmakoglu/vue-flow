@@ -1,3 +1,3 @@
 declare interface Window {
-  chrome: any
+  chrome: any;
 }

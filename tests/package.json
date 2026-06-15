@@ -5,7 +5,7 @@
   "scripts": {
     "test": "cypress run --component --browser chrome",
     "open": "cypress open",
-    "lint": "eslint --ext .js,.ts ./"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@vue-flow/core": "workspace:*"

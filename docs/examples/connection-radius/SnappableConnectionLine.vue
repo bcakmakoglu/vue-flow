@@ -1,6 +1,6 @@
 <script setup>
-import { connectionExists, getBezierPath, storeToRefs, useStore, useVueFlow } from '@vue-flow/core'
-import { computed, reactive, ref, watch } from 'vue'
+import { connectionExists, getBezierPath, storeToRefs, useStore, useVueFlow } from '@vue-flow/core';
+import { computed, reactive, ref, watch } from 'vue';
 
 const props = defineProps({
   sourceX: {
@@ -27,65 +27,65 @@ const props = defineProps({
     type: String,
     required: true,
   },
-})
+});
 
-const { getNodes, getInternalNode, onConnectEnd, addEdges } = useVueFlow()
+const { getNodes, getInternalNode, onConnectEnd, addEdges } = useVueFlow();
 
-const { connectionStartHandle, edges } = storeToRefs(useStore())
+const { connectionStartHandle, edges } = storeToRefs(useStore());
 
 const closest = reactive({
   node: null,
   handle: null,
   startHandle: connectionStartHandle.value,
-})
+});
 
-const canSnap = ref(false)
+const canSnap = ref(false);
 
-const HIGHLIGHT_COLOR = '#f59e0b'
+const HIGHLIGHT_COLOR = '#f59e0b';
 
-const SNAP_HIGHLIGHT_COLOR = '#10b981'
+const SNAP_HIGHLIGHT_COLOR = '#10b981';
 
-const MIN_DISTANCE = 75
+const MIN_DISTANCE = 75;
 
-const SNAP_DISTANCE = 30
+const SNAP_DISTANCE = 30;
 
 watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
     (res, n) => {
       if (n.id !== connectionStartHandle.value?.nodeId) {
-        const internalNode = getInternalNode(n.id)
-        const dx = props.targetX - (internalNode.internals.positionAbsolute.x + internalNode.measured.width / 2)
-        const dy = props.targetY - (internalNode.internals.positionAbsolute.y + internalNode.measured.height / 2)
-        const d = Math.sqrt(dx * dx + dy * dy)
+        const internalNode = getInternalNode(n.id);
+        const dx = props.targetX - (internalNode.internals.positionAbsolute.x + internalNode.measured.width / 2);
+        const dy = props.targetY - (internalNode.internals.positionAbsolute.y + internalNode.measured.height / 2);
+        const d = Math.sqrt(dx * dx + dy * dy);
 
         if (d < res.distance && d < MIN_DISTANCE) {
-          res.distance = d
-          res.node = internalNode
+          res.distance = d;
+          res.node = internalNode;
         }
       }
 
-      return res
+      return res;
     },
     {
       distance: Number.MAX_VALUE,
       node: null,
     },
-  )
+  );
 
   if (!closestNode.node) {
-    return
+    return;
   }
 
-  canSnap.value = closestNode.distance < SNAP_DISTANCE
+  canSnap.value = closestNode.distance < SNAP_DISTANCE;
 
-  const type = connectionStartHandle.value.type === 'source' ? 'target' : 'source'
+  const type = connectionStartHandle.value.type === 'source' ? 'target' : 'source';
 
   const closestHandle = closestNode.node.internals.handleBounds[type]?.reduce((prev, curr) => {
-    const prevDistance = Math.sqrt((prev.x - props.targetX) ** 2 + (prev.y - props.targetY) ** 2)
-    const currDistance = Math.sqrt((curr.x - props.targetX) ** 2 + (curr.y - props.targetY) ** 2)
+    const prevDistance = Math.sqrt((prev.x - props.targetX) ** 2 + (prev.y - props.targetY) ** 2);
+    const currDistance = Math.sqrt((curr.x - props.targetX) ** 2 + (curr.y - props.targetY) ** 2);
 
-    return prevDistance < currDistance ? prev : curr
-  })
+    return prevDistance < currDistance ? prev : curr;
+  });
 
   if (
     connectionExists(
@@ -98,26 +98,26 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
       edges.value,
     )
   ) {
-    return
+    return;
   }
 
   if (closestHandle) {
-    const el = document.querySelector(`[data-nodeid='${closestNode.node.id}']`)
+    const el = document.querySelector(`[data-nodeid='${closestNode.node.id}']`);
 
-    const prevStyle = el.style.backgroundColor
-    el.style.backgroundColor = canSnap.value ? SNAP_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR
-    closest.node = closestNode.node
-    closest.handle = closestHandle
+    const prevStyle = el.style.backgroundColor;
+    el.style.backgroundColor = canSnap.value ? SNAP_HIGHLIGHT_COLOR : HIGHLIGHT_COLOR;
+    closest.node = closestNode.node;
+    closest.handle = closestHandle;
 
     onCleanup(() => {
-      el.style.backgroundColor = prevStyle
-      closest.node = null
-      closest.handle = null
-    })
+      el.style.backgroundColor = prevStyle;
+      closest.node = null;
+      closest.handle = null;
+    });
   }
-})
+});
 
-const path = computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props));
 
 onConnectEnd(() => {
   if (closest.startHandle && closest.handle && closest.node) {
@@ -129,22 +129,22 @@ onConnectEnd(() => {
           target: closest.node.id,
           targetHandle: closest.handle.id,
         },
-      ])
+      ]);
     }
   }
-})
+});
 
 const strokeColor = computed(() => {
   if (canSnap.value) {
-    return SNAP_HIGHLIGHT_COLOR
+    return SNAP_HIGHLIGHT_COLOR;
   }
 
   if (closest.node) {
-    return HIGHLIGHT_COLOR
+    return HIGHLIGHT_COLOR;
   }
 
-  return '#222'
-})
+  return '#222';
+});
 </script>
 
 <template>

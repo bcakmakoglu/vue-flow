@@ -1,83 +1,83 @@
-import type { CSSProperties, InjectionKey } from 'vue'
-import type { Dimensions, GraphNode, NodeMouseEvent, PanelPositionType, XYPosition } from '../../types'
+import type { CSSProperties, InjectionKey } from 'vue';
+import type { Dimensions, GraphNode, NodeMouseEvent, PanelPositionType, XYPosition } from '../../types';
 
 /** expects a node and returns a color value */
-export type MiniMapNodeFunc = (node: GraphNode) => string
+export type MiniMapNodeFunc = (node: GraphNode) => string;
 
-export type ShapeRendering = CSSProperties['shapeRendering']
+export type ShapeRendering = CSSProperties['shapeRendering'];
 
 export interface MiniMapProps {
   /** Node color, can be either a string or a string func that receives the current node */
-  nodeColor?: string | MiniMapNodeFunc
+  nodeColor?: string | MiniMapNodeFunc;
   /** Node stroke color, can be either a string or a string func that receives the current node */
-  nodeStrokeColor?: string | MiniMapNodeFunc
+  nodeStrokeColor?: string | MiniMapNodeFunc;
   /** Additional node class name, can be either a string or a string func that receives the current node */
-  nodeClassName?: string | MiniMapNodeFunc
+  nodeClassName?: string | MiniMapNodeFunc;
   /** Node border radius */
-  nodeBorderRadius?: number
+  nodeBorderRadius?: number;
   /** Node stroke width */
-  nodeStrokeWidth?: number
+  nodeStrokeWidth?: number;
   /** Background color of minimap mask */
-  maskColor?: string
+  maskColor?: string;
   /** Border color of minimap mask */
-  maskStrokeColor?: string
+  maskStrokeColor?: string;
   /** Border width of minimap mask */
-  maskStrokeWidth?: number
+  maskStrokeWidth?: number;
   /** Position of the minimap {@link PanelPositionType} */
-  position?: PanelPositionType
+  position?: PanelPositionType;
   /** Enable drag minimap to drag viewport */
-  pannable?: boolean
+  pannable?: boolean;
   /** Enable zoom minimap to zoom viewport */
-  zoomable?: boolean
+  zoomable?: boolean;
 
-  width?: number
+  width?: number;
 
-  height?: number
+  height?: number;
 
-  ariaLabel?: string | null
+  ariaLabel?: string | null;
   /** Enable inverse panning, i.e. drag minimap to move viewport in opposite direction */
-  inversePan?: boolean
+  inversePan?: boolean;
   /** Specify zoom step */
-  zoomStep?: number
+  zoomStep?: number;
   /** Specify minimap scale */
-  offsetScale?: number
+  offsetScale?: number;
   /** Mask border radius */
-  maskBorderRadius?: number
+  maskBorderRadius?: number;
 }
 
 /** these props are passed to mini map node slots */
 export interface MiniMapNodeProps {
-  id: string
-  type?: string
-  selected?: boolean
-  dragging?: boolean
-  position: XYPosition
-  dimensions: Dimensions
-  borderRadius?: number
-  color?: string
-  shapeRendering?: ShapeRendering
-  strokeColor?: string
-  strokeWidth?: number
-  hidden?: boolean
+  id: string;
+  type?: string;
+  selected?: boolean;
+  dragging?: boolean;
+  position: XYPosition;
+  dimensions: Dimensions;
+  borderRadius?: number;
+  color?: string;
+  shapeRendering?: ShapeRendering;
+  strokeColor?: string;
+  strokeWidth?: number;
+  hidden?: boolean;
 }
 
 export interface MiniMapEmits {
-  (event: 'click', params: { event: MouseEvent; position: { x: number; y: number } }): void
-  (event: 'nodeClick', params: NodeMouseEvent): void
-  (event: 'nodeDblclick', params: NodeMouseEvent): void
-  (event: 'nodeMouseenter', params: NodeMouseEvent): void
-  (event: 'nodeMousemove', params: NodeMouseEvent): void
-  (event: 'nodeMouseleave', params: NodeMouseEvent): void
+  (event: 'click', params: { event: MouseEvent; position: { x: number; y: number } }): void;
+  (event: 'nodeClick', params: NodeMouseEvent): void;
+  (event: 'nodeDblclick', params: NodeMouseEvent): void;
+  (event: 'nodeMouseenter', params: NodeMouseEvent): void;
+  (event: 'nodeMousemove', params: NodeMouseEvent): void;
+  (event: 'nodeMouseleave', params: NodeMouseEvent): void;
 }
 
 export interface MiniMapNodeEmits {
-  (event: 'click', params: MouseEvent): void
-  (event: 'dblclick', params: MouseEvent): void
-  (event: 'mouseenter', params: MouseEvent): void
-  (event: 'mousemove', params: MouseEvent): void
-  (event: 'mouseleave', params: MouseEvent): void
+  (event: 'click', params: MouseEvent): void;
+  (event: 'dblclick', params: MouseEvent): void;
+  (event: 'mouseenter', params: MouseEvent): void;
+  (event: 'mousemove', params: MouseEvent): void;
+  (event: 'mouseleave', params: MouseEvent): void;
 }
 
 export interface MiniMapSlots extends Record<`node-${string}`, (nodeProps: MiniMapNodeProps) => any> {}
 
-export const Slots: InjectionKey<MiniMapSlots> = Symbol('MiniMapSlots')
+export const Slots: InjectionKey<MiniMapSlots> = Symbol('MiniMapSlots');

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 defineProps<{
-  name: 'moon' | 'log' | 'shuffle' | 'reset'
-}>()
+  name: 'moon' | 'log' | 'shuffle' | 'reset';
+}>();
 </script>
 
 <template>

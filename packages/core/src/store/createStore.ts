@@ -1,5 +1,4 @@
-import type { Ref } from 'vue'
-import { reactive, shallowRef, toRaw, watch } from 'vue'
+import type { Ref } from 'vue';
 import type {
   Edge,
   EdgeLookup,
@@ -10,10 +9,11 @@ import type {
   VueFlowInstance,
   VueFlowState,
   VueFlowStoreHandle,
-} from '../types'
-import { useActions } from './actions'
-import { useGetters } from './getters'
-import { useState } from './state'
+} from '../types';
+import { reactive, shallowRef, toRaw, watch } from 'vue';
+import { useActions } from './actions';
+import { useGetters } from './getters';
+import { useState } from './state';
 
 /**
  * External backing refs for a store's nodes/edges. When `<VueFlow>` passes its `v-model` refs here, the
@@ -21,8 +21,8 @@ import { useState } from './state'
  * separate v-model sync layer isn't needed. Omitted → the store uses internal refs.
  */
 export interface StoreSignals<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
-  nodes?: Ref<NodeType[]>
-  edges?: Ref<EdgeType[]>
+  nodes?: Ref<NodeType[]>;
+  edges?: Ref<EdgeType[]>;
 }
 
 /**
@@ -47,55 +47,55 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // type at `Ref<NodeType[]>` exactly (a deep `ref` would unwrap to `Ref<UnwrapRefSimple<NodeType>[]>`,
   // which TS can't reconcile with the injected signal's type over an unresolved generic). The explicit
   // `| undefined` reflects an injected-but-unbound `defineModel` ref.
-  const nodesSignal: Ref<NodeType[] | undefined> = signals?.nodes ?? shallowRef([])
-  const edgesSignal: Ref<EdgeType[] | undefined> = signals?.edges ?? shallowRef([])
+  const nodesSignal: Ref<NodeType[] | undefined> = signals?.nodes ?? shallowRef([]);
+  const edgesSignal: Ref<EdgeType[] | undefined> = signals?.edges ?? shallowRef([]);
 
   // The array references the store itself last wrote (through the `state.nodes`/`.edges` setters below).
   // The single-source binding watch (further down) uses these to tell its own writes apart from an
   // external `v-model` reassignment — no pause/resume flags needed.
-  let lastWriteNodes: NodeType[] | undefined
-  let lastWriteEdges: EdgeType[] | undefined
+  let lastWriteNodes: NodeType[] | undefined;
+  let lastWriteEdges: EdgeType[] | undefined;
 
   // Stable empty fallbacks: an injected `v-model` ref is `undefined` until bound (e.g. `<VueFlow>` with no
   // `:nodes`), so reads must never surface `undefined` (everything iterates `state.nodes`/`.edges`). A
   // stable reference avoids reactivity churn while unbound; `setState`/`commit` replace it with a real array.
-  const emptyNodes: NodeType[] = []
-  const emptyEdges: EdgeType[] = []
+  const emptyNodes: NodeType[] = [];
+  const emptyEdges: EdgeType[] = [];
 
-  const state = useState<NodeType, EdgeType>()
+  const state = useState<NodeType, EdgeType>();
 
   // Proxy `state.nodes`/`.edges` through the signals via accessors (svelte's `get nodes()` pattern), so
   // every existing `state.nodes` read/write stays unchanged while the backing becomes injectable.
   Object.defineProperty(state, 'nodes', {
     get: () => nodesSignal.value ?? emptyNodes,
     set: (value: NodeType[]) => {
-      lastWriteNodes = toRaw(value)
-      nodesSignal.value = value
+      lastWriteNodes = toRaw(value);
+      nodesSignal.value = value;
     },
     enumerable: true,
     configurable: true,
-  })
+  });
   Object.defineProperty(state, 'edges', {
     get: () => edgesSignal.value ?? emptyEdges,
     set: (value: EdgeType[]) => {
-      lastWriteEdges = toRaw(value)
-      edgesSignal.value = value
+      lastWriteEdges = toRaw(value);
+      edgesSignal.value = value;
     },
     enumerable: true,
     configurable: true,
-  })
+  });
 
-  const reactiveState = reactive(state) as any
+  const reactiveState = reactive(state) as any;
 
-  const hooksOn = <any>{}
+  const hooksOn = <any>{};
   for (const [n, h] of Object.entries(reactiveState.hooks)) {
-    const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`
-    hooksOn[name] = (h as any).on
+    const name = `on${n.charAt(0).toUpperCase() + n.slice(1)}`;
+    hooksOn[name] = (h as any).on;
   }
 
-  const emits = <any>{}
+  const emits = <any>{};
   for (const [n, h] of Object.entries(reactiveState.hooks)) {
-    emits[n] = (h as any).trigger
+    emits[n] = (h as any).trigger;
   }
 
   // The lookup maps hold the enriched `InternalNode`s/edges (canonical for `internals`/`measured`); the
@@ -109,15 +109,15 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` widening over a Map of the *generic*
   // `GraphNode<NodeType>` (TS can't prove the element type has no refs to unwrap); at runtime the proxy is
   // exactly a `Map<string, GraphNode>`, so the assertion is sound (documented Vue + generics friction).
-  const nodeLookup = reactiveState.nodeLookup as NodeLookup<NodeType>
-  const parentLookup = reactiveState.parentLookup as Map<string, Map<string, GraphNode<NodeType>>>
-  const edgeLookup = reactiveState.edgeLookup as EdgeLookup<EdgeType>
+  const nodeLookup = reactiveState.nodeLookup as NodeLookup<NodeType>;
+  const parentLookup = reactiveState.parentLookup as Map<string, Map<string, GraphNode<NodeType>>>;
+  const edgeLookup = reactiveState.edgeLookup as EdgeLookup<EdgeType>;
 
-  const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup)
+  const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup);
 
-  const actions = useActions<NodeType, EdgeType>(reactiveState, nodeLookup, parentLookup, edgeLookup)
+  const actions = useActions<NodeType, EdgeType>(reactiveState, nodeLookup, parentLookup, edgeLookup);
 
-  actions.setState({ ...reactiveState, ...preloadedState } as any)
+  actions.setState({ ...reactiveState, ...preloadedState } as any);
 
   // Single-source `v-model` binding. When `<VueFlow>` passes its model refs as signals, the store's
   // nodes/edges ARE those refs: internal mutations (drag, `addEdges`, `applyNodeChanges`, …) write them
@@ -130,19 +130,19 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // own write back as its reactive proxy, which would fail a plain `!==` and loop `setNodes` forever.
   if (signals?.nodes) {
     watch(nodesSignal, (next) => {
-      const nextRaw = next && toRaw(next)
+      const nextRaw = next && toRaw(next);
       if (nextRaw && nextRaw !== lastWriteNodes) {
-        actions.setNodes(nextRaw)
+        actions.setNodes(nextRaw);
       }
-    })
+    });
   }
   if (signals?.edges) {
     watch(edgesSignal, (next) => {
-      const nextRaw = next && toRaw(next)
+      const nextRaw = next && toRaw(next);
       if (nextRaw && nextRaw !== lastWriteEdges) {
-        actions.setEdges(nextRaw as unknown as EdgeType[])
+        actions.setEdges(nextRaw as unknown as EdgeType[]);
       }
-    })
+    });
   }
 
   // The curated instance (`useVueFlow()`): actions + getters + event hooks + identity. Raw reactive
@@ -155,9 +155,9 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
     id,
     vueFlowVersion: typeof __VUE_FLOW_VERSION__ !== 'undefined' ? __VUE_FLOW_VERSION__ : 'UNKNOWN',
     $destroy: () => {
-      onDestroy?.(id)
+      onDestroy?.(id);
     },
-  }
+  };
 
-  return { instance, state: reactiveState as VueFlowState<NodeType, EdgeType> }
+  return { instance, state: reactiveState as VueFlowState<NodeType, EdgeType> };
 }

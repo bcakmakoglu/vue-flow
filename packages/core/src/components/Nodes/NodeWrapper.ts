@@ -1,3 +1,4 @@
+import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types';
 import {
   computed,
   defineComponent,
@@ -11,9 +12,7 @@ import {
   shallowRef,
   toRef,
   watch,
-} from 'vue'
-import { ARIA_NODE_DESC_KEY, ErrorCode, VueFlowError, arrowKeyDiffs, elementSelectionKeys, handleNodeClick } from '../../utils'
-import { NodeId, NodeRef, Slots } from '../../context'
+} from 'vue';
 import {
   isInputDOMNode,
   storeToRefs,
@@ -23,12 +22,13 @@ import {
   useStore,
   useUpdateNodePositions,
   useVueFlow,
-} from '../../composables'
-import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types'
+} from '../../composables';
+import { NodeId, NodeRef, Slots } from '../../context';
+import { ARIA_NODE_DESC_KEY, arrowKeyDiffs, elementSelectionKeys, ErrorCode, handleNodeClick, VueFlowError } from '../../utils';
 
 interface Props {
-  id: string
-  resizeObserver: ResizeObserver
+  id: string;
+  resizeObserver: ResizeObserver;
 }
 
 const NodeWrapper = defineComponent({
@@ -44,7 +44,7 @@ const NodeWrapper = defineComponent({
       updateNodeDimensions,
       onUpdateNodeInternals,
       getNodeTypes,
-    } = useVueFlow()
+    } = useVueFlow();
 
     const {
       noPanClassName,
@@ -59,90 +59,90 @@ const NodeWrapper = defineComponent({
       nodesConnectable,
       nodesFocusable,
       hooks,
-    } = storeToRefs(useStore())
+    } = storeToRefs(useStore());
 
-    const { parentLookup } = useStore()
+    const { parentLookup } = useStore();
 
-    const nodeElement = shallowRef<HTMLDivElement | null>(null)
-    provide(NodeRef, nodeElement)
-    provide(NodeId, props.id)
+    const nodeElement = shallowRef<HTMLDivElement | null>(null);
+    provide(NodeRef, nodeElement);
+    provide(NodeId, props.id);
 
-    const slots = inject(Slots)
+    const slots = inject(Slots);
 
-    const instance = getCurrentInstance()
+    const instance = getCurrentInstance();
 
-    const updateNodePositions = useUpdateNodePositions()
+    const updateNodePositions = useUpdateNodePositions();
 
     // `nodeRef` is a `computed` over the lookup (see useNode): it re-resolves to a NEW InternalNode object
     // whenever the store re-adopts this node (immutable model), which is what re-renders this wrapper.
-    const { node: nodeRef } = useNode(props.id)
+    const { node: nodeRef } = useNode(props.id);
 
-    const { emit } = useNodeHooks(emits)
+    const { emit } = useNodeHooks(emits);
 
     const isDraggable = toRef(() => {
-      const node = nodeRef.value
-      return !node || typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable
-    })
+      const node = nodeRef.value;
+      return !node || typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable;
+    });
 
     const isSelectable = toRef(() => {
-      const node = nodeRef.value
-      return !node || typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable
-    })
+      const node = nodeRef.value;
+      return !node || typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable;
+    });
 
     const isConnectable = toRef(() => {
-      const node = nodeRef.value
-      return !node || typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable
-    })
+      const node = nodeRef.value;
+      return !node || typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable;
+    });
 
     const isFocusable = toRef(() => {
-      const node = nodeRef.value
-      return !node || typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable
-    })
+      const node = nodeRef.value;
+      return !node || typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable;
+    });
 
     const hasPointerEvents = computed(
       () =>
-        isSelectable.value ||
-        isDraggable.value ||
-        hooks.value.nodeClick.hasListeners() ||
-        hooks.value.nodeDoubleClick.hasListeners() ||
-        hooks.value.nodeMouseEnter.hasListeners() ||
-        hooks.value.nodeMouseMove.hasListeners() ||
-        hooks.value.nodeMouseLeave.hasListeners(),
-    )
+        isSelectable.value
+        || isDraggable.value
+        || hooks.value.nodeClick.hasListeners()
+        || hooks.value.nodeDoubleClick.hasListeners()
+        || hooks.value.nodeMouseEnter.hasListeners()
+        || hooks.value.nodeMouseMove.hasListeners()
+        || hooks.value.nodeMouseLeave.hasListeners(),
+    );
 
-    const isInit = toRef(() => !!nodeRef.value?.measured?.width && !!nodeRef.value?.measured?.height)
+    const isInit = toRef(() => !!nodeRef.value?.measured?.width && !!nodeRef.value?.measured?.height);
 
     // computed (not toRef): the value-equality gate keeps this node's render effect from re-running on
     // every `parentLookup` entry replacement — an uncached getter read in render tracks the raw map key
-    const isParent = computed(() => (parentLookup.get(props.id)?.size ?? 0) > 0)
+    const isParent = computed(() => (parentLookup.get(props.id)?.size ?? 0) > 0);
 
     const nodeCmp = computed(() => {
-      const name = nodeRef.value?.type || 'default'
+      const name = nodeRef.value?.type || 'default';
 
-      const slot = slots?.[`node-${name}`]
+      const slot = slots?.[`node-${name}`];
       if (slot) {
-        return slot
+        return slot;
       }
 
-      let nodeType = getNodeTypes.value[name]
+      let nodeType = getNodeTypes.value[name];
 
       if (typeof nodeType === 'string') {
         if (instance) {
-          const components = Object.keys(instance.appContext.components)
+          const components = Object.keys(instance.appContext.components);
           if (components && components.includes(name)) {
-            nodeType = resolveComponent(name, false) as NodeComponent
+            nodeType = resolveComponent(name, false) as NodeComponent;
           }
         }
       }
 
       if (nodeType && typeof nodeType !== 'string') {
-        return nodeType
+        return nodeType;
       }
 
-      emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
+      emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType));
 
-      return false
-    })
+      return false;
+    });
 
     const dragging = useDrag({
       id: props.id,
@@ -151,85 +151,88 @@ const NodeWrapper = defineComponent({
       selectable: isSelectable,
       dragHandle: () => nodeRef.value?.dragHandle,
       onStart(event) {
-        emit.dragStart(event)
+        emit.dragStart(event);
       },
       onDrag(event) {
-        emit.drag(event)
+        emit.drag(event);
       },
       onStop(event) {
-        emit.dragStop(event)
+        emit.dragStop(event);
       },
       onClick(event) {
-        onSelectNode(event)
+        onSelectNode(event);
       },
-    })
+    });
 
     const getClass = computed(() => {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (!node) {
-        return undefined
+        return undefined;
       }
-      return node.class instanceof Function ? node.class(node) : node.class
-    })
+      return typeof node.class === 'function' ? node.class(node) : node.class;
+    });
 
     const getStyle = computed(() => {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       // clone: never mutate the user's `node.style` (nodes are markRaw, so an in-place write isn't
       // reactive AND would cache stale width/height onto the user object across renders)
-      const styles = { ...(node?.style instanceof Function ? node.style(node) : node?.style) }
+      // `node.style` can be a function at runtime (a style callback); the `Styles` type doesn't model
+      // that, so `typeof` would narrow it to `never` — keep `instanceof Function`.
+      // eslint-disable-next-line unicorn/no-instanceof-builtins
+      const styles = { ...(node?.style instanceof Function ? node.style(node) : node?.style) };
 
-      const width = node?.width
-      const height = node?.height
+      const width = node?.width;
+      const height = node?.height;
 
       if (!styles.width && width) {
-        styles.width = `${width}px`
+        styles.width = `${width}px`;
       }
 
       if (!styles.height && height) {
-        styles.height = `${height}px`
+        styles.height = `${height}px`;
       }
 
-      return styles
-    })
+      return styles;
+    });
 
-    const zIndex = toRef(() => Number(nodeRef.value?.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = toRef(() => Number(nodeRef.value?.zIndex ?? getStyle.value.zIndex ?? 0));
 
     onUpdateNodeInternals((updateIds) => {
       // when no ids are passed, update all nodes
       if (updateIds.includes(props.id) || !updateIds.length) {
-        updateInternals()
+        updateInternals();
       }
-    })
+    });
 
     onMounted(() => {
       watch(
         () => nodeRef.value?.hidden,
         (isHidden = false, _, onCleanup) => {
           if (!isHidden && nodeElement.value) {
-            props.resizeObserver.observe(nodeElement.value)
+            props.resizeObserver.observe(nodeElement.value);
 
             onCleanup(() => {
               if (nodeElement.value) {
-                props.resizeObserver.unobserve(nodeElement.value)
+                props.resizeObserver.unobserve(nodeElement.value);
               }
-            })
+            });
           }
         },
         { immediate: true, flush: 'post' },
-      )
-    })
+      );
+    });
 
     watch([() => nodeRef.value?.type, () => nodeRef.value?.sourcePosition, () => nodeRef.value?.targetPosition], () => {
       nextTick(() => {
-        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
-      })
-    })
+        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }]);
+      });
+    });
 
     return () => {
-      const node = nodeRef.value
+      const node = nodeRef.value;
 
       if (!node || node.hidden) {
-        return null
+        return null;
       }
 
       return h(
@@ -297,53 +300,53 @@ const NodeWrapper = defineComponent({
             onUpdateNodeInternals: updateInternals,
           }),
         ],
-      )
-    }
+      );
+    };
     function updateInternals() {
       if (nodeElement.value) {
-        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }])
+        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }]);
       }
     }
 
     function onMouseEnter(event: MouseEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (node && !dragging?.value) {
-        emit.mouseEnter({ event, node: node.internals.userNode })
+        emit.mouseEnter({ event, node: node.internals.userNode });
       }
     }
 
     function onMouseMove(event: MouseEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (node && !dragging?.value) {
-        emit.mouseMove({ event, node: node.internals.userNode })
+        emit.mouseMove({ event, node: node.internals.userNode });
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (node && !dragging?.value) {
-        emit.mouseLeave({ event, node: node.internals.userNode })
+        emit.mouseLeave({ event, node: node.internals.userNode });
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (node) {
-        emit.contextMenu({ event, node: node.internals.userNode })
+        emit.contextMenu({ event, node: node.internals.userNode });
       }
     }
 
     function onDoubleClick(event: MouseEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (node) {
-        emit.doubleClick({ event, node: node.internals.userNode })
+        emit.doubleClick({ event, node: node.internals.userNode });
       }
     }
 
     function onSelectNode(event: MouseTouchEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (!node) {
-        return
+        return;
       }
 
       if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
@@ -356,20 +359,20 @@ const NodeWrapper = defineComponent({
           nodesSelectionActive,
           false,
           nodeElement.value!,
-        )
+        );
       }
 
-      emit.click({ event, node: node.internals.userNode })
+      emit.click({ event, node: node.internals.userNode });
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      const node = nodeRef.value
+      const node = nodeRef.value;
       if (!node || isInputDOMNode(event) || disableKeyboardA11y.value) {
-        return
+        return;
       }
 
       if (elementSelectionKeys.includes(event.key) && isSelectable.value) {
-        const unselect = event.key === 'Escape'
+        const unselect = event.key === 'Escape';
 
         handleNodeClick(
           node,
@@ -379,13 +382,15 @@ const NodeWrapper = defineComponent({
           nodesSelectionActive,
           unselect,
           nodeElement.value!,
-        )
-      } else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
+        );
+      }
+      else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
         // prevent page scrolling
-        event.preventDefault()
+        event.preventDefault();
 
         ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
-          .position.x}, y: ${~~node.position.y}`
+          .position
+          .x}, y: ${~~node.position.y}`;
 
         updateNodePositions(
           {
@@ -393,10 +398,10 @@ const NodeWrapper = defineComponent({
             y: arrowKeyDiffs[event.key].y,
           },
           event.shiftKey,
-        )
+        );
       }
     }
   },
-})
+});
 
-export default NodeWrapper
+export default NodeWrapper;

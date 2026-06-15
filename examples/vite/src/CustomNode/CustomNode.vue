@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { Controls, MiniMap, Position, VueFlow } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import type { ColorSelectorNodeProps } from './types';
 
-import ColorSelectorNode from './ColorSelectorNode.vue'
-import type { ColorSelectorNodeProps } from './types'
+import { Controls, MiniMap, Position, VueFlow } from '@vue-flow/core';
+import ColorSelectorNode from './ColorSelectorNode.vue';
 
-const bgColor = shallowRef('#1A192B')
+const bgColor = shallowRef('#1A192B');
 
 const nodes = ref<Node[]>([
   {
@@ -36,33 +36,33 @@ const nodes = ref<Node[]>([
     position: { x: 650, y: 100 },
     targetPosition: Position.Left,
   },
-])
+]);
 
 const edges = ref<Edge[]>([
   { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#fff' } },
   { id: 'e2a-3', source: '2', sourceHandle: 'a', target: '3', animated: true, style: { stroke: '#fff' } },
   { id: 'e2b-4', source: '2', sourceHandle: 'b', target: '4', animated: true, style: { stroke: '#fff' } },
-])
+]);
 
 function nodeStroke(n: Node) {
   switch (n.type) {
     case 'colorSelector':
-      return bgColor.value
+      return bgColor.value;
     case 'input':
-      return '#0041d0'
+      return '#0041d0';
     case 'output':
-      return '#ff0072'
+      return '#ff0072';
     default:
-      return '#eee'
+      return '#eee';
   }
 }
 
 function nodeColor(n: Node) {
   if (n.type === 'colorSelector') {
-    return bgColor.value
+    return bgColor.value;
   }
 
-  return '#fff'
+  return '#fff';
 }
 </script>
 

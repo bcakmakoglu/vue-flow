@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import ResizeControl from './ResizeControl.vue'
-import type { NodeResizerEmits, ResizeControlLineProps } from './types'
-import { ResizeControlVariant } from './types'
+import type { NodeResizerEmits, ResizeControlLineProps } from './types';
+import ResizeControl from './ResizeControl.vue';
+import { ResizeControlVariant } from './types';
 
-const props = defineProps<ResizeControlLineProps>()
+const props = defineProps<ResizeControlLineProps>();
 
-const emits = defineEmits<NodeResizerEmits>()
+const emits = defineEmits<NodeResizerEmits>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'ResizeControlLine',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

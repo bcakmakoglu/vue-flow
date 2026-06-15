@@ -1,7 +1,7 @@
-import { getElements } from '../../../utils'
-import App from './App.vue'
+import { getElements } from '../../../utils';
+import App from './App.vue';
 
-const { nodes, edges } = getElements()
+const { nodes, edges } = getElements();
 
 describe('Render MiniMap', () => {
   beforeEach(() => {
@@ -16,14 +16,14 @@ describe('Render MiniMap', () => {
           height: '100vh',
         },
       },
-    })
-  })
+    });
+  });
 
   it('renders minimap', () => {
-    cy.get('.vue-flow__minimap').should('exist')
-  })
+    cy.get('.vue-flow__minimap').should('exist');
+  });
 
   it('renders minimap nodes', () => {
-    cy.get('.vue-flow__minimap-node').should('have.length', nodes.length)
-  })
-})
+    cy.get('.vue-flow__minimap-node').should('have.length', nodes.length);
+  });
+});

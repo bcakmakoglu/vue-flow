@@ -1,8 +1,8 @@
-import { computed, toValue } from 'vue'
-import type { MaybeRefOrGetter } from 'vue'
-import type { InternalNode, Node } from '../types'
-import { useVueFlow } from './useVueFlow'
-import { useNodeId } from './useNodeId'
+import type { MaybeRefOrGetter } from 'vue';
+import type { InternalNode, Node } from '../types';
+import { computed, toValue } from 'vue';
+import { useNodeId } from './useNodeId';
+import { useVueFlow } from './useVueFlow';
 
 /**
  * Access the enriched {@link InternalNode} (store-computed `internals.{positionAbsolute, z, handleBounds}` +
@@ -18,9 +18,9 @@ import { useNodeId } from './useNodeId'
  * @param id - The id of the node to access (a value, ref, or getter; defaults to the node context id)
  */
 export function useInternalNode<NodeType extends Node = Node>(id?: MaybeRefOrGetter<string | undefined>) {
-  const contextNodeId = useNodeId()
+  const contextNodeId = useNodeId();
 
-  const { getInternalNode } = useVueFlow()
+  const { getInternalNode } = useVueFlow();
 
-  return computed(() => getInternalNode(toValue(id) ?? contextNodeId ?? '') as InternalNode<NodeType> | undefined)
+  return computed(() => getInternalNode(toValue(id) ?? contextNodeId ?? '') as InternalNode<NodeType> | undefined);
 }

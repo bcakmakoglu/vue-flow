@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
+import { useCreateVueFlow } from '../../composables/useCreateVueFlow';
 
 /**
  * Owns a VueFlow store and `provide`s it to its subtree. A descendant `<VueFlow>` reuses this
@@ -8,16 +8,16 @@ import { useCreateVueFlow } from '../../composables/useCreateVueFlow'
  * (mirrors `<ReactFlowProvider>` / `<SvelteFlowProvider>`). One provider scopes one store, so host a
  * single `<VueFlow>` per provider and use a separate provider for each independent flow.
  */
-const props = defineProps<{ id?: string }>()
+const props = defineProps<{ id?: string }>();
 
-useCreateVueFlow({ id: props.id })
+useCreateVueFlow({ id: props.id });
 </script>
 
 <script lang="ts">
 export default {
   name: 'VueFlowProvider',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

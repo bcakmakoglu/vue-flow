@@ -37,25 +37,25 @@ const messages = {
   [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge id: ${id}`,
   [ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER]: () =>
     `useVueFlow() was called without a <VueFlow> or <VueFlowProvider> ancestor (or outside a component setup). Render one of them above the call, or wrap your components in <VueFlowProvider> to share a store.`,
-} as const
+} as const;
 
 type ErrorArgs<T extends ErrorCode> = (typeof messages)[T] extends (...args: any[]) => string
   ? Parameters<(typeof messages)[T]>
-  : never
+  : never;
 
 export class VueFlowError<T extends ErrorCode = ErrorCode, Args extends ErrorArgs<T> = ErrorArgs<T>> extends Error {
-  name = 'VueFlowError'
-  code: T
-  args: Args
+  name = 'VueFlowError';
+  code: T;
+  args: Args;
 
   constructor(code: T, ...args: Args) {
     // @ts-expect-error - TS doesn't know that the message is a key of messages
-    super(messages[code]?.(...args))
-    this.code = code
-    this.args = args
+    super(messages[code]?.(...args));
+    this.code = code;
+    this.args = args;
   }
 }
 
 export function isErrorOfType<T extends ErrorCode>(error: VueFlowError, code: T): error is VueFlowError<T> {
-  return error.code === code
+  return error.code === code;
 }

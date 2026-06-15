@@ -1,72 +1,72 @@
 <script lang="ts" setup>
-import type { Edge, MiniMapNodeFunc, Node, VueFlowInstance } from '@vue-flow/core'
-import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
-import { breakpointsTailwind } from '@vueuse/core'
+import type { Edge, MiniMapNodeFunc, Node, VueFlowInstance } from '@vue-flow/core';
+import type { Colors } from './utils';
+import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core';
 
-import CustomEdge from '../edges/Custom.vue'
-import RGBNode from '../nodes/Input.vue'
-import RGBOutputNode from '../nodes/Output.vue'
-import type { Colors } from './utils'
+import { breakpointsTailwind } from '@vueuse/core';
+import CustomEdge from '../edges/Custom.vue';
+import RGBNode from '../nodes/Input.vue';
+import RGBOutputNode from '../nodes/Output.vue';
 
-const emit = defineEmits(['pane'])
+const emit = defineEmits(['pane']);
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
-const panOnDrag = ref(true)
+const panOnDrag = ref(true);
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'rgb', data: { color: 'green' }, position: { x: -25, y: 0 } },
   { id: '2', type: 'rgb', data: { color: 'red' }, position: { x: 50, y: -110 } },
   { id: '3', type: 'rgb', data: { color: 'blue' }, position: { x: 0, y: 110 } },
   { id: '4', type: 'rgb-output', data: { label: 'RGB' }, position: { x: 400, y: -25 } },
-])
+]);
 
 const edges = ref<Edge[]>([
   { id: 'e1-4', type: 'rgb-line', data: { color: 'green' }, source: '1', target: '4', animated: true },
   { id: 'e2-4', type: 'rgb-line', data: { color: 'red' }, source: '2', target: '4', animated: true },
   { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
-])
+]);
 
-const el = templateRef<HTMLDivElement>('el', null)
+const el = templateRef<HTMLDivElement>('el', null);
 
 const color = ref<Record<Colors, number>>({
   red: 222,
   green: 45,
   blue: 140,
-})
+});
 
 watch(
   [breakpoints.sm, breakpoints.md, breakpoints.lg, breakpoints.xl, breakpoints['2xl']],
   () => {
-    const mobile = breakpoints.isSmaller('md')
+    const mobile = breakpoints.isSmaller('md');
     if (mobile) {
-      flow.value?.updateNode('4', { position: { x: 300, y: -25 } })
+      flow.value?.updateNode('4', { position: { x: 300, y: -25 } });
     }
 
-    panOnDrag.value = !mobile
+    panOnDrag.value = !mobile;
   },
   { immediate: true },
-)
+);
 
 function onChange({ color: c, val }: { color: Colors; val: number }) {
-  return (color.value[c] = Number(val))
+  return (color.value[c] = Number(val));
 }
 
 const nodeColor: MiniMapNodeFunc = (node) => {
   switch (node.id) {
     case '1':
-      return 'green'
+      return 'green';
     case '2':
-      return 'red'
+      return 'red';
     case '3':
-      return 'blue'
+      return 'blue';
     case '4':
-      return `rgb(${color.value.red}, ${color.value.green}, ${color.value.blue})`
+      return `rgb(${color.value.red}, ${color.value.green}, ${color.value.blue})`;
   }
-  return ''
-}
+  return '';
+};
 </script>
 
 <template>

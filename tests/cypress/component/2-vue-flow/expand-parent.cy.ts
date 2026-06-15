@@ -1,11 +1,11 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../support/component'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../support/component';
 
 // Covers the `@xyflow/system` `handleExpandParent` integration (drag + measurement + the range-extent
 // padding clamp). Parent at the origin so a drag item's absolute position equals its parent-relative
 // position — keeps the assertions independent of the abs/rel convention in `updateNodePositions`.
 describe('expandParent + range-extent', () => {
-  let store: VueFlowStore
+  let store: VueFlowStore;
 
   function mount(childExtra: Record<string, any> = {}, childPosition = { x: 10, y: 10 }) {
     cy.vueFlow({
@@ -30,11 +30,11 @@ describe('expandParent + range-extent', () => {
           ...childExtra,
         },
       ],
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-    })
+      store = getStore();
+    });
   }
 
   function dragItem(positionAbsolute: { x: number; y: number }) {
@@ -48,61 +48,61 @@ describe('expandParent + range-extent', () => {
       expandParent: true,
       dragging: false,
       origin: [0, 0],
-    }
+    };
   }
 
   describe('drag expands the parent (system handleExpandParent)', () => {
-    beforeEach(() => mount({ expandParent: true }))
+    beforeEach(() => mount({ expandParent: true }));
 
     it('grows the parent to contain a child dragged past its bottom-right', () => {
       // child 50x50 dragged to (80,80) → extends to (130,130), past the parent's 100x100
-      cy.then(() => store.updateNodePositions([dragItem({ x: 80, y: 80 })] as any, true, false))
+      cy.then(() => store.updateNodePositions([dragItem({ x: 80, y: 80 })] as any, true, false));
 
       cy.tryAssertion(() => {
-        const parent = store.getInternalNode('p')!
-        const child = store.getInternalNode('c')!
-        expect(parent.measured.width, 'parent width grew').to.be.at.least(130)
-        expect(parent.measured.height, 'parent height grew').to.be.at.least(130)
+        const parent = store.getInternalNode('p')!;
+        const child = store.getInternalNode('c')!;
+        expect(parent.measured.width, 'parent width grew').to.be.at.least(130);
+        expect(parent.measured.height, 'parent height grew').to.be.at.least(130);
         // child stays where it was dragged (relative === absolute, parent at origin)
-        expect(child.position.x).to.eq(80)
-        expect(child.position.y).to.eq(80)
-      })
-    })
+        expect(child.position.x).to.eq(80);
+        expect(child.position.y).to.eq(80);
+      });
+    });
 
     it('pins a child dragged negative to >= 0 and grows the parent up/left', () => {
-      cy.then(() => store.updateNodePositions([dragItem({ x: -30, y: -30 })] as any, true, false))
+      cy.then(() => store.updateNodePositions([dragItem({ x: -30, y: -30 })] as any, true, false));
 
       cy.tryAssertion(() => {
-        const parent = store.getInternalNode('p')!
-        const child = store.getInternalNode('c')!
+        const parent = store.getInternalNode('p')!;
+        const child = store.getInternalNode('c')!;
         // child relative position is clamped to the parent's (new) top-left corner
-        expect(child.position.x).to.eq(0)
-        expect(child.position.y).to.eq(0)
+        expect(child.position.x).to.eq(0);
+        expect(child.position.y).to.eq(0);
         // parent moved up/left by the overflow and grew to absorb it
-        expect(parent.position.x).to.eq(-30)
-        expect(parent.position.y).to.eq(-30)
-        expect(parent.measured.width).to.be.at.least(130)
-        expect(parent.measured.height).to.be.at.least(130)
-      })
-    })
-  })
+        expect(parent.position.x).to.eq(-30);
+        expect(parent.position.y).to.eq(-30);
+        expect(parent.measured.width).to.be.at.least(130);
+        expect(parent.measured.height).to.be.at.least(130);
+      });
+    });
+  });
 
   describe('measurement expands the parent', () => {
     // child rendered larger than the parent → re-measurement on mount should expand the parent
-    beforeEach(() => mount({ expandParent: true, width: 140, height: 140, style: { width: '140px', height: '140px' } }))
+    beforeEach(() => mount({ expandParent: true, width: 140, height: 140, style: { width: '140px', height: '140px' } }));
 
     it('grows the parent to fit a freshly-measured oversized child', () => {
       cy.tryAssertion(
         () => {
-          const parent = store.getInternalNode('p')!
+          const parent = store.getInternalNode('p')!;
           // child at (10,10) sized 140x140 → needs at least 150x150 of parent
-          expect(parent.measured.width).to.be.at.least(150)
-          expect(parent.measured.height).to.be.at.least(150)
+          expect(parent.measured.width).to.be.at.least(150);
+          expect(parent.measured.height).to.be.at.least(150);
         },
         { timeout: 3000 },
-      )
-    })
-  })
+      );
+    });
+  });
 
   describe('measurement re-clamps an extent-constrained child before expanding', () => {
     // expandParent + extent:'parent': a child whose fixed position + measured size would overflow must be
@@ -125,26 +125,26 @@ describe('expandParent + range-extent', () => {
             style: { width: '100px', height: '100px' },
           },
         ],
-      })
+      });
       cy.then(() => {
-        store = getStore()
-      })
-    })
+        store = getStore();
+      });
+    });
 
     it('clamps the child instead of over-expanding the parent', () => {
       cy.tryAssertion(
         () => {
-          const parent = store.getInternalNode('p')!
-          const child = store.getInternalNode('c')!
+          const parent = store.getInternalNode('p')!;
+          const child = store.getInternalNode('c')!;
           // parent must stay ~200 (it would balloon to ~250 if the rect used the unclamped position)
-          expect(parent.measured.width, 'parent not over-expanded').to.be.lessThan(230)
+          expect(parent.measured.width, 'parent not over-expanded').to.be.lessThan(230);
           // child is clamped to sit inside the parent (200 − child width ≈ 100)
-          expect(child.internals.positionAbsolute.x, 'child clamped inside parent').to.be.lessThan(120)
+          expect(child.internals.positionAbsolute.x, 'child clamped inside parent').to.be.lessThan(120);
         },
         { timeout: 3000 },
-      )
-    })
-  })
+      );
+    });
+  });
 
   describe('range-extent padding clamps the child', () => {
     // child placed far outside the parent, constrained to the parent inset by 10px on every side
@@ -153,22 +153,22 @@ describe('expandParent + range-extent', () => {
         x: 200,
         y: 200,
       }),
-    )
+    );
 
     it('clamps the child to the padded parent bounds', () => {
       // child placed at (200,200) → clamped so its right/bottom edge sits at the parent's padded
       // boundary: parent 100 − padding 10 − child width = max relative position.
       cy.tryAssertion(
         () => {
-          const child = store.getInternalNode('c')!
-          const expected = 90 - child.measured.width // 90 = parent (100) − padding (10)
-          expect(child.internals.positionAbsolute.x, 'clamped to padded bound x').to.be.closeTo(expected, 1)
-          expect(child.internals.positionAbsolute.y, 'clamped to padded bound y').to.be.closeTo(expected, 1)
+          const child = store.getInternalNode('c')!;
+          const expected = 90 - child.measured.width; // 90 = parent (100) − padding (10)
+          expect(child.internals.positionAbsolute.x, 'clamped to padded bound x').to.be.closeTo(expected, 1);
+          expect(child.internals.positionAbsolute.y, 'clamped to padded bound y').to.be.closeTo(expected, 1);
           // and it actually moved in from the original 200
-          expect(child.internals.positionAbsolute.x).to.be.lessThan(100)
+          expect(child.internals.positionAbsolute.x).to.be.lessThan(100);
         },
         { timeout: 3000 },
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

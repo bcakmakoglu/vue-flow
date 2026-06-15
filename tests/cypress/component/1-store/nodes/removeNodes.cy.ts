@@ -1,47 +1,47 @@
-import type { VueFlowStore } from '@vue-flow/core'
-import { getStore } from '../../../support/component'
-import { getElements } from '../../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
+import { getElements } from '../../../utils';
 
-const { nodes, edges } = getElements()
+const { nodes, edges } = getElements();
 
 describe('Store Action: `removeNodes`', () => {
-  let store: VueFlowStore
-  let deletedNodes: string[]
+  let store: VueFlowStore;
+  let deletedNodes: string[];
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       edges,
-    })
+    });
 
     cy.then(() => {
-      store = getStore()
-      const randomNumber = Math.floor(Math.random() * nodes.length)
-      deletedNodes = Array.from({ length: randomNumber }, (_, i) => nodes[i].id)
-      store.removeNodes(deletedNodes)
-    })
-  })
+      store = getStore();
+      const randomNumber = Math.floor(Math.random() * nodes.length);
+      deletedNodes = Array.from({ length: randomNumber }, (_, i) => nodes[i].id);
+      store.removeNodes(deletedNodes);
+    });
+  });
 
   it('removes nodes from store', () => {
-    expect(store.nodes.value).to.have.length(nodes.length - deletedNodes.length)
-  })
+    expect(store.nodes.value).to.have.length(nodes.length - deletedNodes.length);
+  });
 
   it('removes nodes from view', () => {
-    cy.get('.vue-flow__node').should('have.length', nodes.length - deletedNodes.length)
-  })
+    cy.get('.vue-flow__node').should('have.length', nodes.length - deletedNodes.length);
+  });
 
   it('removes nodes from DOM', () => {
     // todo: can we avoid the timeout? without it, the test fails in ci
     setTimeout(() => {
       cy.get('.vue-flow__node').then((els) => {
         els.each((index, node) => {
-          const nodeId = node.getAttribute('data-id')
-          const storedNode = store.getNode(nodeId)
+          const nodeId = node.getAttribute('data-id');
+          const storedNode = store.getNode(nodeId);
 
-          expect(deletedNodes).to.not.include(nodeId)
-          expect(storedNode).to.not.eq(undefined)
-        })
-      })
-    }, 1)
-  })
-})
+          expect(deletedNodes).to.not.include(nodeId);
+          expect(storedNode).to.not.eq(undefined);
+        });
+      });
+    }, 1);
+  });
+});

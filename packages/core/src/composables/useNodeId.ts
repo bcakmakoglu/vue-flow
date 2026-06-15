@@ -1,5 +1,5 @@
-import { inject } from 'vue'
-import { NodeId } from '../context'
+import { inject } from 'vue';
+import { NodeId } from '../context';
 
 /**
  * This composable returns the current node id from the ctx.
@@ -10,5 +10,5 @@ import { NodeId } from '../context'
  * @returns the current node id
  */
 export function useNodeId() {
-  return inject(NodeId, '')
+  return inject(NodeId, '');
 }

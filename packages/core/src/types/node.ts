@@ -1,20 +1,20 @@
-import type { InternalNodeBase, NodeBase } from '@xyflow/system'
-import type { HTMLAttributes } from 'vue'
-import type { Styles } from './flow'
-import type { HandleElement } from './handle'
+import type { InternalNodeBase, NodeBase } from '@xyflow/system';
+import type { HTMLAttributes } from 'vue';
+import type { Styles } from './flow';
+import type { HandleElement } from './handle';
 
 /** Defined as [[x-from, y-from], [x-to, y-to]] */
-export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]]
+export type CoordinateExtent = [extentFrom: [fromX: number, fromY: number], extentTo: [toX: number, toY: number]];
 
 export interface CoordinateExtentRange {
-  range: 'parent' | CoordinateExtent
+  range: 'parent' | CoordinateExtent;
   /** Values are top, right, bottom, left, you can use these the same as CSS padding */
   padding:
     | number
     | [padding: number]
     | [paddingY: number, paddingX: number]
     | [paddingTop: number, paddingX: number, paddingBottom: number]
-    | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number]
+    | [paddingTop: number, paddingRight: number, paddingBottom: number, paddingLeft: number];
 }
 
 /**
@@ -23,11 +23,11 @@ export interface CoordinateExtentRange {
  * Locally defined (rather than re-exported from `@xyflow/system`) so the Vue SFC compiler stays out of the
  * system d.ts (its `Optional<T, K>` utility trips vuejs/core#14236). Structurally identical to system's.
  */
-export type NodeOrigin = [number, number]
+export type NodeOrigin = [number, number];
 
 export interface NodeHandleBounds {
-  source: HandleElement[] | null
-  target: HandleElement[] | null
+  source: HandleElement[] | null;
+  target: HandleElement[] | null;
 }
 
 /**
@@ -41,11 +41,11 @@ export type Node<
   NodeData extends Record<string, unknown> = Record<string, unknown>,
   NodeType extends string | undefined = string | undefined,
 > = NodeBase<NodeData, NodeType> & {
-  class?: string | string[] | Record<string, any>
-  style?: Styles
-  resizing?: boolean
-  focusable?: boolean
-  ariaRole?: string
+  class?: string | string[] | Record<string, any>;
+  style?: Styles;
+  resizing?: boolean;
+  focusable?: boolean;
+  ariaRole?: string;
   domAttributes?: Omit<
     HTMLAttributes,
     | 'id'
@@ -60,8 +60,8 @@ export type Node<
     | 'onClick'
     | 'onDblclick'
     | 'onKeydown'
-  >
-}
+  >;
+};
 /**
  * Internal node shape used after a user-provided `Node` has been processed by the store.
  *
@@ -72,7 +72,7 @@ export type Node<
  * handle bounds via `internals.handleBounds`, and dimensions via `measured`. The "is this a parent?"
  * check moved off the node and lives on `parentLookup` (storage).
  */
-export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>
+export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>;
 
 /**
  * The enriched, store-internal node — what `nodeLookup`/`getInternalNode(id)`/`useInternalNode(id)` return.
@@ -81,7 +81,7 @@ export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>
  * `InternalNode` so the public split (`getNode`/`v-model` = user `Node`, `getInternalNode` = `InternalNode`)
  * reads the same across frameworks.
  */
-export type InternalNode<NodeType extends Node = Node> = GraphNode<NodeType>
+export type InternalNode<NodeType extends Node = Node> = GraphNode<NodeType>;
 
 /**
  * Props passed to custom node components, parameterized on a `NodeType` (xyflow/react convention:
@@ -94,24 +94,24 @@ export type InternalNode<NodeType extends Node = Node> = GraphNode<NodeType>
  * underlying type is `@xyflow/system`'s conditional `NodeBase`.)
  */
 export interface NodeProps<NodeType extends Node = Node> {
-  id: string
-  data: NodeType['data']
-  type: NodeType['type']
-  selected: boolean
-  selectable: boolean
-  deletable: boolean
-  draggable: boolean
-  dragging: boolean
-  zIndex: number
-  isConnectable: boolean
-  positionAbsoluteX: number
-  positionAbsoluteY: number
-  width?: NodeType['width']
-  height?: NodeType['height']
-  sourcePosition?: NodeType['sourcePosition']
-  targetPosition?: NodeType['targetPosition']
-  dragHandle?: NodeType['dragHandle']
-  parentId?: NodeType['parentId']
+  id: string;
+  data: NodeType['data'];
+  type: NodeType['type'];
+  selected: boolean;
+  selectable: boolean;
+  deletable: boolean;
+  draggable: boolean;
+  dragging: boolean;
+  zIndex: number;
+  isConnectable: boolean;
+  positionAbsoluteX: number;
+  positionAbsoluteY: number;
+  width?: NodeType['width'];
+  height?: NodeType['height'];
+  sourcePosition?: NodeType['sourcePosition'];
+  targetPosition?: NodeType['targetPosition'];
+  dragHandle?: NodeType['dragHandle'];
+  parentId?: NodeType['parentId'];
 }
 
-export type BuiltInNode = Node<{ label: string }, 'input' | 'output' | 'default'> | Node<Record<string, never>, 'group'>
+export type BuiltInNode = Node<{ label: string }, 'input' | 'output' | 'default'> | Node<Record<string, never>, 'group'>;

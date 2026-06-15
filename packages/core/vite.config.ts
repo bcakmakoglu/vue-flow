@@ -1,9 +1,9 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import replace from '@rollup/plugin-replace'
-import svgLoader from 'vite-svg-loader'
-import pkg from './package.json'
+import { resolve } from 'node:path';
+import replace from '@rollup/plugin-replace';
+import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vite';
+import svgLoader from 'vite-svg-loader';
+import pkg from './package.json';
 
 export default defineConfig({
   resolve: {
@@ -26,12 +26,12 @@ export default defineConfig({
       // positions Rolldown can't read, so drop that third-party-only noise (keep our own warnings)
       onwarn(warning, warn) {
         if (
-          warning.code === 'INVALID_ANNOTATION' &&
-          (warning.id?.includes('node_modules') || warning.message?.includes('node_modules'))
+          warning.code === 'INVALID_ANNOTATION'
+          && (warning.id?.includes('node_modules') || warning.message?.includes('node_modules'))
         ) {
-          return
+          return;
         }
-        warn(warning)
+        warn(warning);
       },
       output: {
         format: 'esm',
@@ -53,4 +53,4 @@ export default defineConfig({
       preventAssignment: true,
     }) as any,
   ],
-})
+});

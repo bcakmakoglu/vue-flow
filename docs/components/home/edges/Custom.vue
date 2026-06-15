@@ -1,25 +1,25 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { Edge, EdgeProps } from '@vue-flow/core'
-import { getBezierPath } from '@vue-flow/core'
-import type { Colors } from '../flows/utils'
+import type { Edge, EdgeProps } from '@vue-flow/core';
+import type { Colors } from '../flows/utils';
+import { getBezierPath } from '@vue-flow/core';
+import { computed } from 'vue';
 
 export interface EdgeData extends Record<string, unknown> {
-  text?: string
-  color?: Colors
+  text?: string;
+  color?: Colors;
 }
 
-export type RGBEdge = Edge<EdgeData, 'rgb-line'>
+export type RGBEdge = Edge<EdgeData, 'rgb-line'>;
 
-const props = defineProps<EdgeProps<RGBEdge>>()
+const props = defineProps<EdgeProps<RGBEdge>>();
 
-const edgePath = computed(() => getBezierPath(props))
+const edgePath = computed(() => getBezierPath(props));
 </script>
 
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

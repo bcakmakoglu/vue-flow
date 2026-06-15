@@ -1,9 +1,9 @@
 <script setup>
-import { h, ref } from 'vue'
-import { Background, MarkerType, VueFlow } from '@vue-flow/core'
-import EdgeWithButton from './EdgeWithButton.vue'
-import CustomEdge from './CustomEdge.vue'
-import CustomEdgeLabel from './CustomEdgeLabel.vue'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core';
+import { h, ref } from 'vue';
+import CustomEdge from './CustomEdge.vue';
+import CustomEdgeLabel from './CustomEdgeLabel.vue';
+import EdgeWithButton from './EdgeWithButton.vue';
 
 const nodes = ref([
   { id: '1', type: 'input', label: 'Start', position: { x: 50, y: 0 }, style: { borderColor: '#10b981' } },
@@ -17,7 +17,7 @@ const nodes = ref([
   { id: '7', type: 'output', label: 'Output 7', position: { x: 50, y: 600 } },
   { id: '8', type: 'output', label: 'Output 8', position: { x: 350, y: 600 } },
   { id: '9', type: 'output', label: 'Output 9', position: { x: 550, y: 400 } },
-])
+]);
 
 const edges = ref([
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
@@ -59,7 +59,7 @@ const edges = ref([
     type: 'custom',
     data: { text: 'styled custom edge label' },
   },
-])
+]);
 </script>
 
 <template>

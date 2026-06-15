@@ -1,63 +1,63 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import { getNodesBounds } from '@xyflow/system'
-import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs } from '../../utils'
-import type { GraphNode } from '../../types'
+import type { GraphNode } from '../../types';
+import { getNodesBounds } from '@xyflow/system';
+import { computed, onMounted, ref } from 'vue';
+import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables';
+import { arrowKeyDiffs } from '../../utils';
 
-const { emits, viewport, getSelectedNodes } = useVueFlow()
+const { emits, viewport, getSelectedNodes } = useVueFlow();
 
-const { nodeLookup } = useStore()
+const { nodeLookup } = useStore();
 
-const { noPanClassName, disableKeyboardA11y, userSelectionActive } = storeToRefs(useStore())
+const { noPanClassName, disableKeyboardA11y, userSelectionActive } = storeToRefs(useStore());
 
-const updatePositions = useUpdateNodePositions()
+const updatePositions = useUpdateNodePositions();
 
-const el = ref<HTMLDivElement | null>(null)
+const el = ref<HTMLDivElement | null>(null);
 
 const dragging = useDrag({
   el,
   onStart(args) {
-    emits.selectionDragStart(args)
-    emits.nodeDragStart(args)
+    emits.selectionDragStart(args);
+    emits.nodeDragStart(args);
   },
   onDrag(args) {
-    emits.selectionDrag(args)
-    emits.nodeDrag(args)
+    emits.selectionDrag(args);
+    emits.nodeDrag(args);
   },
   onStop(args) {
-    emits.selectionDragStop(args)
-    emits.nodeDragStop(args)
+    emits.selectionDragStop(args);
+    emits.nodeDragStop(args);
   },
-})
+});
 
 onMounted(() => {
   if (!disableKeyboardA11y.value) {
-    el.value?.focus({ preventScroll: true })
+    el.value?.focus({ preventScroll: true });
   }
-})
+});
 
 // getSelectedNodes is readonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as GraphNode[], { nodeLookup }))
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as GraphNode[], { nodeLookup }));
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
   height: `${selectedNodesBBox.value.height}px`,
   top: `${selectedNodesBBox.value.y}px`,
   left: `${selectedNodesBBox.value.x}px`,
-}))
+}));
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] })
+  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] });
 }
 
 function onKeyDown(event: KeyboardEvent) {
   if (disableKeyboardA11y.value) {
-    return
+    return;
   }
 
   if (arrowKeyDiffs[event.key]) {
-    event.preventDefault()
+    event.preventDefault();
 
     updatePositions(
       {
@@ -65,7 +65,7 @@ function onKeyDown(event: KeyboardEvent) {
         y: arrowKeyDiffs[event.key].y,
       },
       event.shiftKey,
-    )
+    );
   }
 }
 </script>
@@ -74,7 +74,7 @@ function onKeyDown(event: KeyboardEvent) {
 export default {
   name: 'NodesSelection',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

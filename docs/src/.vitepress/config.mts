@@ -1,43 +1,43 @@
-import { resolve } from 'node:path'
-import { createRequire } from 'node:module'
-import { readdirSync, statSync } from 'node:fs'
-import type { DefaultTheme, HeadConfig } from 'vitepress'
-import { defineConfigWithTheme } from 'vitepress'
-import WindiCSS from 'vite-plugin-windicss'
-import Icons from 'unplugin-icons/vite'
-import IconsResolver from 'unplugin-icons/resolver'
-import Components from 'unplugin-vue-components/vite'
-import AutoImport from 'unplugin-auto-import/vite'
-import llmstxt from 'vitepress-plugin-llms'
-import head from './head'
-import { copyVueFlowPlugin, files } from './plugins'
+import type { DefaultTheme, HeadConfig } from 'vitepress';
+import { readdirSync, statSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { resolve } from 'node:path';
+import AutoImport from 'unplugin-auto-import/vite';
+import IconsResolver from 'unplugin-icons/resolver';
+import Icons from 'unplugin-icons/vite';
+import Components from 'unplugin-vue-components/vite';
+import WindiCSS from 'vite-plugin-windicss';
+import { defineConfigWithTheme } from 'vitepress';
+import llmstxt from 'vitepress-plugin-llms';
+import head from './head';
+import { copyVueFlowPlugin, files } from './plugins';
 
-const require = createRequire(import.meta.url)
-const vueFlowVersion = (require('@vue-flow/core/package.json') as { version: string }).version
+const require = createRequire(import.meta.url);
+const vueFlowVersion = (require('@vue-flow/core/package.json') as { version: string }).version;
 
 function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1)
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function typedocSidebarEntries() {
-  const filePath = resolve(__dirname, '../typedocs')
+  const filePath = resolve(__dirname, '../typedocs');
 
-  const docsModules = readdirSync(filePath).filter((name) => statSync(`${filePath}/${name}`).isDirectory())
+  const docsModules = readdirSync(filePath).filter(name => statSync(`${filePath}/${name}`).isDirectory());
 
   return docsModules.map((module) => {
-    let children = readdirSync(`${filePath}/${module}/`).map<DefaultTheme.SidebarItem>((entry) => ({
+    let children = readdirSync(`${filePath}/${module}/`).map<DefaultTheme.SidebarItem>(entry => ({
       text: entry.replace('.md', ''),
       link: `/typedocs/${module}/${entry.replace('.md', '')}`,
-    }))
+    }));
 
     if (module === 'variables') {
       children = children.filter((child) => {
-        return child.link?.includes('default')
-      })
+        return child.link?.includes('default');
+      });
     }
 
-    return { text: capitalize(module), collapsed: false, items: children } as DefaultTheme.SidebarItem
-  })
+    return { text: capitalize(module), collapsed: false, items: children } as DefaultTheme.SidebarItem;
+  });
 }
 
 function changelogSidebarEntries(): DefaultTheme.SidebarItem[] {
@@ -46,19 +46,19 @@ function changelogSidebarEntries(): DefaultTheme.SidebarItem[] {
       text: 'CHANGELOG',
       collapsed: true,
       items: files.map((file) => {
-        const name = file.pkgName.replace('.md', '')
-        const isCore = name === 'core'
+        const name = file.pkgName.replace('.md', '');
+        const isCore = name === 'core';
 
         return {
           text: name
             .split('-')
-            .map((s) => capitalize(s))
+            .map(s => capitalize(s))
             .join(' '),
           link: `/changelog/${isCore ? '' : name}`,
-        }
+        };
       }),
     },
-  ]
+  ];
 }
 
 export default defineConfigWithTheme<DefaultTheme.Config>({
@@ -122,7 +122,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
     ],
     algolia: {
       appId: 'F7BJNSM4M5',
-      // eslint-disable-next-line n/prefer-global/process
       apiKey: process.env.ALGOLIA_API_KEY!,
       indexName: 'vueflow',
     },
@@ -264,4 +263,4 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
       '/changelog/': changelogSidebarEntries(),
     },
   },
-})
+});

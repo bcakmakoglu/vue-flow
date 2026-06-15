@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, MarkerType, VueFlow } from '@vue-flow/core'
-import CustomEdge from './CustomEdge.vue'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import CustomEdge from './CustomEdge.vue';
 
 const nodes = ref([
   { id: '1', position: { x: 0, y: 0 }, data: { label: 'Select me for diamond markers' } },
@@ -10,7 +10,7 @@ const nodes = ref([
   { id: '4', position: { x: 200, y: 150 }, data: { label: 'Node 4' } },
   { id: '5', position: { x: 400, y: 0 }, data: { label: 'Node 5' } },
   { id: '6', position: { x: 400, y: 150 }, data: { label: 'Node 6' } },
-])
+]);
 
 const edges = ref([
   // This edge uses a custom marker defined in CustomMarker.vue
@@ -39,7 +39,7 @@ const edges = ref([
       color: '#ff0072',
     },
   },
-])
+]);
 </script>
 
 <template>

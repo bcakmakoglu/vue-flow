@@ -1,7 +1,7 @@
-import { inject } from 'vue'
-import type { Edge, Node, VueFlowState } from '../types'
-import { VueFlowStateKey } from '../context'
-import { ErrorCode, VueFlowError } from '../utils/errors'
+import type { Edge, Node, VueFlowState } from '../types';
+import { inject } from 'vue';
+import { VueFlowStateKey } from '../context';
+import { ErrorCode, VueFlowError } from '../utils/errors';
 
 /**
  * Access the raw reactive state of the surrounding flow — every {@link VueFlowState} field plus the
@@ -19,11 +19,11 @@ import { ErrorCode, VueFlowError } from '../utils/errors'
  * @returns the reactive state for the current context
  */
 export function useStore<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): VueFlowState<NodeType, EdgeType> {
-  const state = inject(VueFlowStateKey, null) as VueFlowState<NodeType, EdgeType> | null
+  const state = inject(VueFlowStateKey, null) as VueFlowState<NodeType, EdgeType> | null;
 
   if (!state) {
-    throw new VueFlowError(ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER)
+    throw new VueFlowError(ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER);
   }
 
-  return state
+  return state;
 }

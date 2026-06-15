@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core'
+import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
 
 const nodes = ref([
   {
@@ -68,7 +68,7 @@ const nodes = ref([
     expandParent: true,
     parentId: '2',
   },
-])
+]);
 
 const edges = ref([
   { id: 'e1-2', source: '1', target: '2' },
@@ -78,7 +78,7 @@ const edges = ref([
   { id: 'e4a-4b1', source: '4a', target: '4b1' },
   { id: 'e4a-4b2', source: '4a', target: '4b2' },
   { id: 'e4b1-4b2', source: '4b1', target: '4b2' },
-])
+]);
 </script>
 
 <template>

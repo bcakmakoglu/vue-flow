@@ -1,9 +1,9 @@
 <script>
-import BasicFlow from './BasicFlow.vue'
+import BasicFlow from './BasicFlow.vue';
 
 export default {
   components: { BasicFlow },
-}
+};
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
-import { VueFlowProvider } from '@vue-flow/core'
-import Flow from './Flow.vue'
+import { VueFlowProvider } from '@vue-flow/core';
+import Flow from './Flow.vue';
 </script>
 
 <template>

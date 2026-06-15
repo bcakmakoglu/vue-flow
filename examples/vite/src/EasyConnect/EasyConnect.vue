@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core'
-import { Background, MarkerType, VueFlow } from '@vue-flow/core'
-import CustomNode from './CustomNode.vue'
-import FloatingConnectionLine from './FloatingConnectionLine.vue'
-import FloatingEdge from './FloatingEdge.vue'
+import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core';
+import { Background, MarkerType, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import CustomNode from './CustomNode.vue';
+import FloatingConnectionLine from './FloatingConnectionLine.vue';
+import FloatingEdge from './FloatingEdge.vue';
 
 const defaultEdgeOptions = {
   style: { strokeWidth: 3, stroke: 'black' },
@@ -13,7 +13,7 @@ const defaultEdgeOptions = {
     type: MarkerType.ArrowClosed,
     color: 'black',
   },
-}
+};
 
 const nodes = ref<Node[]>([
   {
@@ -40,14 +40,14 @@ const nodes = ref<Node[]>([
     position: { x: 300, y: 0 },
     data: {},
   },
-])
+]);
 
-const edges = ref<Edge[]>([])
+const edges = ref<Edge[]>([]);
 
-const flow = ref<VueFlowInstance>()
+const flow = ref<VueFlowInstance>();
 
 function onConnect(connection: Connection) {
-  flow.value?.addEdges([connection])
+  flow.value?.addEdges([connection]);
 }
 </script>
 

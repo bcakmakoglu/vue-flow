@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, Node } from '@vue-flow/core'
-import { Background, VueFlow, isEdge, isNode } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import { Background, isEdge, isNode, VueFlow } from '@vue-flow/core';
 
 const initialElements: (Node | Edge)[] = [
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
@@ -9,10 +9,10 @@ const initialElements: (Node | Edge)[] = [
   { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 200 }, class: 'light' },
   { id: 'e1-2', source: '1', target: '2', animated: true },
   { id: 'e1-3', source: '1', target: '3' },
-]
+];
 
-const nodes = ref<Node[]>(initialElements.filter(isNode))
-const edges = ref<Edge[]>(initialElements.filter(isEdge))
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 </script>
 
 <template>

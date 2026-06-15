@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { MarkerType } from '../../types'
-import type { MarkerProps } from '../../types'
+import type { MarkerProps } from '../../types';
+import { MarkerType } from '../../types';
 
 const {
   id,
@@ -11,14 +11,14 @@ const {
   orient = 'auto-start-reverse',
   strokeWidth = 1,
   color = 'none',
-} = defineProps<MarkerProps>()
+} = defineProps<MarkerProps>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'MarkerType',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

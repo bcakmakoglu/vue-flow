@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
-  "main": "index.js",
+  "main": "index.mts",
+  "types": "index.mts",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.43.1",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-config-turbo": "^2.0.4",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^2.8.8"
+    "@antfu/eslint-config": "8.2.0",
+    "eslint": "10.2.1",
+    "eslint-flat-config-utils": "3.1.0"
   }
 }

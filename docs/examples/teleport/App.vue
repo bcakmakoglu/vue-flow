@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import Sidebar from './Sidebar.vue'
-import TeleportableNode from './TeleportableNode.vue'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import Sidebar from './Sidebar.vue';
+import TeleportableNode from './TeleportableNode.vue';
 
 const nodes = ref([
   {
@@ -23,7 +23,7 @@ const nodes = ref([
     position: { x: 0, y: 200 },
     data: { label: 'Click to teleport' },
   },
-])
+]);
 
 const edges = ref([
   {
@@ -31,7 +31,7 @@ const edges = ref([
     source: '1',
     target: '2',
   },
-])
+]);
 </script>
 
 <template>

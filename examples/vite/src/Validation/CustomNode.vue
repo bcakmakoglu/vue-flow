@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import type { Node, NodeProps, ValidConnectionFunc } from '@vue-flow/core'
-import { Handle, Position } from '@vue-flow/core'
+import type { Node, NodeProps, ValidConnectionFunc } from '@vue-flow/core';
+import { Handle, Position } from '@vue-flow/core';
 
-type ValidationNode = Node<{ isValidSourcePos: ValidConnectionFunc }, 'customnode'>
+type ValidationNode = Node<{ isValidSourcePos: ValidConnectionFunc }, 'customnode'>;
 
-const props = defineProps<NodeProps<ValidationNode>>()
+const props = defineProps<NodeProps<ValidationNode>>();
 </script>
 
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

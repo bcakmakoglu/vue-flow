@@ -11,8 +11,8 @@ import type {
   NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-} from '../types'
-import { isNode } from '.'
+} from '../types';
+import { isNode } from '.';
 
 /**
  * Apply element changes IMMUTABLY (xyflow/react `applyNodeChanges` semantics): returns a NEW array where
@@ -29,111 +29,115 @@ export function applyChanges<
   C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
   // bucket changes: field updates by id, plus add/remove
-  const updatesById = new Map<string, C[]>()
-  const addChanges: (NodeAddChange | EdgeAddChange)[] = []
-  const removeIds = new Set<string>()
+  const updatesById = new Map<string, C[]>();
+  const addChanges: (NodeAddChange | EdgeAddChange)[] = [];
+  const removeIds = new Set<string>();
 
   for (const change of changes) {
     if (change.type === 'add') {
-      addChanges.push(change as NodeAddChange | EdgeAddChange)
-    } else if (change.type === 'remove') {
-      removeIds.add((change as NodeRemoveChange | EdgeRemoveChange).id)
-    } else {
-      const id = (change as { id?: string }).id
+      addChanges.push(change as NodeAddChange | EdgeAddChange);
+    }
+    else if (change.type === 'remove') {
+      removeIds.add((change as NodeRemoveChange | EdgeRemoveChange).id);
+    }
+    else {
+      const id = (change as { id?: string }).id;
       if (id == null) {
-        continue
+        continue;
       }
-      const bucket = updatesById.get(id)
+      const bucket = updatesById.get(id);
       if (bucket) {
-        bucket.push(change)
-      } else {
-        updatesById.set(id, [change])
+        bucket.push(change);
+      }
+      else {
+        updatesById.set(id, [change]);
       }
     }
   }
 
-  const next: T[] = []
+  const next: T[] = [];
 
   for (const element of elements) {
     if (removeIds.has(element.id)) {
-      continue
+      continue;
     }
 
-    const elementChanges = updatesById.get(element.id)
+    const elementChanges = updatesById.get(element.id);
     if (!elementChanges) {
       // unchanged → reuse the same reference (so the store's `checkEquality` re-adopt is a no-op)
-      next.push(element)
-      continue
+      next.push(element);
+      continue;
     }
 
-    const updated = { ...element } as T
+    const updated = { ...element } as T;
 
     for (const currentChange of elementChanges) {
       switch (currentChange.type) {
         case 'select':
-          ;(updated as { selected?: boolean }).selected = currentChange.selected
-          break
+          ;(updated as { selected?: boolean }).selected = currentChange.selected;
+          break;
         case 'position':
           if (isNode(updated)) {
             if (typeof currentChange.position !== 'undefined') {
-              updated.position = currentChange.position
+              updated.position = currentChange.position;
             }
 
             if (typeof currentChange.dragging !== 'undefined') {
-              updated.dragging = currentChange.dragging
+              updated.dragging = currentChange.dragging;
             }
           }
-          break
+          break;
         case 'dimensions':
           if (isNode(updated)) {
             if (typeof currentChange.dimensions !== 'undefined') {
-              updated.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height }
+              updated.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height };
             }
 
             if (currentChange.setAttributes) {
-              const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width'
-              const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height'
+              const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width';
+              const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height';
               updated.style = {
-                ...(updated.style || {}),
+                ...(updated.style ?? {}),
                 ...(setW && { width: `${currentChange.dimensions?.width}px` }),
                 ...(setH && { height: `${currentChange.dimensions?.height}px` }),
-              }
+              };
             }
 
             if (typeof currentChange.resizing !== 'undefined') {
-              updated.resizing = currentChange.resizing
+              updated.resizing = currentChange.resizing;
             }
           }
-          break
+          break;
       }
     }
 
-    next.push(updated)
+    next.push(updated);
   }
 
   for (const change of addChanges) {
-    if (next.some((el) => el.id === change.item.id)) {
-      continue
+    if (next.some(el => el.id === change.item.id)) {
+      continue;
     }
 
     if (typeof change.index === 'number') {
-      next.splice(change.index, 0, change.item as unknown as T)
-    } else {
-      next.push(change.item as unknown as T)
+      next.splice(change.index, 0, change.item as unknown as T);
+    }
+    else {
+      next.push(change.item as unknown as T);
     }
   }
 
-  return next
+  return next;
 }
 
 /** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
 export function applyEdgeChanges(changes: EdgeChange[], edges: Edge[]) {
-  return applyChanges(changes, edges)
+  return applyChanges(changes, edges);
 }
 
 /** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
 export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
-  return applyChanges(changes, nodes)
+  return applyChanges(changes, nodes);
 }
 
 export function createSelectionChange(id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange {
@@ -141,7 +145,7 @@ export function createSelectionChange(id: string, selected: boolean): NodeSelect
     id,
     type: 'select',
     selected,
-  }
+  };
 }
 
 export function createAdditionChange<
@@ -152,37 +156,37 @@ export function createAdditionChange<
     item,
     type: 'add',
     ...(typeof index === 'number' && { index }),
-  }
+  };
 }
 
 export function createNodeRemoveChange(id: string): NodeRemoveChange {
   return {
     id,
     type: 'remove',
-  }
+  };
 }
 
 export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
   return {
     id,
     type: 'remove',
-  }
+  };
 }
 
 export function getSelectionChanges(
   items: Map<string, any>,
   selectedIds: Set<string> = new Set(),
 ): NodeSelectionChange[] | EdgeSelectionChange[] {
-  const changes: NodeSelectionChange[] | EdgeSelectionChange[] = []
+  const changes: NodeSelectionChange[] | EdgeSelectionChange[] = [];
 
   for (const [id, item] of items) {
-    const willBeSelected = selectedIds.has(id)
+    const willBeSelected = selectedIds.has(id);
 
     // we don't want to set all items to selected=false on the first selection
     if (!(item.selected === undefined && !willBeSelected) && item.selected !== willBeSelected) {
-      changes.push(createSelectionChange(item.id, willBeSelected))
+      changes.push(createSelectionChange(item.id, willBeSelected));
     }
   }
 
-  return changes
+  return changes;
 }

@@ -1,5 +1,5 @@
-export { default as EdgesApp } from './App.vue?raw'
-export { default as EdgeWithButton } from './EdgeWithButton.vue?raw'
-export { default as CustomEdge } from './CustomEdge.vue?raw'
-export { default as CustomEdgeLabel } from './CustomEdgeLabel.vue?raw'
-export { default as EdgeCSS } from './style.css?inline'
+export { default as EdgesApp } from './App.vue?raw';
+export { default as CustomEdge } from './CustomEdge.vue?raw';
+export { default as CustomEdgeLabel } from './CustomEdgeLabel.vue?raw';
+export { default as EdgeWithButton } from './EdgeWithButton.vue?raw';
+export { default as EdgeCSS } from './style.css?inline';

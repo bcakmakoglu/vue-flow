@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue'
-import { Background, Panel, VueFlow } from '@vue-flow/core'
+import { Background, Panel, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
 
 const nodes = ref([
   {
@@ -28,21 +28,21 @@ const nodes = ref([
     position: { x: 400, y: 200 },
     class: 'light',
   },
-])
+]);
 
 const edges = ref([
   { id: 'e1-2', source: '1', target: '2' },
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e3-4', source: '3', target: '4' },
-])
+]);
 
 function toggleClass() {
   nodes.value = nodes.value.map((node) => {
     return {
       ...node,
       class: node.class === 'light' ? 'dark' : 'light',
-    }
-  })
+    };
+  });
 }
 
 function updatePos() {
@@ -53,8 +53,8 @@ function updatePos() {
         x: Math.random() * 400,
         y: Math.random() * 400,
       },
-    }
-  })
+    };
+  });
 }
 </script>
 
@@ -63,8 +63,12 @@ function updatePos() {
     <Background />
 
     <Panel position="top-right">
-      <button style="margin-right: 5px" @click="updatePos">update positions</button>
-      <button @click="toggleClass">toggle class</button>
+      <button style="margin-right: 5px" @click="updatePos">
+        update positions
+      </button>
+      <button @click="toggleClass">
+        toggle class
+      </button>
     </Panel>
   </VueFlow>
 </template>

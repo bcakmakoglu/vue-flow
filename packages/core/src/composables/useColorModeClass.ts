@@ -1,9 +1,9 @@
-import type { ComputedRef } from 'vue'
-import { computed } from 'vue'
-import { useMediaQuery } from '@vueuse/core'
-import type { ColorModeClass } from '@xyflow/system'
-import type { Edge, Node, VueFlowState } from '../types'
-import { useStore } from './useStore'
+import type { ColorModeClass } from '@xyflow/system';
+import type { ComputedRef } from 'vue';
+import type { Edge, Node, VueFlowState } from '../types';
+import { useMediaQuery } from '@vueuse/core';
+import { computed } from 'vue';
+import { useStore } from './useStore';
 
 /**
  * Resolves the `colorMode` prop to the `light`/`dark` class applied to the flow container, tracking
@@ -16,13 +16,13 @@ import { useStore } from './useStore'
 export function useColorModeClass<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   state: VueFlowState<NodeType, EdgeType> = useStore<NodeType, EdgeType>(),
 ): ComputedRef<ColorModeClass> {
-  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
 
   return computed(() => {
     if (state.colorMode === 'system') {
-      return prefersDark.value ? 'dark' : 'light'
+      return prefersDark.value ? 'dark' : 'light';
     }
 
-    return state.colorMode
-  })
+    return state.colorMode;
+  });
 }
