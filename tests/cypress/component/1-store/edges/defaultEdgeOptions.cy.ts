@@ -1,4 +1,4 @@
-import type { DefaultEdgeOptions, Edge, EdgeComponent, VueFlowStore } from '@vue-flow/core';
+import type { DefaultEdgeOptions, EdgeComponent, VueFlowStore } from '@vue-flow/core';
 import { BaseEdge, getBezierPath, MarkerType } from '@vue-flow/core';
 import { h, markRaw } from 'vue';
 import { getStore } from '../../../support/component';
@@ -56,33 +56,6 @@ describe('Default Edge Options', () => {
     // ...and the store still holds the user's verbatim types (undefined / 'typeB')
     expect(store.getEdge('inherits')?.type).to.be.undefined;
     expect(store.getEdge('owns')?.type).to.equal('typeB');
-  });
-
-  it('class/style callbacks receive the RAW stored edge, not the merged render view', () => {
-    let captured: Edge | undefined;
-
-    cy.vueFlow({
-      fitView: false,
-      nodes: baseNodes,
-      edges: [{ id: 'cb', source: '1', target: '2' }],
-      // a function-form default class — must be invoked with the raw stored edge
-      defaultEdgeOptions: {
-        class: (edge: Edge) => {
-          captured = edge;
-          return 'from-default-cb';
-        },
-      } as DefaultEdgeOptions,
-    });
-
-    cy.get('[data-id="cb"]').should('have.class', 'from-default-cb');
-
-    cy.then(() => {
-      const stored = getStore().getEdge('cb');
-      // identity: the callback arg is the exact stored edge (=== the array element), not a merged copy
-      expect(captured).to.equal(stored);
-      // and therefore carries none of the render-merge fields
-      expect((captured as any).class).to.not.be.a('function');
-    });
   });
 
   it('resolves markers through defaultEdgeOptions at render', () => {

@@ -1,7 +1,7 @@
 import type { EdgeBase } from '@xyflow/system';
 import type { Component, CSSProperties, SVGAttributes, VNode } from 'vue';
 import type { EdgeComponent, EdgeTextProps } from './components';
-import type { ElementData, Position, Styles } from './flow';
+import type { ClassValue, ElementData, Position, Styles } from './flow';
 
 /** Edge markers */
 export enum MarkerType {
@@ -75,9 +75,9 @@ export interface DefaultEdge<Data extends Record<string, unknown> = ElementData,
   reconnectable?: EdgeReconnectable;
   /** Disable/enable focusing edge (a11y) */
   focusable?: boolean;
-  /** Additional class names, can be a string or a callback returning a string (receives current flow element) */
-  class?: string | string[] | Record<string, any>;
-  /** Additional styles, can be an object or a callback returning an object (receives current flow element) */
+  /** Additional class names */
+  class?: ClassValue;
+  /** Additional styles */
   style?: Styles;
   /** Overwrites current edge type */
   template?: EdgeComponent;

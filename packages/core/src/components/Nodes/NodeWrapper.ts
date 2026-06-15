@@ -169,17 +169,14 @@ const NodeWrapper = defineComponent({
       if (!node) {
         return undefined;
       }
-      return typeof node.class === 'function' ? node.class(node) : node.class;
+      return node.class;
     });
 
     const getStyle = computed(() => {
       const node = nodeRef.value;
       // clone: never mutate the user's `node.style` (nodes are markRaw, so an in-place write isn't
       // reactive AND would cache stale width/height onto the user object across renders)
-      // `node.style` can be a function at runtime (a style callback); the `Styles` type doesn't model
-      // that, so `typeof` would narrow it to `never` — keep `instanceof Function`.
-      // eslint-disable-next-line unicorn/no-instanceof-builtins
-      const styles = { ...(node?.style instanceof Function ? node.style(node) : node?.style) };
+      const styles = { ...node?.style };
 
       const width = node?.width;
       const height = node?.height;

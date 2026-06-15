@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'vue';
 import type { Edge, EdgeMarkerType } from './edge';
-import type { Position, XYPosition } from './flow';
+import type { ClassValue, Position, XYPosition } from './flow';
 import type { ConnectingHandle, HandleElement, HandleType } from './handle';
 import type { GraphNode, Node } from './node';
 
@@ -16,7 +16,7 @@ export enum ConnectionLineType {
 export interface ConnectionLineOptions {
   type?: ConnectionLineType;
   style?: CSSProperties;
-  class?: string;
+  class?: ClassValue;
   markerEnd?: EdgeMarkerType;
   markerStart?: EdgeMarkerType;
 }
