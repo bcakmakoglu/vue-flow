@@ -13,14 +13,14 @@ The `useVueFlow` composable provides you with a set of methods to interact with 
 import { ref } from 'vue'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 
-const { onInit, getNode, fitView, snapToGrid } = useVueFlow()
+const { onInit, getNode, fitView, updateNode } = useVueFlow()
 
 const nodes = ref([/* ... */])
 
 const edges = ref([/* ... */])
 
-// to enable snapping to grid
-snapToGrid.value = true
+// `<VueFlow>` settings such as grid snapping are props — drive them from a ref
+const snapToGrid = ref(true)
 
 // any event that is emitted from the `<VueFlow />` component can be listened to using the `onEventName` method
 onInit((instance) => {
@@ -31,18 +31,19 @@ onInit((instance) => {
   const node = getNode('1')
   
   if (node) {
-    node.position = { x: 100, y: 100 }
+    // nodes are stored immutably — update them through the `updateNode` action, not by mutating in place
+    updateNode('1', { position: { x: 100, y: 100 } })
   }
 })
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" />
+  <VueFlow :nodes="nodes" :edges="edges" :snap-to-grid="snapToGrid" />
 </template>
 ```
 
-`useVueFlow` exposes the whole internal state, including the nodes and edges.
-The values are reactive, meaning changing the values returned from `useVueFlow` will trigger changes in the graph.
+`useVueFlow` returns the flow's reactive getters (`getNodes`, `getEdges`, `viewport`, …), actions (`updateNode`, `addEdges`, `fitView`, …) and event hooks (`onInit`, `onConnect`, …) — not the raw state.
+The getters are read-only; update the graph through the actions (or by binding `v-model:nodes` / `:edges` etc. on `<VueFlow>`). If you need the writable state directly, reach for `useStore` / `storeToRefs`.
 
 ### State creation and injection
 

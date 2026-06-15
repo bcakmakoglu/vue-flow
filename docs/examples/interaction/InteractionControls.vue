@@ -2,25 +2,19 @@
 import { Panel, useVueFlow } from '@vue-flow/core';
 import { ref } from 'vue';
 
-const {
-  nodesDraggable,
-  nodesConnectable,
-  elementsSelectable,
-  zoomOnScroll,
-  zoomOnDoubleClick,
-  zoomOnPinch,
-  panOnScroll,
-  panOnScrollMode,
-  panOnDrag,
-  onConnect,
-  onNodeDragStop,
-  onPaneClick,
-  onPaneScroll,
-  onPaneContextMenu,
-  onNodeDragStart,
-  onMoveEnd,
-  addEdges,
-} = useVueFlow();
+// These settings are bound to `<VueFlow>` props by the parent. Expose them as models so the panel can
+// toggle them — the props are reactive, so the flow reacts to every change (no `useStore` needed).
+const nodesDraggable = defineModel('nodesDraggable');
+const nodesConnectable = defineModel('nodesConnectable');
+const elementsSelectable = defineModel('elementsSelectable');
+const zoomOnScroll = defineModel('zoomOnScroll');
+const zoomOnPinch = defineModel('zoomOnPinch');
+const panOnScroll = defineModel('panOnScroll');
+const panOnScrollMode = defineModel('panOnScrollMode');
+const zoomOnDoubleClick = defineModel('zoomOnDoubleClick');
+const panOnDrag = defineModel('panOnDrag');
+
+const { onConnect, onNodeDragStop, onPaneClick, onPaneScroll, onPaneContextMenu, onNodeDragStart, onMoveEnd, addEdges } = useVueFlow();
 
 const captureZoomClick = ref(false);
 

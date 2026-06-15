@@ -12,7 +12,7 @@ export function useTeleport(id) {
   const transition = ref(false);
   const teleport = ref(null);
 
-  const { updateNodeInternals, updateNodeData, getNode, edges, setEdges } = useVueFlow();
+  const { updateNodeInternals, updateNodeData, getNode, getEdges, setEdges } = useVueFlow();
 
   /**
    * specify a selector to teleport to
@@ -73,7 +73,7 @@ export function useTeleport(id) {
     updateNodeData(id, { destination });
 
     // hide connected edges when teleporting
-    const connectedEdgeIds = getConnectedEdges([node], edges.value).map(edge => edge.id);
+    const connectedEdgeIds = getConnectedEdges([node], getEdges.value).map(edge => edge.id);
 
     // check if nodes connected to edge are teleported and hide edge if one of them is
     const updateHiddenEdges = () => {
