@@ -1,4 +1,4 @@
-import type { Viewport } from '@xyflow/system';
+import type { Padding, Viewport } from '@xyflow/system';
 import type { Rect, XYPosition } from './flow';
 
 export interface TransitionOptions {
@@ -6,7 +6,7 @@ export interface TransitionOptions {
 }
 
 export type FitViewParams = {
-  padding?: number;
+  padding?: Padding;
   includeHiddenNodes?: boolean;
   minZoom?: number;
   maxZoom?: number;
@@ -22,7 +22,7 @@ export type SetCenterOptions = TransitionOptions & {
 };
 
 export type FitBoundsOptions = TransitionOptions & {
-  padding?: number;
+  padding?: Padding;
 };
 
 /** Fit the viewport around visible nodes */

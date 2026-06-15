@@ -77,10 +77,11 @@ export {
   getOutgoers,
   getViewportForBounds,
   isEdgeBase,
+  isInternalNodeBase,
   isMacOs,
   isNodeBase,
   pointToRendererPoint,
   rendererPointToPoint,
 } from '@xyflow/system';
 
-export { type ColorMode, type ColorModeClass, PanOnScrollMode, type Viewport } from '@xyflow/system';
+export { type ColorMode, type ColorModeClass, type Padding, type PaddingUnit, type PaddingWithUnit, PanOnScrollMode, type Viewport } from '@xyflow/system';

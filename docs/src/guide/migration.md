@@ -273,6 +273,11 @@ far the pointer may move and still count as a node click.
   `NodeProps<MyData>` → `NodeProps<Node<MyData, 'myType'>>` (same for `EdgeProps<Edge<MyData, 'myType'>>`).
 - **`useVueFlow<NodeType, EdgeType>()`** is fully typed on both generics (xyflow order). `GraphNode<NodeType>`
   / `GraphEdge` is now `GraphEdge<EdgeType>`.
+- **Padding uses `@xyflow/system`'s `Padding` type** for both `fitView`/`fitBounds` options and a node
+  `extent`'s `{ range, padding }`. A plain number still works; you can also pass a `'10px'`/`'5%'` string or a
+  per-side object `{ top, right, bottom, left }` (with `x`/`y` shorthands). The old positional-tuple extent
+  padding is **removed**: `padding: [10, 20]` → `padding: { y: 10, x: 20 }`, and
+  `padding: [t, r, b, l]` → `padding: { top: t, right: r, bottom: b, left: l }`.
 - **Change types mirror `@xyflow/system`:**
   - `NodeDimensionChange.updateStyle` → `setAttributes` (`true | 'width' | 'height'`)
   - `NodePositionChange.from` → `positionAbsolute`
@@ -308,6 +313,9 @@ node.label             → node.data.label
 VueFlowStore           → VueFlowInstance
 GraphEdge              → Edge
 NodeProps<Data>        → NodeProps<Node<Data, 'type'>>
+
+// padding (fitView / fitBounds / node extent)
+padding: [10, 20]      → padding: { y: 10, x: 20 }   // positional tuple removed; px/% strings now allowed
 
 // behavior
 node.x = …             → updateNode(id, { x: … }) / immutable reassignment

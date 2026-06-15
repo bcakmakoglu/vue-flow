@@ -1,24 +1,43 @@
+import type { PaddingWithUnit } from '@xyflow/system';
 import type { CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State, XYPosition } from '../types';
 import { clampPosition, getNodeDimensions } from '@xyflow/system';
 import { ErrorCode, VueFlowError } from '.';
 
-function getExtentPadding(padding: CoordinateExtentRange['padding']): [number, number, number, number] {
-  if (Array.isArray(padding)) {
-    switch (padding.length) {
-      case 1:
-        return [padding[0], padding[0], padding[0], padding[0]];
-      case 2:
-        return [padding[0], padding[1], padding[0], padding[1]];
-      case 3:
-        return [padding[0], padding[1], padding[2], padding[1]];
-      case 4:
-        return padding;
-      default:
-        return [0, 0, 0, 0];
-    }
+// Resolve one `PaddingWithUnit` against a reference length — `%` is relative, `px`/number is absolute.
+function resolvePadding(value: PaddingWithUnit | undefined, reference: number): number {
+  if (typeof value === 'number') {
+    return value;
   }
 
-  return [padding, padding, padding, padding];
+  if (!value) {
+    return 0;
+  }
+
+  const numeric = Number.parseFloat(value);
+
+  if (Number.isNaN(numeric)) {
+    return 0;
+  }
+
+  return value.endsWith('%') ? (numeric / 100) * reference : numeric;
+}
+
+// Resolve system `Padding` into absolute [top, right, bottom, left] within a parent of width × height.
+function getExtentPadding(
+  padding: CoordinateExtentRange['padding'],
+  width: number,
+  height: number,
+): [number, number, number, number] {
+  if (typeof padding === 'number' || typeof padding === 'string') {
+    return [resolvePadding(padding, height), resolvePadding(padding, width), resolvePadding(padding, height), resolvePadding(padding, width)];
+  }
+
+  return [
+    resolvePadding(padding.top ?? padding.y, height),
+    resolvePadding(padding.right ?? padding.x, width),
+    resolvePadding(padding.bottom ?? padding.y, height),
+    resolvePadding(padding.left ?? padding.x, width),
+  ];
 }
 
 function getParentExtent(
@@ -26,7 +45,9 @@ function getParentExtent(
   node: GraphNode | NodeDragItem,
   parent: GraphNode,
 ): CoordinateExtent | false {
-  const [top, right, bottom, left] = typeof currentExtent !== 'string' ? getExtentPadding(currentExtent.padding) : [0, 0, 0, 0];
+  const [top, right, bottom, left] = typeof currentExtent !== 'string'
+    ? getExtentPadding(currentExtent.padding, parent.measured.width ?? 0, parent.measured.height ?? 0)
+    : [0, 0, 0, 0];
 
   if (
     parent
@@ -82,7 +103,9 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
     ];
   }
   else if (currentExtent !== 'parent' && currentExtent?.range && Array.isArray(currentExtent.range)) {
-    const [top, right, bottom, left] = getExtentPadding(currentExtent.padding);
+    const width = currentExtent.range[1][0] - currentExtent.range[0][0];
+    const height = currentExtent.range[1][1] - currentExtent.range[0][1];
+    const [top, right, bottom, left] = getExtentPadding(currentExtent.padding, width, height);
 
     const parentX = parent?.internals.positionAbsolute.x || 0;
     const parentY = parent?.internals.positionAbsolute.y || 0;
