@@ -565,7 +565,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const setNodes: Actions<NodeType>['setNodes'] = (nodes) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
+    const nextNodes = typeof nodes === 'function' ? nodes(state.nodes) : nodes;
 
     if (!state.initialized && !nextNodes.length) {
       return;
@@ -576,7 +576,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const setEdges: Actions<NodeType, EdgeType>['setEdges'] = (edges) => {
-    const nextEdges = edges instanceof Function ? edges(state.edges) : edges;
+    const nextEdges = typeof edges === 'function' ? edges(state.edges) : edges;
 
     if (!state.initialized && !nextEdges.length) {
       return;
@@ -596,7 +596,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const addNodes: Actions<NodeType>['addNodes'] = (nodes) => {
-    let nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
+    let nextNodes = typeof nodes === 'function' ? nodes(state.nodes) : nodes;
     nextNodes = Array.isArray(nextNodes) ? nextNodes : [nextNodes];
 
     // Emit `add` changes for the valid user nodes (filter invalid up front — `applyChanges` would
@@ -615,7 +615,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const addEdges: Actions<NodeType, EdgeType>['addEdges'] = (params) => {
-    let nextEdges = params instanceof Function ? params(state.edges) : params;
+    let nextEdges = typeof params === 'function' ? params(state.edges) : params;
     nextEdges = Array.isArray(nextEdges) ? nextEdges : [nextEdges];
 
     // the `add` change items are the validated USER edges (a `Connection` becomes a new edge with
@@ -641,7 +641,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const removeNodes: Actions<NodeType>['removeNodes'] = (nodes, removeConnectedEdges = true, removeChildren = false) => {
-    const nextNodes = nodes instanceof Function ? nodes(state.nodes) : nodes;
+    const nextNodes = typeof nodes === 'function' ? nodes(state.nodes) : nodes;
     const nodesToRemove = Array.isArray(nextNodes) ? nextNodes : [nextNodes];
 
     const nodeChanges: NodeRemoveChange[] = [];
@@ -714,7 +714,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const removeEdges: Actions<NodeType, EdgeType>['removeEdges'] = (edges) => {
-    const nextEdges = edges instanceof Function ? edges(state.edges) : edges;
+    const nextEdges = typeof edges === 'function' ? edges(state.edges) : edges;
     const edgesToRemove = Array.isArray(nextEdges) ? nextEdges : [nextEdges];
 
     const changes: EdgeRemoveChange[] = [];
@@ -985,7 +985,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   };
 
   const setState: Actions<NodeType, EdgeType>['setState'] = (options) => {
-    const opts = options instanceof Function ? options(state) : options;
+    const opts = typeof options === 'function' ? options(state) : options;
 
     // these options cannot be set after initialization
     const exclude: (keyof typeof opts)[] = ['viewportRef', 'vueFlowRef', 'dimensions', 'hooks'];

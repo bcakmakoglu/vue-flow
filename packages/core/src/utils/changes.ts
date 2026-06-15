@@ -97,7 +97,7 @@ export function applyChanges<
               const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width';
               const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height';
               updated.style = {
-                ...(updated.style || {}),
+                ...(updated.style ?? {}),
                 ...(setW && { width: `${currentChange.dimensions?.width}px` }),
                 ...(setH && { height: `${currentChange.dimensions?.height}px` }),
               };
