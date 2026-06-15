@@ -1,5 +1,5 @@
 import type { Edge, Node } from '../types';
-import { computed, inject, ref } from 'vue';
+import { computed, inject, shallowRef } from 'vue';
 import { EdgeId, EdgeRef } from '../context';
 import { ErrorCode, VueFlowError } from '../utils';
 import { useVueFlow } from './useVueFlow';
@@ -17,7 +17,7 @@ import { useVueFlow } from './useVueFlow';
  */
 export function useEdge<EdgeType extends Edge = Edge>(id?: string) {
   const edgeId = id ?? inject(EdgeId, '');
-  const edgeEl = inject(EdgeRef, ref(null));
+  const edgeEl = inject(EdgeRef, shallowRef(null));
 
   const { getEdge, emits } = useVueFlow<Node, EdgeType>();
 

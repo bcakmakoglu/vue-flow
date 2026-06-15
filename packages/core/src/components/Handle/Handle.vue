@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { HandleProps } from '../../types';
 import { getDimensions, isMouseEvent, Position } from '@xyflow/system';
-import { computed, onMounted, ref, toRef } from 'vue';
+import { computed, onMounted, shallowRef, toRef } from 'vue';
 import { storeToRefs, useHandle, useNode, useStore, useVueFlow } from '../../composables';
 import { isDef } from '../../utils';
 
@@ -32,7 +32,7 @@ const {
 
 const { id: nodeId, node: nodeRef, nodeEl, connectedEdges } = useNode();
 
-const handle = ref<HTMLDivElement>();
+const handle = shallowRef<HTMLDivElement>();
 
 // `data-id` (queried by handle DOM lookup in `utils/handle.ts`) and the other handle identifiers are
 // typed through a `Record` because this vue version's `HTMLAttributes` lacks the `data-*` index signature

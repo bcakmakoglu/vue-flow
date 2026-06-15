@@ -1,6 +1,6 @@
 import type { GraphNode, Node } from '../types';
 import { getConnectedEdges } from '@xyflow/system';
-import { computed, inject, ref } from 'vue';
+import { computed, inject, shallowRef } from 'vue';
 import { NodeRef } from '../context';
 import { ErrorCode, VueFlowError } from '../utils';
 import { storeToRefs } from './storeToRefs';
@@ -21,7 +21,7 @@ import { useVueFlow } from './useVueFlow';
  */
 export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? '';
-  const nodeEl = inject(NodeRef, ref(null));
+  const nodeEl = inject(NodeRef, shallowRef(null));
 
   const { getInternalNode, emits } = useVueFlow();
   const { edges } = storeToRefs(useStore<NodeType>());
