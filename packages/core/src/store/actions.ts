@@ -481,11 +481,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       changes.push(...handleExpandParent(parentExpandChildren, systemNodeLookup, systemParentLookup, state.nodeOrigin));
     }
 
-    if (!state.fitViewOnInitDone && state.fitViewOnInit) {
-      viewportHelper.value.fitView(state.fitViewOptions).then(() => {
-        state.fitViewOnInitDone = true;
-      });
-    }
+    // the initial `fitView` (the `fitView` prop) is handled reactively by `useFitViewOnInit`: it waits
+    // for every node to be measured AND re-fits while the container is still settling — neither of which
+    // a one-shot here (fired per measurement batch, against a partial/zero-bounds subset) could do.
 
     if (changes.length) {
       state.hooks.nodesChange.trigger(changes);

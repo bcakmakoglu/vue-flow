@@ -2,6 +2,7 @@
 import { XYPanZoom } from '@xyflow/system';
 import { onMounted, onUnmounted, toRef, watch } from 'vue';
 import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables';
+import { useFitViewOnInit } from '../../composables/useFitViewOnInit';
 import { useResizeHandler } from '../../composables/useResizeHandler';
 import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue';
 import NodeRenderer from '../NodeRenderer/NodeRenderer.vue';
@@ -50,6 +51,9 @@ const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value);
 const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true));
 
 useResizeHandler(zoomPane);
+
+// drives the `fitView` prop's initial fit (waits for nodes + re-fits while the container settles)
+useFitViewOnInit();
 
 onUnmounted(() => panZoom.value?.destroy());
 
