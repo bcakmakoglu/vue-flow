@@ -1,6 +1,5 @@
 import type { Edge, FlowProps, Node, State } from '../types';
-import { ConnectionMode, isMacOs, PanOnScrollMode, SelectionMode } from '@xyflow/system';
-import { ConnectionLineType } from '../types';
+import { ConnectionLineType, ConnectionMode, isMacOs, PanOnScrollMode, SelectionMode } from '@xyflow/system';
 
 import { createHooks } from './hooks';
 

@@ -290,6 +290,11 @@ far the pointer may move and still count as a node click.
   - `NodePositionChange.from` → `positionAbsolute`
   - `NodeAddChange.item` / `EdgeAddChange.item` are the user `Node` / `Edge` (not `GraphNode`/`GraphEdge`); both gain an optional `index`
   - `EdgeRemoveChange` is `{ id, type: 'remove' }` only — read `source`/`target`/handles from the edge via `getEdge(id)` before the change applies
+- **`ConnectionLineType` is `@xyflow/system`'s enum.** Its `SimpleBezier` member's value changed from
+  `'simple-bezier'` to `'simplebezier'` (matching system and vue-flow's own `'simplebezier'` edge-type key).
+  Use the enum (`ConnectionLineType.SimpleBezier`) rather than the raw string and nothing changes.
+- **`PanelPositionType` → `PanelPosition`** (`@xyflow/system`'s type). It now also accepts `'center-left'`
+  and `'center-right'` in addition to the six corner/edge positions.
 
 ## Cheat sheet
 
@@ -320,6 +325,8 @@ node.label             → node.data.label
 VueFlowStore           → VueFlowInstance
 GraphEdge              → Edge
 NodeProps<Data>        → NodeProps<Node<Data, 'type'>>
+PanelPositionType      → PanelPosition       // + 'center-left' / 'center-right'
+ConnectionLineType.SimpleBezier  → 'simplebezier'  // value was 'simple-bezier'
 
 // padding (fitView / fitBounds / node extent)
 padding: [10, 20]      → padding: { y: 10, x: 20 }   // positional tuple removed; px/% strings now allowed

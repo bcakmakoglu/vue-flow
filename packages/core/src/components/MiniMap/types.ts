@@ -1,6 +1,6 @@
-import type { Dimensions, XYPosition } from '@xyflow/system';
+import type { Dimensions, PanelPosition, XYPosition } from '@xyflow/system';
 import type { CSSProperties, InjectionKey } from 'vue';
-import type { GraphNode, NodeMouseEvent, PanelPositionType } from '../../types';
+import type { GraphNode, NodeMouseEvent } from '../../types';
 
 /** expects a node and returns a color value */
 export type MiniMapNodeFunc = (node: GraphNode) => string;
@@ -24,8 +24,8 @@ export interface MiniMapProps {
   maskStrokeColor?: string;
   /** Border width of minimap mask */
   maskStrokeWidth?: number;
-  /** Position of the minimap {@link PanelPositionType} */
-  position?: PanelPositionType;
+  /** Position of the minimap {@link PanelPosition} */
+  position?: PanelPosition;
   /** Enable drag minimap to drag viewport */
   pannable?: boolean;
   /** Enable zoom minimap to zoom viewport */

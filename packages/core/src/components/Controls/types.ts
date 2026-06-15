@@ -1,4 +1,5 @@
-import type { FitViewParams, PanelPositionType } from '../../types';
+import type { PanelPosition } from '@xyflow/system';
+import type { FitViewParams } from '../../types';
 
 export interface ControlProps {
   /**
@@ -26,11 +27,11 @@ export interface ControlProps {
    */
   fitViewParams?: FitViewParams;
   /**
-   * The {@link PanelPositionType position} of the `<Controls>` panel
+   * The {@link PanelPosition position} of the `<Controls>` panel
    *
    * @default 'bottom-left'
    */
-  position?: PanelPositionType;
+  position?: PanelPosition;
 }
 
 export interface ControlEmits {

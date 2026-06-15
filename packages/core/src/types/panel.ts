@@ -1,5 +1,5 @@
-export type PanelPositionType = 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right';
+import type { PanelPosition } from '@xyflow/system';
 
 export interface PanelProps {
-  position: PanelPositionType;
+  position: PanelPosition;
 }

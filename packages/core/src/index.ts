@@ -89,6 +89,7 @@ export {
   type ColorMode,
   type ColorModeClass,
   type Connection,
+  ConnectionLineType,
   ConnectionMode,
   type Dimensions,
   type EdgeRemoveChange,

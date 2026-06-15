@@ -1,18 +1,9 @@
-import type { Connection, HandleType, NodeConnection, Position, XYPosition } from '@xyflow/system';
+import type { Connection, ConnectionLineType, HandleType, NodeConnection, Position, XYPosition } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { Edge, EdgeMarkerType } from './edge';
 import type { ClassValue } from './flow';
 import type { ConnectingHandle, HandleElement } from './handle';
 import type { GraphNode, Node } from './node';
-
-/** Connection line types (same as default edge types */
-export enum ConnectionLineType {
-  Bezier = 'default',
-  SimpleBezier = 'simple-bezier',
-  Straight = 'straight',
-  Step = 'step',
-  SmoothStep = 'smoothstep',
-}
 
 export interface ConnectionLineOptions {
   type?: ConnectionLineType;
