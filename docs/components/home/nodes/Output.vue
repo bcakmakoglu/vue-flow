@@ -8,7 +8,7 @@ defineProps<NodeProps<RGBOutputNode>>();
 
 <template>
   <div
-    :style="{ backgroundColor: data.rgb }"
+    :style="{ backgroundColor: data.rgb.value }"
     class="px-6 py-2 rounded-xl text-white text-center min-w-[220px] border-2 border-white"
   >
     <div class="text-xl font-bold">
