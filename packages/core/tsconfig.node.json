@@ -2,9 +2,11 @@
   "compilerOptions": {
     "composite": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "files": [
     "package.json"
