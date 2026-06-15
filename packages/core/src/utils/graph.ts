@@ -2,15 +2,15 @@ import type { Connection, Edge, GraphNode, Node } from '../types';
 import { isEdgeBase, isInternalNodeBase, isNodeBase } from '@xyflow/system';
 
 export function isEdge<EdgeType extends Edge = Edge>(element: unknown): element is EdgeType {
-  return isEdgeBase(element);
+  return !!element && typeof element === 'object' && isEdgeBase(element);
 }
 
 export function isNode<NodeType extends Node = Node>(element: unknown): element is NodeType {
-  return isNodeBase(element);
+  return !!element && typeof element === 'object' && isNodeBase(element);
 }
 
 export function isGraphNode<NodeType extends Node = Node>(element: unknown): element is GraphNode<NodeType> {
-  return isInternalNodeBase(element);
+  return !!element && typeof element === 'object' && isInternalNodeBase(element);
 }
 
 export function connectionExists(edge: Edge | Connection, edges: Edge[]) {
