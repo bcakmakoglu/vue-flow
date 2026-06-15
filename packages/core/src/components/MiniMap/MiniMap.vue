@@ -233,12 +233,15 @@ export default {
 
       <!-- v-memo on the lookup entry: unchanged nodes keep their InternalNode reference across commits
       (checkEquality reuse), so drag/pan-frame MiniMap re-renders skip every untouched child instead of
-      re-rendering all of them (the inline per-node prop objects/calls would otherwise always patch) -->
+      re-rendering all of them (the inline per-node prop objects/calls would otherwise always patch). The
+      node*Func RESULTS are in the deps (not the fn refs) so a recolor driven by an external reactive dep
+      read inside a `nodeColor`/`nodeStrokeColor`/`nodeClassName` callback still re-renders the affected
+      node — memoizing the fn refs froze the color until the node itself changed -->
       <MiniMapNode
         v-for="node of minimapNodes"
         :id="node.id"
         :key="node.id"
-        v-memo="[node, nodeClassNameFunc, nodeColorFunc, nodeStrokeColorFunc, nodeBorderRadius, nodeStrokeWidth, shapeRendering]"
+        v-memo="[node, nodeClassNameFunc(node), nodeColorFunc(node), nodeStrokeColorFunc(node), nodeBorderRadius, nodeStrokeWidth, shapeRendering]"
         :position="node.internals.positionAbsolute"
         :dimensions="getNodeDimensions(node)"
         :selected="node.selected"
