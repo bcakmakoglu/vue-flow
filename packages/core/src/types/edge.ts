@@ -1,7 +1,7 @@
 import type { EdgeBase } from '@xyflow/system';
 import type { Component, CSSProperties, SVGAttributes, VNode } from 'vue';
 import type { EdgeComponent, EdgeTextProps } from './components';
-import type { ClassValue, ElementData, Position, Styles } from './flow';
+import type { ClassValue, Position, Styles } from './flow';
 
 /** Edge markers */
 export enum MarkerType {
@@ -62,7 +62,7 @@ export interface EdgeLabelOptions {
  * animated, markers, data, deletable/selectable/selected, hidden, zIndex, ariaLabel, interactionWidth)
  * plus vue-flow-specific fields, mirroring how xyflow/react does `Edge = EdgeBase & EdgeLabelOptions & {…}`.
  */
-export interface DefaultEdge<Data extends Record<string, unknown> = ElementData, Type extends string = string>
+export interface DefaultEdge<Data extends Record<string, unknown> = Record<string, unknown>, Type extends string = string>
   extends EdgeBase<Data, Type>,
   EdgeLabelOptions {
   /** An edge label */
@@ -106,7 +106,7 @@ export interface SmoothStepPathOptions {
   borderRadius?: number;
 }
 
-export type SmoothStepEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
+export type SmoothStepEdgeType<Data extends Record<string, unknown> = Record<string, unknown>> = DefaultEdge<Data> & {
   type: 'smoothstep';
   pathOptions?: SmoothStepPathOptions;
 };
@@ -115,12 +115,12 @@ export interface BezierPathOptions {
   curvature?: number;
 }
 
-export type BezierEdgeType<Data extends Record<string, unknown> = ElementData> = DefaultEdge<Data> & {
+export type BezierEdgeType<Data extends Record<string, unknown> = Record<string, unknown>> = DefaultEdge<Data> & {
   type: 'default';
   pathOptions?: BezierPathOptions;
 };
 
-export type Edge<Data extends Record<string, unknown> = ElementData, Type extends string = string>
+export type Edge<Data extends Record<string, unknown> = Record<string, unknown>, Type extends string = string>
   = | DefaultEdge<Data, Type>
     | SmoothStepEdgeType<Data>
     | BezierEdgeType<Data>;

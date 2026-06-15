@@ -278,6 +278,13 @@ far the pointer may move and still count as a node click.
   per-side object `{ top, right, bottom, left }` (with `x`/`y` shorthands). The old positional-tuple extent
   padding is **removed**: `padding: [10, 20]` → `padding: { y: 10, x: 20 }`, and
   `padding: [t, r, b, l]` → `padding: { top: t, right: r, bottom: b, left: l }`.
+- **Custom connection lines use `from*`/`to*` props.** The `#connection-line` slot's `ConnectionLineProps`
+  moved from `source*`/`target*` to xyflow's `from*`/`to*`: `sourceX`/`sourceY`/`sourcePosition` →
+  `fromX`/`fromY`/`fromPosition`, `targetX`/`targetY`/`targetPosition` → `toX`/`toY`/`toPosition`,
+  `sourceNode`/`sourceHandle` → `fromNode`/`fromHandle`, `targetNode`/`targetHandle` → `toNode`/`toHandle`.
+  `markerStart`/`markerEnd` are now optional.
+- **An edge's `data` defaults to `Record<string, unknown>`** (was `any`, via the now-removed `ElementData`) —
+  same as `Node`; narrow before use.
 - **Change types mirror `@xyflow/system`:**
   - `NodeDimensionChange.updateStyle` → `setAttributes` (`true | 'width' | 'height'`)
   - `NodePositionChange.from` → `positionAbsolute`
@@ -316,6 +323,9 @@ NodeProps<Data>        → NodeProps<Node<Data, 'type'>>
 
 // padding (fitView / fitBounds / node extent)
 padding: [10, 20]      → padding: { y: 10, x: 20 }   // positional tuple removed; px/% strings now allowed
+
+// connection line (#connection-line slot props)
+{ sourceX, sourceNode, … }  → { fromX, fromNode, … }   // source*/target* → from*/to*
 
 // behavior
 node.x = …             → updateNode(id, { x: … }) / immutable reassignment

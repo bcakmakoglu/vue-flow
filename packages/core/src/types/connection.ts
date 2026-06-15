@@ -108,30 +108,30 @@ export enum ConnectionMode {
 }
 
 export interface ConnectionLineProps {
-  /** Source X position of the connection line */
-  sourceX: number;
-  /** Source Y position of the connection line */
-  sourceY: number;
-  /** Source position of the connection line */
-  sourcePosition: Position;
-  /** Target X position of the connection line */
-  targetX: number;
-  /** Target Y position of the connection line */
-  targetY: number;
-  /** Target position of the connection line */
-  targetPosition: Position;
-  /** The source node of the connection line */
-  sourceNode: GraphNode;
-  /** The source handle element (not the DOM element) of the connection line */
-  sourceHandle: HandleElement | null;
-  /** The target node of the connection line */
-  targetNode: GraphNode | null;
-  /** The target handle element (not the DOM element) of the connection line */
-  targetHandle: HandleElement | null;
+  /** X start position of the connection line */
+  fromX: number;
+  /** Y start position of the connection line */
+  fromY: number;
+  /** the side of the start handle */
+  fromPosition: Position;
+  /** X end position of the connection line (the current pointer) */
+  toX: number;
+  /** Y end position of the connection line (the current pointer) */
+  toY: number;
+  /** the side of the end handle */
+  toPosition: Position;
+  /** the node the connection started from */
+  fromNode: GraphNode;
+  /** the handle the connection started from (not the DOM element) */
+  fromHandle: HandleElement | null;
+  /** the node the connection currently ends on, or `null` */
+  toNode: GraphNode | null;
+  /** the handle the connection currently ends on (not the DOM element), or `null` */
+  toHandle: HandleElement | null;
   /** marker url */
-  markerStart: string;
+  markerStart?: string;
   /** marker url */
-  markerEnd: string;
+  markerEnd?: string;
   /** status of the connection (valid, invalid) */
   connectionStatus: ConnectionStatus | null;
 }
