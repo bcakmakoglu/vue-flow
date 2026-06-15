@@ -14,12 +14,12 @@ const nodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 100, y: 125 },
   },
 ]);
@@ -54,12 +54,12 @@ const straightNodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 50, y: 125 },
   },
 ]);
