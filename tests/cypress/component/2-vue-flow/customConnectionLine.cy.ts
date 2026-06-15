@@ -7,24 +7,24 @@ const connectionLineId = 'test-custom-connection-line';
 describe('Custom Connection Line', () => {
   it('renders a custom connection line component', () => {
     const CustomConnectionLine = defineComponent<ConnectionLineProps>({
-      props: ['sourceNode', 'sourceHandle', 'targetNode', 'targetHandle', 'sourceX', 'sourceY', 'targetX', 'targetY'] as any,
+      props: ['fromNode', 'fromHandle', 'toNode', 'toHandle', 'fromX', 'fromY', 'toX', 'toY'] as any,
       emits: ['change'],
       setup(props, { emit }) {
         watch(
           () => props,
           (currProps) => {
             emit('change', {
-              sourceNodeId: currProps.sourceNode?.id,
-              sourceHandleId: currProps.sourceHandle?.id ?? null,
-              targetNodeId: currProps.targetNode?.id,
-              targetHandleId: currProps.targetHandle?.id ?? null,
+              sourceNodeId: currProps.fromNode?.id,
+              sourceHandleId: currProps.fromHandle?.id ?? null,
+              targetNodeId: currProps.toNode?.id,
+              targetHandleId: currProps.toHandle?.id ?? null,
             });
           },
           { immediate: true, deep: true },
         );
 
         return () => {
-          const path = getBezierPath(props);
+          const path = getBezierPath({ sourceX: props.fromX, sourceY: props.fromY, targetX: props.toX, targetY: props.toY });
 
           return h(BaseEdge, { path: path[0], class: connectionLineId });
         };

@@ -15,8 +15,8 @@ const nodes = ref([
 
 <template>
   <VueFlow :nodes="nodes">
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
-      <CustomConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
+    <template #connection-line="{ fromX, fromY, toX, toY }">
+      <CustomConnectionLine :from-x="fromX" :from-y="fromY" :to-x="toX" :to-y="toY" />
     </template>
   </VueFlow>
 </template>

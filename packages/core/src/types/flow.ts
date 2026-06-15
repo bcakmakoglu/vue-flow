@@ -19,9 +19,6 @@ import type { CoordinateExtent, CoordinateExtentRange, Node, NodeOrigin, NodePro
 import type { VueFlowInstance } from './store';
 import type { FitViewParams } from './zoom';
 
-// todo: should be object type
-export type ElementData = any;
-
 /**
  * Consulted before nodes/edges are deleted (via the delete key or `deleteElements`). Receives the full set
  * about to be removed (the targeted nodes/edges plus connected edges and child nodes). Return `false` to
