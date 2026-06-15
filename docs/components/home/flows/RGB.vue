@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { Edge, MiniMapNodeFunc, Node, VueFlowInstance } from '@vue-flow/core';
+import type { MiniMapNodeFunc, Node, VueFlowInstance } from '@vue-flow/core';
+import type { RGBEdge } from '../edges/Custom.vue';
 import type { Colors } from './utils';
 import { Background, Controls, MiniMap, VueFlow } from '@vue-flow/core';
 
@@ -12,7 +13,7 @@ const emit = defineEmits(['pane']);
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
-const flow = ref<VueFlowInstance>();
+const flow = ref<VueFlowInstance<Node, RGBEdge>>();
 
 const panOnDrag = ref(true);
 
@@ -23,7 +24,7 @@ const nodes = ref<Node[]>([
   { id: '4', type: 'rgb-output', data: { label: 'RGB' }, position: { x: 400, y: -25 } },
 ]);
 
-const edges = ref<Edge[]>([
+const edges = ref<RGBEdge[]>([
   { id: 'e1-4', type: 'rgb-line', data: { color: 'green' }, source: '1', target: '4', animated: true },
   { id: 'e2-4', type: 'rgb-line', data: { color: 'red' }, source: '2', target: '4', animated: true },
   { id: 'e3-4', type: 'rgb-line', data: { color: 'blue' }, source: '3', target: '4', animated: true },
@@ -86,7 +87,7 @@ const nodeColor: MiniMapNodeFunc = (node) => {
       @init="(i) => emit('pane', i)"
     >
       <template #edge-rgb-line="rgbLineProps">
-        <CustomEdge v-bind="rgbLineProps" :data="{ text: color[rgbLineProps.data?.color as Colors], ...rgbLineProps.data }" />
+        <CustomEdge v-bind="rgbLineProps" :data="{ ...rgbLineProps.data, text: String(color[rgbLineProps.data?.color as Colors]) }" />
       </template>
       <template #node-rgb="rgbProps">
         <RGBNode v-bind="rgbProps" :data="rgbProps.data as { color: Colors }" :amount="color" @change="onChange" />
