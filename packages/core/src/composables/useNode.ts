@@ -1,4 +1,4 @@
-import type { GraphNode, Node } from '../types';
+import type { Node } from '../types';
 import { getConnectedEdges } from '@xyflow/system';
 import { computed, inject, shallowRef } from 'vue';
 import { NodeRef } from '../context';
@@ -23,13 +23,13 @@ export function useNode<NodeType extends Node = Node>(id?: string) {
   const nodeId = id ?? useNodeId() ?? '';
   const nodeEl = inject(NodeRef, shallowRef(null));
 
-  const { getInternalNode, emits } = useVueFlow();
+  const { getInternalNode, emits } = useVueFlow<NodeType>();
   const { edges } = storeToRefs(useStore<NodeType>());
 
   // `node` is the enriched `InternalNode` (it carries `internals`/`measured`, which NodeWrapper + custom
   // nodes read) and a `computed` (not a one-time read) so it re-resolves whenever the store replaces this
   // node's lookup entry — required for the immutable re-adopt model where a changed node is a NEW object.
-  const node = computed(() => getInternalNode(nodeId) as GraphNode<NodeType> | undefined);
+  const node = computed(() => getInternalNode(nodeId));
 
   if (!node.value) {
     emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId));
