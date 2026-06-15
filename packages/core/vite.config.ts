@@ -18,20 +18,21 @@ export default defineConfig({
       fileName: 'vue-flow-core',
       name: 'VueFlowCore',
     },
-    rollupOptions: {
+    rolldownOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: ['vue'],
       // we bundle @vueuse/core on purpose; its prebuilt dist ships `#__PURE__` annotations in
       // positions Rolldown can't read, so drop that third-party-only noise (keep our own warnings)
-      onwarn(warning, warn) {
+      onLog(logLevel, rolldownLog, log) {
         if (
-          warning.code === 'INVALID_ANNOTATION'
-          && (warning.id?.includes('node_modules') || warning.message?.includes('node_modules'))
+          rolldownLog.code === 'INVALID_ANNOTATION'
+          && (rolldownLog.id?.includes('node_modules') || rolldownLog.message?.includes('node_modules'))
         ) {
           return;
         }
-        warn(warning);
+
+        log(logLevel, rolldownLog);
       },
       output: {
         format: 'esm',
