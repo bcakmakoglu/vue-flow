@@ -25,8 +25,11 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
+  // only the package sources feed typedoc's API analysis — `../packages/**/*` also swept in build
+  // configs like `vite.config.ts` (which import `vite`/`node:*` and don't resolve under this config's
+  // `moduleResolution`/`types`), breaking the docs build
   "include": [
-    "../packages/**/*"
+    "../packages/*/src/**/*"
   ],
   "exclude": [
     "node_modules"
