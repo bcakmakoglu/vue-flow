@@ -76,8 +76,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
 
   vite: {
     define: {
-      // eslint-disable-next-line n/prefer-global/process
-      __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
       __VUE_FLOW_VERSION__: JSON.stringify(vueFlowVersion),
     },
     plugins: [

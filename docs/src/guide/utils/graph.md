@@ -70,31 +70,31 @@ const toggleClass = () => {
 </template>
 ```
 
-## [getOutgoers](/typedocs/functions/getOutgoers)
+## [getOutgoers](/typedocs/variables/getOutgoers)
 
 - Details:
 
   Returns all target elements of a node.
 
-## [getIncomers](/typedocs/functions/getIncomers)
+## [getIncomers](/typedocs/variables/getIncomers)
 
 - Details:
 
   Returns all source elements of a node.
 
-## [getConnectedEdges](/typedocs/functions/getConnectedEdges)
+## [getConnectedEdges](/typedocs/variables/getConnectedEdges)
 
 - Details:
 
   Returns all connected edges of a node.
 
-## [getViewportForBounds](/typedocs/functions/getViewportForBounds)
+## [getViewportForBounds](/typedocs/variables/getViewportForBounds)
 
 - Details:
 
   Returns a transformation for the viewport according to input bounds.
 
-## [getNodesBounds](/typedocs/functions/getNodesBounds)
+## [getNodesBounds](/typedocs/variables/getNodesBounds)
 
 - Details:
 
@@ -102,7 +102,7 @@ const toggleClass = () => {
 
   Useful when you need to know the boundaries of a set of nodes.
 
-## [getNodesInside](/typedocs/functions/getNodesInside)
+## [getNodesInside](/typedocs/variables/getNodesInside)
 
 - Details:
 

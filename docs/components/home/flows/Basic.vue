@@ -112,7 +112,10 @@ function onInit(instance: VueFlowInstance) {
       v-model:nodes="nodes"
       v-model:edges="edges"
       class="basic"
-      :connection-line-options="{ type: ConnectionLineType.SmoothStep, style: { strokeDasharray: 5, animation: 'dashdraw 0.5s linear infinite' } }"
+      :connection-line-options="{
+        type: ConnectionLineType.SmoothStep,
+        style: { strokeDasharray: 5, animation: 'dashdraw 0.5s linear infinite' },
+      }"
       @init="onInit"
       @connect="onConnect"
     >

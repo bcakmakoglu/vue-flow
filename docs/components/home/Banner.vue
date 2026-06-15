@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { $fetch } from 'ohmyfetch'
+import { $fetch } from 'ofetch'
 import Star from '~icons/carbon/star'
 import Download from '~icons/carbon/download'
 
