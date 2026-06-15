@@ -63,7 +63,7 @@
     "types:watch": "vue-tsc --declaration --emitDeclarationOnly --watch & tsc -p ./tsconfig.build.json --watch",
     "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
     "lint": "eslint .",
-    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
+    "lint:dist": "eslint --no-ignore --fix \"dist/**/*.d.ts\"",
     "prepublishOnly": "shx cp ../../README.md .",
     "postpublish": "shx rm README.md",
     "test": "exit 0"
