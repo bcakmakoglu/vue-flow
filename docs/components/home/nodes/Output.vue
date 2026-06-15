@@ -1,21 +1,28 @@
 <script lang="ts" setup>
+import type { NodeProps } from '@vue-flow/core';
+import type { RGBOutputNode } from './types';
 import { Handle, Position } from '@vue-flow/core';
 
-interface RBGOutputNodeProps {
-  rgb: string;
-}
-
-defineProps<RBGOutputNodeProps>();
+defineProps<NodeProps<RGBOutputNode>>();
 </script>
 
 <template>
-  <div :style="{ backgroundColor: rgb }" class="px-6 py-2 rounded-xl text-white text-center min-w-[220px] border-2 border-white">
+  <div
+    :style="{ backgroundColor: data.rgb }"
+    class="px-6 py-2 rounded-xl text-white text-center min-w-[220px] border-2 border-white"
+  >
     <div class="text-xl font-bold">
       Color Output
     </div>
+
     <div class="font-semibold">
-      {{ rgb }}
+      {{ data.rgb }}
     </div>
-    <Handle type="target" :position="Position.Left" :style="{ left: '-6px', width: '12px', height: '12px' }" />
+
+    <Handle
+      type="target"
+      :position="Position.Left"
+      :style="{ left: '-6px', width: '12px', height: '12px' }"
+    />
   </div>
 </template>
