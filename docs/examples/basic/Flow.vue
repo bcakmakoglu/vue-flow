@@ -26,8 +26,9 @@ const dark = ref(false);
  * onInit is called when the VueFlow viewport is initialized
  */
 onInit((vueFlowInstance) => {
-  // instance is the same as the return of `useVueFlow`
-  vueFlowInstance.fitView();
+  // the initial fit is handled declaratively by the `:fit-view` prop (queued until the nodes are
+  // measured) — calling `fitView()` here would run before the nodes have dimensions
+  console.log('Flow initialized', vueFlowInstance);
 });
 
 /**
@@ -95,7 +96,7 @@ function toggleDarkMode() {
     :edges="edges"
     :class="{ dark }"
     class="basic-flow"
-    :default-viewport="{ zoom: 1.5 }"
+    fit-view
     :min-zoom="0.2"
     :max-zoom="4"
   >
