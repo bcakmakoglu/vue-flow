@@ -122,7 +122,7 @@ function onInit(instance: VueFlowInstance) {
       <Controls position="bottom-right" />
       <Background :gap="60">
         <template #pattern>
-          <Cross :style="{ fontSize: `${8 * (flow?.viewport.value.zoom ?? 1) || 1}px` }" class="text-[#10b981] opacity-50" />
+          <Cross :style="{ fontSize: `${8 * (flow?.viewport?.value?.zoom ?? 1) || 1}px` }" class="text-[#10b981] opacity-50" />
         </template>
       </Background>
     </VueFlow>

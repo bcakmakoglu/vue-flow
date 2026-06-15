@@ -10,7 +10,12 @@ const instances: VueFlowInstance[] = [];
 
 function onLoad(instance: VueFlowInstance) {
   instances.push(instance);
-  instance.fitView();
+
+  // `@pane` fires on init — before the nodes are measured — so fit once they are (then stop listening)
+  const { off } = instance.onNodesInitialized(() => {
+    instance.fitView();
+    off();
+  });
 }
 
 function fitViews() {

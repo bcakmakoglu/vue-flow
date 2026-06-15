@@ -26,7 +26,7 @@ const state = {
 export default function useDragAndDrop() {
   const { draggedType, isDragOver, isDragging } = state;
 
-  const { addNodes, screenToFlowPosition, onNodesInitialized, updateNode } = useVueFlow();
+  const { addNodes, screenToFlowPosition, getInternalNode, onNodesInitialized, updateNode } = useVueFlow();
 
   watch(isDragging, (dragging) => {
     document.body.style.userSelect = dragging ? 'none' : '';
@@ -98,8 +98,15 @@ export default function useDragAndDrop() {
      * We can hook into events even in a callback, and we can remove the event listener after it's been called.
      */
     const { off } = onNodesInitialized(() => {
+      // measured size lives on the internal node in 2.0 (`getInternalNode(...).measured`), not on the
+      // user node as `dimensions`
+      const internalNode = getInternalNode(nodeId);
+
       updateNode(nodeId, node => ({
-        position: { x: node.position.x - node.dimensions.width / 2, y: node.position.y - node.dimensions.height / 2 },
+        position: {
+          x: node.position.x - internalNode.measured.width / 2,
+          y: node.position.y - internalNode.measured.height / 2,
+        },
       }));
 
       off();

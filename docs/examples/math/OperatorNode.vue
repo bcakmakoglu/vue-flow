@@ -21,7 +21,7 @@ const { updateNodeData } = useVueFlow();
     </button>
   </div>
 
-  <Handle type="source" :position="Position.Right" :connectable="false" />
-  <Handle id="target-a" type="target" :position="Position.Left" :connectable="false" />
-  <Handle id="target-b" type="target" :position="Position.Left" :connectable="false" />
+  <Handle type="source" :position="Position.Right" :is-connectable="false" />
+  <Handle id="target-a" type="target" :position="Position.Left" :is-connectable="false" />
+  <Handle id="target-b" type="target" :position="Position.Left" :is-connectable="false" />
 </template>

@@ -15,5 +15,5 @@ const value = computed({
 <template>
   <input :id="`${id}-input`" v-model="value" type="number" class="nodrag">
 
-  <Handle type="source" :position="Position.Right" :connectable="false" />
+  <Handle type="source" :position="Position.Right" :is-connectable="false" />
 </template>

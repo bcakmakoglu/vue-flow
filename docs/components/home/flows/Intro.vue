@@ -65,24 +65,35 @@ const initialEdges: Edge[] = [
 ];
 
 // `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to reach
-// the store (getNodes/getNode/setEdges/updateNodeInternals + the viewport `dimensions`) from the
-// component that renders the flow (no `useVueFlow()` outside a provider needed).
+// the store (getNodes/getNode/setEdges/updateNodeInternals) from the component that renders the flow
+// (no `useVueFlow()` outside a provider needed). The container size comes from the wrapper element —
+// the instance no longer exposes `dimensions` / `vueFlowRef`.
 const flow = ref<VueFlowInstance>();
 
+const flowWrapper = ref<HTMLElement>();
+
 const setElements = useDebounceFn(() => {
-  if (!flow.value) {
+  if (!flow.value || !flowWrapper.value) {
     return;
   }
 
-  const { getNode, getInternalNode, setNodes, setEdges, updateNodeInternals, dimensions } = flow.value;
+  const { getInternalNode, setNodes, setEdges, updateNodeInternals } = flow.value;
 
-  const offsetX = dimensions.value.width / 2;
-  const offsetY = dimensions.value.height / 4;
+  const { width, height } = flowWrapper.value.getBoundingClientRect();
+  const offsetX = width / 2;
+  const offsetY = height / 4;
+
+  // anchor the layout on the centered `intro` position, computed up front. Reading
+  // `getNode('intro').position` inside the `setNodes` map would be a frame behind (it still holds the
+  // pre-update value), so the other nodes would be placed relative to intro's *old* spot — which left
+  // them mis-aligned (e.g. `examples` off-screen) until a second resize happened to re-converge.
+  const mainInternal = getInternalNode('intro')!;
+  const mainWidth = mainInternal.measured.width ?? 0;
+  const mainHeight = mainInternal.measured.height ?? 0;
+  const mainX = offsetX - mainWidth / 2;
+  const mainY = offsetY - mainHeight / 2;
 
   if (breakpoints.isSmaller('md') && currentBreakpoint.value !== 'sm') {
-    const mainNode = getNode('intro')!;
-    const mainInternal = getInternalNode('intro')!;
-
     currentBreakpoint.value = 'sm';
 
     setNodes(nodes =>
@@ -93,17 +104,14 @@ const setElements = useDebounceFn(() => {
           case 'intro':
             return {
               ...node,
-              position: {
-                x: offsetX - (internal.measured.width ?? 0) / 2,
-                y: offsetY - (internal.measured.height ?? 0) / 2,
-              },
+              position: { x: mainX, y: mainY },
             };
           case 'examples':
             return {
               ...node,
               position: {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+                y: mainY + mainHeight * 1.5,
               },
             };
           case 'documentation':
@@ -111,7 +119,7 @@ const setElements = useDebounceFn(() => {
               ...node,
               position: {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2 + 50,
+                y: mainY + mainHeight * 2 + 50,
               },
             };
           case 'acknowledgement':
@@ -119,7 +127,7 @@ const setElements = useDebounceFn(() => {
               ...node,
               position: {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 3,
+                y: mainY + mainHeight * 3,
               },
             };
           default:
@@ -158,9 +166,6 @@ const setElements = useDebounceFn(() => {
   else if (!breakpoints.isSmaller('md')) {
     currentBreakpoint.value = 'md';
 
-    const mainNode = getNode('intro')!;
-    const mainInternal = getInternalNode('intro')!;
-
     setNodes(nodes =>
       nodes.map((node) => {
         const internal = getInternalNode(node.id)!;
@@ -169,22 +174,22 @@ const setElements = useDebounceFn(() => {
           case 'intro':
             return {
               ...node,
-              position: { x: offsetX - (internal.measured.width ?? 0) / 2, y: offsetY - (internal.measured.height ?? 0) / 2 },
+              position: { x: mainX, y: mainY },
             };
           case 'examples':
             return {
               ...node,
               position: {
-                x: mainNode.position.x - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+                x: mainX - (internal.measured.width ?? 0) / 2,
+                y: mainY + mainHeight * 1.5,
               },
             };
           case 'documentation':
             return {
               ...node,
               position: {
-                x: mainNode.position.x + (mainInternal.measured.width ?? 0) - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 1.5,
+                x: mainX + mainWidth - (internal.measured.width ?? 0) / 2,
+                y: mainY + mainHeight * 1.5,
               },
             };
           case 'acknowledgement':
@@ -192,7 +197,7 @@ const setElements = useDebounceFn(() => {
               ...node,
               position: {
                 x: offsetX - (internal.measured.width ?? 0) / 2,
-                y: mainNode.position.y + (mainInternal.measured.height ?? 0) * 2,
+                y: mainY + mainHeight * 2,
               },
             };
           default:
@@ -209,7 +214,7 @@ const setElements = useDebounceFn(() => {
   });
 }, 1);
 
-useResizeObserver(() => flow.value?.vueFlowRef.value ?? null, setElements);
+useResizeObserver(flowWrapper, setElements);
 
 function scrollTo() {
   const el = document.getElementById('acknowledgement');
@@ -221,99 +226,101 @@ function scrollTo() {
 </script>
 
 <template>
-  <VueFlow
-    ref="flow"
-    :nodes="initialNodes"
-    :edges="initialEdges"
-    :elements-selectable="true"
-    :pan-on-drag="false"
-    :zoom-on-scroll="false"
-    :zoom-on-double-click="false"
-    :zoom-on-pinch="false"
-    :prevent-scrolling="false"
-    :elevate-edges-on-select="true"
-    :style="{ opacity: !!currentBreakpoint ? 1 : 0 }"
-  >
-    <Background id="dots" color="#aaa" :size="0.75" :gap="25" />
-    <Background id="lines" variant="lines" :color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
+  <div ref="flowWrapper" class="h-full w-full">
+    <VueFlow
+      ref="flow"
+      :nodes="initialNodes"
+      :edges="initialEdges"
+      :elements-selectable="true"
+      :pan-on-drag="false"
+      :zoom-on-scroll="false"
+      :zoom-on-double-click="false"
+      :zoom-on-pinch="false"
+      :prevent-scrolling="false"
+      :elevate-edges-on-select="true"
+      :style="{ opacity: !!currentBreakpoint ? 1 : 0 }"
+    >
+      <Background id="dots" color="#aaa" :size="0.75" :gap="25" />
+      <Background id="lines" variant="lines" :color="isDark ? '#fff' : '#000'" :size="1" :gap="100" />
 
-    <template #node-box="props">
-      <template v-if="props.id === 'intro'">
-        <div class="box max-w-75 md:max-w-125">
-          <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
-            <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
-              <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">
-                Vue Flow
-              </h1>
+      <template #node-box="props">
+        <template v-if="props.id === 'intro'">
+          <div class="box max-w-75 md:max-w-125">
+            <div class="intro px-4 py-2 shadow-lg rounded-md border-2 border-solid border-black">
+              <div class="font-mono flex flex-col gap-4 p-4 items-center text-center">
+                <h1 class="text-2xl lg:text-4xl !my-0 !pt-0 font-bold">
+                  Vue Flow
+                </h1>
 
-              <h2 class="!text-lg !lg:text-xl !tracking-normal !font-normal !p-0 !m-0 !border-0 !mb-4">
-                The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
-              </h2>
+                <h2 class="!text-lg !lg:text-xl !tracking-normal !font-normal !p-0 !m-0 !border-0 !mb-4">
+                  The customizable Vue 3 component bringing interactivity to flowcharts and graphs.
+                </h2>
+              </div>
+
+              <Handle
+                :is-connectable="false"
+                style="height: 12px; width: 6rem; bottom: -6px; background: #aaa; border-radius: 2px"
+                type="source"
+                :position="Position.Bottom"
+              />
             </div>
-
-            <Handle
-              :connectable="false"
-              style="height: 12px; width: 6rem; bottom: -6px; background: #aaa; border-radius: 2px"
-              type="source"
-              :position="Position.Bottom"
-            />
           </div>
-        </div>
+        </template>
+
+        <template v-else-if="props.id === 'documentation'">
+          <div class="flex">
+            <a class="intro-link group bg-[#f15a16]" href="/guide/"> Read The Documentation </a>
+          </div>
+
+          <Handle
+            style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+            type="target"
+            :position="Position.Top"
+          />
+
+          <Handle
+            style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
+            class="block md:hidden"
+            type="source"
+            :position="Position.Bottom"
+          />
+        </template>
+
+        <template v-else-if="props.id === 'examples'">
+          <div class="flex">
+            <a class="intro-link group bg-pink-500" href="/examples/"> Check The Examples </a>
+          </div>
+
+          <Handle
+            style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+            type="target"
+            :position="Position.Top"
+          />
+
+          <Handle
+            style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
+            class="block md:hidden"
+            type="source"
+            :position="Position.Bottom"
+          />
+        </template>
+
+        <template v-else-if="props.id === 'acknowledgement'">
+          <div class="flex" @click="scrollTo">
+            <button class="intro-link group bg-sky-500">
+              <Heart class="text-red-500" /> Acknowledgement
+            </button>
+          </div>
+
+          <Handle
+            style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
+            type="target"
+            :position="Position.Top"
+          />
+        </template>
       </template>
-
-      <template v-else-if="props.id === 'documentation'">
-        <div class="flex">
-          <a class="intro-link group bg-[#f15a16]" href="/guide/"> Read The Documentation </a>
-        </div>
-
-        <Handle
-          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
-          type="target"
-          :position="Position.Top"
-        />
-
-        <Handle
-          style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
-          class="block md:hidden"
-          type="source"
-          :position="Position.Bottom"
-        />
-      </template>
-
-      <template v-else-if="props.id === 'examples'">
-        <div class="flex">
-          <a class="intro-link group bg-pink-500" href="/examples/"> Check The Examples </a>
-        </div>
-
-        <Handle
-          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
-          type="target"
-          :position="Position.Top"
-        />
-
-        <Handle
-          style="height: 12px; width: 2rem; bottom: -6px; background: #aaa; border-radius: 2px"
-          class="block md:hidden"
-          type="source"
-          :position="Position.Bottom"
-        />
-      </template>
-
-      <template v-else-if="props.id === 'acknowledgement'">
-        <div class="flex" @click="scrollTo">
-          <button class="intro-link group bg-sky-500">
-            <Heart class="text-red-500" /> Acknowledgement
-          </button>
-        </div>
-
-        <Handle
-          style="height: 12px; width: 2rem; top: -6px; background: #aaa; border-radius: 2px"
-          type="target"
-          :position="Position.Top"
-        />
-      </template>
-    </template>
-  </VueFlow>
+    </VueFlow>
+  </div>
 </template>
 
 <style>
