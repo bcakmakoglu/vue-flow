@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Rect as RectType } from '@xyflow/system';
 import type { EdgeTextProps } from '../../types/components';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, shallowRef, watch } from 'vue';
 
 const {
   x,
@@ -14,9 +14,9 @@ const {
   labelBgBorderRadius = 2,
 } = defineProps<EdgeTextProps>();
 
-const box = ref<RectType>({ x: 0, y: 0, width: 0, height: 0 });
+const box = shallowRef<RectType>({ x: 0, y: 0, width: 0, height: 0 });
 
-const el = ref<SVGTextElement | null>(null);
+const el = shallowRef<SVGTextElement | null>(null);
 
 const transform = computed(() => `translate(${x - box.value.width / 2} ${y - box.value.height / 2})`);
 
@@ -56,7 +56,7 @@ export default {
 </script>
 
 <template>
-  <g :transform="transform" class="vue-flow__edge-textwrapper">
+  <g :transform="transform" :visibility="box.width ? 'visible' : 'hidden'" class="vue-flow__edge-textwrapper">
     <rect
       v-if="labelShowBg"
       class="vue-flow__edge-textbg"
