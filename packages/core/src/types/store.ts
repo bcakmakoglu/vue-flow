@@ -345,8 +345,8 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   getHandleConnections: ({ id, type, nodeId }: { id?: string | null; type: HandleType; nodeId: string }) => NodeConnection[];
   /** pan the viewport; return indicates if a transform has happened or not */
   panBy: (delta: XYPosition) => Promise<boolean>;
-  /** viewport helper instance */
-  viewportHelper: ComputedRef<ViewportHelper>;
+  /** whether the viewport (panzoom) is initialized — `true` once `<ZoomPane>` has mounted and measured */
+  viewportInitialized: ComputedRef<boolean>;
 
   /** reset state to defaults */
   $reset: () => void;

@@ -18,7 +18,7 @@ describe('VueFlow `@init` event', () => {
       expect(instance, 'init receives the flow instance').to.exist;
       expect(typeof instance.fitView, 'instance is usable').to.eq('function');
       // the viewport must be set up by the time init fires (the whole point of deferring the emit)
-      expect(instance.viewportHelper.value.viewportInitialized, 'viewport initialized at init time').to.eq(true);
+      expect(instance.viewportInitialized.value, 'viewport initialized at init time').to.eq(true);
       expect(instance.viewport.value.zoom, 'viewport transform applied').to.be.a('number');
     });
   });

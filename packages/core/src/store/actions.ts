@@ -33,7 +33,7 @@ import {
   panBy as panBySystem,
   updateAbsolutePositions,
 } from '@xyflow/system';
-import { markRaw, toRaw } from 'vue';
+import { computed, markRaw, toRaw } from 'vue';
 import { useViewportHelper } from '../composables';
 import {
   adoptNodes,
@@ -1122,7 +1122,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     flowToScreenPosition: params => viewportHelper.value.flowToScreenPosition(params),
     toObject,
     updateNodeInternals,
-    viewportHelper,
+    viewportInitialized: computed(() => viewportHelper.value.viewportInitialized),
     $reset,
     $destroy: () => {},
   };
