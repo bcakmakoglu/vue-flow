@@ -7,7 +7,17 @@ import type { EdgeTypesObject, NodeTypesObject } from './components';
 import type { ConnectionLineOptions, ConnectionLineProps, Connector, OnConnectStartParams } from './connection';
 import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge';
 import type { ValidConnectionFunc } from './handle';
-import type { EdgeMouseEvent, EdgeReconnectEvent, MouseTouchEvent, NodeDragEvent, NodeMouseEvent } from './hooks';
+import type {
+  ConnectEndEvent,
+  EdgeMouseEvent,
+  EdgeReconnectEndEvent,
+  EdgeReconnectEvent,
+  EdgeReconnectStartEvent,
+  MouseTouchEvent,
+  NodeDragEvent,
+  NodeMouseEvent,
+  SelectionChangeEvent,
+} from './hooks';
 import type { CoordinateExtent, CoordinateExtentRange, Node, NodeOrigin, NodeProps } from './node';
 import type { VueFlowInstance } from './store';
 import type { FitViewParams } from './zoom';
@@ -170,9 +180,9 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   miniMapNodeMouseLeave: [nodeMouseEvent: NodeMouseEvent<NodeType>];
   connect: [connectionEvent: Connection];
   connectStart: [connectionEvent: { event?: MouseEvent } & OnConnectStartParams];
-  connectEnd: [connectionEvent?: MouseEvent];
+  connectEnd: [connectionEvent: ConnectEndEvent<NodeType>];
   clickConnectStart: [connectionEvent: { event?: MouseEvent } & OnConnectStartParams];
-  clickConnectEnd: [connectionEvent?: MouseEvent];
+  clickConnectEnd: [connectionEvent: ConnectEndEvent<NodeType>];
   moveStart: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
   move: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
   moveEnd: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
@@ -182,6 +192,7 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   selectionContextMenu: [selectionEvent: { event: MouseEvent; nodes: NodeType[] }];
   selectionStart: [selectionEvent: MouseEvent];
   selectionEnd: [selectionEvent: MouseEvent];
+  selectionChange: [selectionEvent: SelectionChangeEvent<NodeType, EdgeType>];
   viewportChangeStart: [viewport: Viewport];
   viewportChange: [viewport: Viewport];
   viewportChangeEnd: [viewport: Viewport];
@@ -201,9 +212,9 @@ export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge =
   edgeMouseLeave: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
   edgeDoubleClick: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
   edgeClick: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
-  reconnectStart: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  reconnectStart: [edgeReconnectEvent: EdgeReconnectStartEvent<EdgeType>];
   reconnect: [reconnectEvent: EdgeReconnectEvent<EdgeType>];
-  reconnectEnd: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  reconnectEnd: [edgeReconnectEvent: EdgeReconnectEndEvent<NodeType, EdgeType>];
 
   nodeDoubleClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];
   nodeClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];

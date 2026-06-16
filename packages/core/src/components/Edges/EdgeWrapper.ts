@@ -1,4 +1,4 @@
-import type { Connection, HandleType } from '@xyflow/system';
+import type { Connection, FinalConnectionState, HandleType } from '@xyflow/system';
 import type { Edge, EdgeComponent, GraphNode, MouseTouchEvent } from '../../types';
 import { ConnectionMode, getHandlePosition, getMarkerId, Position } from '@xyflow/system';
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue';
@@ -315,8 +315,8 @@ const EdgeWrapper = defineComponent({
       emit.reconnect({ event, edge: storedEdge.value, connection });
     }
 
-    function onReconnectEnd(event: MouseTouchEvent) {
-      emit.reconnectEnd({ event, edge: storedEdge.value });
+    function onReconnectEnd(event: MouseTouchEvent, connectionState: FinalConnectionState<GraphNode>) {
+      emit.reconnectEnd({ event, edge: storedEdge.value, handleType: reconnectHandleType.value, connectionState });
       updating.value = false;
     }
 
@@ -332,7 +332,7 @@ const EdgeWrapper = defineComponent({
 
       reconnectHandleType.value = isSourceHandle ? 'target' : 'source';
 
-      emit.reconnectStart({ event, edge: storedEdge.value });
+      emit.reconnectStart({ event, edge: storedEdge.value, handleType: reconnectHandleType.value });
 
       handlePointerDown(event);
     }
