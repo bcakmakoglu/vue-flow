@@ -13,7 +13,6 @@ import type {
   Edge,
   EdgeAddChange,
   EdgeLookup,
-  FlowExportObject,
   InternalNode,
   Node,
   NodeAddChange,
@@ -1045,33 +1044,15 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
   };
 
-  const toObject: Actions<NodeType>['toObject'] = () => {
-    const nodes: Node[] = [];
-    const edges: Edge[] = [];
-
-    for (const node of state.nodes) {
-      // `state.nodes` are already user `Node`s (no `internals`); strip the transient runtime fields for export
-      const { selected: _, resizing: __, dragging: ___, measured: ____, ...rest } = node;
-
-      nodes.push(rest);
-    }
-
-    for (const edge of state.edges) {
-      // `state.edges` are the user `Edge`s verbatim; strip the transient runtime field for export
-      const { selected: _, ...rest } = edge;
-
-      edges.push(rest);
-    }
-
-    // we have to stringify/parse so objects containing refs (like nodes and edges) can potentially be saved in a storage
-    return JSON.parse(
-      JSON.stringify({
-        nodes,
-        edges,
-        viewport: { x: state.transform[0], y: state.transform[1], zoom: state.transform[2] },
-      } as FlowExportObject),
-    );
-  };
+  // Mirror xyflow/react's `toObject`: shallow-clone each node/edge and read the viewport off the transform.
+  // No field stripping (notably `measured` is kept, so a restored flow renders immediately instead of
+  // staying `visibility: hidden` until re-measured) and no JSON round-trip — the nodes/edges are already
+  // plain `markRaw`'d user objects, and callers that persist the result serialize it (`JSON.stringify(...)`).
+  const toObject: Actions<NodeType>['toObject'] = () => ({
+    nodes: state.nodes.map(node => ({ ...node })),
+    edges: state.edges.map(edge => ({ ...edge })),
+    viewport: { x: state.transform[0], y: state.transform[1], zoom: state.transform[2] },
+  });
 
   const $reset: Actions<NodeType, EdgeType>['$reset'] = () => {
     const { nodes: _nodes, edges: _edges, ...resetState } = useState<NodeType, EdgeType>();
