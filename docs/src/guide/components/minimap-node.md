@@ -24,6 +24,7 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 | Name           | Definition                      | Type                                                | Optional | Default |
 |----------------|---------------------------------|-----------------------------------------------------|----------|---------|
 | id             | Node id                         | string                                              | false    | -       |
+| type           | Node type                       | string                                              | true     | -       |
 | selected       | Is node selected                | boolean                                             | true     | false   |
 | dragging       | Is node dragging                | boolean                                             | true     | false   |
 | position       | XY position of node             | [XYPosition](/typedocs/interfaces/XYPosition) | false    | -       |
@@ -32,7 +33,8 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 | color          | MiniMap node css color          | string                                              | true     | -       |
 | shapeRendering | MiniMap node css shapeRendering | ShapeRendering                                      | true     | -       |
 | strokeColor    | MiniMap node css stroke-color   | string                                              | true     | -       |
-| strokeWidth    | MiniMap node css stroke-width   | string                                              | true     | -       |
+| strokeWidth    | MiniMap node css stroke-width   | number                                              | true     | -       |
+| hidden         | Is the node hidden              | boolean                                             | true     | false   |
 
 ## Slots
 

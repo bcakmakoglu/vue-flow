@@ -42,8 +42,6 @@ defineProps(['data'])
 ```
 
 
-When enabled, these props allow you to pan on drag and zoom on scroll using the MiniMap.
-
 ## [Props](/typedocs/interfaces/NodeResizerProps)
 
 | Name            | Definition                                                | Type          | Optional | Default              |
@@ -52,11 +50,16 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 | color           | Color of the resizer lines                                | string        | true     | -                    |
 | handleClassName | Extra class for the resize handle                         | string        | true     | -                    |
 | handleStyle     | Additional styles for the resize handle                   | CSSProperties | true     | -                    |
-| lineClassName   | Extra class for the resize lines                          | number        | true     | -                    |
-| lineStyle       | Additional styles for the resize lines                    | string        | true     | -                    |
-| isVisible       | Force visibility of resizer                               | boolean       | true     | true                 |
-| minWidth        | Min width of the resizer (can't resize below this value)  | number        | true     | -                    |
-| minHeight       | Min height of the resizer (can't resize below this value) | number        | true     | -                    |
+| lineClassName   | Extra class for the resize lines                          | string                                              | true     | -                    |
+| lineStyle       | Additional styles for the resize lines                    | CSSProperties                                       | true     | -                    |
+| isVisible       | Force visibility of resizer                               | boolean                                             | true     | true                 |
+| minWidth        | Min width of the resizer (can't resize below this value)  | number                                              | true     | -                    |
+| minHeight       | Min height of the resizer (can't resize below this value) | number                                              | true     | -                    |
+| maxWidth        | Max width of the resizer (can't resize above this value)  | number                                              | true     | -                    |
+| maxHeight       | Max height of the resizer (can't resize above this value) | number                                              | true     | -                    |
+| keepAspectRatio | Lock the aspect ratio while resizing                      | boolean \| number                                   | true     | -                    |
+| shouldResize    | Callback to allow or deny a resize                        | [ShouldResize](/typedocs/type-aliases/ShouldResize) | true     | -                    |
+| autoScale       | Scale the resize controls with the zoom level             | boolean                                             | true     | true                 |
 
 ## [Emits](/typedocs/interfaces/NodeResizerEmits)
 
@@ -65,3 +68,7 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 | resizeStart   |
 | resize        |
 | resizeEnd     |
+
+::: tip
+For a single resize handle (rather than the full resizer), `@vue-flow/core` also exports `NodeResizeControl` — see [`ResizeControlProps`](/typedocs/interfaces/ResizeControlProps).
+:::

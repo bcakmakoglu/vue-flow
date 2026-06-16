@@ -6,8 +6,8 @@ The control panel contains a zoom-in, zoom-out, fit-view and a lock/unlock butto
 
 To use the controls simply pass the `Controls` component as a child to the `VueFlow` component.
 
-::: warning
-Make sure you also import the styles as these are *not* part of the default theme anymore.
+::: tip
+The control styles ship in `@vue-flow/core/dist/style.css` — make sure that base stylesheet is imported (see [Getting Started](/guide/getting-started)).
 :::
 
 ```vue
@@ -31,6 +31,7 @@ import { Controls, VueFlow } from '@vue-flow/core'
 | showInteractive | Show lock interactive btn              | boolean                                        | true     | true    |
 | showZoom        | Show zoom button                       | boolean                                        | true     | true    |
 | fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/type-aliases/FitViewParams) | true     | -       |
+| position        | Position of the controls panel         | [PanelPosition](/typedocs/type-aliases/PanelPosition) | true     | bottom-left |
 
 ## Emits
 

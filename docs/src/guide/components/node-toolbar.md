@@ -60,10 +60,11 @@ defineProps<Props>()
 
 | Name            | Definition                                        | Type                                 | Optional | Default                 |
 |-----------------|---------------------------------------------------|--------------------------------------|----------|-------------------------|
-| nodeId          | Node(s) the toolbar is supposed to be attached to | string array                         | true     | NodeId from context     |
+| nodeId          | Node(s) the toolbar is supposed to be attached to | string \| string[]                   | true     | NodeId from context     |
 | isVisible       | Force visibility of toolbar                       | boolean                              | true     | Selected node           |
 | position        | Toolbar position (top, left, right, bottom)       | [Position](/typedocs/enumerations/Position) | true     | Top                     |
 | offset          | Offset of toolbar position                        | number                               | true     | 10                      |
+| align           | Alignment along the position edge                 | 'start' \| 'center' \| 'end'         | true     | center                  |
 
 ## Slots
 
