@@ -22,7 +22,7 @@ If you're looking for a guide on how to setup a Vue project, check out the [offi
 Before you strap in, make sure you're equipped with:
 
 - [Node.js v20 or above](https://nodejs.org/)
-- [Vue 3.3 or above](https://vuejs.org/)
+- [Vue 3.5 or above](https://vuejs.org/)
 
 ## <span class="flex gap-2 items-center"> <VueJs class="text-primary" /> Play Online</span>
 
@@ -204,10 +204,14 @@ import { computed } from 'vue'
 import { Position, Handle } from '@vue-flow/core'
 
 const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
   position: {
     type: Object,
     required: true,
-  }
+  },
 })
 
 const x = computed(() => `${Math.round(props.position.x)}px`)

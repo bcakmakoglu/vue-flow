@@ -4,8 +4,8 @@
 
 To use the minimap simply pass the `MiniMap` component as a child to the `VueFlow` component.
 
-::: warning
-Make sure you also import the styles as these are *not* part of the default theme anymore.
+::: tip
+The minimap styles ship in `@vue-flow/core/dist/style.css` — make sure that base stylesheet is imported (see [Getting Started](/guide/getting-started)).
 :::
 
 ```vue
@@ -36,16 +36,26 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 
 ## [Props](/typedocs/interfaces/MiniMapProps)
 
-| Name             | Definition                   | Type                                                       | Optional | Default                 |
-|------------------|------------------------------|------------------------------------------------------------|----------|-------------------------|
-| nodeColor        | Node(s) Background color     | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | #fff                    |
-| nodeStrokeColor  | Border color                 | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | #555                    |
-| nodeClassName    | Extra classes                | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | -                       |
-| nodeBorderRadius | Border radius                | number                                                     | true     | 5                       |
-| nodeStrokeWidth  | Stroke width                 | number                                                     | true     | 2                       |
-| maskColor        | Minimap Background color     | string                                                     | true     | rgb(240, 242, 243, 0.7) |
-| pannable         | Use Minimap to pan on drag   | boolean                                                    | true     | false                   |
-| zoomable         | Use Minimap to zoom on wheel | boolean                                                    | true     | false                   |
+| Name             | Definition                   | Type                                                              | Optional | Default                                           |
+|------------------|------------------------------|-------------------------------------------------------------------|----------|---------------------------------------------------|
+| nodeColor        | Node background color        | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | `var(--vf-minimap-node-bg, #e2e2e2)`              |
+| nodeStrokeColor  | Node border color            | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | transparent                                       |
+| nodeClassName    | Extra node classes           | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | -                                                 |
+| nodeBorderRadius | Node border radius           | number                                                            | true     | 5                                                 |
+| nodeStrokeWidth  | Node stroke width            | number                                                            | true     | 2                                                 |
+| maskColor        | Mask (background) color      | string                                                            | true     | `var(--vf-minimap-mask, rgb(240, 240, 240, 0.6))` |
+| maskStrokeColor  | Mask border color            | string                                                            | true     | none                                              |
+| maskStrokeWidth  | Mask border width            | number                                                            | true     | 1                                                 |
+| maskBorderRadius | Mask border radius           | number                                                            | true     | 0                                                 |
+| position         | Position of the minimap      | [PanelPosition](/typedocs/type-aliases/PanelPosition)             | true     | bottom-right                                      |
+| pannable         | Use Minimap to pan on drag   | boolean                                                           | true     | false                                             |
+| zoomable         | Use Minimap to zoom on wheel | boolean                                                           | true     | false                                             |
+| inversePan       | Invert the pan direction     | boolean                                                           | true     | false                                             |
+| zoomStep         | Zoom step when zooming       | number                                                            | true     | 1                                                 |
+| offsetScale      | Minimap viewbox offset scale | number                                                            | true     | 5                                                 |
+| width            | Minimap width                | number                                                            | true     | -                                                 |
+| height           | Minimap height               | number                                                            | true     | -                                                 |
+| ariaLabel        | Accessibility label          | string \| null                                                    | true     | Vue Flow mini map                                 |
 
 ## Slots
 

@@ -4,9 +4,13 @@ You can use the existing `ControlButton` component to create new control buttons
 
 ## Usage
 
-To use the component pass the `ControlButton` component as a child to the [`Controls`](/guide/components/control-button) component.
+To use the component pass the `ControlButton` component as a child to the [`Controls`](/guide/components/controls) component.
 
 ```vue
+<script setup>
+import { ControlButton, Controls, VueFlow } from '@vue-flow/core'
+</script>
+
 <template>
   <VueFlow>
     <Controls>
@@ -17,6 +21,18 @@ To use the component pass the `ControlButton` component as a child to the [`Cont
   </VueFlow>
 </template>
 ```
+
+## Props
+
+| Name     | Definition         | Type    | Optional | Default |
+|----------|--------------------|---------|----------|---------|
+| disabled | Disable the button | boolean | true     | false   |
+
+## Emits
+
+| Name  | Definition     | Payload    |
+|-------|----------------|------------|
+| click | Button clicked | MouseEvent |
 
 ## Slots
 

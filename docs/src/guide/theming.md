@@ -226,7 +226,7 @@ Here you'll find a handy reference guide of class names and their respective ele
 | ------------------------- | ------------------------------------------------- |
 | .vue-flow__edges          | Wrapper rendering edges                           |
 | .vue-flow__edge           | Wrapper around each edge element                  |
-| .vue-flow__selectionpane  | Pane for handling user selection                  |
+| .vue-flow__pane           | Pane handling panning & user selection            |
 | .vue-flow__selection      | Defines current user selection box                |
 | .vue-flow__edge-\{type\}  | Edge type (either custom or default)              |
 | .vue-flow__edge.selected  | Defines the currently selected edge(s)            |
@@ -255,5 +255,6 @@ Here you'll find a handy reference guide of class names and their respective ele
 | .vue-flow__handle-top     | Defines a handle at top                   |
 | .vue-flow__handle-left    | Defines a handle at left                  |
 | .vue-flow__handle-right   | Defines a handle at right                 |
-| .vue-flow__handle-connecting | Connection line is over the handle      |
-| .vue-flow__handle-valid      | Connection line over handle with valid connection |
+| .vue-flow__handle.connectable         | Handle that can be connected                    |
+| .vue-flow__handle.connecting          | Handle the connection started from              |
+| .vue-flow__handle.connectionindicator | Handle highlighted as a valid connection target |
