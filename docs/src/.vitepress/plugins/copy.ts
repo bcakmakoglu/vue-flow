@@ -17,7 +17,8 @@ function copyFiles(emit: Emit) {
   // The REPL sandbox loads the runtime AND styles from these local copies (not a CDN), so the
   // playground tracks the in-repo 2.0 build instead of the last published 1.x release.
   const assets = [
-    { from: 'vue-flow-core.mjs', to: 'vue-flow-core.mjs' },
+    // tsdown emits the ESM bundle as `index.mjs`; the REPL still loads it as `vue-flow-core.mjs`
+    { from: 'index.mjs', to: 'vue-flow-core.mjs' },
     { from: 'style.css', to: 'vue-flow-core.css' },
     { from: 'base.css', to: 'vue-flow-core-base.css' },
   ];

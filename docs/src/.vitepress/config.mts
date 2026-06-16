@@ -1,7 +1,7 @@
 import type { DefaultTheme, HeadConfig } from 'vitepress';
 import { readdirSync, statSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
-import VueFlowPkg from '@vue-flow/core/package.json';
 import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
@@ -12,7 +12,10 @@ import llmstxt from 'vitepress-plugin-llms';
 import head from './head';
 import { copyVueFlowPlugin, files } from './plugins';
 
-const vueFlowVersion = VueFlowPkg.version;
+// vitepress loads this config through Node's ESM loader, where a JSON `import` would need an explicit
+// `with { type: 'json' }` attribute (and that path is fragile through esbuild); `createRequire` is robust.
+const require = createRequire(import.meta.url);
+const vueFlowVersion = (require('@vue-flow/core/package.json') as { version: string }).version;
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
