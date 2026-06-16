@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HandleProps } from '../../types';
-import { getDimensions, isMouseEvent, Position } from '@xyflow/system';
+import { ConnectionMode, getDimensions, isMouseEvent, Position } from '@xyflow/system';
 import { computed, onMounted, shallowRef, toRef } from 'vue';
 import { storeToRefs, useHandle, useNode, useStore, useVueFlow } from '../../composables';
 import { isDef } from '../../utils';
@@ -23,7 +23,7 @@ const { id: flowId } = useVueFlow();
 const {
   connectionStartHandle,
   connectionClickStartHandle,
-  connectionEndHandle,
+  connectionMode,
   vueFlowRef,
   nodesConnectable,
   noDragClassName,
@@ -48,15 +48,19 @@ const isConnectableStart = toRef(() => (typeof connectableStart !== 'undefined' 
 
 const isConnectableEnd = toRef(() => (typeof connectableEnd !== 'undefined' ? connectableEnd : true));
 
-const isConnecting = toRef(
-  () =>
-    (connectionStartHandle.value?.nodeId === nodeId
-      && connectionStartHandle.value?.id === handleId
-      && connectionStartHandle.value?.type === type.value)
-    || (connectionEndHandle.value?.nodeId === nodeId
-      && connectionEndHandle.value?.id === handleId
-      && connectionEndHandle.value?.type === type.value),
-);
+// Connection-indicator flags, mirroring xyflow/react's `connectingSelector`. A connection is "in process"
+// globally while dragging (`connectionStartHandle`) or click-connecting (`connectionClickStartHandle`);
+// `isPossibleEndHandle` is whether this handle can be the END of the in-progress (drag) connection.
+const connectionInProcess = toRef(() => connectionStartHandle.value !== null);
+
+const clickConnectionInProcess = toRef(() => connectionClickStartHandle.value !== null);
+
+const isPossibleEndHandle = toRef(() => {
+  const fromHandle = connectionStartHandle.value;
+  return connectionMode.value === ConnectionMode.Strict
+    ? fromHandle?.type !== type.value
+    : nodeId !== fromHandle?.nodeId || handleId !== fromHandle?.id;
+});
 
 const isClickConnecting = toRef(
   () =>
@@ -204,7 +208,10 @@ export default {
         connecting: isClickConnecting,
         connectablestart: isConnectableStart,
         connectableend: isConnectableEnd,
-        connectionindicator: isHandleConnectable && ((isConnectableStart && !isConnecting) || (isConnectableEnd && isConnecting)),
+        connectionindicator:
+          isHandleConnectable
+          && (!connectionInProcess || isPossibleEndHandle)
+          && ((connectionInProcess || clickConnectionInProcess) ? isConnectableEnd : isConnectableStart),
       },
     ]"
     @mousedown="onPointerDown"
