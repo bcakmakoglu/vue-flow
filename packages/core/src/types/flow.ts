@@ -150,7 +150,8 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   nodeOrigin?: NodeOrigin;
   /** light/dark/system — applies the resolved `light`/`dark` class to the flow container; `system` follows `prefers-color-scheme` @default 'light' */
   colorMode?: ColorMode;
-  defaultMarkerColor?: string;
+  /** color of edge markers; pass `null` to drive the arrowhead color from the `--xy-edge-stroke` CSS variable @default '#b1b1b7' */
+  defaultMarkerColor?: string | null;
   zoomOnScroll?: boolean;
   zoomOnPinch?: boolean;
   panOnScroll?: boolean;

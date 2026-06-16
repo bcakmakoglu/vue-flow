@@ -32,7 +32,8 @@ export interface EdgeMarker {
 export interface MarkerProps {
   id: string;
   type: MarkerType | string;
-  color?: string;
+  /** Marker color; `null`/unset lets the `--xy-edge-stroke` CSS variable drive the arrowhead color */
+  color?: string | null;
   width?: number;
   height?: number;
   markerUnits?: string;
