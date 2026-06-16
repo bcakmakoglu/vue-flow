@@ -374,7 +374,7 @@ const edges = ref([
 
 - Type: `KeyCode`
 
-- Default: `Meta`
+- Default: `Meta` on macOS, `Control` on other platforms
 
 - Details:
 
@@ -554,7 +554,7 @@ const edges = ref([
 
 - Type: `KeyCode`
 
-- Default: `Meta`
+- Default: `Meta` on macOS, `Control` on other platforms
 
 - Details:
 
@@ -721,7 +721,7 @@ const nodes = ref([
 
 - Type: `EdgeReconnectable`
 
-- Default: `true`
+- Default: `false`
 
 - Details:
 
