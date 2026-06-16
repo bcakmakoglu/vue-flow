@@ -52,3 +52,45 @@ describe('Store Action: `removeSelectedNodes`', () => {
     }, 1);
   });
 });
+
+// xyflow/react #5682: unselecting must only touch nodes that are actually selected, so an unselect
+// (e.g. drag start with `selectNodesOnDrag: false`) doesn't re-commit/re-render every node.
+describe('Store Action: `removeSelectedNodes` skips unselected nodes', () => {
+  let store: VueFlowStore;
+
+  beforeEach(() => {
+    cy.vueFlow({ nodes, edges });
+    cy.then(() => {
+      store = getStore();
+    });
+  });
+
+  it('fires no node changes when nothing is selected', () => {
+    cy.then(() => {
+      let changeCalls = 0;
+      store.onNodesChange(() => changeCalls++);
+
+      store.removeSelectedNodes();
+
+      expect(changeCalls, 'no nodesChange fired when nothing is selected').to.eq(0);
+    });
+  });
+
+  it('emits a deselect change only for the selected node', () => {
+    cy.then(() => {
+      store.addSelectedNodes([store.nodes.value[0]]);
+
+      // register the spy after selecting, so it only captures the `removeSelectedNodes` emission
+      let captured: { id: string; selected?: boolean }[] = [];
+      store.onNodesChange((changes) => {
+        captured = changes as typeof captured;
+      });
+
+      store.removeSelectedNodes();
+
+      expect(captured, 'one deselect change for the selected node only').to.have.length(1);
+      expect(captured[0].id).to.eq(store.nodes.value[0].id);
+      expect(captured[0].selected).to.eq(false);
+    });
+  });
+});

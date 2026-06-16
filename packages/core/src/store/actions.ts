@@ -440,19 +440,25 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   const removeSelectedNodes: Actions<NodeType>['removeSelectedNodes'] = (nodes) => {
     const nodesToUnselect = nodes || state.nodes;
 
-    // emit select=false changes only — `applyNodeChanges` applies them immutably + re-adopts. (No in-place
-    // `n.selected = false`: it would keep the node's reference, so the re-adopt would reuse the stale entry.)
-    const nodeChanges = nodesToUnselect.map(n => createSelectionChange(n.id, false));
+    // Emit select=false changes only for nodes that ARE selected — skipping the rest avoids re-committing
+    // (and re-rendering) every node on an unselect, e.g. on drag start with `selectNodesOnDrag: false`
+    // (xyflow/react #5682). `applyNodeChanges` applies them immutably + re-adopts (no in-place
+    // `n.selected = false`: it would keep the node's reference, so the re-adopt would reuse the stale entry).
+    const nodeChanges = nodesToUnselect.filter(n => n.selected).map(n => createSelectionChange(n.id, false));
 
-    state.hooks.nodesChange.trigger(nodeChanges);
+    if (nodeChanges.length) {
+      state.hooks.nodesChange.trigger(nodeChanges);
+    }
   };
 
   const removeSelectedEdges: Actions<NodeType, EdgeType>['removeSelectedEdges'] = (edges) => {
     const edgesToUnselect = edges || state.edges;
 
-    const edgeChanges = edgesToUnselect.map(e => createSelectionChange(e.id, false));
+    const edgeChanges = edgesToUnselect.filter(e => e.selected).map(e => createSelectionChange(e.id, false));
 
-    state.hooks.edgesChange.trigger(edgeChanges);
+    if (edgeChanges.length) {
+      state.hooks.edgesChange.trigger(edgeChanges);
+    }
   };
 
   const setMinZoom: Actions<NodeType>['setMinZoom'] = (minZoom) => {
