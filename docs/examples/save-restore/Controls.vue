@@ -29,7 +29,7 @@ function onAdd() {
 
   const newNode = {
     id: `random_node-${id}`,
-    label: `Node ${id}`,
+    data: { label: `Node ${id}` },
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
   };
 
