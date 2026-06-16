@@ -69,7 +69,7 @@ In Vue Flow, a graph consists of [**nodes**](/typedocs/type-aliases/Node) and [*
 
 **Each node or edge requires a unique id.**
 
-Nodes also need a [XY-position](/typedocs/interfaces/XYPosition), while edges require a `source` and a
+Nodes also need a [XY-position](/typedocs/type-aliases/XYPosition), while edges require a `source` and a
 `target` node id.
 
 ::: warning NOTE!

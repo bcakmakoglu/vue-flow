@@ -31,7 +31,7 @@ import { Controls, VueFlow } from '@vue-flow/core'
 | showInteractive | Show lock interactive btn              | boolean                                        | true     | true    |
 | showZoom        | Show zoom button                       | boolean                                        | true     | true    |
 | fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/type-aliases/FitViewParams) | true     | -       |
-| position        | Position of the controls panel         | [PanelPosition](/typedocs/type-aliases/PanelPosition) | true     | bottom-left |
+| position        | Position of the controls panel         | PanelPosition                                         | true     | bottom-left |
 
 ## Emits
 

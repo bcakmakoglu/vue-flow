@@ -55,7 +55,7 @@ Nodes are the underlying components of your graph.
 They can be any kind of data you want to visualize in your graph, existing independently and being interconnected
 through edges to create a data map.
 
-Remember, every node is unique and thus **requires a unique id** and **an [XY-position](/typedocs/interfaces/XYPosition)**.
+Remember, every node is unique and thus **requires a unique id** and **an [XY-position](/typedocs/type-aliases/XYPosition)**.
 
 For the full list of options available for a node, check out the [Node Interface](/typedocs/type-aliases/Node).
 

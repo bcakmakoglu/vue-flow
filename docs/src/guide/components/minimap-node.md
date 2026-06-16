@@ -27,8 +27,8 @@ To use the component pass the `MiniMapNode` as a child to the [`MiniMap`](/guide
 | type           | Node type                       | string                                              | true     | -       |
 | selected       | Is node selected                | boolean                                             | true     | false   |
 | dragging       | Is node dragging                | boolean                                             | true     | false   |
-| position       | XY position of node             | [XYPosition](/typedocs/interfaces/XYPosition) | false    | -       |
-| dimensions     | Node dimensions                 | [Dimensions](/typedocs/interfaces/Dimensions) | false    | -       |
+| position       | XY position of node             | [XYPosition](/typedocs/type-aliases/XYPosition) | false    | -       |
+| dimensions     | Node dimensions                 | [Dimensions](/typedocs/type-aliases/Dimensions) | false    | -       |
 | borderRadius   | MiniMap node css border-radius  | number                                              | true     | -       |
 | color          | MiniMap node css color          | string                                              | true     | -       |
 | shapeRendering | MiniMap node css shapeRendering | ShapeRendering                                      | true     | -       |

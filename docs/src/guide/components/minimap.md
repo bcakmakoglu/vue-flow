@@ -47,7 +47,7 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 | maskStrokeColor  | Mask border color            | string                                                            | true     | none                                              |
 | maskStrokeWidth  | Mask border width            | number                                                            | true     | 1                                                 |
 | maskBorderRadius | Mask border radius           | number                                                            | true     | 0                                                 |
-| position         | Position of the minimap      | [PanelPosition](/typedocs/type-aliases/PanelPosition)             | true     | bottom-right                                      |
+| position         | Position of the minimap      | PanelPosition                                                     | true     | bottom-right                                      |
 | pannable         | Use Minimap to pan on drag   | boolean                                                           | true     | false                                             |
 | zoomable         | Use Minimap to zoom on wheel | boolean                                                           | true     | false                                             |
 | inversePan       | Invert the pan direction     | boolean                                                           | true     | false                                             |
