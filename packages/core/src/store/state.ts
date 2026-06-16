@@ -91,6 +91,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     selectNodesOnDrag: true,
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
+    selectionOnDrag: false,
     multiSelectionKeyCode: isMacOs() ? 'Meta' : 'Control',
     zoomActivationKeyCode: isMacOs() ? 'Meta' : 'Control',
     deleteKeyCode: 'Backspace',

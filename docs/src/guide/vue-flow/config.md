@@ -550,6 +550,18 @@ const edges = ref([
 
   Define a key which can be used to activate the selection rect.
 
+### selection-on-drag (optional)
+
+- Type: `boolean`
+
+- Default: `false`
+
+- Details:
+
+  Draw a selection rect on a plain pane drag, without holding [`selection-key-code`](#selection-key-code).
+
+  Pair it with `:pan-on-drag="false"` (or a non-left button, e.g. `:pan-on-drag="[1, 2]"`) so a left-drag selects instead of panning.
+
 ### multi-selection-key-code (optional)
 
 - Type: `KeyCode`

@@ -17,7 +17,7 @@ describe('autoPanOnSelection', () => {
     });
   });
 
-  // `selectionKeyCode: true` + `panOnDrag: false` puts the pane in selection mode without holding a key
+  // `selectionOnDrag` + `panOnDrag: false` puts the pane in selection mode without holding a key
   // (see the `isSelecting` derivation in ZoomPane), so a plain pointer drag draws a selection box.
   function mountSelecting(autoPanOnSelection: boolean) {
     cy.vueFlow({
@@ -25,7 +25,7 @@ describe('autoPanOnSelection', () => {
       edges,
       fitView: false,
       panOnDrag: false,
-      selectionKeyCode: true,
+      selectionOnDrag: true,
       autoPanOnSelection,
     });
   }

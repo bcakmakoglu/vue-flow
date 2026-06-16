@@ -50,6 +50,7 @@ const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   onBeforeDelete: undefined,
   deleteKeyCode: undefined,
   selectionKeyCode: undefined,
+  selectionOnDrag: undefined,
   multiSelectionKeyCode: undefined,
   panActivationKeyCode: undefined,
   zoomActivationKeyCode: undefined,
