@@ -63,20 +63,20 @@ export interface MiniMapNodeProps {
 }
 
 export interface MiniMapEmits {
-  (event: 'click', params: { event: MouseEvent; position: { x: number; y: number } }): void;
-  (event: 'nodeClick', params: NodeMouseEvent): void;
-  (event: 'nodeDblclick', params: NodeMouseEvent): void;
-  (event: 'nodeMouseenter', params: NodeMouseEvent): void;
-  (event: 'nodeMousemove', params: NodeMouseEvent): void;
-  (event: 'nodeMouseleave', params: NodeMouseEvent): void;
+  click: [params: { event: MouseEvent; position: XYPosition }];
+  nodeClick: [params: NodeMouseEvent];
+  nodeDblclick: [params: NodeMouseEvent];
+  nodeMouseenter: [params: NodeMouseEvent];
+  nodeMousemove: [params: NodeMouseEvent];
+  nodeMouseleave: [params: NodeMouseEvent];
 }
 
 export interface MiniMapNodeEmits {
-  (event: 'click', params: MouseEvent): void;
-  (event: 'dblclick', params: MouseEvent): void;
-  (event: 'mouseenter', params: MouseEvent): void;
-  (event: 'mousemove', params: MouseEvent): void;
-  (event: 'mouseleave', params: MouseEvent): void;
+  click: [params: MouseEvent];
+  dblclick: [params: MouseEvent];
+  mouseenter: [params: MouseEvent];
+  mousemove: [params: MouseEvent];
+  mouseleave: [params: MouseEvent];
 }
 
 export interface MiniMapSlots extends Record<`node-${string}`, (nodeProps: MiniMapNodeProps) => any> {}

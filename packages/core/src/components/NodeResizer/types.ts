@@ -56,9 +56,9 @@ export interface NodeResizerProps {
 }
 
 export interface NodeResizerEmits {
-  (event: 'resizeStart', resizeEvent: OnResizeStart): void;
-  (event: 'resize', resizeEvent: OnResize): void;
-  (event: 'resizeEnd', resizeEvent: OnResizeStart): void;
+  resizeStart: [resizeEvent: OnResizeStart];
+  resize: [resizeEvent: OnResize];
+  resizeEnd: [resizeEvent: OnResizeStart];
 }
 
 export interface ResizeControlProps extends NodeResizerProps {
