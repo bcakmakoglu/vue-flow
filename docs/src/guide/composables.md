@@ -47,27 +47,18 @@ The getters are read-only; update the graph through the actions (or by binding `
 
 ### State creation and injection
 
-The `useVueFlow` composable creates, on first call, a new `VueFlowInstance` and injects it into the Vue component tree.
-This allows you to access the store from any child component using the `useVueFlow` composable.
+`useVueFlow` does **not** create a store — it's a pure consumer. It takes no arguments and resolves the instance from the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor via Vue's `inject` (it throws if there is none).
 
-This also means that the *first call* of `useVueFlow` is crucial as it determines the state instance that will be used throughout the component tree.
-You can think of it as a sort of `<VueFlowProvider>` wrapper that is automatically injected into the component tree.
+The store is created and owned by whichever provider sits above the call site:
+
+- `<VueFlow>` provides its own store to its children.
+- `<VueFlowProvider>` creates a store and shares it with everything inside it — use it when components *outside* `<VueFlow>` (a sidebar, a toolbar) need the same instance, or when you want to call `useVueFlow` in the same component that renders `<VueFlow>`.
 
 You can read more about this in the [State section of the guide](/guide/vue-flow/state).
 
-#### Enforcing a specific state instance
+#### Multiple flows
 
-If necessary, you can enforce the use of a specific state instance by passing an `id` to the `useVueFlow` composable.
-
-```ts
-import { useVueFlow } from '@vue-flow/core'
-
-const { onInit } = useVueFlow({ id: 'my-flow-instance' })
-
-onInit((instance) => {
-  // `instance` is the same type as the return of `useVueFlow` (VueFlowInstance)
-})
-```
+There is no global registry or lookup-by-id. Each flow lives in its own provider tree, so multiple flows on a page simply get their own `<VueFlow>` / `<VueFlowProvider>`, and `useVueFlow()` always resolves the nearest one.
 
 ## [useNodeConnections](/typedocs/functions/useNodeConnections)
 
@@ -166,18 +157,19 @@ This is how the default handle component is built:
 ```vue
 
 <script lang="ts" setup>
-import { NodeId, useHandle, useVueFlow } from '@vue-flow/core'
+import { storeToRefs, useHandle, useNodeId, useStore } from '@vue-flow/core'
 import type { HandleProps, Position } from '@vue-flow/core'
 
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
-  connectable: true,
+  isConnectable: true,
 })
 
-const nodeId = inject(NodeId, '')
+const nodeId = useNodeId()
 
-const { id, hooks, connectionStartHandle } = useVueFlow()
+// `connectionStartHandle` is raw store state — pull it off `useStore` (as a ref) via `storeToRefs`
+const { connectionStartHandle } = storeToRefs(useStore())
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
@@ -209,10 +201,10 @@ export default {
       {
         source: type !== 'target',
         target: type === 'target',
-        connectable: connectable,
+        connectable: isConnectable,
         connecting:
           connectionStartHandle?.nodeId === nodeId &&
-          connectionStartHandle?.handleId === id &&
+          connectionStartHandle?.id === id &&
           connectionStartHandle?.type === type,
       },
     ]"

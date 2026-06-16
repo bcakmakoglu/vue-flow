@@ -4,11 +4,7 @@ title: Controlled Flow
 
 # Taking Control of Vue Flow
 
-::: warning
-This API is subject to change in the next major release where changes will not be applied automatically anymore.
-:::
-
-By default, Vue Flow will apply *changes* automatically, so you don't have to worry about it.
+By default, Vue Flow will apply *changes* automatically (controlled by the `autoApplyChanges` prop), so you don't have to worry about it.
 
 Though, there are cases where you want to take control of changes and apply them manually after some processing and validations for example.
 

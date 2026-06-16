@@ -1,10 +1,9 @@
 # Slots
 
-##
-
 Vue Flow provides several slots for customization.
-In addition to the node and edge slots (see the guide on [nodes](/guide/node) and [edges](/guide/edge)),
-there are a number of other slots you can use to customize the visualization.
+In addition to the per-type node and edge slots — `#node-<type>` and `#edge-<type>` (see the guide on [nodes](/guide/node) and [edges](/guide/edge)) — there are a number of other slots you can use to customize the visualization.
+
+All slots are optional: you only need to define the ones you want to customize.
 
 ## Default
 
@@ -27,7 +26,7 @@ is triggered.
 </template>
 ```
 
-The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps).
+The full description of connection line props can be found [here](/typedocs/interfaces/ConnectionLineProps). The position props follow xyflow/react's naming — `fromX` / `fromY` / `fromPosition` for the connection's origin and `toX` / `toY` / `toPosition` for the pointer, alongside `fromNode` / `fromHandle` and `toNode` / `toHandle` (renamed from the previous `source*` / `target*`).
 
 ## Zoom Pane
 
