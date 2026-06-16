@@ -45,6 +45,7 @@ const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   autoPanOnConnect: undefined,
   autoPanOnNodeDrag: undefined,
   autoPanOnNodeFocus: undefined,
+  autoPanOnSelection: undefined,
   isValidConnection: undefined,
   onBeforeDelete: undefined,
   deleteKeyCode: undefined,

@@ -155,6 +155,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   autoPanOnConnect: boolean;
   autoPanOnNodeDrag: boolean;
   autoPanOnNodeFocus: boolean;
+  autoPanOnSelection: boolean;
   /**
    * The speed at which the viewport pans while dragging a node or a selection box.
    * @default 15

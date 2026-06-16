@@ -114,6 +114,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     autoPanOnNodeDrag: true,
     autoPanOnConnect: true,
     autoPanOnNodeFocus: true,
+    autoPanOnSelection: true,
     autoPanSpeed: 15,
 
     disableKeyboardA11y: false,

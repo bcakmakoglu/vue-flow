@@ -201,6 +201,12 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
    * @default true
    */
   autoPanOnNodeFocus?: boolean;
+  /**
+   * Pan the viewport automatically when the cursor reaches the edge of the viewport while dragging a
+   * selection box.
+   * @default true
+   */
+  autoPanOnSelection?: boolean;
   autoPanSpeed?: number;
 }
 
