@@ -13,7 +13,6 @@ import type {
   Edge,
   EdgeAddChange,
   EdgeLookup,
-  FlowExportObject,
   InternalNode,
   Node,
   NodeAddChange,
