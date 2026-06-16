@@ -104,6 +104,8 @@ export interface ConnectionLineProps {
   markerEnd?: string;
   /** status of the connection (valid, invalid) */
   connectionStatus: ConnectionStatus | null;
+  /** the raw pointer position in flow coordinates (unsnapped, unlike `toX`/`toY`) */
+  pointer: XYPosition;
 }
 
 export type ConnectionLookup = Map<string, Map<string, NodeConnection>>;

@@ -148,8 +148,11 @@ export function useHandle({
               y: state.to.y,
             });
           }
+          // `connectionPosition` tracks the raw pointer (not the snapped `to`): `useConnection` derives the
+          // snapped end from `connectionEndHandle`, and the connection line snaps via the same handle, so
+          // storing the raw pointer here surfaces it as `pointer` (xyflow/react #5594/#5578).
           updateConnection(
-            state.to,
+            state.pointer,
             state.toHandle
               ? ({
                   nodeId: state.toHandle.nodeId,

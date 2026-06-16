@@ -7,7 +7,7 @@ const connectionLineId = 'test-custom-connection-line';
 describe('Custom Connection Line', () => {
   it('renders a custom connection line component', () => {
     const CustomConnectionLine = defineComponent<ConnectionLineProps>({
-      props: ['fromNode', 'fromHandle', 'toNode', 'toHandle', 'fromX', 'fromY', 'toX', 'toY'] as any,
+      props: ['fromNode', 'fromHandle', 'toNode', 'toHandle', 'fromX', 'fromY', 'toX', 'toY', 'pointer'] as any,
       emits: ['change'],
       setup(props, { emit }) {
         watch(
@@ -18,6 +18,9 @@ describe('Custom Connection Line', () => {
               sourceHandleId: currProps.fromHandle?.id ?? null,
               targetNodeId: currProps.toNode?.id,
               targetHandleId: currProps.toHandle?.id ?? null,
+              // the raw pointer + the (snapped) line end must be finite flow-space coordinates
+              pointerIsFinite: Number.isFinite(currProps.pointer?.x) && Number.isFinite(currProps.pointer?.y),
+              toIsFinite: Number.isFinite(currProps.toX) && Number.isFinite(currProps.toY),
             });
           },
           { immediate: true, deep: true },
@@ -94,6 +97,8 @@ describe('Custom Connection Line', () => {
       sourceHandleId: null,
       targetNodeId: '2',
       targetHandleId: null,
+      pointerIsFinite: true,
+      toIsFinite: true,
     });
 
     // finish the drag (mouseup over the target) → line removed, edge committed
