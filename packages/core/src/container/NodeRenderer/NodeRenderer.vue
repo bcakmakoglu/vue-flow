@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, shallowRef, watch } from 'vue';
 import { NodeWrapper } from '../../components';
 import { useStore, useVueFlow } from '../../composables';
 import { useNodesInitialized } from '../../composables/useNodesInitialized';
@@ -10,7 +10,7 @@ const { nodeLookup } = useStore();
 
 const nodesInitialized = useNodesInitialized();
 
-const resizeObserver = ref<ResizeObserver>();
+const resizeObserver = shallowRef<ResizeObserver>();
 
 watch(
   nodesInitialized,

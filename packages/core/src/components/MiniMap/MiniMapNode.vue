@@ -7,7 +7,7 @@ const props = defineProps<MiniMapNodeProps>();
 
 const emits = defineEmits<MiniMapNodeEmits>();
 
-const miniMapSlots = inject(Slots)!;
+const miniMapSlots = inject(Slots, {});
 
 const attrs = useAttrs() as Record<string, any>;
 </script>

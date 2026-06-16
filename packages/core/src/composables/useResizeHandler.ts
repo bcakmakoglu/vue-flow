@@ -44,8 +44,9 @@ export function useResizeHandler(viewportEl: Ref<HTMLDivElement | null>): void {
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateDimensions);
 
-      if (resizeObserver && viewportEl.value) {
-        resizeObserver.unobserve(viewportEl.value!);
+      const el = viewportEl.value;
+      if (resizeObserver && el) {
+        resizeObserver.unobserve(el);
       }
     });
   });
