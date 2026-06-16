@@ -601,7 +601,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
 
     // Emit `add` changes for the valid user nodes (filter invalid up front — `applyChanges` would
     // otherwise read `.id` off a non-node and throw; `commitNodes`/`adoptNodes` re-validates on adopt).
-    const changes: NodeAddChange<any>[] = [];
+    const changes: NodeAddChange<NodeType>[] = [];
     for (const node of nextNodes) {
       if (!isNode(node)) {
         continue;

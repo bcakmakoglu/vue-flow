@@ -11,7 +11,7 @@ const interactionEl = ref<SVGPathElement | null>(null);
 
 const labelEl = ref<SVGGElement | null>(null);
 
-const attrs: any = useAttrs();
+const attrs = useAttrs();
 
 defineExpose({
   pathEl,
