@@ -1,5 +1,5 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, Connection, ConnectionMode, PanOnScrollMode, SelectionMode, SnapGrid, Viewport } from '@xyflow/system';
+import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, PanOnScrollMode, SelectionMode, SnapGrid, Viewport } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { VueFlowError } from '../utils';
 import type { EdgeChange, NodeChange } from './changes';
@@ -18,7 +18,7 @@ import type {
   NodeMouseEvent,
   SelectionChangeEvent,
 } from './hooks';
-import type { CoordinateExtent, CoordinateExtentRange, Node, NodeOrigin, NodeProps } from './node';
+import type { Node, NodeOrigin, NodeProps } from './node';
 import type { VueFlowInstance } from './store';
 import type { FitViewParams } from './zoom';
 
@@ -138,7 +138,7 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   /** controlled viewport (`v-model:viewport`) — keeps the flow's transform in sync with the bound value */
   viewport?: Viewport;
   translateExtent?: CoordinateExtent;
-  nodeExtent?: CoordinateExtent | CoordinateExtentRange;
+  nodeExtent?: CoordinateExtent;
   /** origin of all nodes relative to their position — `[0, 0]` top-left, `[0.5, 0.5]` center, `[1, 1]` bottom-right */
   nodeOrigin?: NodeOrigin;
   /** light/dark/system — applies the resolved `light`/`dark` class to the flow container; `system` follows `prefers-color-scheme` @default 'light' */
