@@ -1,5 +1,5 @@
 import type { Connection, FinalConnectionState, HandleType } from '@xyflow/system';
-import type { Edge, EdgeComponent, GraphNode, MouseTouchEvent } from '../../types';
+import type { Edge, EdgeComponent, InternalNode, MouseTouchEvent } from '../../types';
 import { ConnectionMode, getHandlePosition, getMarkerId, Position } from '@xyflow/system';
 import { computed, defineComponent, getCurrentInstance, h, inject, provide, resolveComponent, shallowRef, toRef } from 'vue';
 import { storeToRefs, useEdgeHooks, useHandle, useStore, useVueFlow } from '../../composables';
@@ -13,7 +13,7 @@ interface Props {
 
 // candidate handles for one end of an edge: strict mode = only the matching side; loose mode = both
 // sides, matching side first (so `getEdgeHandle` prefers it)
-function getNodeHandles(node: GraphNode, side: 'source' | 'target', strict: boolean) {
+function getNodeHandles(node: InternalNode, side: 'source' | 'target', strict: boolean) {
   const bounds = node.internals.handleBounds;
   if (strict) {
     return bounds?.[side] ?? null;
@@ -315,7 +315,7 @@ const EdgeWrapper = defineComponent({
       emit.reconnect({ event, edge: storedEdge.value, connection });
     }
 
-    function onReconnectEnd(event: MouseTouchEvent, connectionState: FinalConnectionState<GraphNode>) {
+    function onReconnectEnd(event: MouseTouchEvent, connectionState: FinalConnectionState<InternalNode>) {
       emit.reconnectEnd({ event, edge: storedEdge.value, handleType: reconnectHandleType.value, connectionState });
       updating.value = false;
     }

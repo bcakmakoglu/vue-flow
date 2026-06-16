@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GraphNode, Node, NodeChange } from '@vue-flow/core';
+import type { InternalNode, Node, NodeChange } from '@vue-flow/core';
 import { useVueFlow, VueFlow } from '@vue-flow/core';
 import { ref } from 'vue';
 import HelperLines from './HelperLines.vue';
@@ -13,7 +13,7 @@ const nodes = ref<Node[]>(initialNodes);
 const helperLineHorizontal = ref<number | undefined>(undefined);
 const helperLineVertical = ref<number | undefined>(undefined);
 
-function updateHelperLines(changes: NodeChange[], nodes: GraphNode[]) {
+function updateHelperLines(changes: NodeChange[], nodes: InternalNode[]) {
   helperLineHorizontal.value = undefined;
   helperLineVertical.value = undefined;
 
@@ -34,7 +34,7 @@ function updateHelperLines(changes: NodeChange[], nodes: GraphNode[]) {
 }
 
 function onNodesChange(changes: NodeChange[]) {
-  const updatedChanges = updateHelperLines(changes, nodes.value as GraphNode[]);
+  const updatedChanges = updateHelperLines(changes, nodes.value as InternalNode[]);
   nodes.value = applyNodeChanges(updatedChanges);
 }
 </script>

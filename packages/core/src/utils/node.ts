@@ -1,9 +1,9 @@
 import type { Ref } from 'vue';
-import type { Actions, GraphNode } from '../types';
+import type { Actions, InternalNode } from '../types';
 import { nextTick } from 'vue';
 
 export function handleNodeClick(
-  node: GraphNode,
+  node: InternalNode,
   multiSelectionActive: boolean,
   addSelectedNodes: Actions['addSelectedNodes'],
   removeSelectedNodes: Actions['removeSelectedNodes'],

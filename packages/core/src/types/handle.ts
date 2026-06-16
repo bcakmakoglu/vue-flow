@@ -1,6 +1,6 @@
 import type { Connection, ConnectionMode, Dimensions, HandleType, Position, XYPosition } from '@xyflow/system';
 import type { Edge } from './edge';
-import type { GraphNode, Node } from './node';
+import type { InternalNode, Node } from './node';
 
 export interface HandleElement extends XYPosition, Dimensions {
   id?: string | null;
@@ -19,10 +19,10 @@ export interface ConnectingHandle extends XYPosition {
 /** A valid connection function can determine if an attempted connection is valid or not, i.e. abort creating a new edge */
 export type ValidConnectionFunc = (
   connection: Connection,
-  elements: { edges: Edge[]; nodes: Node[]; sourceNode: GraphNode; targetNode: GraphNode },
+  elements: { edges: Edge[]; nodes: Node[]; sourceNode: InternalNode; targetNode: InternalNode },
 ) => boolean;
 
-export type HandleConnectableFunc = (node: GraphNode, connectedEdges: Edge[]) => boolean;
+export type HandleConnectableFunc = (node: InternalNode, connectedEdges: Edge[]) => boolean;
 
 /**
  * set to true to allow unlimited connections,

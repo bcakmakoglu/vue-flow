@@ -42,7 +42,7 @@ export interface NodeDragItem {
  *   - `NodePositionChange.from` (the OLD absolute position) → dropped. Use `positionAbsolute` (the NEW
  *     absolute position) which now matches xyflow/react / xyflow/svelte.
  *
- * Item shapes on add changes are the user-provided `Node` / `Edge` types (not the internal `GraphNode`).
+ * Item shapes on add changes are the user-provided `Node` / `Edge` types (not the internal `InternalNode`).
  */
 export interface NodeAddChange<NodeType extends Node = Node> {
   item: NodeType;

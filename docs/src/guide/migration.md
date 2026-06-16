@@ -271,8 +271,12 @@ far the pointer may move and still count as a node click.
 
 - **`NodeProps`/`EdgeProps` take the element type**, not the data type:
   `NodeProps<MyData>` → `NodeProps<Node<MyData, 'myType'>>` (same for `EdgeProps<Edge<MyData, 'myType'>>`).
-- **`useVueFlow<NodeType, EdgeType>()`** is fully typed on both generics (xyflow order). `GraphNode<NodeType>`
-  / `GraphEdge` is now `GraphEdge<EdgeType>`.
+- **`GraphNode` is renamed to `InternalNode`** (mirroring xyflow/react), and the `isGraphNode` guard to
+  `isInternalNode`. It's the enriched, store-internal node returned by
+  `getInternalNode`/`useInternalNode`/`nodeLookup`; the `GraphNode` name is removed, so replace
+  `GraphNode<T>` with `InternalNode<T>`.
+- **`useVueFlow<NodeType, EdgeType>()`** is fully typed on both generics (xyflow order); `getInternalNode`
+  /`nodeLookup` return `InternalNode<NodeType>`.
 - **Padding uses `@xyflow/system`'s `Padding` type** for both `fitView`/`fitBounds` options and a node
   `extent`'s `{ range, padding }`. A plain number still works; you can also pass a `'10px'`/`'5%'` string or a
   per-side object `{ top, right, bottom, left }` (with `x`/`y` shorthands). The old positional-tuple extent
@@ -288,7 +292,7 @@ far the pointer may move and still count as a node click.
 - **Change types mirror `@xyflow/system`:**
   - `NodeDimensionChange.updateStyle` → `setAttributes` (`true | 'width' | 'height'`)
   - `NodePositionChange.from` → `positionAbsolute`
-  - `NodeAddChange.item` / `EdgeAddChange.item` are the user `Node` / `Edge` (not `GraphNode`/`GraphEdge`); both gain an optional `index`
+  - `NodeAddChange.item` / `EdgeAddChange.item` are the user `Node` / `Edge` (not the internal `InternalNode`); both gain an optional `index`
   - `EdgeRemoveChange` is `{ id, type: 'remove' }` only — read `source`/`target`/handles from the edge via `getEdge(id)` before the change applies
 - **`ConnectionLineType` is `@xyflow/system`'s enum.** Its `SimpleBezier` member's value changed from
   `'simple-bezier'` to `'simplebezier'` (matching system and vue-flow's own `'simplebezier'` edge-type key).

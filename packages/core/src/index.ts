@@ -58,7 +58,7 @@ export * from './types';
 export { applyChanges, applyEdgeChanges, applyNodeChanges } from './utils/changes';
 export { defaultEdgeTypes, defaultNodeTypes } from './utils/defaultNodesEdges';
 export { ErrorCode, isErrorOfType, VueFlowError } from './utils/errors';
-export { connectionExists, isEdge, isGraphNode, isNode } from './utils/graph';
+export { connectionExists, isEdge, isInternalNode, isNode } from './utils/graph';
 
 // re-export these utils from system
 export { getBezierEdgeCenter, getBezierPath, getSmoothStepPath, getStraightPath } from '@xyflow/system';

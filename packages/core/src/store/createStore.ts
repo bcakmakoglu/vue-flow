@@ -3,7 +3,7 @@ import type {
   Edge,
   EdgeLookup,
   FlowProps,
-  GraphNode,
+  InternalNode,
   Node,
   NodeLookup,
   VueFlowInstance,
@@ -107,10 +107,10 @@ export function createVueFlowStore<NodeType extends Node = Node, EdgeType extend
   // edges) — no derivation watcher, no rebuild thrash.
   //
   // The `as` casts undo `reactive()`'s `UnwrapNestedRefs` widening over a Map of the *generic*
-  // `GraphNode<NodeType>` (TS can't prove the element type has no refs to unwrap); at runtime the proxy is
-  // exactly a `Map<string, GraphNode>`, so the assertion is sound (documented Vue + generics friction).
+  // `InternalNode<NodeType>` (TS can't prove the element type has no refs to unwrap); at runtime the proxy is
+  // exactly a `Map<string, InternalNode>`, so the assertion is sound (documented Vue + generics friction).
   const nodeLookup = reactiveState.nodeLookup as NodeLookup<NodeType>;
-  const parentLookup = reactiveState.parentLookup as Map<string, Map<string, GraphNode<NodeType>>>;
+  const parentLookup = reactiveState.parentLookup as Map<string, Map<string, InternalNode<NodeType>>>;
   const edgeLookup = reactiveState.edgeLookup as EdgeLookup<EdgeType>;
 
   const getters = useGetters<NodeType, EdgeType>(reactiveState, nodeLookup);

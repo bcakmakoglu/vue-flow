@@ -3,7 +3,7 @@ import type { EventHookExtended, EventHookOn, EventHookTrigger, VueFlowError } f
 import type { EdgeChange, NodeChange } from './changes';
 import type { OnConnectStartParams } from './connection';
 import type { Edge } from './edge';
-import type { GraphNode, Node } from './node';
+import type { InternalNode, Node } from './node';
 import type { VueFlowInstance } from './store';
 
 export type MouseTouchEvent = MouseEvent | TouchEvent;
@@ -36,7 +36,7 @@ export interface EdgeReconnectEvent<EdgeType extends Edge = Edge> {
  */
 export interface ConnectEndEvent<NodeType extends Node = Node> {
   event: MouseTouchEvent;
-  connectionState: FinalConnectionState<GraphNode<NodeType>>;
+  connectionState: FinalConnectionState<InternalNode<NodeType>>;
 }
 
 export interface EdgeReconnectStartEvent<EdgeType extends Edge = Edge> {
@@ -52,7 +52,7 @@ export interface EdgeReconnectEndEvent<NodeType extends Node = Node, EdgeType ex
   /** the type of the handle that was reconnected */
   handleType: HandleType;
   /** the {@link FinalConnectionState} at the moment the reconnect ended */
-  connectionState: FinalConnectionState<GraphNode<NodeType>>;
+  connectionState: FinalConnectionState<InternalNode<NodeType>>;
 }
 
 /** Payload for `selectionChange` — the currently selected nodes and edges, mirroring xyflow/react's `OnSelectionChange`. */

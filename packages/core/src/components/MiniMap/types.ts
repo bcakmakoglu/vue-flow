@@ -1,9 +1,9 @@
 import type { Dimensions, PanelPosition, XYPosition } from '@xyflow/system';
 import type { CSSProperties, InjectionKey } from 'vue';
-import type { GraphNode, NodeMouseEvent } from '../../types';
+import type { InternalNode, NodeMouseEvent } from '../../types';
 
 /** expects a node and returns a color value */
-export type MiniMapNodeFunc = (node: GraphNode) => string;
+export type MiniMapNodeFunc = (node: InternalNode) => string;
 
 export type ShapeRendering = CSSProperties['shapeRendering'];
 

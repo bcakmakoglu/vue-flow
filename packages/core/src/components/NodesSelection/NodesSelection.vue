@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { GraphNode } from '../../types';
+import type { InternalNode } from '../../types';
 import { getNodesBounds } from '@xyflow/system';
 import { computed, onMounted, shallowRef } from 'vue';
 import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables';
@@ -38,7 +38,7 @@ onMounted(() => {
 });
 
 // getSelectedNodes is readonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
-const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as GraphNode[], { nodeLookup }));
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as InternalNode[], { nodeLookup }));
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,

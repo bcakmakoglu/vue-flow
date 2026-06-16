@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ConnectingHandle, GraphNode, HandleElement, Position } from '@vue-flow/core';
+import type { ConnectingHandle, InternalNode, HandleElement, Position } from '@vue-flow/core';
 import { getBezierPath, storeToRefs, useStore, useVueFlow } from '@vue-flow/core';
 
 interface CustomConnectionLineProps {
@@ -12,7 +12,7 @@ interface CustomConnectionLineProps {
 }
 
 interface ClosestElements {
-  node: GraphNode | null;
+  node: InternalNode | null;
   handle: HandleElement | null;
   startHandle: ConnectingHandle | null;
 }
@@ -63,7 +63,7 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
     },
     {
       distance: Number.MAX_VALUE,
-      node: null as GraphNode | null,
+      node: null as InternalNode | null,
     },
   );
 

@@ -1,10 +1,10 @@
 import type { ComputedRef, MaybeRefOrGetter } from 'vue';
-import type { GraphNode, Node } from '../types';
+import type { InternalNode, Node } from '../types';
 import { computed, toValue } from 'vue';
 import { warn } from '../utils';
 import { useVueFlow } from './useVueFlow';
 
-interface NodeData<NodeType extends Node = GraphNode> {
+interface NodeData<NodeType extends Node = InternalNode> {
   id: string;
   type: NodeType['type'];
   data: NonNullable<NodeType['data']>;
@@ -18,13 +18,13 @@ interface NodeData<NodeType extends Node = GraphNode> {
  * @param guard - Optional guard function to narrow down the node type
  * @returns An array of data objects
  */
-export function useNodesData<NodeType extends Node = GraphNode>(
+export function useNodesData<NodeType extends Node = InternalNode>(
   nodeId: MaybeRefOrGetter<string>,
 ): ComputedRef<NodeData<NodeType> | null>;
-export function useNodesData<NodeType extends Node = GraphNode>(
+export function useNodesData<NodeType extends Node = InternalNode>(
   nodeIds: MaybeRefOrGetter<string[]>,
 ): ComputedRef<NodeData<NodeType>[]>;
-export function useNodesData<NodeType extends Node = GraphNode>(
+export function useNodesData<NodeType extends Node = InternalNode>(
   nodeIds: MaybeRefOrGetter<string[]>,
   guard: (node: Node) => node is NodeType,
 ): ComputedRef<NodeData<NodeType>[]>;
