@@ -1,14 +1,13 @@
+import type { DistributivePick } from '@xyflow/system';
 import type { ComputedRef, MaybeRefOrGetter } from 'vue';
 import type { InternalNode, Node } from '../types';
 import { computed, toValue } from 'vue';
 import { warn } from '../utils';
 import { useVueFlow } from './useVueFlow';
 
-interface NodeData<NodeType extends Node = InternalNode> {
-  id: string;
-  type: NodeType['type'];
-  data: NonNullable<NodeType['data']>;
-}
+// `DistributivePick` (over `Pick`) distributes across a union `NodeType`, so the result is a discriminated
+// union — checking `.type` narrows `.data`. Mirrors xyflow/react & xyflow/svelte.
+type NodeData<NodeType extends Node = InternalNode> = DistributivePick<NodeType, 'id' | 'type' | 'data'>;
 
 /**
  * Composable for receiving data of one or multiple nodes
