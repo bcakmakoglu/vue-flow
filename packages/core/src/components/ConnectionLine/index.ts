@@ -26,7 +26,9 @@ const ConnectionLine = defineComponent({
 
     const toNode = computed(() => getInternalNode(connectionEndHandle.value?.nodeId) ?? null);
 
-    const toXY = computed(() => {
+    // `connectionPosition` holds the raw pointer (screen space); convert to flow space for the line + the
+    // custom connection-line component. The line END snaps to the hovered handle (below) when there is one.
+    const pointer = computed(() => {
       return {
         x: (connectionPosition.value.x - viewport.value.x) / viewport.value.zoom,
         y: (connectionPosition.value.y - viewport.value.y) / viewport.value.zoom,
@@ -87,6 +89,10 @@ const ConnectionLine = defineComponent({
         return null;
       }
 
+      // snap the line end to the hovered handle when there is one; otherwise follow the raw pointer
+      const { x: toX, y: toY }
+        = toHandle && toNode.value ? getHandlePosition(toNode.value, toHandle, toPosition) : pointer.value;
+
       const type = connectionLineOptions.value.type ?? ConnectionLineType.Bezier;
 
       let dAttr = '';
@@ -95,8 +101,8 @@ const ConnectionLine = defineComponent({
         sourceX: fromX,
         sourceY: fromY,
         sourcePosition: fromPosition,
-        targetX: toXY.value.x,
-        targetY: toXY.value.y,
+        targetX: toX,
+        targetY: toY,
         targetPosition: toPosition,
       };
 
@@ -116,7 +122,7 @@ const ConnectionLine = defineComponent({
         ;[dAttr] = getSimpleBezierPath(pathParams);
       }
       else {
-        dAttr = `M${fromX},${fromY} ${toXY.value.x},${toXY.value.y}`;
+        dAttr = `M${fromX},${fromY} ${toX},${toY}`;
       }
 
       return h(
@@ -130,8 +136,8 @@ const ConnectionLine = defineComponent({
                 fromX,
                 fromY,
                 fromPosition,
-                toX: toXY.value.x,
-                toY: toXY.value.y,
+                toX,
+                toY,
                 toPosition,
                 fromNode: fromNode.value,
                 fromHandle,
@@ -140,6 +146,7 @@ const ConnectionLine = defineComponent({
                 markerEnd: markerEnd.value,
                 markerStart: markerStart.value,
                 connectionStatus: connectionStatus.value,
+                pointer: pointer.value,
               })
             : h('path', {
                 'd': dAttr,

@@ -98,6 +98,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   connectionStartHandle: ConnectingHandle | null;
   connectionEndHandle: ConnectingHandle | null;
   connectionClickStartHandle: ConnectingHandle | null;
+  /** the raw pointer position during a connection drag (screen coords); the snapped end is `connectionEndHandle` */
   connectionPosition: XYPosition;
   connectionRadius: number;
   connectionDragThreshold: number;
