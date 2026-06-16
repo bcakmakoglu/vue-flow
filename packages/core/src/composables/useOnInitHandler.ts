@@ -15,7 +15,7 @@ export function useOnInitHandler<NodeType extends Node = Node, EdgeType extends 
   vfInstance = useVueFlow<NodeType, EdgeType>(),
 ) {
   watch(
-    () => vfInstance.viewportHelper.value.viewportInitialized,
+    () => vfInstance.viewportInitialized.value,
     (isInitialized) => {
       if (isInitialized) {
         vfInstance.emits.init(vfInstance);
