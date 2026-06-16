@@ -4,7 +4,7 @@ defineProps<{
 }>();
 
 defineEmits<{
-  (event: 'click', payload: MouseEvent): void;
+  click: [payload: MouseEvent];
 }>();
 </script>
 

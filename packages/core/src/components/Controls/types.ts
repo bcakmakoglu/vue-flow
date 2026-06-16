@@ -35,8 +35,8 @@ export interface ControlProps {
 }
 
 export interface ControlEmits {
-  (event: 'zoomIn'): void;
-  (event: 'zoomOut'): void;
-  (event: 'fitView'): void;
-  (event: 'interactionChange', isInteractive: boolean): void;
+  zoomIn: [];
+  zoomOut: [];
+  fitView: [];
+  interactionChange: [isInteractive: boolean];
 }
