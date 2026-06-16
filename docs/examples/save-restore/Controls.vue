@@ -4,7 +4,7 @@ import Icon from './Icon.vue';
 
 const flowKey = 'vue-flow--save-restore';
 
-const { addNodes, toObject, fromObject } = useVueFlow();
+const { addNodes, toObject, setNodes, setEdges, setViewport } = useVueFlow();
 
 const { nodes, dimensions } = storeToRefs(useStore());
 
@@ -16,7 +16,11 @@ function onRestore() {
   const flow = JSON.parse(localStorage.getItem(flowKey));
 
   if (flow) {
-    fromObject(flow);
+    // `fromObject` was removed in v2 — restore explicitly so you control when it runs.
+    // The flow is already initialized here (restore is a user action), so `setViewport` applies immediately.
+    setNodes(flow.nodes);
+    setEdges(flow.edges);
+    setViewport(flow.viewport);
   }
 }
 
