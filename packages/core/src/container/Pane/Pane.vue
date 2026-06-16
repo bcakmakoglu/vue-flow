@@ -1,16 +1,16 @@
 <script lang="ts" setup>
+import type { XYPosition } from '@xyflow/system';
 import type { EdgeChange, NodeChange } from '../../types';
-import { areSetsEqual, getEventPosition, getNodesInside, SelectionMode } from '@xyflow/system';
-import { shallowRef, toRef, watch } from 'vue';
+import { areSetsEqual, calcAutoPan, getEventPosition, getNodesInside, pointToRendererPoint, rendererPointToPoint, SelectionMode } from '@xyflow/system';
+import { onUnmounted, shallowRef, toRef, watch } from 'vue';
 import NodesSelection from '../../components/NodesSelection/NodesSelection.vue';
 import UserSelection from '../../components/UserSelection/UserSelection.vue';
 import { storeToRefs, useKeyPress, useStore, useVueFlow } from '../../composables';
 import { getSelectionChanges } from '../../utils';
-import { getMousePosition } from './utils';
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>();
 
-const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements } = useVueFlow();
+const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements, panBy } = useVueFlow();
 
 const { edgeLookup, nodeLookup } = useStore();
 
@@ -29,6 +29,8 @@ const {
   defaultEdgeOptions,
   connectionStartHandle,
   panOnDrag,
+  autoPanOnSelection,
+  autoPanSpeed,
 } = storeToRefs(useStore());
 
 const container = shallowRef<HTMLDivElement | null>(null);
@@ -46,6 +48,11 @@ const connectionInProgress = toRef(() => connectionStartHandle.value !== null);
 // Used to prevent click events when the user lets go of the selectionKey during a selection
 let selectionInProgress = false;
 let selectionStarted = false;
+
+// Auto-pan while dragging the selection box near the edges of the container
+let autoPanId = 0;
+let autoPanStarted = false;
+let lastPointerPosition: XYPosition = { x: 0, y: 0 };
 
 const deleteKeyPressed = useKeyPress(deleteKeyCode, { actInsideInputWithModifier: false });
 
@@ -67,6 +74,10 @@ watch(deleteKeyPressed, (isKeyPressed) => {
 
 watch(multiSelectKeyPressed, (isKeyPressed) => {
   multiSelectionActive.value = isKeyPressed;
+});
+
+onUnmounted(() => {
+  cleanupAutoPan();
 });
 
 function wrapHandler(handler: Function, containerRef: HTMLDivElement | null) {
@@ -121,19 +132,23 @@ function onPointerDown(event: PointerEvent) {
 
   ;(event.target as Element)?.setPointerCapture?.(event.pointerId);
 
-  const { x, y } = getMousePosition(event, containerBounds.value);
+  const { x, y } = getEventPosition(event, containerBounds.value);
 
   selectionStarted = true;
   selectionInProgress = false;
+  autoPanStarted = false;
 
   removeSelectedNodes();
   removeSelectedEdges();
 
+  // store the origin in flow coordinates so it stays anchored to the canvas while auto-panning
+  const flowStart = pointToRendererPoint({ x, y }, transform.value);
+
   userSelectionRect.value = {
     width: 0,
     height: 0,
-    startX: x,
-    startY: y,
+    startX: flowStart.x,
+    startY: flowStart.y,
     x,
     y,
   };
@@ -141,23 +156,25 @@ function onPointerDown(event: PointerEvent) {
   emits.selectionStart(event);
 }
 
-function onPointerMove(event: PointerEvent) {
-  if (!containerBounds.value || !userSelectionRect.value) {
+// Recompute the selection rect (and the selected nodes/edges) from the current pointer position. Called
+// both on pointer move and on every auto-pan frame, so the selection keeps growing while the viewport pans.
+function commitUserSelectionRect(mouseX: number, mouseY: number) {
+  if (!userSelectionRect.value) {
     return;
   }
 
-  selectionInProgress = true;
-
-  const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value);
+  // `startX`/`startY` are stored in flow coordinates (so the origin stays put while panning); convert
+  // back to screen coordinates to build the rect, which `getNodesInside` and `UserSelection` consume.
   const { startX = 0, startY = 0 } = userSelectionRect.value;
+  const screenStart = rendererPointToPoint({ x: startX, y: startY }, transform.value);
 
   const nextUserSelectRect = {
     startX,
     startY,
-    x: mouseX < startX ? mouseX : startX,
-    y: mouseY < startY ? mouseY : startY,
-    width: Math.abs(mouseX - startX),
-    height: Math.abs(mouseY - startY),
+    x: mouseX < screenStart.x ? mouseX : screenStart.x,
+    y: mouseY < screenStart.y ? mouseY : screenStart.y,
+    width: Math.abs(mouseX - screenStart.x),
+    height: Math.abs(mouseY - screenStart.y),
   };
 
   const prevSelectedNodeIds = selectedNodeIds.value;
@@ -201,6 +218,48 @@ function onPointerMove(event: PointerEvent) {
   nodesSelectionActive.value = false;
 }
 
+// rAF loop that pans the viewport while the pointer sits near a container edge during a selection, then
+// re-commits the selection rect from the (unchanged) pointer position so it grows toward the new viewport.
+function autoPan() {
+  if (!autoPanOnSelection.value || !containerBounds.value) {
+    return;
+  }
+
+  const [xMovement, yMovement] = calcAutoPan(lastPointerPosition, containerBounds.value, autoPanSpeed.value);
+
+  panBy({ x: xMovement, y: yMovement }).then((panned) => {
+    if (selectionInProgress && panned) {
+      commitUserSelectionRect(lastPointerPosition.x, lastPointerPosition.y);
+    }
+
+    autoPanId = requestAnimationFrame(autoPan);
+  });
+}
+
+function cleanupAutoPan() {
+  cancelAnimationFrame(autoPanId);
+  autoPanId = 0;
+  autoPanStarted = false;
+}
+
+function onPointerMove(event: PointerEvent) {
+  if (!containerBounds.value || !userSelectionRect.value) {
+    return;
+  }
+
+  selectionInProgress = true;
+
+  const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value);
+  lastPointerPosition = { x: mouseX, y: mouseY };
+
+  if (!autoPanStarted) {
+    autoPan();
+    autoPanStarted = true;
+  }
+
+  commitUserSelectionRect(mouseX, mouseY);
+}
+
 function onPointerUp(event: PointerEvent) {
   if (event.button !== 0 || !selectionStarted) {
     return;
@@ -227,6 +286,13 @@ function onPointerUp(event: PointerEvent) {
   }
 
   selectionStarted = false;
+
+  cleanupAutoPan();
+}
+
+function onPointerCancel(event: PointerEvent) {
+  ;(event.target as Element)?.releasePointerCapture?.(event.pointerId);
+  cleanupAutoPan();
 }
 </script>
 
@@ -249,6 +315,7 @@ export default {
     @pointerdown="(event) => (hasActiveSelection ? onPointerDown(event) : emits.paneMouseMove(event))"
     @pointermove="(event) => (hasActiveSelection ? onPointerMove(event) : emits.paneMouseMove(event))"
     @pointerup="(event) => (hasActiveSelection ? onPointerUp(event) : undefined)"
+    @pointercancel="(event) => (hasActiveSelection ? onPointerCancel(event) : undefined)"
     @pointerleave="emits.paneMouseLeave($event)"
   >
     <slot />
