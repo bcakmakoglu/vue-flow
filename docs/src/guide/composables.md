@@ -80,11 +80,12 @@ const sourceConnections = useNodeConnections({
 })
 
 const handleConnections = useNodeConnections({
-  handleId: 'handle-1', // you can explicitly pass a handle id if you want to get connections of a specific handle
+  handleType: 'source',
+  handleId: 'handle-1', // pass a handle id to narrow to a specific handle (requires `handleType`)
 })
 
 const connections = useNodeConnections({
-  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
+  id: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId` injection
   handleType: 'target',
   onConnect: (connections: NodeConnection[]) => {
     // do something with the connections
