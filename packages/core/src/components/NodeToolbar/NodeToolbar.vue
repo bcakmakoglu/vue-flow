@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue';
-import type { GraphNode } from '../../types';
+import type { InternalNode } from '../../types';
 import type { NodeToolbarProps } from './types';
 import { getNodesBounds, getNodeToolbarTransform, Position } from '@xyflow/system';
 import { computed, inject } from 'vue';
@@ -25,7 +25,7 @@ const { viewportRef } = storeToRefs(useStore());
 const nodes = computed(() => {
   const nodeIds = Array.isArray(props.nodeId) ? props.nodeId : [props.nodeId || contextNodeId || ''];
 
-  return nodeIds.reduce<GraphNode[]>((acc, id) => {
+  return nodeIds.reduce<InternalNode[]>((acc, id) => {
     const node = getInternalNode(id);
 
     if (node) {
@@ -33,7 +33,7 @@ const nodes = computed(() => {
     }
 
     return acc;
-  }, [] as GraphNode[]);
+  }, [] as InternalNode[]);
 });
 
 const isActive = computed(() =>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { GraphNode, Position } from '@vue-flow/core';
+import type { InternalNode, Position } from '@vue-flow/core';
 import { getBezierPath } from '@vue-flow/core';
 import { getEdgeParams } from './floating-edge-utils';
 
@@ -8,7 +8,7 @@ interface FloatingConnectionLineProps {
   targetY: number;
   sourcePosition: Position;
   targetPosition: Position;
-  sourceNode: GraphNode;
+  sourceNode: InternalNode;
 }
 
 const props = defineProps<FloatingConnectionLineProps>();
@@ -18,7 +18,7 @@ const targetNode = computed(() => {
     id: 'connection-target',
     internals: { positionAbsolute: { x: props.targetX, y: props.targetY }, z: 0 },
     measured: { width: 1, height: 1 },
-  } as unknown as GraphNode;
+  } as unknown as InternalNode;
 });
 
 const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value));

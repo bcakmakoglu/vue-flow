@@ -27,7 +27,7 @@ export function useLayout() {
     previousDirection.value = direction;
 
     for (const node of nodes) {
-      // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`GraphNode` type)
+      // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`InternalNode` type)
       const graphNode = getNode(node.id);
 
       dagreGraph.setNode(node.id, { width: graphNode.measured?.width || 150, height: graphNode.measured?.height || 50 });

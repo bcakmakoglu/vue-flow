@@ -9,7 +9,7 @@ import type {
   EdgeAddChange,
   EdgeChange,
   ElementChange,
-  GraphNode,
+  InternalNode,
   Node,
   NodeAddChange,
   NodeChange,
@@ -24,11 +24,11 @@ import { isNode } from '.';
  * reference and re-adopt a stale internal node. Reusing unchanged refs keeps re-adoption O(changed).
  *
  * `position`/`dimensions` changes are gated on `isNode` (user `Node`s have no `internals`, so the old
- * `isGraphNode` guard would skip them) — edges never receive those change types anyway.
+ * `isInternalNode` guard would skip them) — edges never receive those change types anyway.
  */
 export function applyChanges<
   T extends Node | Edge = Node | Edge,
-  C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
+  C extends ElementChange = T extends InternalNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
   // bucket changes: field updates by id, plus add/remove
   const updatesById = new Map<string, C[]>();
@@ -138,7 +138,7 @@ export function applyEdgeChanges(changes: EdgeChange[], edges: Edge[]) {
 }
 
 /** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
-export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
+export function applyNodeChanges(changes: NodeChange[], nodes: InternalNode[]) {
   return applyChanges(changes, nodes);
 }
 

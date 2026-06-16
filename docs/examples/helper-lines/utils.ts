@@ -1,4 +1,4 @@
-import type { GraphNode, NodePositionChange, XYPosition } from '@vue-flow/core';
+import type { InternalNode, NodePositionChange, XYPosition } from '@vue-flow/core';
 
 interface GetHelperLinesResult {
   horizontal?: number;
@@ -8,7 +8,7 @@ interface GetHelperLinesResult {
 
 // this utility function can be called with a position change (inside onNodesChange)
 // it checks all other nodes and calculated the helper line positions and the position where the current node should snap to
-export function getHelperLines(change: NodePositionChange, nodes: GraphNode[], distance = 5): GetHelperLinesResult {
+export function getHelperLines(change: NodePositionChange, nodes: InternalNode[], distance = 5): GetHelperLinesResult {
   const defaultResult = {
     horizontal: undefined,
     vertical: undefined,

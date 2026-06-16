@@ -1,5 +1,5 @@
 import type { ComputedRef } from 'vue';
-import type { ConnectionState, GraphNode, Node } from '../types';
+import type { ConnectionState, InternalNode, Node } from '../types';
 import { computed } from 'vue';
 import { storeToRefs } from './storeToRefs';
 import { useStore } from './useStore';
@@ -48,12 +48,12 @@ export function useConnection<NodeType extends Node = Node>(): ComputedRef<Conne
       from: { x: fromHandle.x, y: fromHandle.y },
       fromHandle,
       fromPosition: fromHandle.position,
-      fromNode: fromNode as GraphNode<NodeType>,
+      fromNode: fromNode as InternalNode<NodeType>,
       // `to` snaps to the hovered end handle; falls back to the raw pointer when over empty canvas
       to: toHandle ? { x: toHandle.x, y: toHandle.y } : pointer,
       toHandle: toHandle ?? null,
       toPosition: toHandle?.position ?? null,
-      toNode: ((toHandle ? getInternalNode(toHandle.nodeId) : undefined) ?? null) as GraphNode<NodeType> | null,
+      toNode: ((toHandle ? getInternalNode(toHandle.nodeId) : undefined) ?? null) as InternalNode<NodeType> | null,
       pointer,
     };
   });

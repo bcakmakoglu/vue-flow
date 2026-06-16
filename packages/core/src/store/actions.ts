@@ -14,7 +14,7 @@ import type {
   EdgeAddChange,
   EdgeLookup,
   FlowExportObject,
-  GraphNode,
+  InternalNode,
   Node,
   NodeAddChange,
   NodeLookup,
@@ -47,7 +47,7 @@ import {
   getExtent,
   getSelectionChanges,
   isDef,
-  isGraphNode,
+  isInternalNode,
   isNode,
   reconnectEdgeAction,
   updateConnectionLookup,
@@ -58,7 +58,7 @@ import { storeOptionsToSkip, useState } from './state';
 export function useActions<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
   state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
-  parentLookup: Map<string, Map<string, GraphNode<NodeType>>>,
+  parentLookup: Map<string, Map<string, InternalNode<NodeType>>>,
   edgeLookup: EdgeLookup<EdgeType>,
 ): Actions<NodeType, EdgeType> {
   const viewportHelper = useViewportHelper(state, nodeLookup);
@@ -71,7 +71,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   // targeted `.set`/`.delete`, so only entries whose `InternalNode` reference actually changed trigger —
   // per-frame render invalidation stays O(changed) instead of O(n).
   const systemNodeLookup: NodeLookup<NodeType> = new Map();
-  const systemParentLookup: Map<string, Map<string, GraphNode<NodeType>>> = new Map();
+  const systemParentLookup: Map<string, Map<string, InternalNode<NodeType>>> = new Map();
 
   function sameMapEntries<K, V>(a: Map<K, V>, b: Map<K, V>) {
     if (a.size !== b.size) {
@@ -205,11 +205,11 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     // their `range` (`'parent'` or a plain `CoordinateExtent`, both system-understood) for the system
     // pass and restore afterwards. The system clamp can't express the range `padding`, so it's re-applied
     // separately in the padding-clamp pass below (after absolute positions are fresh).
-    // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `GraphNode`
+    // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `InternalNode`
     // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
     // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
     // type can't express this without breaking system compat. We restore the original extent after.
-    const coercedExtents: { node: GraphNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = [];
+    const coercedExtents: { node: InternalNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = [];
     for (const node of systemNodeLookup.values()) {
       const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
       if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
@@ -920,7 +920,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const isRectObj = isRectObject(nodeOrRect);
     // use `getInternalNode` (not getNode): `nodeToRect` below needs `internals`/`measured`, which live on
     // the InternalNode, not the user `Node` that getNode returns
-    const node = isRectObj ? null : isGraphNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id);
+    const node = isRectObj ? null : isInternalNode(nodeOrRect) ? nodeOrRect : getInternalNode(nodeOrRect.id);
 
     if (!isRectObj && !node) {
       return [null, null, isRectObj];
@@ -943,7 +943,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       return [];
     }
 
-    const intersections: GraphNode<NodeType>[] = [];
+    const intersections: InternalNode<NodeType>[] = [];
     for (const n of nodes) {
       if (!isRect && (n.id === node!.id || !n.internals.positionAbsolute)) {
         continue;

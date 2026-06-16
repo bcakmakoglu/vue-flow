@@ -1,7 +1,7 @@
 # Update Node
 
 Updating internal node data is simple.
-After initializing your elements and parsing them into either `GraphNode` or `GraphEdge`
+After initializing your elements and processing them into their internal `InternalNode` / `Edge` form,
 Vue Flow will emit the changes back into your initial `ref`.
 
 That means you can manipulate any property of your original nodes, and it will trigger changes in the graph.

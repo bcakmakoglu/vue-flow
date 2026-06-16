@@ -1,5 +1,5 @@
 import type { PaddingWithUnit, XYPosition } from '@xyflow/system';
-import type { CoordinateExtent, CoordinateExtentRange, GraphNode, NodeDragItem, State } from '../types';
+import type { CoordinateExtent, CoordinateExtentRange, InternalNode, NodeDragItem, State } from '../types';
 import { clampPosition, getNodeDimensions } from '@xyflow/system';
 import { ErrorCode, VueFlowError } from '.';
 
@@ -42,8 +42,8 @@ function getExtentPadding(
 
 function getParentExtent(
   currentExtent: CoordinateExtentRange | 'parent',
-  node: GraphNode | NodeDragItem,
-  parent: GraphNode,
+  node: InternalNode | NodeDragItem,
+  parent: InternalNode,
 ): CoordinateExtent | false {
   const [top, right, bottom, left] = typeof currentExtent !== 'string'
     ? getExtentPadding(currentExtent.padding, parent.measured.width ?? 0, parent.measured.height ?? 0)
@@ -68,11 +68,11 @@ function getParentExtent(
   return false;
 }
 
-export function getExtent<T extends NodeDragItem | GraphNode>(
+export function getExtent<T extends NodeDragItem | InternalNode>(
   item: T,
   triggerError: State['hooks']['error']['trigger'],
   extent?: State['nodeExtent'],
-  parent?: GraphNode,
+  parent?: InternalNode,
 ) {
   let currentExtent = item.extent || extent;
 
@@ -127,11 +127,11 @@ export function getExtent<T extends NodeDragItem | GraphNode>(
 }
 
 export function calcNextPosition(
-  node: GraphNode | NodeDragItem,
+  node: InternalNode | NodeDragItem,
   nextPosition: XYPosition,
   triggerError: State['hooks']['error']['trigger'],
   nodeExtent?: State['nodeExtent'],
-  parentNode?: GraphNode,
+  parentNode?: InternalNode,
 ) {
   const measured = getNodeDimensions(node);
 

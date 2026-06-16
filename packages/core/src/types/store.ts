@@ -25,9 +25,9 @@ import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge';
 import type { FlowExportObject, FlowProps, OnBeforeDelete } from './flow';
 import type { ConnectingHandle, ValidConnectionFunc } from './handle';
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks';
-import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeOrigin } from './node';
+import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, InternalNode, Node, NodeOrigin } from './node';
 
-export type NodeLookup<NodeType extends Node = Node> = Map<string, GraphNode<NodeType>>;
+export type NodeLookup<NodeType extends Node = Node> = Map<string, InternalNode<NodeType>>;
 
 export type EdgeLookup<EdgeType extends Edge = Edge> = Map<string, EdgeType>;
 
@@ -56,8 +56,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   /** id → enriched `InternalNode` (`internals`/`measured`); the canonical source for node-derived data */
   readonly nodeLookup: NodeLookup<NodeType>;
-  /** parentId → map of child id → child `GraphNode`. Matches `@xyflow/system`'s `ParentLookup`. */
-  readonly parentLookup: Map<string, Map<string, GraphNode<NodeType>>>;
+  /** parentId → map of child id → child `InternalNode`. Matches `@xyflow/system`'s `ParentLookup`. */
+  readonly parentLookup: Map<string, Map<string, InternalNode<NodeType>>>;
   /** id → user-facing `Edge` */
   readonly edgeLookup: EdgeLookup<EdgeType>;
   connectionLookup: ConnectionLookup;
@@ -238,25 +238,25 @@ export type GetNode<NodeType extends Node = Node> = (id: string | undefined | nu
  * authoritative `measured`) for an id, mirroring xyflow/react's `getInternalNode`. This is the accessor
  * for store-computed data; `getNode` exposes the user-facing node.
  */
-export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => GraphNode<NodeType> | undefined;
+export type GetInternalNode<NodeType extends Node = Node> = (id: string | undefined | null) => InternalNode<NodeType> | undefined;
 
 export type GetEdge<EdgeType extends Edge = Edge> = (id: string | undefined | null) => EdgeType | undefined;
 
 export type GetIntersectingNodes<NodeType extends Node = Node> = (
   node: (Partial<NodeType> & { id: NodeType['id'] }) | Rect,
   partially?: boolean,
-  nodes?: GraphNode<NodeType>[],
-) => GraphNode<NodeType>[];
+  nodes?: InternalNode<NodeType>[],
+) => InternalNode<NodeType>[];
 
 export type UpdateNode<NodeType extends Node = Node> = (
   id: string,
-  nodeUpdate: Partial<NodeType> | ((node: GraphNode<NodeType>) => Partial<NodeType>),
+  nodeUpdate: Partial<NodeType> | ((node: InternalNode<NodeType>) => Partial<NodeType>),
   options?: { replace: boolean },
 ) => void;
 
 export type UpdateNodeData<NodeType extends Node = Node> = (
   id: string,
-  dataUpdate: Partial<NodeType['data']> | ((node: GraphNode<NodeType>) => Partial<NodeType['data']>),
+  dataUpdate: Partial<NodeType['data']> | ((node: InternalNode<NodeType>) => Partial<NodeType['data']>),
   options?: { replace: boolean },
 ) => void;
 

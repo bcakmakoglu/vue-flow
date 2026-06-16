@@ -32,7 +32,7 @@ export interface NodeHandleBounds {
 /**
  * User-facing node type — reuses `@xyflow/system`'s `NodeBase` (xyflow/react does
  * `Node = NodeBase & {…}`) plus vue-flow-specific fields. `extent` stays `NodeBase`'s narrow
- * `'parent' | CoordinateExtent | null` deliberately (so `GraphNode`/`Node` stay structurally
+ * `'parent' | CoordinateExtent | null` deliberately (so `InternalNode`/`Node` stay structurally
  * assignable to system's types); the richer `CoordinateExtentRange` is a runtime-only extension
  * handled with localized casts (see `store/actions.ts` `recomputeAbsolutePositions`).
  */
@@ -62,25 +62,18 @@ export type Node<
   >;
 };
 /**
- * Internal node shape used after a user-provided `Node` has been processed by the store.
+ * The enriched, store-internal node — what `nodeLookup`/`getInternalNode(id)`/`useInternalNode(id)` return,
+ * once a user-provided `Node` has been processed by the store. Carries the user `Node`
+ * (`internals.userNode`) plus the store-computed `internals.{positionAbsolute, z, handleBounds}` and
+ * authoritative `measured`. Named to mirror xyflow/react's `InternalNode`, so the public split
+ * (`getNode`/`v-model` = user `Node`, `getInternalNode` = `InternalNode`) reads the same across frameworks.
  *
  * Structurally assignable to `@xyflow/system`'s `InternalNodeBase<NodeType>` so we can hand `nodeLookup`
- * to `XYResizer` / `XYDrag` / `getHandlePosition` without casts.
- *
- * Consumers should read absolute position via `internals.positionAbsolute`, z-index via `internals.z`,
- * handle bounds via `internals.handleBounds`, and dimensions via `measured`. The "is this a parent?"
- * check moved off the node and lives on `parentLookup` (storage).
+ * to `XYResizer` / `XYDrag` / `getHandlePosition` without casts. Read absolute position via
+ * `internals.positionAbsolute`, z-index via `internals.z`, handle bounds via `internals.handleBounds`, and
+ * dimensions via `measured`; the "is this a parent?" check lives on `parentLookup` (storage).
  */
-export type GraphNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>;
-
-/**
- * The enriched, store-internal node — what `nodeLookup`/`getInternalNode(id)`/`useInternalNode(id)` return.
- * Carries the user `Node` (`internals.userNode`) plus the store-computed `internals.{positionAbsolute, z,
- * handleBounds}` and authoritative `measured`. Alias of {@link GraphNode}; named to mirror xyflow/react's
- * `InternalNode` so the public split (`getNode`/`v-model` = user `Node`, `getInternalNode` = `InternalNode`)
- * reads the same across frameworks.
- */
-export type InternalNode<NodeType extends Node = Node> = GraphNode<NodeType>;
+export type InternalNode<NodeType extends Node = Node> = InternalNodeBase<NodeType>;
 
 /**
  * Props passed to custom node components, parameterized on a `NodeType` (xyflow/react convention:

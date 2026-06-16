@@ -3,7 +3,7 @@ import type { CSSProperties } from 'vue';
 import type { Edge, EdgeMarkerType } from './edge';
 import type { ClassValue } from './flow';
 import type { ConnectingHandle, HandleElement } from './handle';
-import type { GraphNode, Node } from './node';
+import type { InternalNode, Node } from './node';
 
 export interface ConnectionLineOptions {
   type?: ConnectionLineType;
@@ -21,7 +21,7 @@ export type ConnectionStatus = 'valid' | 'invalid';
 
 /**
  * An ongoing connection, mirroring xyflow/react's `ConnectionState` (returned by `useConnection`).
- * Handles are vue-flow `ConnectingHandle`s and nodes are `GraphNode`s (the resolved `InternalNode`s).
+ * Handles are vue-flow `ConnectingHandle`s and nodes are `InternalNode`s (the resolved `InternalNode`s).
  */
 export interface ConnectionInProgress<NodeType extends Node = Node> {
   inProgress: true;
@@ -34,7 +34,7 @@ export interface ConnectionInProgress<NodeType extends Node = Node> {
   /** the side of the start handle */
   fromPosition: Position;
   /** the node the connection started from */
-  fromNode: GraphNode<NodeType>;
+  fromNode: InternalNode<NodeType>;
   /** xy end position of the connection (the current pointer position) */
   to: XYPosition;
   /** the handle the connection currently ends on, or `null` */
@@ -42,7 +42,7 @@ export interface ConnectionInProgress<NodeType extends Node = Node> {
   /** the side of the end handle, or `null` */
   toPosition: Position | null;
   /** the node the connection currently ends on, or `null` */
-  toNode: GraphNode<NodeType> | null;
+  toNode: InternalNode<NodeType> | null;
   /** the current pointer position */
   pointer: XYPosition;
 }
@@ -91,11 +91,11 @@ export interface ConnectionLineProps {
   /** the side of the end handle */
   toPosition: Position;
   /** the node the connection started from */
-  fromNode: GraphNode;
+  fromNode: InternalNode;
   /** the handle the connection started from (not the DOM element) */
   fromHandle: HandleElement | null;
   /** the node the connection currently ends on, or `null` */
-  toNode: GraphNode | null;
+  toNode: InternalNode | null;
   /** the handle the connection currently ends on (not the DOM element), or `null` */
   toHandle: HandleElement | null;
   /** marker url */

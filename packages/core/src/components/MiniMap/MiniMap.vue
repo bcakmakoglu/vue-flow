@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { XYMinimapInstance } from '@xyflow/system';
-import type { GraphNode } from '../../types';
+import type { InternalNode } from '../../types';
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types';
 import { getBoundsOfRects, getConnectedEdges, getNodeDimensions, getNodesBounds, XYMinimap } from '@xyflow/system';
 import { computed, onMounted, onUnmounted, provide, shallowRef, toRef, useAttrs, watch } from 'vue';
@@ -180,31 +180,31 @@ function onSvgClick(event: MouseEvent) {
   emit('click', { event, position: { x, y } });
 }
 
-function onNodeClick(event: MouseEvent, node: GraphNode) {
+function onNodeClick(event: MouseEvent, node: InternalNode) {
   const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) };
   emits.miniMapNodeClick(param);
   emit('nodeClick', param);
 }
 
-function onNodeDblClick(event: MouseEvent, node: GraphNode) {
+function onNodeDblClick(event: MouseEvent, node: InternalNode) {
   const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) };
   emits.miniMapNodeDoubleClick(param);
   emit('nodeDblclick', param);
 }
 
-function onNodeMouseEnter(event: MouseEvent, node: GraphNode) {
+function onNodeMouseEnter(event: MouseEvent, node: InternalNode) {
   const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) };
   emits.miniMapNodeMouseEnter(param);
   emit('nodeMouseenter', param);
 }
 
-function onNodeMouseMove(event: MouseEvent, node: GraphNode) {
+function onNodeMouseMove(event: MouseEvent, node: InternalNode) {
   const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) };
   emits.miniMapNodeMouseMove(param);
   emit('nodeMousemove', param);
 }
 
-function onNodeMouseLeave(event: MouseEvent, node: GraphNode) {
+function onNodeMouseLeave(event: MouseEvent, node: InternalNode) {
   const param = { event, node: node.internals.userNode, connectedEdges: getConnectedEdges([node], edges.value) };
   emits.miniMapNodeMouseLeave(param);
   emit('nodeMouseleave', param);

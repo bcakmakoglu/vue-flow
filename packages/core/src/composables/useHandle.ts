@@ -1,6 +1,6 @@
 import type { Connection, ConnectionState, FinalConnectionState, HandleType, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
 import type { MaybeRefOrGetter } from 'vue';
-import type { ConnectingHandle, GraphNode, MouseTouchEvent, ValidConnectionFunc } from '../types';
+import type { ConnectingHandle, InternalNode, MouseTouchEvent, ValidConnectionFunc } from '../types';
 import { getEventPosition, getHostForElement, Position, XYHandle } from '@xyflow/system';
 import { toValue } from 'vue';
 import { isValidHandle } from '../utils';
@@ -15,7 +15,7 @@ export interface UseHandleProps {
   isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>;
   reconnectHandleType?: MaybeRefOrGetter<HandleType>;
   onReconnect?: (event: MouseTouchEvent, connection: Connection) => void;
-  onReconnectEnd?: (event: MouseTouchEvent, connectionState: FinalConnectionState<GraphNode>) => void;
+  onReconnectEnd?: (event: MouseTouchEvent, connectionState: FinalConnectionState<InternalNode>) => void;
 }
 
 function alwaysValid() {
@@ -26,7 +26,7 @@ function alwaysValid() {
  * Connection-drag composable. Drag-to-connect is delegated to `@xyflow/system`'s `XYHandle` instance
  * (same pattern as `XYDrag` / `XYResizer`). Click-to-connect stays vue-flow specific because the click
  * path interacts with the richer `ValidConnectionFunc` signature (which receives full source/target
- * `GraphNode`s on top of the bare `Connection`).
+ * `InternalNode`s on top of the bare `Connection`).
  *
  * Generally it's recommended to use the `<Handle />` component instead of this composable.
  *
@@ -266,7 +266,7 @@ export function useHandle({
     const fromNode = fromHandle ? getInternalNode(fromHandle.nodeId) : undefined;
     const toHandle = result.toHandle;
     const pointer = getEventPosition(event);
-    const connectionState: FinalConnectionState<GraphNode>
+    const connectionState: FinalConnectionState<InternalNode>
       = fromHandle && fromNode
         ? {
             isValid: result.isValid,

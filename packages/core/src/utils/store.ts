@@ -11,7 +11,7 @@ import type {
   CoordinateExtentRange,
   DefaultEdgeOptions,
   Edge,
-  GraphNode,
+  InternalNode,
   Node,
   NodeOrigin,
   State,
@@ -94,7 +94,7 @@ export function reconnectEdgeAction(
   };
 }
 
-export interface CreateGraphNodesOptions {
+export interface CreateInternalNodesOptions {
   nodeOrigin?: NodeOrigin;
   nodeExtent?: CoordinateExtent;
   elevateNodesOnSelect?: boolean;
@@ -116,10 +116,10 @@ export interface CreateGraphNodesOptions {
  */
 export function adoptNodes<NodeType extends Node = Node>(
   nodes: NodeType[],
-  nodeLookup: SystemNodeLookup<GraphNode<NodeType>>,
-  parentLookup: SystemParentLookup<GraphNode<NodeType>>,
+  nodeLookup: SystemNodeLookup<InternalNode<NodeType>>,
+  parentLookup: SystemParentLookup<InternalNode<NodeType>>,
   triggerError: State['hooks']['error']['trigger'],
-  options?: CreateGraphNodesOptions,
+  options?: CreateInternalNodesOptions,
 ): NodeType[] {
   const validNodes: NodeType[] = [];
   for (let i = 0; i < nodes.length; ++i) {
