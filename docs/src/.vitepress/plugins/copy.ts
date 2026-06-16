@@ -19,7 +19,7 @@ function copyFiles(emit: Emit) {
   const assets = [
     { from: 'vue-flow-core.mjs', to: 'vue-flow-core.mjs' },
     { from: 'style.css', to: 'vue-flow-core.css' },
-    { from: 'theme-default.css', to: 'vue-flow-core-theme-default.css' },
+    { from: 'base.css', to: 'vue-flow-core-base.css' },
   ];
 
   assets.forEach(({ from, to }) => {
