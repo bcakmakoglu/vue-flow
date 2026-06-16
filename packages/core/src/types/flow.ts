@@ -116,7 +116,14 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   /** consulted before delete-key/`deleteElements` removals — cancel, confirm, or filter the set */
   onBeforeDelete?: OnBeforeDelete<NodeType, EdgeType> | null;
   deleteKeyCode?: KeyFilter | null;
+  /** hold this key (default `'Shift'`) and drag to draw a selection box. For dragging without a key, see `selectionOnDrag` */
   selectionKeyCode?: KeyFilter | null;
+  /**
+   * Draw a selection box on a plain pane drag (no key held). Pair it with `panOnDrag` set to a non-left
+   * button (e.g. `[1, 2]`) or `false` so a left-drag selects instead of panning. Mirrors xyflow/react.
+   * @default false
+   */
+  selectionOnDrag?: boolean;
   multiSelectionKeyCode?: KeyFilter | null;
   zoomActivationKeyCode?: KeyFilter | null;
   panActivationKeyCode?: KeyFilter | null;

@@ -336,6 +336,20 @@ The old aggregate `--vf-node-color` (which drove border + box-shadow + handle at
 
 **Uniform node accents.** The built-in `input`/`output` node types no longer have blue/pink accent borders — every default node type uses the same neutral `#1a192b` border (matching `@xyflow/react`). Re-add per-type colors with your own CSS if you want them.
 
+## 15. `selectionKeyCode={true}` → `selectionOnDrag`
+
+Drawing a selection box on a plain drag (no key held) used to be expressed by setting `selectionKeyCode` to `true`. That overloaded the key-code prop and was easy to misread. It's now an explicit boolean prop, `selectionOnDrag`, matching `@xyflow/react`:
+
+```vue
+<!-- before -->
+<VueFlow :selection-key-code="true" :pan-on-drag="false" />
+
+<!-- after -->
+<VueFlow :selection-on-drag="true" :pan-on-drag="false" />
+```
+
+`selectionKeyCode` goes back to being just the key you hold to select (default `'Shift'`). Pair `selectionOnDrag` with `:pan-on-drag="false"` or a non-left button (e.g. `:pan-on-drag="[1, 2]"`) so a left-drag selects instead of panning. As a bonus, `paneClick` now fires correctly in this mode (it was previously swallowed by the pan/zoom click handling).
+
 ## Cheat sheet
 
 ```ts
@@ -379,6 +393,7 @@ node.x = …             → updateNode(id, { x: … }) / immutable reassignment
 removeNodes(id)        → also removes connected edges (pass `false` to keep them)
 connectionMode         → defaults to 'strict'
 applyDefault           → autoApplyChanges  (:apply-default → :auto-apply-changes)
+:selection-key-code="true"  → :selection-on-drag="true"   // select-on-drag is its own prop now
 node event payload     → user Node (was InternalNode); getInternalNode(id) for internals
 
 // styles

@@ -89,6 +89,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   deleteKeyCode: KeyFilter | null;
   selectionKeyCode: KeyFilter | null;
+  selectionOnDrag: boolean;
   multiSelectionKeyCode: KeyFilter | null;
   zoomActivationKeyCode: KeyFilter | null;
   panActivationKeyCode: KeyFilter | null;

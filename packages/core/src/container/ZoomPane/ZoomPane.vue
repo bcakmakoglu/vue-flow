@@ -34,6 +34,7 @@ const {
   noWheelClassName,
   panActivationKeyCode,
   selectionKeyCode,
+  selectionOnDrag,
   paneClickDistance,
   connectionStartHandle,
 } = storeToRefs(useStore());
@@ -48,7 +49,10 @@ const shouldPanOnDrag = toRef(() => !selectionKeyPressed.value && (panKeyPressed
 
 const shouldPanOnScroll = toRef(() => panKeyPressed.value || panOnScroll.value);
 
-const isSelecting = toRef(() => selectionKeyPressed.value || (selectionKeyCode.value === true && shouldPanOnDrag.value !== true));
+// selection-on-drag is active when the user opted in AND a left-drag wouldn't pan (so it selects instead)
+const selectionOnDragActive = toRef(() => selectionOnDrag.value === true && shouldPanOnDrag.value !== true);
+
+const isSelecting = toRef(() => selectionKeyPressed.value || selectionOnDragActive.value);
 
 useResizeHandler(zoomPane);
 
@@ -100,6 +104,7 @@ onMounted(() => {
         userSelectionActive,
         noWheelClassName,
         paneClickDistance,
+        selectionOnDragActive,
         connectionStartHandle,
       ],
       () => {
@@ -117,6 +122,9 @@ onMounted(() => {
           userSelectionActive: userSelectionActive.value,
           noWheelClassName: noWheelClassName.value,
           paneClickDistance: paneClickDistance.value,
+          // when selecting on drag, d3-zoom's click distance is set to Infinity so it never swallows the
+          // gesture as a click — letting `paneClick` fire (xyflow/react #5572)
+          selectionOnDrag: selectionOnDragActive.value,
           onTransformChange: (nextTransform) => {
             emits.viewportChange({ x: nextTransform[0], y: nextTransform[1], zoom: nextTransform[2] });
             transform.value = nextTransform;

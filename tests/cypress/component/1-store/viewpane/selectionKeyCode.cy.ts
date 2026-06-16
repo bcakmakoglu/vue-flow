@@ -71,15 +71,15 @@ describe('Store State: `selectionKeyCode`', () => {
     });
   });
 
-  it('allows `true` as keycode', () => {
-    // `selectionKeyCode === true` only enters selection mode while NOT panning on drag (see
-    // `isSelecting` in ZoomPane.vue), and `panOnDrag` feeds the d3 pan filter configured at mount —
-    // so both must be set as initial props rather than toggled after mount.
+  it('selects on a plain drag with `selectionOnDrag`', () => {
+    // `selectionOnDrag` enters selection mode while NOT panning on drag (see `isSelecting` in
+    // ZoomPane.vue), and `panOnDrag` feeds the d3 pan filter configured at mount — so both must be set
+    // as initial props rather than toggled after mount.
     cy.vueFlow({
       nodes,
       edges,
       panOnDrag: false,
-      selectionKeyCode: true,
+      selectionOnDrag: true,
     });
 
     cy.window().then((win) => {
