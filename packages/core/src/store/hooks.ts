@@ -36,6 +36,7 @@ export function createHooks<NodeType extends Node = Node, EdgeType extends Edge 
     selectionContextMenu: createExtendedEventHook(),
     selectionStart: createExtendedEventHook(),
     selectionEnd: createExtendedEventHook(),
+    selectionChange: createExtendedEventHook(),
     viewportChangeStart: createExtendedEventHook(),
     viewportChange: createExtendedEventHook(),
     viewportChangeEnd: createExtendedEventHook(),

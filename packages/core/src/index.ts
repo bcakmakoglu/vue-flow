@@ -94,6 +94,7 @@ export {
   type Dimensions,
   type EdgeRemoveChange,
   type EdgeSelectionChange,
+  type FinalConnectionState,
   type HandleType,
   type NodeConnection,
   type NodeDimensionChange,

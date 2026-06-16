@@ -1,6 +1,6 @@
-import type { Connection, ConnectionState, HandleType, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
+import type { Connection, ConnectionState, FinalConnectionState, HandleType, IsValidConnection as SystemIsValidConnection } from '@xyflow/system';
 import type { MaybeRefOrGetter } from 'vue';
-import type { ConnectingHandle, MouseTouchEvent, ValidConnectionFunc } from '../types';
+import type { ConnectingHandle, GraphNode, MouseTouchEvent, ValidConnectionFunc } from '../types';
 import { getEventPosition, getHostForElement, Position, XYHandle } from '@xyflow/system';
 import { toValue } from 'vue';
 import { isValidHandle } from '../utils';
@@ -15,7 +15,7 @@ export interface UseHandleProps {
   isValidConnection?: MaybeRefOrGetter<ValidConnectionFunc | null>;
   reconnectHandleType?: MaybeRefOrGetter<HandleType>;
   onReconnect?: (event: MouseTouchEvent, connection: Connection) => void;
-  onReconnectEnd?: (event: MouseTouchEvent) => void;
+  onReconnectEnd?: (event: MouseTouchEvent, connectionState: FinalConnectionState<GraphNode>) => void;
 }
 
 function alwaysValid() {
@@ -181,10 +181,10 @@ export function useHandle({
           emits.connect(connection);
         }
       },
-      onConnectEnd: (evt) => {
-        emits.connectEnd(evt as MouseTouchEvent);
+      onConnectEnd: (evt, connectionState) => {
+        emits.connectEnd({ event: evt as MouseTouchEvent, connectionState });
         if (reconnectHandleType) {
-          onReconnectEnd?.(evt as MouseTouchEvent);
+          onReconnectEnd?.(evt as MouseTouchEvent, connectionState);
         }
       },
     });
@@ -258,7 +258,42 @@ export function useHandle({
       emits.connect(result.connection);
     }
 
-    emits.clickConnectEnd(event);
+    // the click path doesn't drive the system's connection state machine, so assemble the
+    // `FinalConnectionState` ourselves from the click-start handle + the resolved end handle, so
+    // `clickConnectEnd` carries the same payload shape as `connectEnd` (handles → system `Handle`s by
+    // padding the missing width/height, as `getFromHandle` does above).
+    const fromHandle = connectionClickStartHandle.value;
+    const fromNode = fromHandle ? getInternalNode(fromHandle.nodeId) : undefined;
+    const toHandle = result.toHandle;
+    const pointer = getEventPosition(event);
+    const connectionState: FinalConnectionState<GraphNode>
+      = fromHandle && fromNode
+        ? {
+            isValid: result.isValid,
+            from: { x: fromHandle.x, y: fromHandle.y },
+            fromHandle: { ...fromHandle, width: 0, height: 0 },
+            fromPosition: fromHandle.position,
+            fromNode,
+            to: toHandle ? { x: toHandle.x, y: toHandle.y } : pointer,
+            toHandle: toHandle ? { ...toHandle, width: 0, height: 0 } : null,
+            toPosition: toHandle?.position ?? null,
+            toNode: toHandle ? (getInternalNode(toHandle.nodeId) ?? null) : null,
+            pointer,
+          }
+        : {
+            isValid: null,
+            from: null,
+            fromHandle: null,
+            fromPosition: null,
+            fromNode: null,
+            to: null,
+            toHandle: null,
+            toPosition: null,
+            toNode: null,
+            pointer: null,
+          };
+
+    emits.clickConnectEnd({ event, connectionState });
 
     endConnection(event, true);
   }

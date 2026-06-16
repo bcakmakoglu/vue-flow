@@ -8,6 +8,7 @@ import { storeToRefs } from '../../composables/storeToRefs';
 import { useColorModeClass } from '../../composables/useColorModeClass';
 import { useCreateVueFlow } from '../../composables/useCreateVueFlow';
 import { useOnInitHandler } from '../../composables/useOnInitHandler';
+import { useSelectionChange } from '../../composables/useSelectionChange';
 import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning';
 import { useViewportSync } from '../../composables/useViewportSync';
 import { useWatchProps } from '../../composables/useWatchProps';
@@ -93,6 +94,8 @@ const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, 
 useHooks(emit, state.hooks);
 
 useOnInitHandler(instance);
+
+useSelectionChange(instance);
 
 useStylesLoadedWarning(instance);
 

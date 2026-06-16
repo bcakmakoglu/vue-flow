@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowInstance } from '@vue-flow/core';
+import type { ConnectEndEvent, Connection, Node, NodeProps, OnConnectStartParams, ValidConnectionFunc, VueFlowInstance } from '@vue-flow/core';
 import { VueFlow } from '@vue-flow/core';
 import CustomInput from './CustomInput.vue';
 import CustomNode from './CustomNode.vue';
@@ -37,8 +37,8 @@ function onConnectStart({ nodeId, handleType }: OnConnectStartParams) {
   return console.log('on connect start', { nodeId, handleType });
 }
 
-function onConnectEnd(event: MouseEvent) {
-  return console.log('on connect end', event);
+function onConnectEnd({ event, connectionState }: ConnectEndEvent) {
+  return console.log('on connect end', event, connectionState);
 }
 
 function onConnect(params: Connection) {
