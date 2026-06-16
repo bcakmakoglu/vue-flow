@@ -1,8 +1,5 @@
-/* import the required styles */
+/* import the full theme (style.css now ships the complete default theme; theme-default.css was removed) */
 @import 'node_modules/@vue-flow/core/dist/style.css';
-
-/* import the default theme (optional) */
-@import 'node_modules/@vue-flow/core/dist/theme-default.css';
 
 body {
   color: #111;
