@@ -29,6 +29,7 @@ const {
   defaultEdgeOptions,
   connectionStartHandle,
   panOnDrag,
+  paneClickDistance,
   autoPanOnSelection,
   autoPanSpeed,
 } = storeToRefs(useStore());
@@ -138,8 +139,9 @@ function onPointerDown(event: PointerEvent) {
   selectionInProgress = false;
   autoPanStarted = false;
 
-  removeSelectedNodes();
-  removeSelectedEdges();
+  // the selection (resetting the current selection + `selectionStart`) only begins once the pointer moves
+  // past the click threshold — see `onPointerMove`. Resetting here would clear the selection on a plain
+  // click and open a selection box for it (xyflow/react #5593).
 
   // store the origin in flow coordinates so it stays anchored to the canvas while auto-panning
   const flowStart = pointToRendererPoint({ x, y }, transform.value);
@@ -152,8 +154,6 @@ function onPointerDown(event: PointerEvent) {
     x,
     y,
   };
-
-  emits.selectionStart(event);
 }
 
 // Recompute the selection rect (and the selected nodes/edges) from the current pointer position. Called
@@ -247,10 +247,28 @@ function onPointerMove(event: PointerEvent) {
     return;
   }
 
-  selectionInProgress = true;
-
   const { x: mouseX, y: mouseY } = getEventPosition(event, containerBounds.value);
   lastPointerPosition = { x: mouseX, y: mouseY };
+
+  // begin the selection only once the pointer has moved past the click threshold — so a plain click
+  // neither resets the current selection nor opens a selection box (xyflow/react #5593). Holding the
+  // selection key starts immediately (`requiredDistance` 0). `startX`/`startY` are flow coords, so compare
+  // against the start in screen space.
+  if (!selectionInProgress) {
+    const screenStart = rendererPointToPoint({ x: userSelectionRect.value.startX, y: userSelectionRect.value.startY }, transform.value);
+    const requiredDistance = selectionKeyPressed ? 0 : paneClickDistance.value;
+    const distance = Math.hypot(mouseX - screenStart.x, mouseY - screenStart.y);
+
+    if (distance <= requiredDistance) {
+      return;
+    }
+
+    removeSelectedNodes();
+    removeSelectedEdges();
+    emits.selectionStart(event);
+  }
+
+  selectionInProgress = true;
 
   if (!autoPanStarted) {
     autoPan();
@@ -275,9 +293,13 @@ function onPointerUp(event: PointerEvent) {
 
   userSelectionActive.value = false;
   userSelectionRect.value = null;
-  nodesSelectionActive.value = selectedNodeIds.value.size > 0;
 
-  emits.selectionEnd(event);
+  // only a real selection drag (not a plain click) updates the selection box / emits `selectionEnd`
+  // (xyflow/react #5593)
+  if (selectionInProgress) {
+    nodesSelectionActive.value = selectedNodeIds.value.size > 0;
+    emits.selectionEnd(event);
+  }
 
   // If the user kept holding the selectionKey during the selection,
   // we need to reset the selectionInProgress, so the next click event is not prevented
