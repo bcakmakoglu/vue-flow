@@ -20,7 +20,9 @@ describe('pane selection: click vs drag', () => {
       fitView: false,
       panOnDrag: false,
       selectionKeyCode: true,
-      nodes: [{ id: '1', position: { x: 60, y: 60 }, data: {} }],
+      // small + fully inside the drag rect (40,40)-(200,200) so it's selected regardless of when the node
+      // measures (an unmeasured 0-size node and a measured 20×20 node are both inside → no flake)
+      nodes: [{ id: '1', position: { x: 60, y: 60 }, data: {}, width: 20, height: 20, style: { width: '20px', height: '20px' } }],
     });
     cy.then(() => {
       store = getStore();
