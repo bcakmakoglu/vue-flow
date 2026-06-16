@@ -5,7 +5,6 @@ import { mount } from 'cypress/vue';
 
 import { defineComponent, h } from 'vue';
 import '@vue-flow/core/dist/style.css';
-import '@vue-flow/core/dist/theme-default.css';
 import './commands';
 
 // `useVueFlow()` is now the curated instance (actions/getters/hooks) and `useStore()` the reactive state.

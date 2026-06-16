@@ -38,13 +38,13 @@ When enabled, these props allow you to pan on drag and zoom on scroll using the 
 
 | Name             | Definition                   | Type                                                              | Optional | Default                                           |
 |------------------|------------------------------|-------------------------------------------------------------------|----------|---------------------------------------------------|
-| nodeColor        | Node background color        | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | `var(--vf-minimap-node-bg, #e2e2e2)`              |
-| nodeStrokeColor  | Node border color            | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | transparent                                       |
+| nodeColor        | Node background color        | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | `var(--xy-minimap-node-background-color-default)` |
+| nodeStrokeColor  | Node border color            | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | `var(--xy-minimap-node-stroke-color-default)`     |
 | nodeClassName    | Extra node classes           | string, [MiniMapNodeFunc](/typedocs/type-aliases/MiniMapNodeFunc) | true     | -                                                 |
 | nodeBorderRadius | Node border radius           | number                                                            | true     | 5                                                 |
 | nodeStrokeWidth  | Node stroke width            | number                                                            | true     | 2                                                 |
-| maskColor        | Mask (background) color      | string                                                            | true     | `var(--vf-minimap-mask, rgb(240, 240, 240, 0.6))` |
-| maskStrokeColor  | Mask border color            | string                                                            | true     | none                                              |
+| maskColor        | Mask (background) color      | string                                                            | true     | `var(--xy-minimap-mask-background-color-default)` |
+| maskStrokeColor  | Mask border color            | string                                                            | true     | `var(--xy-minimap-mask-stroke-color-default)`     |
 | maskStrokeWidth  | Mask border width            | number                                                            | true     | 1                                                 |
 | maskBorderRadius | Mask border radius           | number                                                            | true     | 0                                                 |
 | position         | Position of the minimap      | PanelPosition                                                     | true     | bottom-right                                      |

@@ -1,18 +1,70 @@
+/* Necessary styles shared by base.css and style.css. Mirrors @xyflow/system's init.css, but on
+   vue-flow's own selectors + DOM (e.g. `transformationpane`/`edge-labels`). Declares the always-present
+   `--xy-*` variables (structural: edges, connection line, minimap, background, attribution, resize) and
+   the structural rules that consume them via the `var(--xy-x, var(--xy-x-default))` fallback. */
+
+.vue-flow {
+  direction: ltr;
+
+  --xy-edge-stroke-default: #b1b1b7;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #555;
+
+  --xy-connectionline-stroke-default: #b1b1b7;
+  --xy-connectionline-stroke-width-default: 1;
+
+  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);
+
+  --xy-minimap-background-color-default: #fff;
+  --xy-minimap-mask-background-color-default: rgba(240, 240, 240, 0.6);
+  --xy-minimap-mask-stroke-color-default: transparent;
+  --xy-minimap-mask-stroke-width-default: 1;
+  --xy-minimap-node-background-color-default: #e2e2e2;
+  --xy-minimap-node-stroke-color-default: transparent;
+  --xy-minimap-node-stroke-width-default: 2;
+
+  --xy-background-color-default: transparent;
+  --xy-background-pattern-dots-color-default: #91919a;
+  --xy-background-pattern-lines-color-default: #eee;
+  --xy-background-pattern-cross-color-default: #e2e2e2;
+
+  --xy-resize-background-color-default: #3367d9;
+}
+
+/* applied by `<VueFlow>` when `colorMode` resolves to `dark` (see the `colorMode` prop) */
+.vue-flow.dark {
+  --xy-edge-stroke-default: #3e3e3e;
+  --xy-edge-stroke-selected-default: #727272;
+
+  --xy-connectionline-stroke-default: #b1b1b7;
+
+  --xy-attribution-background-color-default: rgba(150, 150, 150, 0.25);
+
+  --xy-minimap-background-color-default: #141414;
+  --xy-minimap-mask-background-color-default: rgba(60, 60, 60, 0.6);
+  --xy-minimap-node-background-color-default: #2b2b2b;
+
+  --xy-background-color-default: #141414;
+  --xy-background-pattern-dots-color-default: #777;
+  --xy-background-pattern-lines-color-default: #777;
+  --xy-background-pattern-cross-color-default: #777;
+}
+
 .vue-flow {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
   z-index: 0;
-  direction: ltr;
+  background-color: var(--xy-background-color, var(--xy-background-color-default));
 }
 
 .vue-flow__container {
   position: absolute;
-  height: 100%;
   width: 100%;
-  left: 0;
+  height: 100%;
   top: 0;
+  left: 0;
 }
 
 .vue-flow__pane {
@@ -64,10 +116,15 @@
   overflow: visible;
 }
 
-.vue-flow__edge-path,
+.vue-flow__edge-path {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
+  fill: none;
+}
+
 .vue-flow__connection-path {
-  stroke: #b1b1b7;
-  stroke-width: 1;
+  stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));
+  stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));
   fill: none;
 }
 
@@ -98,15 +155,11 @@
   &.selected .vue-flow__edge-path,
   &:focus .vue-flow__edge-path,
   &:focus-visible .vue-flow__edge-path {
-    stroke: #555;
+    stroke: var(--xy-edge-stroke-selected, var(--xy-edge-stroke-selected-default));
   }
 
   &-textwrapper {
     pointer-events: all;
-  }
-
-  &-textbg {
-    fill: white;
   }
 
   &-text {
@@ -235,54 +288,54 @@
   }
 }
 
+.vue-flow__controls-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+
+  svg {
+    width: 100%;
+    max-width: 12px;
+    max-height: 12px;
+    fill: currentColor;
+  }
+
+  &:disabled {
+    pointer-events: none;
+
+    svg {
+      fill-opacity: 0.4;
+    }
+  }
+}
+
+.vue-flow__attribution {
+  font-size: 10px;
+  background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));
+  padding: 2px 3px;
+  margin: 0;
+
+  a {
+    text-decoration: none;
+    color: #999;
+  }
+}
+
 @keyframes dashdraw {
   from {
     stroke-dashoffset: 10;
   }
 }
 
-.vue-flow__controls {
-  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.08);
-}
-
-.vue-flow__controls-button {
-  background: var(--vf-controls-bg, #fefefe);
-  color: var(--vf-controls-color, #111);
-  border: none;
-  border-bottom: 1px solid var(--vf-controls-border, #eee);
-  box-sizing: content-box;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  user-select: none;
-  padding: 5px;
-}
-
-.vue-flow__controls-button svg {
-  width: 100%;
-  max-width: 12px;
-  max-height: 12px;
-  fill: currentColor;
-}
-
-.vue-flow__controls-button:hover {
-  background: var(--vf-controls-bg-hover, #f4f4f4);
-}
-
-
-.vue-flow__controls-button:disabled {
-  pointer-events: none;
-}
-
-.vue-flow__controls-button:disabled svg {
-  fill-opacity: 0.4;
-}
-
 .vue-flow__minimap {
-  background-color: var(--vf-minimap-bg, #fff);
+  background-color: var(--xy-minimap-background-color, var(--xy-minimap-background-color-default));
 }
 
 .vue-flow__minimap.pannable {
@@ -327,7 +380,7 @@
   height: 5px;
   border: 1px solid #fff;
   border-radius: 1px;
-  background-color: #3367d9;
+  background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
   transform: translate(-50%, -50%);
 }
 
@@ -362,7 +415,7 @@
 
 /* line styles */
 .vue-flow__resize-control.line {
-  border-color: #3367d9;
+  border-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
   border-width: 0;
   border-style: solid;
 }

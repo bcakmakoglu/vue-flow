@@ -10,7 +10,6 @@ const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: str
 // load the in-repo 2.0 core styles served from /public (see .vitepress/plugins/copy.ts) rather than
 // the CDN — the CDN only has the last published 1.x release, which mismatches the local 2.0 runtime
 let css = `@import '${location.origin}/vue-flow-core.css';
-@import '${location.origin}/vue-flow-core-theme-default.css';
 
 html,
 body,

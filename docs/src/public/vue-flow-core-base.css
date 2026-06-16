@@ -1,5 +1,6 @@
-/* The full default theme — the structural `_necessary.css` plus vue-flow's batteries-included look.
-   Mirrors @xyflow/system's style.css. This is the default import (`@vue-flow/core/dist/style.css`). */
+/* Minimal styles — the structural `_necessary.css` plus just enough theming (node borders, handle,
+   selection) to make a flow usable while you bring your own theme. Mirrors @xyflow/system's base.css.
+   Import this instead of `style.css` when you want to theme the flow yourself. */
 
 /* Necessary styles shared by base.css and style.css. Mirrors @xyflow/system's init.css, but on
    vue-flow's own selectors + DOM (e.g. `transformationpane`/`edge-labels`). Declares the always-present
@@ -478,132 +479,45 @@
 }
 
 .vue-flow {
-  --xy-node-color-default: inherit;
-  --xy-node-border-default: 1px solid #1a192b;
-  --xy-node-background-color-default: #fff;
-  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
-  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;
-  --xy-node-border-radius-default: 3px;
+  --xy-node-border-default: 1px solid #bbb;
+  --xy-node-border-selected-default: 1px solid #555;
 
-  --xy-handle-background-color-default: #1a192b;
-  --xy-handle-border-color-default: #fff;
+  --xy-handle-background-color-default: #333;
 
-  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);
-  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);
-
-  --xy-controls-button-background-color-default: #fefefe;
-  --xy-controls-button-background-color-hover-default: #f4f4f4;
-  --xy-controls-button-color-default: inherit;
-  --xy-controls-button-color-hover-default: inherit;
-  --xy-controls-button-border-color-default: #eee;
-  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);
-
-  --xy-edge-label-background-color-default: #ffffff;
-  --xy-edge-label-color-default: inherit;
+  --xy-selection-background-color-default: rgba(150, 150, 180, 0.1);
+  --xy-selection-border-default: 1px dotted rgba(155, 155, 155, 0.8);
 }
 
 .vue-flow.dark {
   --xy-node-color-default: #f8f8f8;
-  --xy-node-border-default: 1px solid #3c3c3c;
-  --xy-node-background-color-default: #1e1e1e;
-  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(255, 255, 255, 0.08);
-  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #999;
-
-  --xy-handle-background-color-default: #bebebe;
-  --xy-handle-border-color-default: #1e1e1e;
-
-  --xy-selection-background-color-default: rgba(200, 200, 220, 0.08);
-  --xy-selection-border-default: 1px dotted rgba(200, 200, 220, 0.8);
-
-  --xy-controls-button-background-color-default: #2b2b2b;
-  --xy-controls-button-background-color-hover-default: #3e3e3e;
-  --xy-controls-button-color-default: #f8f8f8;
-  --xy-controls-button-color-hover-default: #fff;
-  --xy-controls-button-border-color-default: #5b5b5b;
-
-  --xy-edge-label-background-color-default: #141414;
-  --xy-edge-label-color-default: #f8f8f8;
 }
 
-.vue-flow__edge.updating .vue-flow__edge-path {
-    stroke: #777;
-  }
-
-.vue-flow__edge-text {
-    font-size: 10px;
-    fill: var(--xy-edge-label-color, var(--xy-edge-label-color-default));
-  }
-
-.vue-flow__edge-textbg {
-    fill: var(--xy-edge-label-background-color, var(--xy-edge-label-background-color-default));
-  }
-
-.vue-flow__node.selectable:focus,
-  .vue-flow__node.selectable:focus-visible {
-    outline: none;
-  }
+.vue-flow__handle {
+  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));
+}
 
 .vue-flow__node-input,
 .vue-flow__node-default,
 .vue-flow__node-output {
-  padding: 10px;
-  border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));
-  width: 150px;
-  font-size: 12px;
-  color: var(--xy-node-color, var(--xy-node-color-default));
-  text-align: center;
   border: var(--xy-node-border, var(--xy-node-border-default));
-  background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));
+  color: var(--xy-node-color, var(--xy-node-color-default));
 }
 
-.vue-flow__node-input.selectable:hover, .vue-flow__node-default.selectable:hover, .vue-flow__node-output.selectable:hover {
-      box-shadow: var(--xy-node-boxshadow-hover, var(--xy-node-boxshadow-hover-default));
-    }
-
-.vue-flow__node-input.selectable.selected,
-    .vue-flow__node-input.selectable:focus,
-    .vue-flow__node-input.selectable:focus-visible,
-    .vue-flow__node-default.selectable.selected,
-    .vue-flow__node-default.selectable:focus,
-    .vue-flow__node-default.selectable:focus-visible,
-    .vue-flow__node-output.selectable.selected,
-    .vue-flow__node-output.selectable:focus,
-    .vue-flow__node-output.selectable:focus-visible {
-      box-shadow: var(--xy-node-boxshadow-selected, var(--xy-node-boxshadow-selected-default));
-    }
+.vue-flow__node-input.selected,
+  .vue-flow__node-input:focus,
+  .vue-flow__node-input:focus-visible,
+  .vue-flow__node-default.selected,
+  .vue-flow__node-default:focus,
+  .vue-flow__node-default:focus-visible,
+  .vue-flow__node-output.selected,
+  .vue-flow__node-output:focus,
+  .vue-flow__node-output:focus-visible {
+    outline: none;
+    border: var(--xy-node-border-selected, var(--xy-node-border-selected-default));
+  }
 
 .vue-flow__nodesselection-rect,
 .vue-flow__selection {
   background: var(--xy-selection-background-color, var(--xy-selection-background-color-default));
   border: var(--xy-selection-border, var(--xy-selection-border-default));
 }
-
-.vue-flow__nodesselection-rect:focus,
-  .vue-flow__nodesselection-rect:focus-visible,
-  .vue-flow__selection:focus,
-  .vue-flow__selection:focus-visible {
-    outline: none;
-  }
-
-.vue-flow__handle {
-  width: 6px;
-  height: 6px;
-  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));
-  border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));
-  border-radius: 100%;
-}
-
-.vue-flow__controls {
-  box-shadow: var(--xy-controls-box-shadow, var(--xy-controls-box-shadow-default));
-}
-
-.vue-flow__controls-button {
-  background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));
-  color: var(--xy-controls-button-color, var(--xy-controls-button-color-default));
-  border-bottom: 1px solid var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default));
-}
-
-.vue-flow__controls-button:hover {
-    background: var(--xy-controls-button-background-color-hover, var(--xy-controls-button-background-color-hover-default));
-    color: var(--xy-controls-button-color-hover, var(--xy-controls-button-color-hover-default));
-  }

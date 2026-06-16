@@ -76,11 +76,8 @@ Nodes also need a [XY-position](/typedocs/type-aliases/XYPosition), while edges 
 To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
 
 ```css
-/* these are necessary styles for vue flow */
+/* the default theme — structure + the built-in look */
 @import '@vue-flow/core/dist/style.css';
-
-/* this contains the default theme, these are optional styles */
-@import '@vue-flow/core/dist/theme-default.css';
 ```
 
 Refer to the [Theming](/guide/theming) section for additional information.
