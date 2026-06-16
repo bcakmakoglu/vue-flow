@@ -54,6 +54,9 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      esbuild:
+        specifier: ^0.28.1
+        version: 0.28.1
       ofetch:
         specifier: ^1.5.1
         version: 1.5.1
