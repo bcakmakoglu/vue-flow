@@ -1,5 +1,5 @@
 import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types';
-import { getNodesInside } from '@xyflow/system';
+import { getNodesInside, nodeHasDimensions } from '@xyflow/system';
 import {
   computed,
   defineComponent,
@@ -115,7 +115,10 @@ const NodeWrapper = defineComponent({
         || hooks.value.nodeMouseLeave.hasListeners(),
     );
 
-    const isInit = toRef(() => !!nodeRef.value?.measured?.width && !!nodeRef.value?.measured?.height);
+    // a node "has dimensions" once it's measured OR carries explicit `width`/`height` OR `initialWidth`/
+    // `initialHeight` (the SSR fallback, where there's no ResizeObserver to measure) — mirrors xyflow/react
+    // & xyflow/svelte's visibility gate so sized/SSR nodes render immediately instead of staying hidden.
+    const isInit = toRef(() => (nodeRef.value ? nodeHasDimensions(nodeRef.value) : false));
 
     // computed (not toRef): the value-equality gate keeps this node's render effect from re-running on
     // every `parentLookup` entry replacement — an uncached getter read in render tracks the raw map key
@@ -183,14 +186,18 @@ const NodeWrapper = defineComponent({
       // reactive AND would cache stale width/height onto the user object across renders)
       const styles = { ...node?.style };
 
-      const width = node?.width;
-      const height = node?.height;
+      // mirror xyflow/react's `getNodeInlineStyleDimensions`: before the node is measured (no handle bounds
+      // yet — e.g. first paint / SSR) fall back through `initialWidth`/`initialHeight`; once measured, only
+      // an explicit `width`/`height` overrides the natural measured size.
+      const isMeasured = !!node?.internals.handleBounds;
+      const width = node?.width ?? (isMeasured ? undefined : node?.initialWidth);
+      const height = node?.height ?? (isMeasured ? undefined : node?.initialHeight);
 
-      if (!styles.width && width) {
+      if (!styles.width && width != null) {
         styles.width = `${width}px`;
       }
 
-      if (!styles.height && height) {
+      if (!styles.height && height != null) {
         styles.height = `${height}px`;
       }
 
