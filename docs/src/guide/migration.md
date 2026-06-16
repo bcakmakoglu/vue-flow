@@ -296,6 +296,42 @@ far the pointer may move and still count as a node click.
 - **`PanelPositionType` → `PanelPosition`** (`@xyflow/system`'s type). It now also accepts `'center-left'`
   and `'center-right'` in addition to the six corner/edge positions.
 
+## 14. Styles & CSS variables
+
+The stylesheets and theme variables now mirror `@xyflow/react`/`@xyflow/svelte`. Two breaking changes:
+
+**`theme-default.css` was removed.** `style.css` is now the full default theme (necessary structure *and* the built-in look) — import just that. A new `base.css` ships the structure with only minimal theming, for when you bring your own.
+
+```ts
+// before
+import '@vue-flow/core/dist/style.css'          // structure only
+import '@vue-flow/core/dist/theme-default.css'   // the default theme
+
+// after — style.css IS the full theme
+import '@vue-flow/core/dist/style.css'
+// …or theme it yourself on top of the minimal base:
+// import '@vue-flow/core/dist/base.css'
+```
+
+**`--vf-*` → `--xy-*`.** The theme custom properties are renamed to the shared `--xy-*` set (identical to react/svelte). Each rule reads `var(--xy-x, var(--xy-x-default))`, so override the un-suffixed variable and Vue Flow falls back to the shipped `--xy-x-default`. The common ones:
+
+| before                 | after                                                                          |
+|------------------------|--------------------------------------------------------------------------------|
+| `--vf-node-bg`         | `--xy-node-background-color`                                                    |
+| `--vf-node-text`       | `--xy-node-color`                                                              |
+| `--vf-node-color`      | `--xy-node-border` / `--xy-node-boxshadow-*` / `--xy-handle-background-color`   |
+| `--vf-handle`          | `--xy-handle-background-color`                                                  |
+| `--vf-handle-border`   | `--xy-handle-border-color`                                                      |
+| `--vf-connection-path` | `--xy-edge-stroke` / `--xy-connectionline-stroke`                               |
+| `--vf-edge-text`       | `--xy-edge-label-color`                                                        |
+| `--vf-edge-text-bg`    | `--xy-edge-label-background-color`                                              |
+| `--vf-controls-bg`     | `--xy-controls-button-background-color`                                         |
+| `--vf-minimap-bg`      | `--xy-minimap-background-color`                                                 |
+
+The old aggregate `--vf-node-color` (which drove border + box-shadow + handle at once) is gone — those are separate `--xy-*` variables now. The full list is in [`CSSVars`](/typedocs/type-aliases/CSSVars) and the [theming guide](/guide/theming#css-variables).
+
+**Uniform node accents.** The built-in `input`/`output` node types no longer have blue/pink accent borders — every default node type uses the same neutral `#1a192b` border (matching `@xyflow/react`). Re-add per-type colors with your own CSS if you want them.
+
 ## Cheat sheet
 
 ```ts
@@ -340,6 +376,11 @@ removeNodes(id)        → also removes connected edges (pass `false` to keep th
 connectionMode         → defaults to 'strict'
 applyDefault           → autoApplyChanges  (:apply-default → :auto-apply-changes)
 node event payload     → user Node (was InternalNode); getInternalNode(id) for internals
+
+// styles
+import 'theme-default.css'   → removed; style.css is the full theme (or base.css for minimal)
+--vf-node-bg / --vf-handle / --vf-edge-text  → --xy-node-background-color / --xy-handle-background-color / --xy-edge-label-color  (--xy-* set)
+input/output node accents    → uniform #1a192b border (re-add via your own CSS)
 ```
 
 Hitting something this guide doesn't cover? [Open an issue](https://github.com/bcakmakoglu/vue-flow/issues) —
