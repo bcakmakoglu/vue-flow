@@ -122,6 +122,16 @@
   fill: none;
 }
 
+/* arrowhead markers without an explicit color fall back to the edge-stroke variable (the open `.arrow`
+   only strokes; the closed `.arrowclosed` also fills) */
+.vue-flow__arrowhead polyline {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.vue-flow__arrowhead polyline.arrowclosed {
+  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
 .vue-flow__connection-path {
   stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));
   stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));

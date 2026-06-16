@@ -112,7 +112,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   snapToGrid: boolean;
   snapGrid: SnapGrid;
-  defaultMarkerColor: string;
+  defaultMarkerColor: string | null;
 
   edgesReconnectable: EdgeReconnectable;
   edgesFocusable: boolean;
