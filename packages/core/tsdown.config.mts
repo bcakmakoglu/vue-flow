@@ -1,8 +1,5 @@
-import { readFileSync } from 'node:fs';
 import { defineConfig } from 'tsdown';
 import Vue from 'unplugin-vue/rolldown';
-
-const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 
 export default defineConfig({
   entry: ['src/index.ts'],
@@ -24,7 +21,6 @@ export default defineConfig({
   attw: { level: 'error', ignoreRules: ['no-resolution'] },
   define: {
     __ENV__: 'process.env.NODE_ENV',
-    __VUE_FLOW_VERSION__: JSON.stringify(pkg.version),
   },
   plugins: [Vue()],
 });
