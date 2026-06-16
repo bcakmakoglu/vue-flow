@@ -140,11 +140,18 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
    * `checkEquality` would re-adopt the stale `InternalNode`.
    */
   function commitNodes(nodes: NodeType[]) {
-    state.nodes = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
+    const { nodes: adopted, hasSelectedNodes } = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
       nodeOrigin: state.nodeOrigin,
       nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
     });
+
+    state.nodes = adopted;
+
+    // clear a stale visual selection box: `nodesSelectionActive` only ever turns on via a user drag-select,
+    // so once the selection empties out (e.g. the selected nodes were deleted) it must turn back off — else
+    // a later programmatic select would wrongly render the `NodesSelection` rect (xyflow/react #5727).
+    state.nodesSelectionActive = state.nodesSelectionActive && hasSelectedNodes;
 
     recomputeAbsolutePositions();
   }

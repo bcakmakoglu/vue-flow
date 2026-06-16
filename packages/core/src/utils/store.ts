@@ -111,8 +111,10 @@ export interface CreateInternalNodesOptions {
  * reuses the existing `InternalNode` by reference whenever the user node is unchanged, so re-adopting on
  * every change is O(changed) and `measured`/`handleBounds` survive for unchanged nodes for free.
  *
- * Returns the validated user nodes (to be stored as the canonical `state.nodes` array). The InternalNodes
- * live only in `nodeLookup`; `internals.userNode` references the exact user object stored in the array.
+ * Returns the validated user nodes (to be stored as the canonical `state.nodes` array) plus
+ * `hasSelectedNodes` (whether any adopted node is `selected`, surfaced by `adoptUserNodes` for free — the
+ * caller uses it to clear a stale `nodesSelectionActive`). The InternalNodes live only in `nodeLookup`;
+ * `internals.userNode` references the exact user object stored in the array.
  */
 export function adoptNodes<NodeType extends Node = Node>(
   nodes: NodeType[],
@@ -120,7 +122,7 @@ export function adoptNodes<NodeType extends Node = Node>(
   parentLookup: SystemParentLookup<InternalNode<NodeType>>,
   triggerError: State['hooks']['error']['trigger'],
   options?: CreateInternalNodesOptions,
-): NodeType[] {
+): { nodes: NodeType[]; hasSelectedNodes: boolean } {
   const validNodes: NodeType[] = [];
   for (let i = 0; i < nodes.length; ++i) {
     const node = nodes[i];
@@ -155,7 +157,7 @@ export function adoptNodes<NodeType extends Node = Node>(
     return node;
   });
 
-  adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true });
+  const { hasSelectedNodes } = adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true });
 
   // For range-extent nodes we fed `adoptUserNodes` a COPY (different reference): restore the original
   // `{ range, padding }` extent and re-point `internals.userNode` at the un-coerced node so
@@ -165,10 +167,11 @@ export function adoptNodes<NodeType extends Node = Node>(
     if (!range) {
       continue;
     }
+
     const internal = nodeLookup.get(node.id);
     if (internal) {
-      ;(internal as { extent?: CoordinateExtentRange }).extent = range
-      ;(internal.internals as { userNode: Node }).userNode = node;
+      ;(internal as { extent?: CoordinateExtentRange }).extent = range;
+      internal.internals.userNode = node;
     }
   }
 
@@ -178,7 +181,7 @@ export function adoptNodes<NodeType extends Node = Node>(
     }
   }
 
-  return validNodes;
+  return { nodes: validNodes, hasSelectedNodes };
 }
 
 /**
