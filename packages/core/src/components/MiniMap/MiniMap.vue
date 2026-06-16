@@ -3,7 +3,7 @@ import type { XYMinimapInstance } from '@xyflow/system';
 import type { GraphNode } from '../../types';
 import type { MiniMapEmits, MiniMapNodeFunc, MiniMapProps, MiniMapSlots, ShapeRendering } from './types';
 import { getBoundsOfRects, getConnectedEdges, getNodeDimensions, getNodesBounds, XYMinimap } from '@xyflow/system';
-import { computed, onMounted, onUnmounted, provide, ref, toRef, useAttrs, watch } from 'vue';
+import { computed, onMounted, onUnmounted, provide, shallowRef, toRef, useAttrs, watch } from 'vue';
 import { storeToRefs, useStore, useVueFlow } from '../../composables';
 import Panel from '../Panel/Panel.vue';
 import MiniMapNode from './MiniMapNode.vue';
@@ -45,7 +45,7 @@ const { nodeLookup } = useStore();
 
 const { edges, nodes, transform, translateExtent, dimensions, panZoom } = storeToRefs(useStore());
 
-const el = ref<SVGElement>();
+const el = shallowRef<SVGElement>();
 
 let minimapInstance: XYMinimapInstance | null = null;
 

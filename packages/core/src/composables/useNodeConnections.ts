@@ -1,7 +1,7 @@
 import type { HandleType, NodeConnection } from '@xyflow/system';
 import type { MaybeRefOrGetter } from 'vue';
 import { areConnectionMapsEqual, handleConnectionChange } from '@xyflow/system';
-import { computed, ref, toValue, watch } from 'vue';
+import { computed, shallowRef, toValue, watch } from 'vue';
 import { storeToRefs } from './storeToRefs';
 import { useNodeId } from './useNodeId';
 import { useStore } from './useStore';
@@ -34,9 +34,9 @@ export function useNodeConnections(params: UseNodeConnectionsParams = {}) {
 
   const _nodeId = useNodeId();
 
-  const prevConnections = ref<Map<string, NodeConnection> | null>(null);
+  const prevConnections = shallowRef<Map<string, NodeConnection> | null>(null);
 
-  const connections = ref<Map<string, NodeConnection>>();
+  const connections = shallowRef<Map<string, NodeConnection>>();
 
   const lookupKey = computed(() => {
     const currNodeId = toValue(nodeId) ?? _nodeId;

@@ -3,7 +3,7 @@ import type { NodeDimensionChange, NodePositionChange, XYResizerChange, XYResize
 import type { NodeChange } from '../../types';
 import type { NodeResizerEmits, ResizeControlProps } from './types';
 import { evaluateAbsolutePosition, handleExpandParent, XYResizer } from '@xyflow/system';
-import { computed, ref, toRef, watchEffect } from 'vue';
+import { computed, shallowRef, toRef, watchEffect } from 'vue';
 import { storeToRefs, useStore, useVueFlow } from '../../composables';
 import { ResizeControlVariant } from './types';
 import { DefaultPositions, StylingProperty } from './utils';
@@ -26,7 +26,7 @@ const { nodeLookup, parentLookup } = useStore();
 
 const { transform, nodeOrigin, snapGrid, snapToGrid, vueFlowRef, noDragClassName } = storeToRefs(useStore());
 
-const resizeControlRef = ref<HTMLDivElement>();
+const resizeControlRef = shallowRef<HTMLDivElement>();
 
 const controlPosition = toRef(() => props.position ?? DefaultPositions[props.variant]);
 

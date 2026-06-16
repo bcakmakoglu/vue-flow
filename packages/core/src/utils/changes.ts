@@ -176,7 +176,7 @@ export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
 }
 
 export function getSelectionChanges(
-  items: Map<string, any>,
+  items: Map<string, { id: string; selected?: boolean }>,
   selectedIds: Set<string> = new Set(),
 ): NodeSelectionChange[] | EdgeSelectionChange[] {
   const changes: NodeSelectionChange[] | EdgeSelectionChange[] = [];

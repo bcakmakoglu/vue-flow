@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import type { BaseEdgeProps } from '../../types';
-import { ref, useAttrs } from 'vue';
+import { shallowRef, useAttrs } from 'vue';
 import EdgeText from './EdgeText.vue';
 
 withDefaults(defineProps<BaseEdgeProps>(), { interactionWidth: 20 });
 
-const pathEl = ref<SVGPathElement | null>(null);
+const pathEl = shallowRef<SVGPathElement | null>(null);
 
-const interactionEl = ref<SVGPathElement | null>(null);
+const interactionEl = shallowRef<SVGPathElement | null>(null);
 
-const labelEl = ref<SVGGElement | null>(null);
+const labelEl = shallowRef<SVGGElement | null>(null);
 
-const attrs: any = useAttrs();
+const attrs = useAttrs();
 
 defineExpose({
   pathEl,
