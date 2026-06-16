@@ -3,6 +3,7 @@ import type {
   ColorMode,
   Connection,
   ConnectionMode,
+  CoordinateExtent,
   Dimensions,
   HandleType,
   NodeConnection,
@@ -25,7 +26,7 @@ import type { DefaultEdgeOptions, Edge, EdgeReconnectable } from './edge';
 import type { FlowExportObject, FlowProps, OnBeforeDelete } from './flow';
 import type { ConnectingHandle, ValidConnectionFunc } from './handle';
 import type { FlowHooks, FlowHooksEmit, FlowHooksOn } from './hooks';
-import type { BuiltInNode, CoordinateExtent, CoordinateExtentRange, InternalNode, Node, NodeOrigin } from './node';
+import type { BuiltInNode, InternalNode, Node, NodeOrigin } from './node';
 
 export type NodeLookup<NodeType extends Node = Node> = Map<string, InternalNode<NodeType>>;
 
@@ -72,7 +73,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   defaultViewport: Partial<Viewport>;
   /** use setTranslateExtent action to change translateExtent */
   translateExtent: CoordinateExtent;
-  nodeExtent: CoordinateExtent | CoordinateExtentRange;
+  nodeExtent: CoordinateExtent;
   nodeOrigin: NodeOrigin;
   colorMode: ColorMode;
 
@@ -316,7 +317,7 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   /** apply translate extent to panzoom */
   setTranslateExtent: (translateExtent: CoordinateExtent) => void;
   /** apply extent to nodes */
-  setNodeExtent: (nodeExtent: CoordinateExtent | CoordinateExtentRange) => void;
+  setNodeExtent: (nodeExtent: CoordinateExtent) => void;
   setPaneClickDistance: (distance: number) => void;
   /** enable/disable node interaction (dragging, selecting etc) */
   setInteractive: (isInteractive: boolean) => void;

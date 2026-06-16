@@ -93,10 +93,7 @@ onMounted(() => {
     if (node) {
       flow.value?.updateNode('999', {
         expandParent: false,
-        extent: {
-          range: 'parent',
-          padding: [10],
-        } as any,
+        extent: 'parent',
       });
     }
   });

@@ -1,10 +1,10 @@
 import type { VueFlowStore } from '@vue-flow/core';
 import { getStore } from '../../support/component';
 
-// Covers the `@xyflow/system` `handleExpandParent` integration (drag + measurement + the range-extent
-// padding clamp). Parent at the origin so a drag item's absolute position equals its parent-relative
+// Covers the `@xyflow/system` `handleExpandParent` integration (drag + measurement + the `extent: 'parent'`
+// clamp). Parent at the origin so a drag item's absolute position equals its parent-relative
 // position — keeps the assertions independent of the abs/rel convention in `updateNodePositions`.
-describe('expandParent + range-extent', () => {
+describe('expandParent + extent: parent', () => {
   let store: VueFlowStore;
 
   function mount(childExtra: Record<string, any> = {}, childPosition = { x: 10, y: 10 }) {
@@ -140,32 +140,6 @@ describe('expandParent + range-extent', () => {
           expect(parent.measured.width, 'parent not over-expanded').to.be.lessThan(230);
           // child is clamped to sit inside the parent (200 − child width ≈ 100)
           expect(child.internals.positionAbsolute.x, 'child clamped inside parent').to.be.lessThan(120);
-        },
-        { timeout: 3000 },
-      );
-    });
-  });
-
-  describe('range-extent padding clamps the child', () => {
-    // child placed far outside the parent, constrained to the parent inset by 10px on every side
-    beforeEach(() =>
-      mount({ extent: { range: 'parent', padding: 10 }, width: 20, height: 20, style: { width: '20px', height: '20px' } }, {
-        x: 200,
-        y: 200,
-      }),
-    );
-
-    it('clamps the child to the padded parent bounds', () => {
-      // child placed at (200,200) → clamped so its right/bottom edge sits at the parent's padded
-      // boundary: parent 100 − padding 10 − child width = max relative position.
-      cy.tryAssertion(
-        () => {
-          const child = store.getInternalNode('c')!;
-          const expected = 90 - child.measured.width; // 90 = parent (100) − padding (10)
-          expect(child.internals.positionAbsolute.x, 'clamped to padded bound x').to.be.closeTo(expected, 1);
-          expect(child.internals.positionAbsolute.y, 'clamped to padded bound y').to.be.closeTo(expected, 1);
-          // and it actually moved in from the original 200
-          expect(child.internals.positionAbsolute.x).to.be.lessThan(100);
         },
         { timeout: 3000 },
       );

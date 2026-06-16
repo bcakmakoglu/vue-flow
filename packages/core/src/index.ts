@@ -91,6 +91,7 @@ export {
   type Connection,
   ConnectionLineType,
   ConnectionMode,
+  type CoordinateExtent,
   type Dimensions,
   type EdgeRemoveChange,
   type EdgeSelectionChange,

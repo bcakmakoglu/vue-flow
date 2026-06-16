@@ -1,5 +1,6 @@
 import type {
   Connection,
+  CoordinateExtent,
   NodeConnection,
   NodeLookup as SystemNodeLookup,
   ParentLookup as SystemParentLookup,
@@ -7,8 +8,6 @@ import type {
 import type {
   Actions,
   ConnectionLookup,
-  CoordinateExtent,
-  CoordinateExtentRange,
   DefaultEdgeOptions,
   Edge,
   InternalNode,
@@ -142,38 +141,7 @@ export function adoptNodes<NodeType extends Node = Node>(
     validNodes.push(markRaw(toRaw(node)));
   }
 
-  // `@xyflow/system`'s `adoptUserNodes` (and the `clampPosition` it calls) only understand
-  // `'parent' | CoordinateExtent`. A vue-flow `CoordinateExtentRange` ({ range, padding }) extent would
-  // make `clampPosition` index `extent[0][0]` on the object and throw. Feed `adoptUserNodes` shallow
-  // copies whose extent is coerced to the bare `range`, then restore the original range+padding onto the
-  // adopted `InternalNode` below — the padding inset is applied later by `recomputeAbsolutePositions`.
-  const rangeExtents = new Map<string, CoordinateExtentRange>();
-  const adoptable = validNodes.map((node): NodeType => {
-    const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
-    if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
-      rangeExtents.set(node.id, extent);
-      return { ...node, extent: extent.range };
-    }
-    return node;
-  });
-
-  const { hasSelectedNodes } = adoptUserNodes(adoptable, nodeLookup, parentLookup, { ...options, checkEquality: true });
-
-  // For range-extent nodes we fed `adoptUserNodes` a COPY (different reference): restore the original
-  // `{ range, padding }` extent and re-point `internals.userNode` at the un-coerced node so
-  // `getNode`/`getNodes` surface the exact user object the array holds.
-  for (const node of validNodes) {
-    const range = rangeExtents.get(node.id);
-    if (!range) {
-      continue;
-    }
-
-    const internal = nodeLookup.get(node.id);
-    if (internal) {
-      ;(internal as { extent?: CoordinateExtentRange }).extent = range;
-      internal.internals.userNode = node;
-    }
-  }
+  const { hasSelectedNodes } = adoptUserNodes(validNodes, nodeLookup, parentLookup, { ...options, checkEquality: true });
 
   for (const node of validNodes) {
     if (node.parentId && !nodeLookup.has(node.parentId)) {

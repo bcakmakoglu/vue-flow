@@ -8,8 +8,6 @@ import type {
 } from '@xyflow/system';
 import type {
   Actions,
-  CoordinateExtent,
-  CoordinateExtentRange,
   Edge,
   EdgeAddChange,
   EdgeLookup,
@@ -38,12 +36,10 @@ import { useViewportHelper } from '../composables';
 import {
   adoptNodes,
   applyChanges,
-  calcNextPosition,
   createAdditionChange,
   createEdgeRemoveChange,
   createNodeRemoveChange,
   createSelectionChange,
-  getExtent,
   getSelectionChanges,
   isDef,
   isInternalNode,
@@ -142,7 +138,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
   function commitNodes(nodes: NodeType[]) {
     const { nodes: adopted, hasSelectedNodes } = adoptNodes(nodes, systemNodeLookup, systemParentLookup, state.hooks.error.trigger, {
       nodeOrigin: state.nodeOrigin,
-      nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+      nodeExtent: state.nodeExtent,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
     });
 
@@ -205,25 +201,6 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
    * graphs with child nodes — or when `forceFullPass` says inputs changed without a re-adoption.
    */
   function recomputeAbsolutePositions(forceFullPass = false) {
-    // `@xyflow/system` has no concept of vue-flow's `CoordinateExtentRange` (`{ range, padding }`) and
-    // its `isCoordinateExtent` treats any non-`'parent'`/non-nullish value as a coordinate-extent array,
-    // so it would index `extent[0]` on the range object and crash. Transiently coerce such extents to
-    // their `range` (`'parent'` or a plain `CoordinateExtent`, both system-understood) for the system
-    // pass and restore afterwards. The system clamp can't express the range `padding`, so it's re-applied
-    // separately in the padding-clamp pass below (after absolute positions are fresh).
-    // `node.extent` is typed `'parent' | CoordinateExtent | null` (deliberately narrow so `InternalNode`
-    // stays structurally assignable to system's `NodeBase`), but at runtime vue-flow also supports a
-    // `CoordinateExtentRange` ({ range, padding }) — see utils/drag.ts. Hence the localized casts: the
-    // type can't express this without breaking system compat. We restore the original extent after.
-    const coercedExtents: { node: InternalNode<NodeType>; extent: 'parent' | CoordinateExtent | null | undefined }[] = [];
-    for (const node of systemNodeLookup.values()) {
-      const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
-      if (extent && typeof extent === 'object' && !Array.isArray(extent) && 'range' in extent) {
-        coercedExtents.push({ node, extent: node.extent });
-        node.extent = extent.range;
-      }
-    }
-
     // `adoptUserNodes` already computed the clamped `positionAbsolute` + `z` for every changed node
     // (reused nodes keep their still-valid values) and cascades parented nodes inline, so after a commit
     // the full pass is only needed when child nodes exist — a moved parent must cascade to REUSED
@@ -232,55 +209,9 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     if (forceFullPass || systemParentLookup.size > 0) {
       updateAbsolutePositions(systemNodeLookup, systemParentLookup, {
         nodeOrigin: state.nodeOrigin,
-        nodeExtent: Array.isArray(state.nodeExtent) ? (state.nodeExtent as CoordinateExtent) : undefined,
+        nodeExtent: state.nodeExtent,
         elevateNodesOnSelect: state.elevateNodesOnSelect,
       });
-    }
-
-    for (const { node, extent } of coercedExtents) {
-      node.extent = extent;
-    }
-
-    // Apply the range `padding` the system clamp can't express. `updateAbsolutePositions` only understands
-    // `'parent'`/`CoordinateExtent` (we coerced `{ range, padding }` to its bare `range` above), so it
-    // clamps to the parent/extent bounds *without* the inset. Now that absolute positions are fresh on the
-    // lookup InternalNodes, re-clamp each padded node against the padded extent via the
-    // same `calcNextPosition`/`getExtent` math the keyboard-move path uses — restoring the padding the
-    // pre-system-migration NodeWrapper watcher used to apply. Idempotent (an in-bounds node is unchanged),
-    // and `expandParent` nodes are skipped (they grow the parent instead of being clamped into it).
-    for (const { node } of coercedExtents) {
-      if (node.expandParent) {
-        continue;
-      }
-
-      const parent = node.parentId ? systemNodeLookup.get(node.parentId) : undefined;
-
-      // The padding clamp needs measured dimensions: `getExtent` indexes into the computed extent array
-      // and would throw on the unmeasured fallback (the global extent may be undefined). Skip until the
-      // node — and, for a `'parent'` range, its parent — are measured; the next recompute (triggered by
-      // `updateNodeDimensions` once dimensions land) re-runs this.
-      if (!node.measured?.width || !node.measured?.height) {
-        continue;
-      }
-
-      const extent = node.extent as unknown as CoordinateExtentRange;
-      if (extent.range === 'parent' && (!parent?.measured?.width || !parent?.measured?.height)) {
-        continue;
-      }
-
-      const { position, computedPosition } = calcNextPosition(
-        node,
-        node.internals.positionAbsolute,
-        state.hooks.error.trigger,
-        state.nodeExtent,
-        parent,
-      );
-
-      node.position = position;
-      node.internals.positionAbsolute = computedPosition
-      // mirror the padding-clamped position onto the user node (the canonical array element) so v-model /
-      // getNodes reflect it (the InternalNode's `position` is internal-only otherwise).
-      ;(node.internals.userNode as Node).position = position;
     }
 
     syncLookups();
@@ -439,7 +370,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
           if (node.expandParent && node.parentId) {
             const parent = getInternalNode(node.parentId);
             let positionAbsolute = node.internals.positionAbsolute;
-            const extent = node.extent as CoordinateExtentRange | 'parent' | CoordinateExtent | null | undefined;
+            const extent = node.extent;
 
             if (extent === 'parent' && parent) {
               positionAbsolute = clampPositionToParent(positionAbsolute, dimensions, parent);
@@ -447,21 +378,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
             else if (Array.isArray(extent)) {
               positionAbsolute = clampPosition(positionAbsolute, extent, dimensions);
             }
-            else if (
-              extent
-              && typeof extent === 'object'
-              && 'range' in extent
-              && parent?.measured.width
-              && parent.measured.height
-            ) {
-              // vue-flow range form → its padded coordinate extent
-              positionAbsolute = clampPosition(
-                positionAbsolute,
-                getExtent(node, state.hooks.error.trigger, state.nodeExtent, parent),
-                dimensions,
-              );
-            }
-            else if (Array.isArray(state.nodeExtent)) {
+            else {
               positionAbsolute = clampPosition(positionAbsolute, state.nodeExtent, dimensions);
             }
 
