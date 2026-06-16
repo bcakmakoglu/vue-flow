@@ -189,6 +189,12 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
 
   autoPanOnConnect?: boolean;
   autoPanOnNodeDrag?: boolean;
+  /**
+   * Pan the viewport to a node when it receives keyboard focus (Tab) and isn't currently within the
+   * viewport — keeps keyboard navigation from landing on off-screen nodes.
+   * @default true
+   */
+  autoPanOnNodeFocus?: boolean;
   autoPanSpeed?: number;
 }
 

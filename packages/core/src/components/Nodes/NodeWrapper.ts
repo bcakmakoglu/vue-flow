@@ -1,4 +1,5 @@
 import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types';
+import { getNodesInside } from '@xyflow/system';
 import {
   computed,
   defineComponent,
@@ -44,6 +45,7 @@ const NodeWrapper = defineComponent({
       updateNodeDimensions,
       onUpdateNodeInternals,
       getNodeTypes,
+      setCenter,
     } = useVueFlow();
 
     const {
@@ -58,6 +60,9 @@ const NodeWrapper = defineComponent({
       elementsSelectable,
       nodesConnectable,
       nodesFocusable,
+      autoPanOnNodeFocus,
+      transform,
+      dimensions,
       hooks,
     } = storeToRefs(useStore());
 
@@ -270,6 +275,7 @@ const NodeWrapper = defineComponent({
           'onClick': onSelectNode,
           'onDblclick': onDoubleClick,
           'onKeydown': onKeyDown,
+          'onFocus': isFocusable.value ? onFocus : undefined,
         },
         [
           h(nodeCmp.value === false ? (getNodeTypes.value.default as NodeComponent<BuiltInNode>) : (nodeCmp.value as any), {
@@ -395,6 +401,32 @@ const NodeWrapper = defineComponent({
             y: arrowKeyDiffs[event.key].y,
           },
           event.shiftKey,
+        );
+      }
+    }
+
+    // Pan the viewport to a node that receives KEYBOARD focus (Tab) and isn't currently visible, so
+    // tabbing through nodes never lands on an off-screen one. `:focus-visible` keeps this to keyboard
+    // focus (not pointer/programmatic).
+    function onFocus() {
+      const node = nodeRef.value;
+      if (!node || disableKeyboardA11y.value || !autoPanOnNodeFocus.value || !nodeElement.value?.matches(':focus-visible')) {
+        return;
+      }
+
+      const withinViewport
+        = getNodesInside(
+          new Map([[node.id, node]]),
+          { x: 0, y: 0, width: dimensions.value.width, height: dimensions.value.height },
+          transform.value,
+          true,
+        ).length > 0;
+
+      if (!withinViewport) {
+        setCenter(
+          node.internals.positionAbsolute.x + (node.measured.width ?? 0) / 2,
+          node.internals.positionAbsolute.y + (node.measured.height ?? 0) / 2,
+          { zoom: transform.value[2] },
         );
       }
     }
