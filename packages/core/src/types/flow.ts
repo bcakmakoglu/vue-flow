@@ -106,6 +106,12 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   connectionMode?: ConnectionMode;
   connectionLineOptions?: ConnectionLineOptions;
   connectionRadius?: number;
+  /**
+   * The threshold in pixels that the pointer must move before a connection line starts to drag.
+   * Useful to prevent accidental connections when clicking on a handle.
+   * @default 1
+   */
+  connectionDragThreshold?: number;
   isValidConnection?: ValidConnectionFunc | null;
   /** consulted before delete-key/`deleteElements` removals — cancel, confirm, or filter the set */
   onBeforeDelete?: OnBeforeDelete<NodeType, EdgeType> | null;

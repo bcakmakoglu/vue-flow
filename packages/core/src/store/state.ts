@@ -72,6 +72,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     connectionClickStartHandle: null,
     connectionPosition: { x: Number.NaN, y: Number.NaN },
     connectionRadius: 20,
+    connectionDragThreshold: 1,
     connectOnClick: true,
     connectionStatus: null,
     isValidConnection: null,
