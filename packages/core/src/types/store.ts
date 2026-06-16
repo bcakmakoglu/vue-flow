@@ -99,6 +99,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   connectionClickStartHandle: ConnectingHandle | null;
   connectionPosition: XYPosition;
   connectionRadius: number;
+  connectionDragThreshold: number;
   connectionStatus: ConnectionStatus | null;
   isValidConnection: ValidConnectionFunc | null;
   onBeforeDelete: OnBeforeDelete<NodeType, EdgeType> | null;

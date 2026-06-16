@@ -50,6 +50,7 @@ export function useHandle({
     transform,
     connectionMode,
     connectionRadius,
+    connectionDragThreshold,
     connectOnClick,
     connectionStartHandle,
     connectionClickStartHandle,
@@ -109,6 +110,7 @@ export function useHandle({
       // system's own param name stays `edgeUpdaterType`; our prop is `reconnectHandleType`
       edgeUpdaterType: toValue(reconnectHandleType),
       autoPanSpeed: autoPanSpeed.value,
+      dragThreshold: connectionDragThreshold.value,
       handleDomNode,
       panBy,
       isValidConnection: buildSystemIsValidConnection(),
