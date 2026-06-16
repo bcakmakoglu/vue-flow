@@ -904,7 +904,13 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     const overlappingArea = getOverlappingArea(nodeRect, area);
     const partiallyVisible = partially && overlappingArea > 0;
 
-    return partiallyVisible || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height);
+    // "intersecting" when partially overlapping (if `partially`) OR fully contained either way — the node
+    // inside the area, or the area inside the node (the latter was missing; xyflow/react #5482)
+    return (
+      partiallyVisible
+      || overlappingArea >= area.width * area.height
+      || overlappingArea >= Number(nodeRect.width) * Number(nodeRect.height)
+    );
   };
 
   const panBy: Actions<NodeType>['panBy'] = (delta) => {
