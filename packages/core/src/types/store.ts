@@ -314,6 +314,12 @@ export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = E
   removeSelectedEdges: (edges?: EdgeType[]) => void;
   /** manually unselect nodes and remove from state */
   removeSelectedNodes: (nodes?: NodeType[]) => void;
+  /**
+   * Clear the selection the way a pane click does — but only while `elementsSelectable` is `true`; otherwise
+   * it's a no-op, so a selection set before selection was disabled survives. Use `removeSelectedNodes`/
+   * `removeSelectedEdges` to clear unconditionally.
+   */
+  resetSelectedElements: () => void;
   /** apply min zoom value to panzoom */
   setMinZoom: (zoom: number) => void;
   /** apply max zoom value to panzoom */
