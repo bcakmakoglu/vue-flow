@@ -242,6 +242,22 @@ are rejected. To restore the old behavior where every handle acts as a source:
 `nodeOrigin` is now actually honored (it was previously ignored), and a new `nodeClickDistance` prop sets how
 far the pointer may move and still count as a node click.
 
+**Viewport option types now reuse `@xyflow/system`** (renamed; same shape unless noted):
+
+| Before (vue-flow) | After (`@xyflow/system`) |
+|---|---|
+| `FitViewParams` | `FitViewOptions` |
+| `TransitionOptions` | `ViewportHelperFunctionOptions` |
+| `ViewportPositionFunc` | `Project` |
+
+- **`fitView({ nodes })` takes node objects, not ids:** `nodes?: string[]` → `nodes?: (Node | { id: string })[]`
+  (xyflow's shape). Wrap bare ids — `fitView({ nodes: ['a', 'b'] })` → `fitView({ nodes: [{ id: 'a' }, { id: 'b' }] })`.
+- **`fitView`'s `offset` option is removed** — it was superseded by `padding`; use `padding` (a `Padding`:
+  a number, a `'10px'`/`'5%'` string, or `{ top, right, bottom, left }`) to inset the fitted view.
+- **New `ease` + `interpolate` options** on every viewport function (`fitView`/`setViewport`/`setCenter`/
+  `fitBounds`/`zoomTo`/`zoomIn`/`zoomOut`), alongside `duration`: `ease?: (t: number) => number` and
+  `interpolate?: 'smooth' | 'linear'` control the transition curve.
+
 ## 11. Deleting elements
 
 - **`removeNodes` removes connected edges by default** (`removeNodes(nodes, removeConnectedEdges = true,
@@ -381,6 +397,13 @@ GraphEdge              → Edge
 NodeProps<Data>        → NodeProps<Node<Data, 'type'>>
 PanelPositionType      → PanelPosition       // + 'center-left' / 'center-right'
 ConnectionLineType.SimpleBezier  → 'simplebezier'  // value was 'simple-bezier'
+FitViewParams          → FitViewOptions
+TransitionOptions      → ViewportHelperFunctionOptions
+ViewportPositionFunc   → Project
+
+// fitView nodes: ids → node objects (+ new ease / interpolate transition options)
+fitView({ nodes: ['a'] })  → fitView({ nodes: [{ id: 'a' }] })
+fitView({ offset })        → fitView({ padding })   // offset option removed
 
 // padding (fitView / fitBounds / node extent)
 padding: [10, 20]      → padding: { y: 10, x: 20 }   // positional tuple removed; px/% strings now allowed
