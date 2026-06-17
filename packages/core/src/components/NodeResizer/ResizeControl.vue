@@ -173,7 +173,8 @@ export default {
     :class="[...positionClassNames, variant, noDragClassName]"
     :style="{
       ...controlStyle,
-      scale: variant === ResizeControlVariant.Handle ? `${Math.max(1 / viewport.zoom, 1)}` : undefined,
+      // keep handle controls from shrinking below their base size when zooming out; `autoScale` opts out
+      scale: variant === ResizeControlVariant.Handle && autoScale ? `${Math.max(1 / viewport.zoom, 1)}` : undefined,
     }"
   >
     <slot />
