@@ -1,60 +1,34 @@
-import type { Padding, Rect, Viewport, XYPosition } from '@xyflow/system';
+import type {
+  FitViewOptionsBase,
+  GetViewport,
+  Padding,
+  Rect,
+  SetCenter,
+  SetViewport,
+  ViewportHelperFunctionOptions,
+  ZoomInOut,
+  ZoomTo,
+} from '@xyflow/system';
+import type { Node } from './node';
 
-export interface TransitionOptions {
-  duration?: number;
-}
-
-export type FitViewParams = {
-  padding?: Padding;
-  includeHiddenNodes?: boolean;
-  minZoom?: number;
-  maxZoom?: number;
-  offset?: {
-    x?: number;
-    y?: number;
-  };
-  nodes?: string[];
-} & TransitionOptions;
-
-export type SetCenterOptions = TransitionOptions & {
-  zoom?: number;
-};
-
-export type FitBoundsOptions = TransitionOptions & {
+/** vue-flow accepts the richer `Padding` here (system's `FitBoundsOptions` is `padding?: number`) */
+export type FitBoundsOptions = ViewportHelperFunctionOptions & {
   padding?: Padding;
 };
 
 /** Fit the viewport around visible nodes */
-export type FitView = (fitViewOptions?: FitViewParams) => Promise<boolean>;
-
-/** convert a position between screen and flow coordinate systems (screenToFlowPosition/flowToScreenPosition) */
-export type ViewportPositionFunc = (position: XYPosition) => XYPosition;
-
-/** set center of viewport */
-export type SetCenter = (x: number, y: number, options?: SetCenterOptions) => Promise<boolean>;
+export type FitView<NodeType extends Node = Node> = (fitViewOptions?: FitViewOptionsBase<NodeType>) => Promise<boolean>;
 
 /** fit the viewport around bounds */
 export type FitBounds = (bounds: Rect, options?: FitBoundsOptions) => Promise<boolean>;
 
-/** zoom in/out */
-export type ZoomInOut = (options?: TransitionOptions) => Promise<boolean>;
-
-/** zoom to a specific level */
-export type ZoomTo = (zoomLevel: number, options?: TransitionOptions) => Promise<boolean>;
-
-/** get current viewport */
-export type GetViewport = () => Viewport;
-
-/** set current viewport */
-export type SetViewport = (viewport: Viewport, options?: TransitionOptions) => Promise<boolean>;
-
-export interface ViewportFunctions {
+export interface ViewportFunctions<NodeType extends Node = Node> {
   zoomIn: ZoomInOut;
   zoomOut: ZoomInOut;
   zoomTo: ZoomTo;
   setViewport: SetViewport;
   getViewport: GetViewport;
-  fitView: FitView;
+  fitView: FitView<NodeType>;
   setCenter: SetCenter;
   fitBounds: FitBounds;
 }

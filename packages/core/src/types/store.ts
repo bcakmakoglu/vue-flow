@@ -271,7 +271,7 @@ export type UpdateNodeData<NodeType extends Node = Node> = (
 export type IsNodeIntersecting = (node: (Partial<Node> & { id: Node['id'] }) | Rect, area: Rect, partially?: boolean) => boolean;
 
 export interface Actions<NodeType extends Node = Node, EdgeType extends Edge = Edge>
-  extends Omit<ViewportHelper, 'viewportInitialized'> {
+  extends Omit<ViewportHelper<NodeType>, 'viewportInitialized'> {
   /** parses nodes and re-sets the state */
   setNodes: SetNodes<NodeType>;
   /** parses edges and re-sets the state */

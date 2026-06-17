@@ -1,5 +1,5 @@
-import type { PanelPosition } from '@xyflow/system';
-import type { FitViewParams } from '../../types';
+import type { FitViewOptionsBase, PanelPosition } from '@xyflow/system';
+import type { Node } from '../../types';
 
 export interface ControlProps {
   /**
@@ -21,11 +21,11 @@ export interface ControlProps {
    */
   showInteractive?: boolean;
   /**
-   * {@link FitViewParams Parameters} to use when the fit view control button is pressed
+   * {@link FitViewOptionsBase Parameters} to use when the fit view control button is pressed
    *
    * @default undefined
    */
-  fitViewParams?: FitViewParams;
+  fitViewParams?: FitViewOptionsBase<Node>;
   /**
    * The {@link PanelPosition position} of the `<Controls>` panel
    *

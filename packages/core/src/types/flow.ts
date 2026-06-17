@@ -1,5 +1,5 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
+import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, FitViewOptionsBase, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { VueFlowError } from '../utils';
 import type { EdgeChange, NodeChange } from './changes';
@@ -20,7 +20,6 @@ import type {
 } from './hooks';
 import type { Node, NodeOrigin, NodeProps } from './node';
 import type { VueFlowInstance } from './store';
-import type { FitViewParams } from './zoom';
 
 /**
  * Consulted before nodes/edges are deleted (via the delete key or `deleteElements`). Receives the full set
@@ -175,7 +174,7 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   /** fit the view to the nodes once they're measured on init (xyflow/react's `fitView` prop) */
   fitView?: boolean;
   /** options for the initial `fitView` (padding, includeHiddenNodes, etc.) */
-  fitViewOptions?: FitViewParams;
+  fitViewOptions?: FitViewOptionsBase<NodeType>;
   /** allow connection with click handlers, i.e. support touch devices */
   connectOnClick?: boolean;
   /**

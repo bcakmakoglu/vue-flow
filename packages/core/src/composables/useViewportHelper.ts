@@ -1,12 +1,13 @@
-import type { Edge, Node, NodeLookup, State, ViewportFunctions, ViewportPositionFunc } from '../types';
+import type { Project } from '@xyflow/system';
+import type { Edge, Node, NodeLookup, State, ViewportFunctions } from '../types';
 import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system';
 import { computed } from 'vue';
 import { warn } from '../utils';
 
-export interface ViewportHelper extends ViewportFunctions {
+export interface ViewportHelper<NodeType extends Node = Node> extends ViewportFunctions<NodeType> {
   viewportInitialized: boolean;
-  screenToFlowPosition: ViewportPositionFunc;
-  flowToScreenPosition: ViewportPositionFunc;
+  screenToFlowPosition: Project;
+  flowToScreenPosition: Project;
 }
 
 const DEFAULT_PADDING = 0.1;
@@ -41,7 +42,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
   state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
 ) {
-  return computed<ViewportHelper>(() => {
+  return computed<ViewportHelper<NodeType>>(() => {
     const panZoom = state.panZoom;
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height;
 
@@ -87,7 +88,7 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
           return false;
         }
 
-        const ok = await fitViewport(
+        return fitViewport(
           {
             nodes: nodeLookup,
             width: state.dimensions.width,
@@ -99,30 +100,16 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
           {
             padding: options.padding ?? DEFAULT_PADDING,
             duration: options.duration,
+            ease: options.ease,
+            interpolate: options.interpolate,
             minZoom: options.minZoom,
             maxZoom: options.maxZoom,
-            // `fitViewport` forwards options to `getFitViewNodes`, which reads `includeHiddenNodes`/`nodes`
-            // at runtime — but its type `Omit`s them, so pass via spread (same as `nodes`) to satisfy TS.
+            // `fitViewport` forwards these to `getFitViewNodes` at runtime, but its options type `Omit`s
+            // them — pass via spread to satisfy TS.
             ...(options.includeHiddenNodes ? { includeHiddenNodes: true } : {}),
-            // system expects `(NodeType | { id })[]`; we accept `string[]` for ergonomics.
-            ...(options.nodes?.length ? { nodes: options.nodes.map(id => ({ id })) } : {}),
+            ...(options.nodes?.length ? { nodes: options.nodes } : {}),
           },
         );
-
-        // vue-flow-only `offset` extension — apply on top of fitViewport's result.
-        if (ok && options.offset && (options.offset.x || options.offset.y)) {
-          const [currentX, currentY, currentZoom] = state.transform;
-          await panZoom.setViewport(
-            {
-              x: currentX + (options.offset.x ?? 0),
-              y: currentY + (options.offset.y ?? 0),
-              zoom: currentZoom,
-            },
-            { duration: 0 },
-          );
-        }
-
-        return ok;
       },
       setCenter: async (x, y, options) => {
         if (!panZoom) {
