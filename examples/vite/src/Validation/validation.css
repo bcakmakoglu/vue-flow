@@ -22,10 +22,14 @@
 
 }
 
-.validationflow .vue-flow__handle-connecting {
+.validationflow .vue-flow__handle.connectingto {
   background: #ff6060;
 }
 
-.validationflow .vue-flow__handle-valid {
+.validationflow .vue-flow__handle.connectingfrom {
+  background: #55dd99;
+}
+
+.validationflow .vue-flow__handle.valid {
   background: #55dd99;
 }
