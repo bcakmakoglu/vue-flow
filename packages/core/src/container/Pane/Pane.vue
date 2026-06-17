@@ -10,7 +10,7 @@ import { getSelectionChanges } from '../../utils';
 
 const { isSelecting, selectionKeyPressed } = defineProps<{ isSelecting: boolean; selectionKeyPressed: boolean }>();
 
-const { emits, removeSelectedNodes, removeSelectedEdges, getSelectedEdges, getSelectedNodes, deleteElements, panBy } = useVueFlow();
+const { emits, removeSelectedNodes, removeSelectedEdges, resetSelectedElements, getSelectedEdges, getSelectedNodes, deleteElements, panBy } = useVueFlow();
 
 const { edgeLookup, nodeLookup } = useStore();
 
@@ -99,8 +99,8 @@ function onClick(event: MouseEvent) {
 
   emits.paneClick(event);
 
-  removeSelectedNodes();
-  removeSelectedEdges();
+  // clears the selection, but keeps it while `elementsSelectable` is off (xyflow/react #5217)
+  resetSelectedElements();
 
   nodesSelectionActive.value = false;
 }

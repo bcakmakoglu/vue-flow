@@ -463,6 +463,19 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     }
   };
 
+  const resetSelectedElements: Actions<NodeType, EdgeType>['resetSelectedElements'] = () => {
+    // the interactive selection reset (used by a pane click): a no-op while selection is disabled, so a
+    // selection made before `elementsSelectable` was turned off — or set programmatically — survives the
+    // click (xyflow/react #5217). For unconditional clearing, call `removeSelectedNodes`/`removeSelectedEdges`
+    // directly (the equivalent of xyflow/react's ungated `unselectNodesAndEdges`).
+    if (!state.elementsSelectable) {
+      return;
+    }
+
+    removeSelectedNodes();
+    removeSelectedEdges();
+  };
+
   const setMinZoom: Actions<NodeType>['setMinZoom'] = (minZoom) => {
     state.panZoom?.setScaleExtent([minZoom, state.maxZoom]);
     state.minZoom = minZoom;
@@ -1038,6 +1051,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
     setPaneClickDistance,
     removeSelectedNodes,
     removeSelectedEdges,
+    resetSelectedElements,
     startConnection,
     updateConnection,
     endConnection,
