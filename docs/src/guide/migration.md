@@ -51,11 +51,10 @@ separate.
 
 The element-bucket actions are gone too — use the node/edge equivalents:
 
-| Removed | Use |
-|---|---|
-| `setElements(...)` | `setNodes(...)` + `setEdges(...)` |
-| `addSelectedElements(...)` | `addSelectedNodes(...)` / `addSelectedEdges(...)` |
-| `removeSelectedElements(...)` | `removeSelectedNodes(...)` / `removeSelectedEdges(...)` |
+| Removed                               | Use                                                               |
+|---------------------------------------|-------------------------------------------------------------------|
+| `setElements(...)`                    | `setNodes(...)` + `setEdges(...)`                                 |
+| `addSelectedElements(...)`            | `addSelectedNodes(...)` / `addSelectedEdges(...)`                 |
 | `getElements` / `getSelectedElements` | `getNodes` / `getEdges` / `getSelectedNodes` / `getSelectedEdges` |
 
 ## 3. Nodes and edges are immutable
@@ -112,14 +111,14 @@ const node = useInternalNode('1')
 
 Field moves on the node:
 
-| Before (top-level) | After |
-|---|---|
-| `node.parentNode` | `node.parentId` |
-| `node.computedPosition` | `node.internals.positionAbsolute` (+ `node.internals.z`) |
-| `node.dimensions` | `node.measured` |
-| `node.handleBounds` | `node.internals.handleBounds` |
-| `node.isParent` | `parentLookup.get(node.id)?.size > 0` |
-| `node.label` (top-level) | `node.data.label` |
+| Before (top-level)       | After                                                    |
+|--------------------------|----------------------------------------------------------|
+| `node.parentNode`        | `node.parentId`                                          |
+| `node.computedPosition`  | `node.internals.positionAbsolute` (+ `node.internals.z`) |
+| `node.dimensions`        | `node.measured`                                          |
+| `node.handleBounds`      | `node.internals.handleBounds`                            |
+| `node.isParent`          | `parentLookup.get(node.id)?.size > 0`                    |
+| `node.label` (top-level) | `node.data.label`                                        |
 
 > Custom node components are unaffected — they still receive `position`, dimensions, etc. through their
 > props. But **node event payloads now carry the user `Node`, not the `InternalNode`** (xyflow parity) —
@@ -157,12 +156,12 @@ const { nodes, transform } = storeToRefs(useStore())           // value-type sta
 const { nodeLookup } = useStore()                              // reactive-Map lookups (no .value)
 ```
 
-| Before | After |
-|---|---|
-| `const { nodes } = useVueFlow()` | `const { nodes } = storeToRefs(useStore())` |
+| Before                                                           | After                                                                       |
+|------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| `const { nodes } = useVueFlow()`                                 | `const { nodes } = storeToRefs(useStore())`                                 |
 | `const { transform, dimensions, nodesDraggable } = useVueFlow()` | `const { transform, dimensions, nodesDraggable } = storeToRefs(useStore())` |
-| `const { nodeLookup } = useVueFlow()` | `const { nodeLookup } = useStore()` |
-| `const { setViewport, getNodes, onConnect } = useVueFlow()` | unchanged |
+| `const { nodeLookup } = useVueFlow()`                            | `const { nodeLookup } = useStore()`                                         |
+| `const { setViewport, getNodes, onConnect } = useVueFlow()`      | unchanged                                                                   |
 
 There is intentionally **no `useStoreApi`** — Vue's reactivity makes it redundant (`useStore()` serves both
 reactive reads and current-value reads; subscribe with `watch(() => store.x, …)`).
@@ -201,13 +200,13 @@ flowToScreenCoordinate  → flowToScreenPosition
 
 **Edge "update" → "reconnect"** (xyflow v12 vocabulary):
 
-| Before | After |
-|---|---|
-| `updateEdge(oldEdge, connection)` | `reconnectEdge(oldEdge, connection)` |
+| Before                                                     | After                                                |
+|------------------------------------------------------------|------------------------------------------------------|
+| `updateEdge(oldEdge, connection)`                          | `reconnectEdge(oldEdge, connection)`                 |
 | `@edge-update-start` / `@edge-update` / `@edge-update-end` | `@reconnect-start` / `@reconnect` / `@reconnect-end` |
-| `edgeUpdaterRadius` | `reconnectRadius` |
-| `edges-updatable` / `edge.updatable` | `edges-reconnectable` / `edge.reconnectable` |
-| `EdgeUpdatable` / `EdgeUpdateEvent` | `EdgeReconnectable` / `EdgeReconnectEvent` |
+| `edgeUpdaterRadius`                                        | `reconnectRadius`                                    |
+| `edges-updatable` / `edge.updatable`                       | `edges-reconnectable` / `edge.reconnectable`         |
+| `EdgeUpdatable` / `EdgeUpdateEvent`                        | `EdgeReconnectable` / `EdgeReconnectEvent`           |
 
 > `updateEdge` is **reused** for a new purpose: `updateEdge(id, edgeUpdate, { replace? })` — a partial edge
 > update (the edge analogue of `updateNode`). Edge *reconnection* is now `reconnectEdge`.
@@ -234,9 +233,9 @@ are rejected. To restore the old behavior where every handle acts as a source:
 
 ## 10. Init / fit props
 
-| Before | After |
-|---|---|
-| `:fit-view-on-init="true"` | `:fit-view="true"` |
+| Before                             | After                                              |
+|------------------------------------|----------------------------------------------------|
+| `:fit-view-on-init="true"`         | `:fit-view="true"`                                 |
 | (initial fit was not configurable) | `:fit-view-options="{ padding: 0.2, maxZoom: 1 }"` |
 
 `nodeOrigin` is now actually honored (it was previously ignored), and a new `nodeClickDistance` prop sets how
@@ -244,11 +243,11 @@ far the pointer may move and still count as a node click.
 
 **Viewport option types now reuse `@xyflow/system`** (renamed; same shape unless noted):
 
-| Before (vue-flow) | After (`@xyflow/system`) |
-|---|---|
-| `FitViewParams` | `FitViewOptions` |
-| `TransitionOptions` | `ViewportHelperFunctionOptions` |
-| `ViewportPositionFunc` | `Project` |
+| Before (vue-flow)      | After (`@xyflow/system`)        |
+|------------------------|---------------------------------|
+| `FitViewParams`        | `FitViewOptions`                |
+| `TransitionOptions`    | `ViewportHelperFunctionOptions` |
+| `ViewportPositionFunc` | `Project`                       |
 
 - **`fitView({ nodes })` takes node objects, not ids:** `nodes?: string[]` → `nodes?: (Node | { id: string })[]`
   (xyflow's shape). Wrap bare ids — `fitView({ nodes: ['a', 'b'] })` → `fitView({ nodes: [{ id: 'a' }, { id: 'b' }] })`.
@@ -270,18 +269,18 @@ far the pointer may move and still count as a node click.
 
 ## 12. Removed deprecated APIs
 
-| Removed | Use |
-|---|---|
-| `useHandleConnections` | `useNodeConnections` (`type`→`handleType` (optional), `id`→`handleId`) |
-| `HandleConnection` type | `NodeConnection` |
-| `connectionLineType` / `connectionLineStyle` props | `connectionLineOptions.type` / `.style` |
-| `PanelPosition` enum | the `PanelPositionType` string union (`'top-left'`, …) |
-| `paneReady` event | `init` (`@init` / `onInit`) |
-| `FlowExportObject.position` / `.zoom` | `FlowExportObject.viewport` (`{ x, y, zoom }`) |
-| `GraphEdge.events` | edge events via the store (`onEdgeClick`, …) |
-| `addEdge` / `updateEdge` standalone utils | the `addEdges` / `updateEdge` / `reconnectEdge` store actions |
-| `useZoomPanHelper` | `useVueFlow()` zoom/pan actions (`zoomIn`, `zoomOut`, `fitView`, `setViewport`) |
-| `useVueFlow().fromObject()` / `FlowImportObject` | removed — restore manually after `onInit` (set `nodes`/`edges` + `setViewport`); `toObject()` is unchanged |
+| Removed                                            | Use                                                                                                        |
+|----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+| `useHandleConnections`                             | `useNodeConnections` (`type`→`handleType` (optional), `id`→`handleId`)                                     |
+| `HandleConnection` type                            | `NodeConnection`                                                                                           |
+| `connectionLineType` / `connectionLineStyle` props | `connectionLineOptions.type` / `.style`                                                                    |
+| `PanelPosition` enum                               | the `PanelPositionType` string union (`'top-left'`, …)                                                     |
+| `paneReady` event                                  | `init` (`@init` / `onInit`)                                                                                |
+| `FlowExportObject.position` / `.zoom`              | `FlowExportObject.viewport` (`{ x, y, zoom }`)                                                             |
+| `GraphEdge.events`                                 | edge events via the store (`onEdgeClick`, …)                                                               |
+| `addEdge` / `updateEdge` standalone utils          | the `addEdges` / `updateEdge` / `reconnectEdge` store actions                                              |
+| `useZoomPanHelper`                                 | `useVueFlow()` zoom/pan actions (`zoomIn`, `zoomOut`, `fitView`, `setViewport`)                            |
+| `useVueFlow().fromObject()` / `FlowImportObject`   | removed — restore manually after `onInit` (set `nodes`/`edges` + `setViewport`); `toObject()` is unchanged |
 
 ## 13. Types & change shapes
 
@@ -335,18 +334,18 @@ import '@vue-flow/core/dist/style.css'
 
 **`--vf-*` → `--xy-*`.** The theme custom properties are renamed to the shared `--xy-*` set (identical to react/svelte). Each rule reads `var(--xy-x, var(--xy-x-default))`, so override the un-suffixed variable and Vue Flow falls back to the shipped `--xy-x-default`. The common ones:
 
-| before                 | after                                                                          |
-|------------------------|--------------------------------------------------------------------------------|
-| `--vf-node-bg`         | `--xy-node-background-color`                                                    |
-| `--vf-node-text`       | `--xy-node-color`                                                              |
-| `--vf-node-color`      | `--xy-node-border` / `--xy-node-boxshadow-*` / `--xy-handle-background-color`   |
-| `--vf-handle`          | `--xy-handle-background-color`                                                  |
-| `--vf-handle-border`   | `--xy-handle-border-color`                                                      |
-| `--vf-connection-path` | `--xy-edge-stroke` / `--xy-connectionline-stroke`                               |
-| `--vf-edge-text`       | `--xy-edge-label-color`                                                        |
-| `--vf-edge-text-bg`    | `--xy-edge-label-background-color`                                              |
-| `--vf-controls-bg`     | `--xy-controls-button-background-color`                                         |
-| `--vf-minimap-bg`      | `--xy-minimap-background-color`                                                 |
+| before                 | after                                                                         |
+|------------------------|-------------------------------------------------------------------------------|
+| `--vf-node-bg`         | `--xy-node-background-color`                                                  |
+| `--vf-node-text`       | `--xy-node-color`                                                             |
+| `--vf-node-color`      | `--xy-node-border` / `--xy-node-boxshadow-*` / `--xy-handle-background-color` |
+| `--vf-handle`          | `--xy-handle-background-color`                                                |
+| `--vf-handle-border`   | `--xy-handle-border-color`                                                    |
+| `--vf-connection-path` | `--xy-edge-stroke` / `--xy-connectionline-stroke`                             |
+| `--vf-edge-text`       | `--xy-edge-label-color`                                                       |
+| `--vf-edge-text-bg`    | `--xy-edge-label-background-color`                                            |
+| `--vf-controls-bg`     | `--xy-controls-button-background-color`                                       |
+| `--vf-minimap-bg`      | `--xy-minimap-background-color`                                               |
 
 The old aggregate `--vf-node-color` (which drove border + box-shadow + handle at once) is gone — those are separate `--xy-*` variables now. The full list is in [`CSSVars`](/typedocs/type-aliases/CSSVars) and the [theming guide](/guide/theming#css-variables).
 
