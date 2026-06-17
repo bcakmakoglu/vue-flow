@@ -1,6 +1,7 @@
 import type { Connection } from '@xyflow/system';
 import type { Ref, ToRefs } from 'vue';
 import type { Edge, FlowProps, Node, VueFlowStoreHandle } from '../types';
+import { mergeAriaLabelConfig } from '@xyflow/system';
 import { effectScope, isRef, toRaw, toRef, watch } from 'vue';
 import { isDef } from '../utils';
 import { storeToRefs } from './storeToRefs';
@@ -99,9 +100,9 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       scope.run(() => {
         watch(
           () => props.maxZoom,
-          () => {
-            if (props.maxZoom && isDef(props.maxZoom)) {
-              instance.setMaxZoom(props.maxZoom);
+          (maxZoom) => {
+            if (maxZoom && isDef(maxZoom)) {
+              instance.setMaxZoom(maxZoom);
             }
           },
           {
@@ -115,9 +116,9 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       scope.run(() => {
         watch(
           () => props.minZoom,
-          () => {
-            if (props.minZoom && isDef(props.minZoom)) {
-              instance.setMinZoom(props.minZoom);
+          (minZoom) => {
+            if (minZoom && isDef(minZoom)) {
+              instance.setMinZoom(minZoom);
             }
           },
           { immediate: true },
@@ -129,9 +130,9 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       scope.run(() => {
         watch(
           () => props.translateExtent,
-          () => {
-            if (props.translateExtent && isDef(props.translateExtent)) {
-              instance.setTranslateExtent(props.translateExtent);
+          (translateExtent) => {
+            if (translateExtent && isDef(translateExtent)) {
+              instance.setTranslateExtent(translateExtent);
             }
           },
           {
@@ -145,9 +146,9 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       scope.run(() => {
         watch(
           () => props.nodeExtent,
-          () => {
-            if (props.nodeExtent && isDef(props.nodeExtent)) {
-              instance.setNodeExtent(props.nodeExtent);
+          (nodeExtent) => {
+            if (nodeExtent && isDef(nodeExtent)) {
+              instance.setNodeExtent(nodeExtent);
             }
           },
           {
@@ -157,13 +158,27 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       });
     };
 
+    const watchAriaLabelConfig = () => {
+      scope.run(() => {
+        watch(
+          () => props.ariaLabelConfig,
+          (ariaLabelConfig) => {
+            // merge over the defaults so unspecified keys keep their default text (handled here rather than
+            // in `watchRest`, which would assign the partial verbatim and drop the defaults)
+            state.ariaLabelConfig = mergeAriaLabelConfig(ariaLabelConfig);
+          },
+          { immediate: true },
+        );
+      });
+    };
+
     const watchApplyDefault = () => {
       scope.run(() => {
         watch(
           () => props.autoApplyChanges,
-          () => {
-            if (isDef(props.autoApplyChanges)) {
-              storeRefs.autoApplyChanges.value = props.autoApplyChanges;
+          (autoApplyChanges) => {
+            if (isDef(autoApplyChanges)) {
+              storeRefs.autoApplyChanges.value = autoApplyChanges;
             }
           },
           {
@@ -189,9 +204,9 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
 
         watch(
           () => props.autoConnect,
-          () => {
-            if (isDef(props.autoConnect)) {
-              storeRefs.autoConnect.value = props.autoConnect;
+          (autConnect) => {
+            if (isDef(autConnect)) {
+              storeRefs.autoConnect.value = autConnect;
             }
           },
           { immediate: true },
@@ -229,6 +244,8 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
         'autoConnect',
         // `viewport` isn't a state field (it's a getter on the instance); `useViewportSync` two-way binds it
         'viewport',
+        // merged (not assigned verbatim) by `watchAriaLabelConfig`
+        'ariaLabelConfig',
       ];
 
       for (const key of Object.keys(props)) {
@@ -267,6 +284,7 @@ export function useWatchProps<NodeType extends Node = Node, EdgeType extends Edg
       watchNodeExtent();
       watchApplyDefault();
       watchAutoConnect();
+      watchAriaLabelConfig();
       watchRest();
     };
 

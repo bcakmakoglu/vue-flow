@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 defineProps<{
   disabled?: boolean;
+  /** accessible label; applied as both `aria-label` and `title` (mirrors xyflow) */
+  label?: string;
 }>();
 
 defineEmits<{
@@ -16,7 +18,14 @@ export default {
 </script>
 
 <template>
-  <button type="button" class="vue-flow__controls-button" :disabled="disabled" @click="$emit('click', $event)">
+  <button
+    type="button"
+    class="vue-flow__controls-button"
+    :disabled="disabled"
+    :aria-label="label"
+    :title="label"
+    @click="$emit('click', $event)"
+  >
     <slot />
   </button>
 </template>

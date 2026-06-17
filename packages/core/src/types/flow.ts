@@ -1,5 +1,5 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, FitViewOptionsBase, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
+import type { AriaLabelConfig, ColorMode, Connection, ConnectionMode, CoordinateExtent, FitViewOptionsBase, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { VueFlowError } from '../utils';
 import type { EdgeChange, NodeChange } from './changes';
@@ -204,6 +204,8 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   zIndexMode?: ZIndexMode;
 
   disableKeyboardA11y?: boolean;
+  /** customize the aria labels / a11y descriptions (node/edge descriptions, the aria-live move message, and the Controls/MiniMap/Handle labels); merged over the defaults */
+  ariaLabelConfig?: Partial<AriaLabelConfig>;
   edgesFocusable?: boolean;
   nodesFocusable?: boolean;
 

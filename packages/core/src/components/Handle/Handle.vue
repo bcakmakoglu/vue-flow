@@ -28,6 +28,7 @@ const {
   nodesConnectable,
   noDragClassName,
   noPanClassName,
+  ariaLabelConfig,
 } = storeToRefs(useStore());
 
 const { id: nodeId, node: nodeRef, nodeEl, connectedEdges } = useNode();
@@ -194,6 +195,7 @@ export default {
   <div
     ref="handle"
     v-bind="handleDataIds"
+    :aria-label="ariaLabelConfig['handle.ariaLabel']"
     class="vue-flow__handle"
     :class="[
       `vue-flow__handle-${position}`,

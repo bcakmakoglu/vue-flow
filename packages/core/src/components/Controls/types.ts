@@ -32,6 +32,12 @@ export interface ControlProps {
    * @default 'bottom-left'
    */
   position?: PanelPosition;
+  /**
+   * Accessible label for the controls panel; falls back to `ariaLabelConfig['controls.ariaLabel']`.
+   *
+   * @default 'Control Panel'
+   */
+  ariaLabel?: string | null;
 }
 
 export interface ControlEmits {
