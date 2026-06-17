@@ -10,7 +10,7 @@ export type Direction = 'LR' | 'TB';
  * It uses the `dagre` library to calculate the layout of the nodes and edges.
  */
 export function useLayout() {
-  const { getNode } = useVueFlow();
+  const { getInternalNode } = useVueFlow();
 
   // shallowRef: a dagre graph is an opaque class instance — deep-reactive unwrapping (`ref`) would both
   // be wasteful and strip the class's private members from its type
@@ -28,8 +28,9 @@ export function useLayout() {
     dagreGraph.setGraph({ rankdir: direction });
 
     for (const node of nodes) {
-      // if you need width+height of nodes for your layout, you can use the dimensions property of the internal node (`InternalNode` type)
-      const graphNode = getNode(node.id);
+      // width+height for the layout come from the `InternalNode` (`getNode` returns the user node, which has
+      // no `measured`); fall back to defaults until the node has been measured
+      const graphNode = getInternalNode(node.id);
 
       if (!graphNode) {
         console.error(`Node with id ${node.id} not found in the graph`);

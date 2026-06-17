@@ -1,28 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, EdgeProps, Position } from '@vue-flow/core';
+import type { Edge, EdgeProps } from '@vue-flow/core';
 import { BezierEdge } from '@vue-flow/core';
 
-interface CustomData extends Record<string, unknown> {
-  text: string;
-}
-
-interface CustomEdgeProps extends EdgeProps<Edge<CustomData>> {
-  source: string;
-  target: string;
-  sourceHandleId?: string;
-  targetHandleId?: string;
-  id: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  markerEnd: string;
-  data: CustomData;
-}
-
-defineProps<CustomEdgeProps>();
+defineProps<EdgeProps<Edge<{ text: string }>>>();
 </script>
 
 <script lang="ts">

@@ -26,14 +26,14 @@ const edges = ref<Edge[]>([]);
 
 <template>
   <VueFlow v-model:nodes="nodes" v-model:edges="edges" auto-connect fit-view>
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
+    <template #connection-line="{ fromX, fromY, toX, toY, fromPosition, toPosition }">
       <ConnectionLine
-        :source-x="sourceX"
-        :source-y="sourceY"
-        :target-x="targetX"
-        :target-y="targetY"
-        :source-position="sourcePosition"
-        :target-position="targetPosition"
+        :source-x="fromX"
+        :source-y="fromY"
+        :target-x="toX"
+        :target-y="toY"
+        :source-position="fromPosition"
+        :target-position="toPosition"
       />
     </template>
   </VueFlow>

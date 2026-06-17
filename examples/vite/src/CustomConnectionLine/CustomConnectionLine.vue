@@ -17,8 +17,8 @@ const edges = ref<Edge[]>([]);
 
 <template>
   <VueFlow v-model:nodes="nodes" v-model:edges="edges">
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY }">
-      <ConnectionLine :source-x="sourceX" :source-y="sourceY" :target-x="targetX" :target-y="targetY" />
+    <template #connection-line="{ fromX, fromY, toX, toY }">
+      <ConnectionLine :source-x="fromX" :source-y="fromY" :target-x="toX" :target-y="toY" />
     </template>
   </VueFlow>
 </template>

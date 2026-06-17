@@ -13,7 +13,7 @@ import { initialEdges, initialNodes } from './initial-elements';
     </template>
 
     <template #edge-custom2="props">
-      <CustomEdge2 v-bind="props as unknown as InstanceType<typeof CustomEdge2>['$props']" />
+      <CustomEdge2 v-bind="props" />
     </template>
 
     <MiniMap />
