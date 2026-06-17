@@ -26,6 +26,7 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
     'markerStart',
     'interactionWidth',
     'offset',
+    'stepPosition',
   ],
   compatConfig: { MODE: 3 },
   setup(props, { attrs }) {
