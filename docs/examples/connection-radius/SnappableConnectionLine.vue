@@ -3,35 +3,35 @@ import { connectionExists, getBezierPath, storeToRefs, useStore, useVueFlow } fr
 import { computed, reactive, ref, watch } from 'vue';
 
 const props = defineProps({
-  sourceX: {
+  fromX: {
     type: Number,
     required: true,
   },
-  sourceY: {
+  fromY: {
     type: Number,
     required: true,
   },
-  targetX: {
+  toX: {
     type: Number,
     required: true,
   },
-  targetY: {
+  toY: {
     type: Number,
     required: true,
   },
-  targetPosition: {
+  fromPosition: {
     type: String,
     required: true,
   },
-  sourcePosition: {
+  toPosition: {
     type: String,
     required: true,
   },
 });
 
-const { getNodes, getInternalNode, onConnectEnd, addEdges } = useVueFlow();
+const { getNodes, getEdges, getInternalNode, onConnectEnd, addEdges } = useVueFlow();
 
-const { connectionStartHandle, edges } = storeToRefs(useStore());
+const { connectionStartHandle } = storeToRefs(useStore());
 
 const closest = reactive({
   node: null,
@@ -49,13 +49,13 @@ const MIN_DISTANCE = 75;
 
 const SNAP_DISTANCE = 30;
 
-watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
+watch([() => props.toY, () => props.toX], (_, __, onCleanup) => {
   const closestNode = getNodes.value.reduce(
     (res, n) => {
       if (n.id !== connectionStartHandle.value?.nodeId) {
         const internalNode = getInternalNode(n.id);
-        const dx = props.targetX - (internalNode.internals.positionAbsolute.x + internalNode.measured.width / 2);
-        const dy = props.targetY - (internalNode.internals.positionAbsolute.y + internalNode.measured.height / 2);
+        const dx = props.toX - (internalNode.internals.positionAbsolute.x + internalNode.measured.width / 2);
+        const dy = props.toY - (internalNode.internals.positionAbsolute.y + internalNode.measured.height / 2);
         const d = Math.sqrt(dx * dx + dy * dy);
 
         if (d < res.distance && d < MIN_DISTANCE) {
@@ -81,8 +81,8 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   const type = connectionStartHandle.value.type === 'source' ? 'target' : 'source';
 
   const closestHandle = closestNode.node.internals.handleBounds[type]?.reduce((prev, curr) => {
-    const prevDistance = Math.sqrt((prev.x - props.targetX) ** 2 + (prev.y - props.targetY) ** 2);
-    const currDistance = Math.sqrt((curr.x - props.targetX) ** 2 + (curr.y - props.targetY) ** 2);
+    const prevDistance = Math.sqrt((prev.x - props.toX) ** 2 + (prev.y - props.toY) ** 2);
+    const currDistance = Math.sqrt((curr.x - props.toX) ** 2 + (curr.y - props.toY) ** 2);
 
     return prevDistance < currDistance ? prev : curr;
   });
@@ -95,7 +95,7 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
         target: closestNode.node.id,
         targetHandle: closestHandle.id,
       },
-      edges.value,
+      getEdges.value,
     )
   ) {
     return;
@@ -117,7 +117,16 @@ watch([() => props.targetY, () => props.targetX], (_, __, onCleanup) => {
   }
 });
 
-const path = computed(() => getBezierPath(props));
+const path = computed(() =>
+  getBezierPath({
+    sourceX: props.fromX,
+    sourceY: props.fromY,
+    sourcePosition: props.fromPosition,
+    targetX: props.toX,
+    targetY: props.toY,
+    targetPosition: props.toPosition,
+  }),
+);
 
 onConnectEnd(() => {
   if (closest.startHandle && closest.handle && closest.node) {
@@ -150,6 +159,6 @@ const strokeColor = computed(() => {
 <template>
   <g>
     <path :d="path[0]" class="vue-flow__connection-path" />
-    <circle :cx="targetX" :cy="targetY" fill="#fff" :stroke="strokeColor" :r="3" :stroke-width="1.5" />
+    <circle :cx="toX" :cy="toY" fill="#fff" :stroke="strokeColor" :r="3" :stroke-width="1.5" />
   </g>
 </template>

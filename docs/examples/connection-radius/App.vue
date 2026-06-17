@@ -24,14 +24,14 @@ const nodes = ref([
 
 <template>
   <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view>
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
+    <template #connection-line="{ fromX, fromY, toX, toY, fromPosition, toPosition }">
       <ConnectionLine
-        :source-x="sourceX"
-        :source-y="sourceY"
-        :target-x="targetX"
-        :target-y="targetY"
-        :source-position="sourcePosition"
-        :target-position="targetPosition"
+        :from-x="fromX"
+        :from-y="fromY"
+        :to-x="toX"
+        :to-y="toY"
+        :from-position="fromPosition"
+        :to-position="toPosition"
       />
     </template>
   </VueFlow>
