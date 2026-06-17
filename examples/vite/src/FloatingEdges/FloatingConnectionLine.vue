@@ -4,11 +4,11 @@ import { getBezierPath } from '@vue-flow/core';
 import { getEdgeParams } from './floating-edge-utils';
 
 interface FloatingConnectionLineProps {
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  sourceNode: InternalNode;
+  toX: number;
+  toY: number;
+  fromPosition: Position;
+  toPosition: Position;
+  fromNode: InternalNode;
 }
 
 const props = defineProps<FloatingConnectionLineProps>();
@@ -16,18 +16,21 @@ const props = defineProps<FloatingConnectionLineProps>();
 const targetNode = computed(() => {
   return {
     id: 'connection-target',
-    internals: { positionAbsolute: { x: props.targetX, y: props.targetY }, z: 0 },
+    internals: { positionAbsolute: { x: props.toX, y: props.toY }, z: 0 },
     measured: { width: 1, height: 1 },
   } as unknown as InternalNode;
 });
 
-const edgeParams = computed(() => getEdgeParams(props.sourceNode, targetNode.value));
+const edgeParams = computed(() => getEdgeParams(props.fromNode, targetNode.value));
 
 const edgePath = computed(() =>
   getBezierPath({
     sourceX: edgeParams.value.sx,
     sourceY: edgeParams.value.sy,
-    ...props,
+    sourcePosition: props.fromPosition,
+    targetX: props.toX,
+    targetY: props.toY,
+    targetPosition: props.toPosition,
   }),
 );
 </script>
@@ -35,6 +38,6 @@ const edgePath = computed(() =>
 <template>
   <g>
     <path fill="none" stroke="#222" :stroke-width="1.5" class="animated" :d="edgePath[0]" />
-    <circle :cx="targetX" :cy="targetY" fill="#fff" :r="3" stroke="#222" :stroke-width="1.5" />
+    <circle :cx="toX" :cy="toY" fill="#fff" :r="3" stroke="#222" :stroke-width="1.5" />
   </g>
 </template>

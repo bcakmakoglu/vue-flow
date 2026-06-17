@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core';
-import { Background, Controls, isNode, MiniMap, Panel, VueFlow } from '@vue-flow/core';
+import { Background, Controls, MiniMap, Panel, VueFlow } from '@vue-flow/core';
 
 const nodes = ref<Node[]>([
   { id: '1', type: 'input', data: { label: 'Node 1' }, position: { x: 250, y: 5 }, class: 'light' },
@@ -23,18 +23,14 @@ function onConnect(connection: Connection) {
 }
 
 function updatePos() {
-  nodes.value = nodes.value.map((el) => {
-    if (isNode(el)) {
-      return {
-        ...el,
-        position: {
-          x: Math.random() * 400,
-          y: Math.random() * 400,
-        },
-      };
-    }
-
-    return el;
+  nodes.value = nodes.value.map((n) => {
+    return {
+      ...n,
+      position: {
+        x: Math.random() * 400,
+        y: Math.random() * 400,
+      },
+    };
   });
 }
 

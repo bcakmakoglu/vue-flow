@@ -1,21 +1,8 @@
 <script lang="ts" setup>
-import type { Edge, EdgeProps, Position } from '@vue-flow/core';
-import type { CSSProperties } from 'vue';
+import type { EdgeProps } from '@vue-flow/core';
 import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core';
 
-interface CustomEdgeProps<EdgeType extends Edge = Edge> extends EdgeProps<EdgeType> {
-  id: string;
-  sourceX: number;
-  sourceY: number;
-  targetX: number;
-  targetY: number;
-  sourcePosition: Position;
-  targetPosition: Position;
-  markerEnd: string;
-  style?: CSSProperties;
-}
-
-const props = defineProps<CustomEdgeProps>();
+const props = defineProps<EdgeProps>();
 
 const { removeEdges } = useVueFlow();
 

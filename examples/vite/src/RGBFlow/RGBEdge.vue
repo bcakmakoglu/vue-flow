@@ -5,7 +5,8 @@ import { getBezierPath } from '@vue-flow/core';
 import { computed } from 'vue';
 
 interface EdgeData extends Record<string, unknown> {
-  text?: string;
+  // the RGB channel value rendered as the edge label (e.g. 128) — a number, not a string
+  text?: number;
   color?: Colors;
 }
 
