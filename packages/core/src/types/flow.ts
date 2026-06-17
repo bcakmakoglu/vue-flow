@@ -80,8 +80,11 @@ export type CSSVars
 export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] };
 export type Styles = CSSProperties & ThemeVars & CustomThemeVars;
 
-// Vue does not publicly export ClassValue, so we define it here to match its class binding type
-export type ClassValue = string | Record<string, boolean> | ClassValue[];
+// Vue does not publicly export ClassValue, so we define it here to match its class binding type. Kept
+// NON-recursive (one level of array, not `ClassValue[]`) — a self-referential `ClassValue[]` makes
+// `UnwrapRef<Node[]>` / node spreads trip `TS2589: Type instantiation is excessively deep` (e.g. on
+// `nodes.value.map((n) => ({ ...n }))`).
+export type ClassValue = string | Record<string, boolean> | Array<string | Record<string, boolean>>;
 
 export interface FlowExportObject {
   /** exported nodes */
