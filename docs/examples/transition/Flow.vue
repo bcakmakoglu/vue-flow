@@ -1,9 +1,7 @@
 <script setup>
-import { Background, Position, useVueFlow, VueFlow } from '@vue-flow/core';
+import { Background, Position, VueFlow } from '@vue-flow/core';
 import { ref } from 'vue';
 import TransitionEdge from './TransitionEdge.vue';
-
-const { onInit } = useVueFlow();
 
 const nodes = ref([
   {
@@ -23,24 +21,14 @@ const nodes = ref([
 ]);
 
 const edges = ref([{ id: 'e1-2', type: 'custom', source: '1', target: '2', style: { stroke: '#fff' } }]);
-
-onInit(({ fitView }) => {
-  fitView({ nodes: ['1'] });
-});
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" class="transition-flow">
-    <Background />
+  <VueFlow :nodes="nodes" :edges="edges" :fit-view-options="{ nodes: [{ id: '1' }] }" class="transition-flow" fit-view>
+    <Background :style="{ backgroundColor: '#1a192b' }" />
 
     <template #edge-custom="props">
       <TransitionEdge v-bind="props" />
     </template>
   </VueFlow>
 </template>
-
-<style>
-.transition-flow {
-  background-color: #1a192b;
-}
-</style>
