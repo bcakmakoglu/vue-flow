@@ -127,12 +127,13 @@ watchEffect((onCleanup) => {
         triggerEmits.nodesChange(nodeChanges);
       }
     },
-    onEnd: () => {
+    onEnd: ({ width, height }) => {
       triggerEmits.nodesChange([
         {
           id: props.nodeId!,
           type: 'dimensions',
           resizing: false,
+          dimensions: { width, height },
         } as NodeDimensionChange,
       ]);
     },
