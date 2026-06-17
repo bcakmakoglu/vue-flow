@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { HandleProps } from '../../types';
-import { ConnectionMode, getDimensions, isMouseEvent, Position } from '@xyflow/system';
+import { ConnectionMode, getDimensions, isMouseEvent, nodeHasDimensions, Position } from '@xyflow/system';
 import { computed, onMounted, shallowRef, toRef } from 'vue';
 import { storeToRefs, useHandle, useNode, useStore, useVueFlow } from '../../composables';
 import { isDef } from '../../utils';
@@ -139,7 +139,7 @@ onMounted(() => {
 
   // if the node isn't initialized yet, we can't set up the handle bounds
   // the handle bounds will be automatically set up when the node is initialized (`updateNodeDimensions`)
-  if (!node || !node.measured.width || !node.measured.height) {
+  if (!node || !nodeHasDimensions(node)) {
     return;
   }
 
