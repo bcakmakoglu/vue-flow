@@ -128,6 +128,17 @@
   fill: none;
 }
 
+/* arrowhead markers without an explicit color fall back to the edge-stroke variable (the open `.arrow`
+   only strokes; the closed `.arrowclosed` also fills) */
+
+.vue-flow__arrowhead polyline {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.vue-flow__arrowhead polyline.arrowclosed {
+  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
 .vue-flow__connection-path {
   stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));
   stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));
@@ -394,7 +405,8 @@
   border: 1px solid #fff;
   border-radius: 1px;
   background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
-  transform: translate(-50%, -50%);
+  /* the `translate` property (not `transform`) so the centering composes with the inline zoom `scale` */
+  translate: -50% -50%;
 }
 
 .vue-flow__resize-control.handle.left {
