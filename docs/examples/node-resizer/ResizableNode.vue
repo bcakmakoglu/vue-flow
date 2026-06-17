@@ -5,7 +5,7 @@ defineProps(['data']);
 </script>
 
 <template>
-  <NodeResizer min-width="100" min-height="30" />
+  <NodeResizer :min-width="150" :min-height="30" />
 
   <Handle type="target" :position="Position.Left" />
   <div style="padding: 10px">

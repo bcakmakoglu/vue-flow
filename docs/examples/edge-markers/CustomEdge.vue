@@ -98,8 +98,7 @@ export default {
     :label="`${markerType} marker`"
     :label-x="path[1]"
     :label-y="path[2]"
-    label-bg-style="fill: whitesmoke"
+    :label-bg-style="{ fill: 'whitesmoke' }"
   />
-
   <CustomMarker :id="markerId" :type="markerType" :stroke="markerColor" :stroke-width="2" :width="20" :height="20" />
 </template>
