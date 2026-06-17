@@ -113,4 +113,5 @@ export {
   type SnapGrid,
   type Viewport,
   type XYPosition,
+  type ZIndexMode,
 } from '@xyflow/system';

@@ -4,6 +4,7 @@ import type {
   NodeConnection,
   NodeLookup as SystemNodeLookup,
   ParentLookup as SystemParentLookup,
+  ZIndexMode,
 } from '@xyflow/system';
 import type {
   Actions,
@@ -97,6 +98,7 @@ export interface CreateInternalNodesOptions {
   nodeOrigin?: NodeOrigin;
   nodeExtent?: CoordinateExtent;
   elevateNodesOnSelect?: boolean;
+  zIndexMode?: ZIndexMode;
 }
 
 /**

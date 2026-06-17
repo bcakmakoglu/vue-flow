@@ -16,6 +16,7 @@ import type {
   Transform,
   Viewport,
   XYPosition,
+  ZIndexMode,
 } from '@xyflow/system';
 import type { ComputedRef } from 'vue';
 import type { ViewportHelper } from '../composables';
@@ -154,6 +155,7 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
 
   elevateEdgesOnSelect: boolean;
   elevateNodesOnSelect: boolean;
+  zIndexMode: ZIndexMode;
 
   autoPanOnConnect: boolean;
   autoPanOnNodeDrag: boolean;

@@ -1,5 +1,5 @@
 import type { KeyFilter } from '@vueuse/core';
-import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, PanOnScrollMode, SelectionMode, SnapGrid, Viewport } from '@xyflow/system';
+import type { ColorMode, Connection, ConnectionMode, CoordinateExtent, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
 import type { CSSProperties } from 'vue';
 import type { VueFlowError } from '../utils';
 import type { EdgeChange, NodeChange } from './changes';
@@ -196,6 +196,13 @@ export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge =
   elevateEdgesOnSelect?: boolean;
   /** elevates nodes when selected and applies z-Index + 1000 */
   elevateNodesOnSelect?: boolean;
+  /**
+   * controls how the z-index of nodes and edges is calculated.
+   * - `basic` (default): z-index is derived from the element's `zIndex`, parentage and selection state
+   * - `auto`: same as `basic`, but parented nodes are always lifted above their parent
+   * - `manual`: the element's explicit `zIndex` is used verbatim (no elevation)
+   */
+  zIndexMode?: ZIndexMode;
 
   disableKeyboardA11y?: boolean;
   edgesFocusable?: boolean;

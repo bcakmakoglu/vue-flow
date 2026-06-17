@@ -140,6 +140,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       nodeOrigin: state.nodeOrigin,
       nodeExtent: state.nodeExtent,
       elevateNodesOnSelect: state.elevateNodesOnSelect,
+      zIndexMode: state.zIndexMode,
     });
 
     state.nodes = adopted;
@@ -211,6 +212,7 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
         nodeOrigin: state.nodeOrigin,
         nodeExtent: state.nodeExtent,
         elevateNodesOnSelect: state.elevateNodesOnSelect,
+        zIndexMode: state.zIndexMode,
       });
     }
 

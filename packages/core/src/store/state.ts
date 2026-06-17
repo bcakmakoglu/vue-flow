@@ -111,6 +111,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     defaultEdgeOptions: undefined,
     elevateEdgesOnSelect: false,
     elevateNodesOnSelect: true,
+    zIndexMode: 'basic',
 
     autoPanOnNodeDrag: true,
     autoPanOnConnect: true,
