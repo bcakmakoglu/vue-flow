@@ -143,11 +143,37 @@ export function adoptNodes<NodeType extends Node = Node>(
     validNodes.push(markRaw(toRaw(node)));
   }
 
+  // vue-flow's node-rep split keeps `measured` off the user `Node`s — it lives only on the `InternalNode`.
+  // The system's `adoptUserNodes` sources `measured` solely from `userNode.measured`, so re-committing fresh
+  // user objects (a one-way `:nodes` reassignment, a layout pass, `nodes.value.map(...)`) would reset
+  // `measured` to `undefined` → the node fails `nodeHasDimensions`, renders `visibility:hidden`, and — since
+  // its DOM size didn't change — the ResizeObserver never re-fires to restore it. Snapshot the dimensions
+  // before adoption clears the lookup and carry them forward below, the way the system already reuses
+  // `handleBounds`.
+  const priorMeasured = new Map<string, { width?: number; height?: number }>();
+  for (const [id, internal] of nodeLookup) {
+    const { width, height } = internal.measured ?? {};
+    if (width !== undefined && height !== undefined) {
+      priorMeasured.set(id, { width, height });
+    }
+  }
+
   const { hasSelectedNodes } = adoptUserNodes(validNodes, nodeLookup, parentLookup, { ...options, checkEquality: true });
 
   for (const node of validNodes) {
     if (node.parentId && !nodeLookup.has(node.parentId)) {
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId));
+    }
+
+    // re-adoption only kept `measured` if the user object carried it; restore the prior measured dimensions
+    // for re-committed nodes that didn't, so a content-agnostic update (class/position/layout) stays visible
+    // instead of collapsing to a hidden, never-re-measured node (see the snapshot above)
+    const prior = priorMeasured.get(node.id);
+    if (prior) {
+      const internal = nodeLookup.get(node.id);
+      if (internal && (internal.measured?.width === undefined || internal.measured?.height === undefined)) {
+        internal.measured = prior;
+      }
     }
   }
 
