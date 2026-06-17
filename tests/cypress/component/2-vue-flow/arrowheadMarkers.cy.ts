@@ -48,4 +48,11 @@ describe('arrowhead markers', () => {
       expect(computed.fill, 'open arrow is not filled').to.eq('none');
     });
   });
+
+  // xyflow/react #5196: markers are decorative, so the marker-definitions <svg> is hidden from screen readers
+  it('hides the marker definitions svg from screen readers (aria-hidden)', () => {
+    mount(null, MarkerType.ArrowClosed);
+
+    cy.get('svg.vue-flow__marker').should('have.attr', 'aria-hidden', 'true');
+  });
 });
