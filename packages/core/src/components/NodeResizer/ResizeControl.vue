@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { NodeDimensionChange, NodePositionChange, XYResizerChange, XYResizerChildChange } from '@xyflow/system';
+import type { NodeDimensionChange, NodePositionChange } from '@xyflow/system';
 import type { NodeChange } from '../../types';
 import type { NodeResizerEmits, ResizeControlProps } from './types';
 import { evaluateAbsolutePosition, handleExpandParent, XYResizer } from '@xyflow/system';
@@ -50,7 +50,7 @@ watchEffect((onCleanup) => {
       nodeOrigin: nodeOrigin.value,
       paneDomNode: vueFlowRef.value,
     }),
-    onChange: (changes: XYResizerChange, childChanges: XYResizerChildChange[]) => {
+    onChange: (changes, childChanges) => {
       const nodeChanges: NodeChange[] = [];
       const node = nodeLookup.get(props.nodeId!);
 
