@@ -16,8 +16,7 @@ const nodes = ref(initialNodes);
 
 const edges = ref(initialEdges);
 
-// our dark mode toggle flag
-const dark = ref(false);
+const colorMode = ref('light');
 
 /**
  * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
@@ -86,7 +85,7 @@ function resetTransform() {
 }
 
 function toggleDarkMode() {
-  dark.value = !dark.value;
+  colorMode.value = colorMode.value === 'light' ? 'dark' : 'light';
 }
 </script>
 
@@ -94,11 +93,11 @@ function toggleDarkMode() {
   <VueFlow
     :nodes="nodes"
     :edges="edges"
-    :class="{ dark }"
-    class="basic-flow"
-    fit-view
+    :color-mode="colorMode"
     :min-zoom="0.2"
     :max-zoom="4"
+    class="basic-flow"
+    fit-view
   >
     <Background color="#aaa" :gap="16" />
 

@@ -1,4 +1,4 @@
-import { BasicApp, BasicCSS, BasicElements, BasicFlow, BasicIcon } from './basic';
+import { BasicApp, BasicElements, BasicFlow, BasicIcon } from './basic';
 import { ConfirmApp, ConfirmDialog, ConfirmFlow, useDialog } from './confirm-delete';
 import { SnappableConnectionLine, SnapToHandleApp } from './connection-radius';
 import { CustomConnectionLine, CustomConnectionLineApp } from './connectionline';
@@ -39,7 +39,6 @@ export const exampleImports = {
     'Flow.vue': BasicFlow,
     'Icon.vue': BasicIcon,
     'initial-elements.js': BasicElements,
-    'style.css': BasicCSS,
   },
   customNode: {
     'App.vue': CustomNodeApp,
