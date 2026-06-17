@@ -42,6 +42,7 @@ const EdgeWrapper = defineComponent({
       edgesReconnectable,
       edgesFocusable,
       elevateEdgesOnSelect,
+      zIndexMode,
       defaultEdgeOptions,
       hooks,
     } = storeToRefs(useStore());
@@ -56,7 +57,7 @@ const EdgeWrapper = defineComponent({
     // resolved per edge (value-gated computed) so the z-tracking of BOTH endpoint lookup keys lives in
     // this component's scope — resolving it in EdgeRenderer's v-for made the whole renderer re-render
     // (all edge vnodes) whenever ANY node entry was replaced, i.e. every drag frame
-    const zIndex = computed(() => getEdgeZIndex(edge.value, getInternalNode, elevateEdgesOnSelect.value));
+    const zIndex = computed(() => getEdgeZIndex(edge.value, getInternalNode, elevateEdgesOnSelect.value, zIndexMode.value));
 
     const { emit } = useEdgeHooks(emits);
 

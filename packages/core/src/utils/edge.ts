@@ -1,4 +1,6 @@
+import type { ZIndexMode } from '@xyflow/system';
 import type { Actions, Edge, HandleElement } from '../types';
+import { getElevatedEdgeZIndex } from '@xyflow/system';
 
 export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string | null): HandleElement | null {
   if (!bounds) {
@@ -9,10 +11,12 @@ export function getEdgeHandle(bounds: HandleElement[] | null, handleId?: string 
   return (!handleId ? bounds[0] : bounds.find(d => d.id === handleId)) || null;
 }
 
-export function getEdgeZIndex(edge: Edge, getInternalNode: Actions['getInternalNode'], elevateEdgesOnSelect = false) {
-  const hasZIndex = typeof edge.zIndex === 'number';
-  let z = hasZIndex ? edge.zIndex! : 0;
-
+export function getEdgeZIndex(
+  edge: Edge,
+  getInternalNode: Actions['getInternalNode'],
+  elevateEdgesOnSelect = false,
+  zIndexMode: ZIndexMode = 'basic',
+) {
   const source = getInternalNode(edge.source);
   const target = getInternalNode(edge.target);
 
@@ -20,9 +24,12 @@ export function getEdgeZIndex(edge: Edge, getInternalNode: Actions['getInternalN
     return 0;
   }
 
-  if (elevateEdgesOnSelect) {
-    z = hasZIndex ? edge.zIndex! : Math.max(source.internals.z || 0, target.internals.z || 0);
-  }
-
-  return z;
+  return getElevatedEdgeZIndex({
+    sourceNode: source,
+    targetNode: target,
+    selected: edge.selected ?? false,
+    zIndex: typeof edge.zIndex === 'number' ? edge.zIndex : 0,
+    elevateOnSelect: elevateEdgesOnSelect,
+    zIndexMode,
+  });
 }
