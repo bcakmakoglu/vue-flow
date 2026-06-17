@@ -13,6 +13,7 @@ import type {
   Edge,
   InternalNode,
   Node,
+  NodeHandleBounds,
   NodeOrigin,
   State,
   ValidConnectionFunc,
@@ -143,19 +144,27 @@ export function adoptNodes<NodeType extends Node = Node>(
     validNodes.push(markRaw(toRaw(node)));
   }
 
-  // vue-flow's node-rep split keeps `measured` off the user `Node`s — it lives only on the `InternalNode`.
-  // The system's `adoptUserNodes` sources `measured` solely from `userNode.measured`, so re-committing fresh
-  // user objects (a one-way `:nodes` reassignment, a layout pass, `nodes.value.map(...)`) would reset
-  // `measured` to `undefined` → the node fails `nodeHasDimensions`, renders `visibility:hidden`, and — since
-  // its DOM size didn't change — the ResizeObserver never re-fires to restore it. Snapshot the dimensions
-  // before adoption clears the lookup and carry them forward below, the way the system already reuses
-  // `handleBounds`.
-  const priorMeasured = new Map<string, { width?: number; height?: number }>();
+  // vue-flow's node-rep split keeps `measured` AND `handleBounds` off the user `Node`s — they live only on
+  // the `InternalNode`. The system's `adoptUserNodes` sources both from the user node (`parseHandles` even
+  // resets `handleBounds` to `undefined` when the node carries no `measured`), so re-committing fresh user
+  // objects (a one-way `:nodes` reassignment, a layout pass, `nodes.value.map(...)`) resets:
+  //   - `measured` → `undefined`: the node fails `nodeHasDimensions`, renders `visibility:hidden`, and — since
+  //     its DOM size didn't change — the ResizeObserver never re-fires to restore it.
+  //   - `handleBounds` → `undefined`: edges fall back to the node's default handle positions, ignoring its
+  //     `sourcePosition`/`targetPosition` (e.g. a dagre layout's edges no longer meet the handles).
+  // Snapshot both before adoption clears the lookup and carry them forward below. A genuine re-measure
+  // (`updateNodeDimensions`, e.g. NodeWrapper's `sourcePosition` watcher) still overwrites them, and that
+  // fresh result is in turn preserved by the next re-commit.
+  const priorInternals = new Map<
+    string,
+    { measured?: { width?: number; height?: number }; handleBounds: NodeHandleBounds | undefined }
+  >();
   for (const [id, internal] of nodeLookup) {
     const { width, height } = internal.measured ?? {};
-    if (width !== undefined && height !== undefined) {
-      priorMeasured.set(id, { width, height });
-    }
+    priorInternals.set(id, {
+      measured: width !== undefined && height !== undefined ? { width, height } : undefined,
+      handleBounds: internal.internals.handleBounds,
+    });
   }
 
   const { hasSelectedNodes } = adoptUserNodes(validNodes, nodeLookup, parentLookup, { ...options, checkEquality: true });
@@ -165,14 +174,19 @@ export function adoptNodes<NodeType extends Node = Node>(
       triggerError(new VueFlowError(ErrorCode.NODE_MISSING_PARENT, node.id, node.parentId));
     }
 
-    // re-adoption only kept `measured` if the user object carried it; restore the prior measured dimensions
-    // for re-committed nodes that didn't, so a content-agnostic update (class/position/layout) stays visible
-    // instead of collapsing to a hidden, never-re-measured node (see the snapshot above)
-    const prior = priorMeasured.get(node.id);
+    // re-adoption only kept `measured`/`handleBounds` if the user object carried them; restore the prior
+    // values for re-committed nodes that didn't, so a content-agnostic update (class/position/layout) keeps
+    // the node visible and its edges anchored to the right handles (see the snapshot above)
+    const prior = priorInternals.get(node.id);
     if (prior) {
       const internal = nodeLookup.get(node.id);
-      if (internal && (internal.measured?.width === undefined || internal.measured?.height === undefined)) {
-        internal.measured = prior;
+      if (internal) {
+        if (prior.measured && (internal.measured?.width === undefined || internal.measured?.height === undefined)) {
+          internal.measured = prior.measured;
+        }
+        if (prior.handleBounds && !internal.internals.handleBounds) {
+          internal.internals.handleBounds = prior.handleBounds;
+        }
       }
     }
   }
