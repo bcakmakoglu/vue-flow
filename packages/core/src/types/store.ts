@@ -1,5 +1,6 @@
 import type { KeyFilter } from '@vueuse/core';
 import type {
+  AriaLabelConfig,
   ColorMode,
   Connection,
   ConnectionMode,
@@ -168,6 +169,8 @@ export interface State<NodeType extends Node = Node, EdgeType extends Edge = Edg
   autoPanSpeed: number;
 
   disableKeyboardA11y: boolean;
+  /** the merged aria-label / a11y text config (defaults overlaid with the `ariaLabelConfig` prop) */
+  ariaLabelConfig: AriaLabelConfig;
 
   ariaLiveMessage: string;
 }

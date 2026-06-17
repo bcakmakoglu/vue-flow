@@ -1,5 +1,5 @@
 import type { Edge, FlowProps, Node, State } from '../types';
-import { ConnectionLineType, ConnectionMode, isMacOs, PanOnScrollMode, SelectionMode } from '@xyflow/system';
+import { ConnectionLineType, ConnectionMode, isMacOs, mergeAriaLabelConfig, PanOnScrollMode, SelectionMode } from '@xyflow/system';
 
 import { createHooks } from './hooks';
 
@@ -120,6 +120,7 @@ export function useState<NodeType extends Node = Node, EdgeType extends Edge = E
     autoPanSpeed: 15,
 
     disableKeyboardA11y: false,
+    ariaLabelConfig: mergeAriaLabelConfig(),
     ariaLiveMessage: '',
   };
 }

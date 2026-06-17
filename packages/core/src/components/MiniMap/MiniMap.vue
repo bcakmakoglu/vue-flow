@@ -24,7 +24,7 @@ const {
   maskBorderRadius = 0,
   pannable = false,
   zoomable = false,
-  ariaLabel = 'Vue Flow mini map',
+  ariaLabel,
   inversePan = false,
   zoomStep = 1,
   offsetScale = 5,
@@ -43,7 +43,10 @@ const { id, viewport, emits } = useVueFlow();
 
 const { nodeLookup } = useStore();
 
-const { edges, nodes, transform, translateExtent, dimensions, panZoom } = storeToRefs(useStore());
+const { edges, nodes, transform, translateExtent, dimensions, panZoom, ariaLabelConfig } = storeToRefs(useStore());
+
+// fall back to the configurable default label (`ariaLabelConfig`) when no explicit `ariaLabel` is passed
+const resolvedAriaLabel = computed(() => ariaLabel ?? ariaLabelConfig.value['minimap.ariaLabel']);
 
 const el = shallowRef<SVGElement>();
 
@@ -229,7 +232,7 @@ export default {
       role="img"
       @click="onSvgClick"
     >
-      <title v-if="ariaLabel" :id="`vue-flow__minimap-${id}`">{{ ariaLabel }}</title>
+      <title v-if="resolvedAriaLabel" :id="`vue-flow__minimap-${id}`">{{ resolvedAriaLabel }}</title>
 
       <!-- v-memo on the lookup entry: unchanged nodes keep their InternalNode reference across commits
       (checkEquality reuse), so drag/pan-frame MiniMap re-renders skip every untouched child instead of

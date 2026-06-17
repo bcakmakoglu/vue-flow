@@ -55,6 +55,7 @@ const NodeWrapper = defineComponent({
       multiSelectionActive,
       disableKeyboardA11y,
       ariaLiveMessage,
+      ariaLabelConfig,
       nodeDragThreshold,
       nodesDraggable,
       elementsSelectable,
@@ -398,9 +399,11 @@ const NodeWrapper = defineComponent({
         // prevent page scrolling
         event.preventDefault();
 
-        ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
-          .position
-          .x}, y: ${~~node.position.y}`;
+        ariaLiveMessage.value = ariaLabelConfig.value['node.a11yDescription.ariaLiveMessage']({
+          direction: event.key.replace('Arrow', '').toLowerCase(),
+          x: ~~node.position.x,
+          y: ~~node.position.y,
+        });
 
         updateNodePositions(
           {

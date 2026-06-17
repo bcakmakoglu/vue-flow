@@ -18,7 +18,12 @@ export default {
 </script>
 
 <template>
-  <div class="vue-flow__panel" :class="positionClasses" :style="{ pointerEvents: userSelectionActive ? 'none' : 'all' }">
+  <div
+    class="vue-flow__panel"
+    :class="positionClasses"
+    :aria-label="label ?? undefined"
+    :style="{ pointerEvents: userSelectionActive ? 'none' : 'all' }"
+  >
     <slot />
   </div>
 </template>
