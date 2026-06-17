@@ -108,6 +108,9 @@ export {
   PanOnScrollMode,
   Position,
   type Rect,
+  // value export (it's a runtime enum) — keeps `ResizeControlVariant.Line/.Handle` usable as a value, not
+  // type-only, at the package root (mirrors xyflow/react #4947; `export *` via NodeResizer downgraded it)
+  ResizeControlVariant,
   SelectionMode,
   type SelectionRect,
   type SnapGrid,
