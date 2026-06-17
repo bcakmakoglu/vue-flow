@@ -105,6 +105,8 @@ export interface DefaultEdge<Data extends Record<string, unknown> = Record<strin
 export interface SmoothStepPathOptions {
   offset?: number;
   borderRadius?: number;
+  /** where the bend sits along the path: 0 = at source, 1 = at target, 0.5 = midpoint @default 0.5 */
+  stepPosition?: number;
 }
 
 export type SmoothStepEdgeType<Data extends Record<string, unknown> = Record<string, unknown>> = DefaultEdge<Data> & {
