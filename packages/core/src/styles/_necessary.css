@@ -391,7 +391,8 @@
   border: 1px solid #fff;
   border-radius: 1px;
   background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
-  transform: translate(-50%, -50%);
+  /* the `translate` property (not `transform`) so the centering composes with the inline zoom `scale` */
+  translate: -50% -50%;
 }
 
 .vue-flow__resize-control.handle.left {
