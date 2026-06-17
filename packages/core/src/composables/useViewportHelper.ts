@@ -1,8 +1,9 @@
 import type { Project } from '@xyflow/system';
 import type { Edge, Node, NodeLookup, State, ViewportFunctions } from '../types';
+import { until } from '@vueuse/core';
 import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system';
 import { computed } from 'vue';
-import { warn } from '../utils';
+import { areNodesInitialized, warn } from '../utils';
 
 export interface ViewportHelper<NodeType extends Node = Node> extends ViewportFunctions<NodeType> {
   viewportInitialized: boolean;
@@ -42,6 +43,10 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
   state: State<NodeType, EdgeType>,
   nodeLookup: NodeLookup<NodeType>,
 ) {
+  // whether every (non-hidden) node has been measured — `fitView` waits on this so an imperative call right
+  // after `addNodes` doesn't fit around stale (unmeasured) geometry (`getFitViewNodes` skips unmeasured nodes)
+  const nodesInitialized = computed(() => areNodesInitialized(nodeLookup));
+
   return computed<ViewportHelper<NodeType>>(() => {
     const panZoom = state.panZoom;
     const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height;
@@ -86,6 +91,14 @@ export function useViewportHelper<NodeType extends Node = Node, EdgeType extends
       ) => {
         if (!panZoom) {
           return false;
+        }
+
+        // queue the fit until every node is measured (xyflow/react's `fitViewQueued`): a fit requested
+        // before the nodes settle — e.g. right after `addNodes` — would otherwise frame only the already
+        // measured nodes (`getFitViewNodes` skips unmeasured ones) and ignore the new ones. An empty flow has
+        // nothing to wait for, so don't queue (else the fit would never resolve).
+        if (nodeLookup.size > 0 && !nodesInitialized.value) {
+          await until(nodesInitialized).toBe(true);
         }
 
         return fitViewport(
