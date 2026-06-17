@@ -21,7 +21,7 @@ const sourceConnections = useNodeConnections({
 // Get the source connections of the operator node
 const operatorSourceConnections = useNodeConnections({
   handleType: 'target',
-  nodeId: () => sourceConnections.value[0]?.source,
+  id: () => sourceConnections.value[0]?.source,
 });
 
 const operatorData = useNodesData(() => sourceConnections.value.map(connection => connection.source));
