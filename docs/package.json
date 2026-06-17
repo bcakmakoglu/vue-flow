@@ -23,6 +23,7 @@
     "@tooling/eslint-config": "workspace:*",
     "@windicss/plugin-scrollbar": "^1.2.3",
     "dotenv": "^17.4.2",
+    "esbuild": "^0.28.1",
     "ofetch": "^1.5.1",
     "typedoc": "^0.28.19",
     "typedoc-plugin-markdown": "~4.12.0",

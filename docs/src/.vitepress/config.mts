@@ -12,6 +12,8 @@ import llmstxt from 'vitepress-plugin-llms';
 import head from './head';
 import { copyVueFlowPlugin, files } from './plugins';
 
+// vitepress loads this config through Node's ESM loader, where a JSON `import` would need an explicit
+// `with { type: 'json' }` attribute (and that path is fragile through esbuild); `createRequire` is robust.
 const require = createRequire(import.meta.url);
 const vueFlowVersion = (require('@vue-flow/core/package.json') as { version: string }).version;
 
@@ -75,9 +77,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   outDir: resolve(__dirname, '../../dist'),
 
   vite: {
-    define: {
-      __VUE_FLOW_VERSION__: JSON.stringify(vueFlowVersion),
-    },
     plugins: [
       copyVueFlowPlugin(),
       AutoImport({
