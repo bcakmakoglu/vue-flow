@@ -309,7 +309,7 @@ export type EdgeSlots<EdgeType extends Edge = Edge> = Partial<
 
 export type FlowSlots<NodeType extends Node = Node, EdgeType extends Edge = Edge> = NodeSlots<NodeType>
   & EdgeSlots<EdgeType> & {
-    'connection-line'?: (connectionLineProps: ConnectionLineProps) => any;
+    'connection-line'?: (connectionLineProps: ConnectionLineProps<NodeType>) => any;
     'zoom-pane'?: () => any;
     'default'?: () => any;
   };
