@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { Edge, Node } from '@vue-flow/core';
 import { VueFlow } from '@vue-flow/core';
+import CustomResizableNode from './CustomResizableNode.vue';
 import ResizableNode from './ResizableNode.vue';
 import ResizableNodeSelected from './ResizableNodeSelected.vue';
 
@@ -46,6 +47,10 @@ const edges = ref<Edge[]>([]);
 
     <template #node-resizableSelected="resizableNodeProps">
       <ResizableNodeSelected :label="resizableNodeProps.data?.label" :selected="resizableNodeProps.selected" />
+    </template>
+
+    <template #node-custom-resizable="customResizableNodeProps">
+      <CustomResizableNode :label="customResizableNodeProps.data?.label" />
     </template>
   </VueFlow>
 </template>
