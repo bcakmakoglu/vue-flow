@@ -189,7 +189,7 @@ const EdgeWrapper = defineComponent({
       // than in EdgeRenderer's v-for so its node-lookup tracking stays scoped to this edge
       return h(
         'svg',
-        { class: 'vue-flow__edges vue-flow__container', style: { zIndex: zIndex.value } },
+        { style: { zIndex: zIndex.value } },
         h(
           'g',
           {
@@ -229,8 +229,8 @@ const EdgeWrapper = defineComponent({
             updating.value
               ? null
               : h(edgeCmp.value === false ? getEdgeTypes.value.default : (edgeCmp.value as any), {
-                  // no sourceNode/targetNode (custom edges resolve nodes via `useInternalNode`);
-                  // handles passed as sourceHandleId/targetHandleId
+                // no sourceNode/targetNode (custom edges resolve nodes via `useInternalNode`);
+                // handles passed as sourceHandleId/targetHandleId
                   id: props.id,
                   source: edge.value.source,
                   target: edge.value.target,

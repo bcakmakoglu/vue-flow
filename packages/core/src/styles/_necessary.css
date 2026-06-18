@@ -113,8 +113,13 @@
 }
 
 .vue-flow .vue-flow__edges {
-  pointer-events: none;
+  position: absolute;
+}
+
+.vue-flow .vue-flow__edges svg {
   overflow: visible;
+  position: absolute;
+  pointer-events: none;
 }
 
 .vue-flow__edge-path {
