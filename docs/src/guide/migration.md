@@ -317,7 +317,7 @@ far the pointer may move and still count as a node click.
 
 ## 14. Styles & CSS variables
 
-The stylesheets and theme variables now mirror `@xyflow/react`/`@xyflow/svelte`. Two breaking changes:
+The stylesheets and theme variables now mirror `@xyflow/react`/`@xyflow/svelte`. The breaking changes:
 
 **`theme-default.css` was removed.** `style.css` is now the full default theme (necessary structure *and* the built-in look) — import just that. A new `base.css` ships the structure with only minimal theming, for when you bring your own.
 
@@ -348,6 +348,15 @@ import '@vue-flow/core/dist/style.css'
 | `--vf-minimap-bg`      | `--xy-minimap-background-color`                                               |
 
 The old aggregate `--vf-node-color` (which drove border + box-shadow + handle at once) is gone — those are separate `--xy-*` variables now. The full list is in [`CSSVars`](/typedocs/type-aliases/CSSVars) and the [theming guide](/guide/theming#css-variables).
+
+**Two element classes were renamed to match xyflow.** The element-class *suffixes* now line up with `@xyflow/react`/`@xyflow/svelte`:
+
+| before                          | after                           |
+|---------------------------------|---------------------------------|
+| `.vue-flow__transformationpane` | `.vue-flow__renderer`           |
+| `.vue-flow__edge-labels`        | `.vue-flow__edgelabel-renderer` |
+
+If you target either in custom CSS (or query them from JS), update the selector. (Everything keeps the `vue-flow__` prefix — only these two suffixes changed.)
 
 **Uniform node accents.** The built-in `input`/`output` node types no longer have blue/pink accent borders — every default node type uses the same neutral `#1a192b` border (matching `@xyflow/react`). Re-add per-type colors with your own CSS if you want them.
 
