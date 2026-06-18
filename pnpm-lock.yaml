@@ -189,9 +189,6 @@ importers:
       '@xyflow/system':
         specifier: ^0.0.77
         version: 0.0.77
-      d3-interpolate:
-        specifier: ^3.0.1
-        version: 3.0.1
     devDependencies:
       '@arethetypeswrong/core':
         specifier: ^0.18.3
@@ -199,15 +196,6 @@ importers:
       '@tooling/eslint-config':
         specifier: workspace:*
         version: link:../../tooling/eslint-config
-      '@types/d3-interpolate':
-        specifier: ^3.0.4
-        version: 3.0.4
-      '@types/d3-transition':
-        specifier: ^3.0.9
-        version: 3.0.9
-      '@types/d3-zoom':
-        specifier: ^3.0.8
-        version: 3.0.8
       autoprefixer:
         specifier: ^10.5.0
         version: 10.5.0(postcss@8.5.15)

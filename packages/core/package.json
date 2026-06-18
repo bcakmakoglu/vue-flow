@@ -73,15 +73,11 @@
   },
   "dependencies": {
     "@vueuse/core": "^14.3.0",
-    "@xyflow/system": "^0.0.77",
-    "d3-interpolate": "^3.0.1"
+    "@xyflow/system": "^0.0.77"
   },
   "devDependencies": {
     "@arethetypeswrong/core": "^0.18.3",
     "@tooling/eslint-config": "workspace:*",
-    "@types/d3-interpolate": "^3.0.4",
-    "@types/d3-transition": "^3.0.9",
-    "@types/d3-zoom": "^3.0.8",
     "autoprefixer": "^10.5.0",
     "postcss": "^8.5.15",
     "postcss-cli": "^11.0.1",
