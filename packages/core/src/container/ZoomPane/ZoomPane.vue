@@ -146,7 +146,7 @@ export default {
 </script>
 
 <template>
-  <div ref="zoomPane" :key="`viewport-${id}`" class="vue-flow__viewport vue-flow__container">
+  <div ref="zoomPane" :key="`renderer-${id}`" class="vue-flow__renderer vue-flow__container">
     <Pane
       :is-selecting="isSelecting"
       :selection-key-pressed="selectionKeyPressed"
@@ -155,7 +155,7 @@ export default {
       <Viewport>
         <EdgeRenderer />
 
-        <div class="vue-flow__edge-labels" />
+        <div class="vue-flow__edgelabel-renderer" />
 
         <NodeRenderer />
 

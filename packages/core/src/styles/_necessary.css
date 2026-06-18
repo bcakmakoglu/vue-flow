@@ -1,7 +1,9 @@
-/* Necessary styles shared by base.css and style.css. Mirrors @xyflow/system's init.css, but on
-   vue-flow's own selectors + DOM (e.g. `transformationpane`/`edge-labels`). Declares the always-present
-   `--xy-*` variables (structural: edges, connection line, minimap, background, attribution, resize) and
-   the structural rules that consume them via the `var(--xy-x, var(--xy-x-default))` fallback. */
+/* Necessary structural styles shared by base.css and style.css. Mirrors @xyflow/system's base.css on
+   vue-flow's own `.vue-flow__*` selectors — the element suffixes and DOM nesting match xyflow:
+   `renderer` (outer pan/zoom container) › `pane` (drag/selection surface) › `viewport` (the transformed
+   layer that carries the zoom transform). Declares the always-present `--xy-*` variables (structural:
+   edges, connection line, minimap, background, attribution, resize) and the structural rules that
+   consume them via the `var(--xy-x, var(--xy-x-default))` fallback. */
 
 .vue-flow {
   direction: ltr;
@@ -83,22 +85,21 @@
   }
 }
 
-.vue-flow__transformationpane {
+.vue-flow__viewport {
   transform-origin: 0 0;
   z-index: 2;
   pointer-events: none;
 }
 
-.vue-flow__viewport {
+.vue-flow__renderer {
   z-index: 4;
-  overflow: clip;
 }
 
 .vue-flow__selection {
   z-index: 6;
 }
 
-.vue-flow__edge-labels {
+.vue-flow__edgelabel-renderer {
   position: absolute;
   width: 100%;
   height: 100%;
