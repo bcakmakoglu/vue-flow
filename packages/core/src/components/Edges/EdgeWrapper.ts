@@ -196,6 +196,8 @@ const EdgeWrapper = defineComponent({
                 selected: edge.value.selected,
                 animated: edge.value.animated,
                 inactive: !isSelectable.value && !store.hooks.edgeClick.hasListeners(),
+                // xyflow parity: the CSS keys `cursor: pointer` and the focus stroke off `.selectable`
+                selectable: isSelectable.value,
               },
             ],
             'tabIndex': isFocusable.value ? 0 : undefined,
