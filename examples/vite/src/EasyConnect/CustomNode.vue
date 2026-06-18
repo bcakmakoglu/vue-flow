@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import { Handle, Position, storeToRefs, useStore } from '@vue-flow/core';
+import { Handle, Position, useStore } from '@vue-flow/core';
 import { computed } from 'vue';
 
 const props = defineProps<{ id: string }>();
 
-const { connectionStartHandle } = storeToRefs(useStore());
+// In a custom node, read the reactive store directly — `store.x` tracks reactively inside a computed.
+// (Avoid `storeToRefs(useStore())` here: it re-derives a ref for every state key on each node instance.)
+const store = useStore();
 
-const isTarget = computed(() => connectionStartHandle.value && connectionStartHandle.value.nodeId !== props.id);
+const isTarget = computed(() => store.connectionStartHandle && store.connectionStartHandle.nodeId !== props.id);
 </script>
 
 <template>

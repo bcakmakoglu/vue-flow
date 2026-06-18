@@ -156,6 +156,12 @@ const { nodes, transform } = storeToRefs(useStore())           // value-type sta
 const { nodeLookup } = useStore()                              // reactive-Map lookups (no .value)
 ```
 
+> **Inside a component (incl. custom nodes/edges), prefer reading the store directly** —
+> `const store = useStore()` then `store.transform`, `store.nodesDraggable`, … . Reads inside a
+> computed/render track reactively without `.value`, and you skip re-projecting the whole state into refs
+> on every instance. Reach for `storeToRefs` only when you need to destructure refs and pass them around
+> outside a reactive scope.
+
 | Before                                                           | After                                                                       |
 |------------------------------------------------------------------|-----------------------------------------------------------------------------|
 | `const { nodes } = useVueFlow()`                                 | `const { nodes } = storeToRefs(useStore())`                                 |

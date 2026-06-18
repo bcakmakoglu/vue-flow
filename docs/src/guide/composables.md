@@ -158,7 +158,7 @@ This is how the default handle component is built:
 ```vue
 
 <script lang="ts" setup>
-import { storeToRefs, useHandle, useNodeId, useStore } from '@vue-flow/core'
+import { useHandle, useNodeId, useStore } from '@vue-flow/core'
 import type { HandleProps, Position } from '@vue-flow/core'
 
 const props = withDefaults(defineProps<HandleProps>(), {
@@ -169,8 +169,9 @@ const props = withDefaults(defineProps<HandleProps>(), {
 
 const nodeId = useNodeId()
 
-// `connectionStartHandle` is raw store state — pull it off `useStore` (as a ref) via `storeToRefs`
-const { connectionStartHandle } = storeToRefs(useStore())
+// read raw store state directly — `store.x` is reactive inside computeds/templates, so a per-instance
+// component doesn't need `storeToRefs` (which re-derives a ref for every state key on each call)
+const store = useStore()
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
@@ -204,9 +205,9 @@ export default {
         target: type === 'target',
         connectable: isConnectable,
         connecting:
-          connectionStartHandle?.nodeId === nodeId &&
-          connectionStartHandle?.id === id &&
-          connectionStartHandle?.type === type,
+          store.connectionStartHandle?.nodeId === nodeId &&
+          store.connectionStartHandle?.id === id &&
+          store.connectionStartHandle?.type === type,
       },
     ]"
     @mousedown="onMouseDownHandler"
