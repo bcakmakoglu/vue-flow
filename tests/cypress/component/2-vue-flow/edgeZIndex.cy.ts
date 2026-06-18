@@ -6,11 +6,13 @@ import { getStore } from '../../support/component';
 // `elevateEdgesOnSelect`), and lifted by the `z` of any parented (child) endpoint so edges touching a child
 // render above the parent. `zIndexMode: 'manual'` bypasses all elevation and uses the explicit `zIndex` verbatim.
 //
-// The per-edge `.vue-flow__edges` svg wrapper carries the computed z-index as an inline style; since it is
-// `position: absolute`, the resolved `z-index` is exactly what stacks the edge — assert that.
+// Each edge renders inside its own `<svg>` (an unclassed, `position: absolute` element sitting in the
+// `.vue-flow__edges` wrapper `<div>`), and that per-edge svg carries the computed z-index as an inline
+// style — so the resolved `z-index` on it is exactly what stacks the edge. Target that svg directly:
+// `.closest('.vue-flow__edges')` would resolve to the shared wrapper div (no z-index), so use the svg.
 describe('edge z-index (elevation + zIndexMode)', () => {
   function edgeZ(id: string) {
-    return cy.get(`.vue-flow__edge[data-id="${id}"]`).closest('.vue-flow__edges');
+    return cy.get(`.vue-flow__edge[data-id="${id}"]`).closest('svg');
   }
 
   it('a plain edge between root nodes has z-index 0', () => {
@@ -75,5 +77,30 @@ describe('edge z-index (elevation + zIndexMode)', () => {
 
     // neither the child elevation nor the +1000 selection bump apply in manual mode
     edgeZ('c-n').should('have.css', 'z-index', '7');
+  });
+
+  it('a runtime-selected edge elevates dynamically (the stable-id renderer re-renders only that edge)', () => {
+    cy.vueFlow({
+      fitView: false,
+      elevateEdgesOnSelect: true,
+      nodes: [
+        { id: 'a', position: { x: 0, y: 0 }, data: {} },
+        { id: 'b', position: { x: 200, y: 0 }, data: {} },
+      ],
+      edges: [{ id: 'a-b', source: 'a', target: 'b', zIndex: 5 }],
+    });
+
+    // base z-index, not selected
+    edgeZ('a-b').should('have.css', 'z-index', '5');
+
+    // select at runtime: with the stable-id v-for + v-memo, `EdgeRenderer` does NOT re-render (membership
+    // unchanged), so the edge's own wrapper must self-re-render and lift z by +1000 — the dynamic path the
+    // other specs (which mount already-selected) don't exercise.
+    cy.then(() => {
+      const store: VueFlowStore = getStore();
+      store.setEdges(store.edges.value.map(edge => (edge.id === 'a-b' ? { ...edge, selected: true } : edge)));
+    });
+
+    edgeZ('a-b').should('have.css', 'z-index', '1005');
   });
 });
