@@ -25,12 +25,10 @@ const nodes = ref<Node[]>(initialElements.filter(isNode));
 const edges = ref<Edge[]>(initialElements.filter(isEdge));
 
 function changeType() {
-  nodes.value.forEach((el) => {
-    if (el.type === 'input') {
-      return;
-    }
-    el.type = el.type === 'default' ? 'output' : 'default';
-  });
+  // immutably re-map — user nodes are `markRaw`d in 2.0, so mutating `el.type` in place never re-commits
+  nodes.value = nodes.value.map(el =>
+    el.type === 'input' ? el : { ...el, type: el.type === 'default' ? 'output' : 'default' },
+  );
 }
 </script>
 

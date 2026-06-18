@@ -26,7 +26,7 @@ function onRestore() {
   const flow = state.value;
 
   if (flow) {
-    const { x = 0, y = 0, zoom = 0 } = flow.viewport;
+    const { x = 0, y = 0, zoom = 1 } = flow.viewport;
 
     setNodes(flow.nodes);
 

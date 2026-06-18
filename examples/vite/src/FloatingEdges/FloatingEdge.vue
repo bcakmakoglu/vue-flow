@@ -29,7 +29,9 @@ const edgePath = computed(
         sourcePosition: edgeParams.value.sourcePos,
         targetPosition: edgeParams.value.targetPos,
       }))
-      || '',
+      // fall back to an array so `edgePath[0]` is always a string — before the nodes are measured
+      // `sx` is undefined and a bare `''` fallback made `edgePath[0]` undefined (BaseEdge `path` warning)
+      || [''],
 );
 </script>
 
