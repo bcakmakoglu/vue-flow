@@ -113,7 +113,7 @@ function toggleDarkMode() {
       </ControlButton>
 
       <ControlButton title="Toggle Dark Mode" @click="toggleDarkMode">
-        <Icon v-if="dark" name="sun" />
+        <Icon v-if="colorMode === 'dark'" name="sun" />
         <Icon v-else name="moon" />
       </ControlButton>
 
