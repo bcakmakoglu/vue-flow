@@ -349,14 +349,15 @@ import '@vue-flow/core/dist/style.css'
 
 The old aggregate `--vf-node-color` (which drove border + box-shadow + handle at once) is gone — those are separate `--xy-*` variables now. The full list is in [`CSSVars`](/typedocs/type-aliases/CSSVars) and the [theming guide](/guide/theming#css-variables).
 
-**Two element classes were renamed to match xyflow.** The element-class *suffixes* now line up with `@xyflow/react`/`@xyflow/svelte`:
+**Three element classes were renamed to match xyflow.** Vue Flow's internal DOM now nests exactly like `@xyflow/react`/`@xyflow/svelte` — `renderer` (outer pan/zoom container) › `pane` (drag/selection surface) › `viewport` (the transformed layer that carries the zoom transform) — so the element-class *suffixes* line up:
 
 | before                          | after                           |
 |---------------------------------|---------------------------------|
-| `.vue-flow__transformationpane` | `.vue-flow__renderer`           |
+| `.vue-flow__transformationpane` | `.vue-flow__viewport`           |
+| `.vue-flow__viewport`           | `.vue-flow__renderer`           |
 | `.vue-flow__edge-labels`        | `.vue-flow__edgelabel-renderer` |
 
-If you target either in custom CSS (or query them from JS), update the selector. (Everything keeps the `vue-flow__` prefix — only these two suffixes changed.)
+Note `viewport` now refers to the **transformed inner layer** (it was the outer container before); the outer container is now `renderer`. If you target any of these in custom CSS (or query them from JS), update the selector. (Everything keeps the `vue-flow__` prefix.)
 
 **Uniform node accents.** The built-in `input`/`output` node types no longer have blue/pink accent borders — every default node type uses the same neutral `#1a192b` border (matching `@xyflow/react`). Re-add per-type colors with your own CSS if you want them.
 

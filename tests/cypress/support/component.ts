@@ -69,12 +69,14 @@ function mountVueFlow(props?: FlowProps, attrs?: Record<string, any>, slots?: Re
   });
 }
 
+// the outer pan/zoom container (the panzoom target) — for wheel/drag events
 function useViewPort() {
-  return cy.get('.vue-flow__viewport');
+  return cy.get('.vue-flow__renderer');
 }
 
+// the transformed layer that carries the zoom `transform` — for transform assertions
 function useTransformationPane() {
-  return cy.get('.vue-flow__transformationpane');
+  return cy.get('.vue-flow__viewport');
 }
 
 function retry(assertion: Function, { interval = 20, timeout = 1000 } = {}) {

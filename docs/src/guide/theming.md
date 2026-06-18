@@ -225,7 +225,8 @@ Here you'll find a handy reference guide of class names and their respective ele
 | --------------------- | ----------------------------------------- |
 | .vue-flow             | The outer container                       |
 | .vue-flow__container  | Wrapper for container elements            |
-| .vue-flow__viewport   | The inner container                       |
+| .vue-flow__renderer   | The pan/zoom container                    |
+| .vue-flow__viewport   | The transformed (zoomed/panned) layer     |
 | .vue-flow__background | Background component                      |
 | .vue-flow__minimap    | MiniMap component                         |
 | .vue-flow__controls   | Controls component                        |
