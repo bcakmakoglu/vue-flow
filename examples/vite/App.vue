@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import Header from './Header.vue'
+import { VueFlowProvider } from '@vue-flow/core';
+import Header from './Header.vue';
 </script>
 
 <template>
   <Header />
-  <router-view />
+  <VueFlowProvider>
+    <router-view />
+  </VueFlowProvider>
 </template>

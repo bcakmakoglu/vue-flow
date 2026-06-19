@@ -127,7 +127,7 @@ You cannot hide a handle by removing it from the DOM (for example using `v-if` o
 
 ## Limiting Connections
 
-You can limit the number of connections a handle can have by setting the `connectable` prop on the `<Handle>` component.
+You can limit the number of connections a handle can have by setting the `isConnectable` prop on the `<Handle>` component.
 
 This prop accepts a boolean value (defaults to `true`), a number (the maximum number of connections), or a function that returns a boolean.
 
@@ -143,16 +143,14 @@ const handleConnectable: HandleConnectableFunc = (node, connectedEdges) => {
 </script>
 
 <template>
-  <Handle type="source" :position="Position.Right" :connectable="handleConnectable" />
+  <Handle type="source" :position="Position.Right" :is-connectable="handleConnectable" />
 </template>
 ```
 
 ## Connection Mode
 
-By default, Vue Flow will use `<VueFlow :connection-mode="ConnectionMode.Loose" />` which allows you to connect edges to any handle.
-That means connections between a `source` and another `source` type `<Handle>` are allowed.
-
-If you want to restrict connections to only be made between `source` and `target` type handles, you can set the `connection-mode` prop to `ConnectionMode.Strict`.
+By default Vue Flow uses **strict** connection mode, where a `source` handle only connects to a `target` handle.
+Set `connection-mode` to `ConnectionMode.Loose` (or the string `'loose'`) to allow connecting to any handle (e.g. `source`-to-`source`).
 
 ```vue
 <script setup>
@@ -160,16 +158,16 @@ import { ConnectionMode, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>
-  <VueFlow :connection-mode="ConnectionMode.Strict" />
+  <VueFlow :connection-mode="ConnectionMode.Loose" />
 </template>
 ```
 
 ## Dynamic Handle Positions & Adding/Removing Handles Dynamically
 
 ::: tip
-In Vue Flow 1.x, there's no need to manually invoke `updateNodeInternals` when dynamically adding handles.
-Upon mounting, handles will automatically attempt to attach to the node.
-However, if for any reason this isn't happening as expected, you can stick to the guideline provided below to enforce Vue Flow to update the node internals.
+Handles register themselves on mount, so statically-defined handles just work. When you add, remove, or move
+handles **dynamically** (after mount), call `updateNodeInternals` so Vue Flow re-measures the node's handle
+bounds — otherwise edges can end up misaligned.
 :::
 
 At times, you may need to modify handle positions dynamically or programmatically add new handles to a node. In this scenario, the [`updateNodeInternals`](/typedocs/type-aliases/UpdateNodeInternals) method found in Vue Flow's API comes in handy.

@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import type { Elements } from '@vue-flow/core'
-import { Position, VueFlow, isEdge } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
+import { isEdge, isNode, Position, VueFlow } from '@vue-flow/core';
 
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '1',
     sourcePosition: Position.Right,
     type: 'input',
-    label: 'Input',
+    data: { label: 'Input' },
     position: { x: 0, y: 80 },
   },
   {
@@ -15,26 +15,27 @@ const initialElements: Elements = [
     type: 'output',
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
-    label: 'A Node',
+    data: { label: 'A Node' },
     position: { x: 250, y: 0 },
   },
   { id: 'e1-2', source: '1', type: 'smoothstep', target: '2', animated: true },
-]
+];
 
-const elements = ref<Elements>(initialElements)
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 
 function changeType() {
-  elements.value.forEach((el) => {
-    if (isEdge(el) || el.type === 'input') {
-      return
-    }
-    el.type = el.type === 'default' ? 'output' : 'default'
-  })
+  // immutably re-map — user nodes are `markRaw`d in 2.0, so mutating `el.type` in place never re-commits
+  nodes.value = nodes.value.map(el =>
+    el.type === 'input' ? el : { ...el, type: el.type === 'default' ? 'output' : 'default' },
+  );
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" fit-view-on-init>
-    <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">change type</button>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
+    <button :style="{ position: 'absolute', right: 10, top: 30, zIndex: 4 }" @click="changeType">
+      change type
+    </button>
   </VueFlow>
 </template>

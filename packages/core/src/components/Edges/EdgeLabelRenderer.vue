@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import { toRef } from 'vue'
-import type { TeleportProps } from 'vue'
-import { useVueFlow } from '../../composables'
+import type { TeleportProps } from 'vue';
+import { toRef } from 'vue';
+import { storeToRefs, useStore } from '../../composables';
 
-const { viewportRef } = useVueFlow()
+const { viewportRef } = storeToRefs(useStore());
 
-const teleportTarget = toRef(() => viewportRef.value?.getElementsByClassName('vue-flow__edge-labels')[0] as TeleportProps['to'])
+const teleportTarget = toRef(() => viewportRef.value?.getElementsByClassName('vue-flow__edgelabel-renderer')[0] as TeleportProps['to']);
 </script>
 
 <script lang="ts">
 export default {
   name: 'EdgeLabelRenderer',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

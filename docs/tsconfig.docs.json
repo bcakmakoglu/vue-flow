@@ -1,27 +1,35 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "module": "ESNext",
+    // typedoc 0.28 runs under TS 6, which errors on the deprecated `baseUrl` (still needed by the `~/*`
+    // paths alias below) and `moduleResolution: "node"`. This config only feeds typedoc's type analysis,
+    // so silence the deprecation rather than change how modules resolve (keeps the generated API stable).
+    "ignoreDeprecations": "6.0",
+    "incremental": false,
     "target": "es2017",
     "lib": [
       "DOM",
       "ESNext"
     ],
-    "strict": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "skipLibCheck": true,
+    "baseUrl": ".",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
     "paths": {
       "~/*": ["../packages/core/src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "types": [],
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
+  // only the package sources feed typedoc's API analysis — `../packages/**/*` also swept in build
+  // configs like `vite.config.ts` (which import `vite`/`node:*` and don't resolve under this config's
+  // `moduleResolution`/`types`), breaking the docs build
   "include": [
-    "../packages/**/*"
+    "../packages/*/src/**/*"
   ],
   "exclude": [
     "node_modules"

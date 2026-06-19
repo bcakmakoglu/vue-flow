@@ -1,19 +1,18 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import { initialEdges, initialNodes } from './initial-elements.js'
-import ValueNode from './ValueNode.vue'
-import OperatorNode from './OperatorNode.vue'
-import ResultNode from './ResultNode.vue'
+import { Background, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
+import OperatorNode from './OperatorNode.vue';
+import ResultNode from './ResultNode.vue';
+import ValueNode from './ValueNode.vue';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 </script>
 
 <template>
-  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow class="math-flow" :nodes="nodes" :edges="edges" fit-view>
     <template #node-value="props">
       <ValueNode :id="props.id" :data="props.data" />
     </template>

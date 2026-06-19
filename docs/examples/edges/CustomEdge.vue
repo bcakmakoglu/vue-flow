@@ -1,6 +1,6 @@
 <script setup>
-import { BaseEdge, getBezierPath } from '@vue-flow/core'
-import { computed } from 'vue'
+import { BaseEdge, getBezierPath } from '@vue-flow/core';
+import { computed } from 'vue';
 
 const props = defineProps({
   id: {
@@ -43,15 +43,15 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-})
+});
 
-const path = computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props));
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

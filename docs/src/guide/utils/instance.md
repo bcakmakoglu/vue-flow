@@ -1,8 +1,8 @@
 # Viewport Functions
 
 Viewport Functions can be accessed via the [`useVueFlow`](/guide/composables#usevueflow)
-utility or with the [`VueFlowStore`](/typedocs/type-aliases/VueFlowStore)
-instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
+utility or with the [`VueFlowInstance`](/typedocs/type-aliases/VueFlowInstance)
+instance provided by [`onInit`](/typedocs/interfaces/FlowEvents#init).
 
 - Using Event Hooks (Composable)
 
@@ -10,10 +10,10 @@ instance provided by [`onPaneReady`](/typedocs/interfaces/FlowEvents#paneready).
 <script setup>
 import { VueFlow, useVueFlow } from '@vue-flow/core'
 
-const { onPaneReady } = useVueFlow()
+const { onInit } = useVueFlow()
 
 // event handler
-onPaneReady((instance) => instance.fitView())
+onInit((instance) => instance.fitView())
 </script>
 ```
 
@@ -31,7 +31,7 @@ export default defineComponent({
     }
   },
   methods: {
-    onPaneReady(vueFlowInstance) {
+    onInit(vueFlowInstance) {
       vueFlowInstance.fitView()
       this.instance = vueFlowInstance
     }
@@ -39,11 +39,11 @@ export default defineComponent({
 })
 </script>
 <template>
-  <VueFlow @pane-ready="onPaneReady" />
+  <VueFlow @init="onInit" />
 </template>
 ```
 
-## [project](/typedocs/type-aliases/Project)
+## screenToFlowPosition
 
 - Details:
 
@@ -54,7 +54,7 @@ export default defineComponent({
 - Example:
 
 ```ts
-vueFlowInstance.project({ x: 100, y: 100 })
+vueFlowInstance.screenToFlowPosition({ x: 100, y: 100 })
 ```
 
 ## [fitView](/typedocs/type-aliases/FitView)
@@ -80,7 +80,7 @@ vueFlowInstance.fitView({ padding: 0.25, includeHiddenNodes: true })
 - Example:
 
 ```ts
-vueFlowInstance.fitBounds(getRectOfNodes(nodes.value))
+vueFlowInstance.fitBounds(getNodesBounds(nodes.value))
 ```
 
 ## [setViewport](/typedocs/type-aliases/SetViewport)
@@ -119,12 +119,6 @@ vueFlowInstance.setViewport({ x: 100, y: 100, zoom: 1.5 })
 
   Zooms to specific level.
 
-## [getElements](/typedocs/interfaces/Getters#getelements)
-
-- Details:
-
-  Returns currently stored elements (nodes + edges).
-
 ## [getNodes](/typedocs/interfaces/Getters#getnodes)
 
 - Details:
@@ -141,14 +135,14 @@ vueFlowInstance.setViewport({ x: 100, y: 100, zoom: 1.5 })
 
 - Details:
 
-  Returns elements, position and zoom of the current flow state.
+  Returns the nodes, edges and viewport of the current flow state.
 
 - Example:
 
 ```ts
 toObject = (): {
-  elements: FlowElements,
-  position: [x, y],
-  zoom: scale,
+  nodes: Node[],
+  edges: Edge[],
+  viewport: { x: number, y: number, zoom: number },
 }
 ```

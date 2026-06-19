@@ -1,33 +1,33 @@
-import type { FunctionalComponent, HTMLAttributes } from 'vue'
-import { h } from 'vue'
-import { Position } from '../../types'
+import type { FunctionalComponent, HTMLAttributes } from 'vue';
+import { Position } from '@xyflow/system';
+import { h } from 'vue';
 
 interface Props extends HTMLAttributes {
-  position: Position
-  centerX: number
-  centerY: number
-  radius?: number
-  type: string
+  position: Position;
+  centerX: number;
+  centerY: number;
+  radius?: number;
+  type: string;
 }
 
 function shiftX(x: number, shift: number, position: Position): number {
   if (position === Position.Left) {
-    return x - shift
+    return x - shift;
   }
   if (position === Position.Right) {
-    return x + shift
+    return x + shift;
   }
-  return x
+  return x;
 }
 
 function shiftY(y: number, shift: number, position: Position): number {
   if (position === Position.Top) {
-    return y - shift
+    return y - shift;
   }
   if (position === Position.Bottom) {
-    return y + shift
+    return y + shift;
   }
-  return y
+  return y;
 }
 
 const EdgeAnchor: FunctionalComponent<Props> = function ({
@@ -44,10 +44,10 @@ const EdgeAnchor: FunctionalComponent<Props> = function ({
     r: radius,
     stroke: 'transparent',
     fill: 'transparent',
-  })
-}
+  });
+};
 
-EdgeAnchor.props = ['radius', 'centerX', 'centerY', 'position', 'type']
-EdgeAnchor.compatConfig = { MODE: 3 }
+EdgeAnchor.props = ['radius', 'centerX', 'centerY', 'position', 'type'];
+EdgeAnchor.compatConfig = { MODE: 3 };
 
-export default EdgeAnchor
+export default EdgeAnchor;

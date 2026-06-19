@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { useDialogState } from './useDialog'
+import { useDialogState } from './useDialog';
 
-const { isVisible, message, resolve } = useDialogState()
+const { isVisible, message, resolve } = useDialogState();
 
 function confirm() {
-  resolve(true)
-  isVisible.value = false
+  resolve(true);
+  isVisible.value = false;
 }
 
 function cancel() {
-  resolve(false)
-  isVisible.value = false
+  resolve(false);
+  isVisible.value = false;
 }
 </script>
 
@@ -20,8 +20,12 @@ function cancel() {
       <p>{{ message }}</p>
 
       <div class="dialog-actions">
-        <button @click="confirm">Confirm</button>
-        <button @click="cancel">Cancel</button>
+        <button @click="confirm">
+          Confirm
+        </button>
+        <button @click="cancel">
+          Cancel
+        </button>
       </div>
     </div>
   </div>

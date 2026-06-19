@@ -1,4 +1,4 @@
-import type { Edge, Node } from '@vue-flow/core'
+import type { Edge, Node } from '@vue-flow/core';
 
 // these are some math nodes, inputs and outputs
 export const initialNodes: Node[] = [
@@ -24,11 +24,12 @@ export const initialNodes: Node[] = [
     id: '4',
     position: { x: 700, y: 40 },
     type: 'result',
+    data: {},
   },
-]
+];
 
 export const initialEdges: Edge[] = [
   { id: 'e1-3', source: '1', target: '3', animated: true, targetHandle: 'target-a' },
   { id: 'e2-3', source: '2', target: '3', animated: true, targetHandle: 'target-b' },
   { id: 'e3-4', source: '3', target: '4', animated: true },
-]
+];

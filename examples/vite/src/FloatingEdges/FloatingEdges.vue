@@ -1,24 +1,27 @@
 <script lang="ts" setup>
-import { MarkerType, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background, BackgroundVariant } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
+import type { Connection, Edge, Node, VueFlowInstance } from '@vue-flow/core';
+import { Background, Controls, isEdge, isNode, MarkerType, MiniMap, VueFlow } from '@vue-flow/core';
 
-import FloatingEdge from './FloatingEdge.vue'
-import FloatingConnectionLine from './FloatingConnectionLine.vue'
-import { createElements } from './floating-edge-utils'
+import { createElements } from './floating-edge-utils';
+import FloatingConnectionLine from './FloatingConnectionLine.vue';
+import FloatingEdge from './FloatingEdge.vue';
 
-const { addEdges, onConnect } = useVueFlow({
-  modelValue: createElements(),
-})
+const initialElements = createElements();
 
-onConnect((params) => addEdges({ ...params, type: 'floating', markerEnd: MarkerType.Arrow }))
+const nodes = ref<Node[]>(initialElements.filter(isNode) as Node[]);
+const edges = ref<Edge[]>(initialElements.filter(isEdge) as Edge[]);
+
+const flow = ref<VueFlowInstance>();
+
+function onConnect(params: Connection) {
+  flow.value?.addEdges({ ...params, type: 'floating', markerEnd: MarkerType.Arrow });
+}
 </script>
 
 <template>
   <div class="floatingedges">
-    <VueFlow fit-view-on-init>
-      <Background :variant="BackgroundVariant.Lines" :gap="24" />
+    <VueFlow ref="flow" v-model:nodes="nodes" v-model:edges="edges" fit-view @connect="onConnect">
+      <Background variant="lines" :gap="24" />
 
       <MiniMap />
 

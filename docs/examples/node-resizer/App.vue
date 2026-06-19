@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import ResizableNode from './ResizableNode.vue'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import ResizableNode from './ResizableNode.vue';
 
 const nodes = ref([
   {
@@ -11,11 +11,11 @@ const nodes = ref([
     position: { x: 0, y: 0 },
     style: { background: '#fff', border: '2px solid black' },
   },
-])
+]);
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init>
+  <VueFlow :nodes="nodes" fit-view>
     <template #node-resizable="resizableNodeProps">
       <ResizableNode :data="resizableNodeProps.data" />
     </template>

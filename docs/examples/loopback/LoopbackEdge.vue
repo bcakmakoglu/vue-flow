@@ -1,6 +1,6 @@
 <script setup>
-import { Position, getBezierPath, getSmoothStepPath } from '@vue-flow/core'
-import { computed } from 'vue'
+import { getBezierPath, getSmoothStepPath, Position, useInternalNode } from '@vue-flow/core';
+import { computed } from 'vue';
 
 const props = defineProps({
   id: {
@@ -31,59 +31,64 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  sourceNode: {
-    type: Object,
+  source: {
+    type: String,
     required: true,
   },
-  targetNode: {
-    type: Object,
+  target: {
+    type: String,
     required: true,
   },
   data: {
     type: Object,
     required: true,
   },
-})
+});
+
+const sourceNode = useInternalNode(() => props.source);
 
 const path = computed(() => {
-  if (props.sourceNode && props.targetNode) {
+  if (sourceNode.value) {
     if (props.data.pathType === 'bezier') {
       if (
-        (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top) ||
-        (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
+        (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top)
+        || (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
       ) {
         // for horizontal loopback edges
-        const radiusX = 60
-        const radiusY = props.sourceY - props.targetY
+        const radiusX = 60;
+        const radiusY = props.sourceY - props.targetY;
 
-        return [`M ${props.sourceX} ${props.sourceY} A ${radiusX} ${radiusY} 0 1 0 ${props.targetX} ${props.targetY}`]
-      } else if (
-        (props.sourcePosition === Position.Left && props.targetPosition === Position.Right) ||
-        (props.sourcePosition === Position.Right && props.targetPosition === Position.Left)
+        return [`M ${props.sourceX} ${props.sourceY} A ${radiusX} ${radiusY} 0 1 0 ${props.targetX} ${props.targetY}`];
+      }
+      else if (
+        (props.sourcePosition === Position.Left && props.targetPosition === Position.Right)
+        || (props.sourcePosition === Position.Right && props.targetPosition === Position.Left)
       ) {
         // for vertical loopback edges
-        const radiusX = (props.sourceX - props.targetX) * 0.6
-        const radiusY = 50
+        const radiusX = (props.sourceX - props.targetX) * 0.6;
+        const radiusY = 50;
 
-        return [`M ${props.sourceX} ${props.sourceY} A ${radiusX} ${radiusY} 0 1 0 ${props.targetX} ${props.targetY}`]
+        return [`M ${props.sourceX} ${props.sourceY} A ${radiusX} ${radiusY} 0 1 0 ${props.targetX} ${props.targetY}`];
       }
-    } else if (props.data.pathType === 'smoothstep') {
-      let centerX, centerY
-      if (props.sourceNode === props.targetNode) {
+    }
+    else if (props.data.pathType === 'smoothstep') {
+      let centerX, centerY;
+      if (props.source === props.target) {
         if (
-          (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top) ||
-          (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
+          (props.sourcePosition === Position.Bottom && props.targetPosition === Position.Top)
+          || (props.sourcePosition === Position.Top && props.targetPosition === Position.Bottom)
         ) {
-          const source = props.sourceNode
-          centerX = props.sourceX - 40 - source.dimensions.width / 2
-          centerY = (props.sourceY + props.targetY) / 2
-        } else if (
-          (props.sourcePosition === Position.Left && props.targetPosition === Position.Right) ||
-          (props.sourcePosition === Position.Right && props.targetPosition === Position.Left)
+          const source = sourceNode.value;
+          centerX = props.sourceX - 40 - source.measured.width / 2;
+          centerY = (props.sourceY + props.targetY) / 2;
+        }
+        else if (
+          (props.sourcePosition === Position.Left && props.targetPosition === Position.Right)
+          || (props.sourcePosition === Position.Right && props.targetPosition === Position.Left)
         ) {
-          const source = props.sourceNode
-          centerX = (props.sourceX + props.targetX) / 2
-          centerY = props.sourceY + 40 + source.dimensions.height / 2
+          const source = sourceNode.value;
+          centerX = (props.sourceX + props.targetX) / 2;
+          centerY = props.sourceY + 40 + source.measured.height / 2;
         }
       }
 
@@ -93,19 +98,19 @@ const path = computed(() => {
         centerX,
         centerY,
         ...props,
-      })
+      });
     }
   }
 
   // default to bezier path
-  return getBezierPath(props)
-})
+  return getBezierPath(props);
+});
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

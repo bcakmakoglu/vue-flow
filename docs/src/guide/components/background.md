@@ -2,23 +2,13 @@
 
 Vue Flow comes with two background pattern variants: dots and lines. 
 
-## Installation
-
-```bash
-yarn add @vue-flow/background
-
-# or
-npm install @vue-flow/background
-```
-
 ## Usage
 
 To use the background simply pass the `Background` component as a child to the `VueFlow` component.
 
 ```vue
 <script setup>
-import { VueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
+import { Background, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>
@@ -30,14 +20,18 @@ import { Background } from '@vue-flow/background'
 
 ## [Props](/typedocs/interfaces/BackgroundProps)
 
-| Name         | Definition                            | Type                                                          | Optional | Default |
-|--------------|---------------------------------------|---------------------------------------------------------------|----------|---------|
-| variant      | Pattern variant                       | [BackgroundVariant](/typedocs/enumerations/BackgroundVariant) | true     | dots    |
-| gap          | Pattern gap                           | number                                                        | true     | 10      |
-| size         | Pattern size                          | number                                                        | true     | 0.4     |
-| patternColor | Pattern color                         | string                                                        | true     | #81818a |
-| bgColor      | Background color (overwrites pattern) | string                                                        | true     | #fff    |
-| height       | Background height                     | number                                                        | true     | 100     |
-| width        | Background width                      | number                                                        | true     | 100     |
-| x            | X-offset                              | number                                                        | true     | 0       |
-| y            | Y-offset                              | number                                                        | true     | 0       |
+| Name      | Definition                                                  | Type                                                          | Optional | Default                           |
+|-----------|-------------------------------------------------------------|---------------------------------------------------------------|----------|-----------------------------------|
+| id        | Background id — needed when several flows show a background  | string                                                        | true     | auto-generated                    |
+| variant   | Pattern variant                                             | [BackgroundVariant](/typedocs/type-aliases/BackgroundVariant) | true     | dots                              |
+| gap       | Pattern gap — a single number or `[x, y]`                   | number \| number[]                                            | true     | 20                                |
+| size      | Pattern size                                                | number                                                        | true     | 1                                 |
+| lineWidth | Line width (for the `lines` variant)                        | number                                                        | true     | 1                                 |
+| color     | Pattern color (only the pattern, not the background)        | string                                                        | true     | `#91919a` (dots) / `#eee` (lines) |
+| offset    | Pattern offset — a single number or `[x, y]`                | number \| [number, number]                                    | true     | 0                                 |
+| x         | Background x-coordinate                                     | number                                                        | true     | 0                                 |
+| y         | Background y-coordinate                                     | number                                                        | true     | 0                                 |
+
+::: tip
+There is no `bgColor` prop — to change the background *color* (rather than the pattern), set a `background-color` on the `<VueFlow>` element via CSS.
+:::

@@ -1,2 +1,3 @@
-export { default as UpdateNodeApp } from './App.vue?raw'
-export { default as UpdateNodeCSS } from './style.css?inline'
+export { default as UpdateNodeApp } from './App.vue?raw';
+export { default as UpdateNodeFlow } from './Flow.vue?raw';
+export { default as UpdateNodeCSS } from './style.css?inline';

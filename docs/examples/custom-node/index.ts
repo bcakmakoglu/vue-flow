@@ -1,5 +1,5 @@
-export { default as CustomNodeApp } from './App.vue?raw'
-export { default as ColorSelectorNode } from './ColorSelectorNode.vue?raw'
-export { default as OutputNode } from './OutputNode.vue?raw'
-export { default as CustomNodeCSS } from './style.css?inline'
-export { default as ColorPresets } from './presets.js?raw'
+export { default as CustomNodeApp } from './App.vue?raw';
+export { default as ColorSelectorNode } from './ColorSelectorNode.vue?raw';
+export { default as OutputNode } from './OutputNode.vue?raw';
+export { default as ColorPresets } from './presets.js?raw';
+export { default as CustomNodeCSS } from './style.css?inline';

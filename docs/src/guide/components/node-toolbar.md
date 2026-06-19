@@ -5,14 +5,7 @@ It can be used to create a floating Toolbar next to your nodes.
 You can either display the Toolbar by setting the visibility prop or automatically showing the Toolbar
 on selected nodes.
 
-## Installation
-
-```bash
-yarn add @vue-flow/node-toolbar
-
-# or
-npm install @vue-flow/node-toolbar
-```
+`NodeToolbar` ships with `@vue-flow/core`; the `@vue-flow/node-toolbar` package is deprecated.
 
 ## Usage
 
@@ -36,8 +29,7 @@ const nodes = ref(initialNodes)
 
 ```vue
 <script lang="ts" setup>
-import { Handle, Position } from '@vue-flow/core'
-import { NodeToolbar } from '@vue-flow/node-toolbar'
+import { Handle, NodeToolbar, Position } from '@vue-flow/core'
 
 interface NodeData {
   toolbarVisible: boolean
@@ -68,10 +60,11 @@ defineProps<Props>()
 
 | Name            | Definition                                        | Type                                 | Optional | Default                 |
 |-----------------|---------------------------------------------------|--------------------------------------|----------|-------------------------|
-| nodeId          | Node(s) the toolbar is supposed to be attached to | string array                         | true     | NodeId from context     |
+| nodeId          | Node(s) the toolbar is supposed to be attached to | string \| string[]                   | true     | NodeId from context     |
 | isVisible       | Force visibility of toolbar                       | boolean                              | true     | Selected node           |
 | position        | Toolbar position (top, left, right, bottom)       | [Position](/typedocs/enumerations/Position) | true     | Top                     |
 | offset          | Offset of toolbar position                        | number                               | true     | 10                      |
+| align           | Alignment along the position edge                 | 'start' \| 'center' \| 'end'         | true     | center                  |
 
 ## Slots
 

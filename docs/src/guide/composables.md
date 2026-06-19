@@ -13,91 +13,52 @@ The `useVueFlow` composable provides you with a set of methods to interact with 
 import { ref } from 'vue'
 import { useVueFlow, VueFlow } from '@vue-flow/core'
 
-const { onInit, findNode, fitView, snapToGrid } = useVueFlow()
+const { onInit, getNode, fitView, updateNode } = useVueFlow()
 
 const nodes = ref([/* ... */])
 
 const edges = ref([/* ... */])
 
-// to enable snapping to grid
-snapToGrid.value = true
+// `<VueFlow>` settings such as grid snapping are props — drive them from a ref
+const snapToGrid = ref(true)
 
 // any event that is emitted from the `<VueFlow />` component can be listened to using the `onEventName` method
 onInit((instance) => {
-  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
+  // `instance` is the same type as the return of `useVueFlow` (VueFlowInstance)
   
   fitView()
   
-  const node = findNode('1')
+  const node = getNode('1')
   
   if (node) {
-    node.position = { x: 100, y: 100 }
+    // nodes are stored immutably — update them through the `updateNode` action, not by mutating in place
+    updateNode('1', { position: { x: 100, y: 100 } })
   }
 })
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" />
+  <VueFlow :nodes="nodes" :edges="edges" :snap-to-grid="snapToGrid" />
 </template>
 ```
 
-`useVueFlow` exposes the whole internal state, including the nodes and edges.
-The values are reactive, meaning changing the values returned from `useVueFlow` will trigger changes in the graph.
+`useVueFlow` returns the flow's reactive getters (`getNodes`, `getEdges`, `viewport`, …), actions (`updateNode`, `addEdges`, `fitView`, …) and event hooks (`onInit`, `onConnect`, …) — not the raw state.
+The getters are read-only; update the graph through the actions (or by binding `v-model:nodes` / `:edges` etc. on `<VueFlow>`). If you need the writable state directly, reach for `useStore` / `storeToRefs`.
 
 ### State creation and injection
 
-The `useVueFlow` composable creates, on first call, a new instance of the `VueFlowStore` and injects it into the Vue component tree.
-This allows you to access the store from any child component using the `useVueFlow` composable.
+`useVueFlow` does **not** create a store — it's a pure consumer. It takes no arguments and resolves the instance from the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor via Vue's `inject` (it throws if there is none).
 
-This also means that the *first call* of `useVueFlow` is crucial as it determines the state instance that will be used throughout the component tree.
-You can think of it as a sort of `<VueFlowProvider>` wrapper that is automatically injected into the component tree.
+The store is created and owned by whichever provider sits above the call site:
+
+- `<VueFlow>` provides its own store to its children.
+- `<VueFlowProvider>` creates a store and shares it with everything inside it — use it when components *outside* `<VueFlow>` (a sidebar, a toolbar) need the same instance, or when you want to call `useVueFlow` in the same component that renders `<VueFlow>`.
 
 You can read more about this in the [State section of the guide](/guide/vue-flow/state).
 
-#### Enforcing a specific state instance
+#### Multiple flows
 
-If necessary, you can enforce the use of a specific state instance by passing an `id` to the `useVueFlow` composable.
-
-```ts
-import { useVueFlow } from '@vue-flow/core'
-
-const { onInit } = useVueFlow({ id: 'my-flow-instance' })
-
-onInit((instance) => {
-  // `instance` is the same type as the return of `useVueFlow` (VueFlowStore)
-})
-```
-
-## [useHandleConnections](/typedocs/functions/useHandleConnections)
-
-`useHandleConnections` provides you with an array of connections that are connected to specific `<Handle>`.
-
-```ts
-import { type HandleConnection, useHandleConnections } from '@vue-flow/core'
-
-// get all connections where this node is the target (incoming connections)
-const targetConnections = useHandleConnections({
-  // type is required
-  type: 'target',
-})
-
-// get all connections where this node is the source (outgoing connections)
-const sourceConnections = useHandleConnections({
-  type: 'source',
-})
-
-const connections = useHandleConnections({
-  id: 'handle-1', // you can explicitly pass a handle id if there are multiple handles of the same type
-  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
-  type: 'target',
-  onConnect: (connections: HandleConnection[]) => {
-    // do something with the connections
-  },
-  onDisconnect: (connections: HandleConnection[]) => {
-    // do something with the connections
-  },
-})
-```
+There is no global registry or lookup-by-id. Each flow lives in its own provider tree, so multiple flows on a page simply get their own `<VueFlow>` / `<VueFlowProvider>`, and `useVueFlow()` always resolves the nearest one.
 
 ## [useNodeConnections](/typedocs/functions/useNodeConnections)
 
@@ -105,7 +66,7 @@ const connections = useHandleConnections({
 This composable is especially useful when you want to get all connections (of either type `source` or `target`) of a node.
 
 ```ts
-import { type HandleConnection, useNodeConnections } from '@vue-flow/core'
+import { type NodeConnection, useNodeConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
 const targetConnections = useNodeConnections({
@@ -119,16 +80,17 @@ const sourceConnections = useNodeConnections({
 })
 
 const handleConnections = useNodeConnections({
-  handleId: 'handle-1', // you can explicitly pass a handle id if you want to get connections of a specific handle
+  handleType: 'source',
+  handleId: 'handle-1', // pass a handle id to narrow to a specific handle (requires `handleType`)
 })
 
 const connections = useNodeConnections({
-  nodeId: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId  injection
+  id: '1', // you can explicitly pass a node id, otherwise it's used from the `NodeId` injection
   handleType: 'target',
-  onConnect: (connections: HandleConnection[]) => {
+  onConnect: (connections: NodeConnection[]) => {
     // do something with the connections
   },
-  onDisconnect: (connections: HandleConnection[]) => {
+  onDisconnect: (connections: NodeConnection[]) => {
     // do something with the connections
   },
 })
@@ -137,14 +99,14 @@ const connections = useNodeConnections({
 ## [useNodesData](/typedocs/functions/useNodesData)
 
 `useNodesData` provides you with an array of data objects depending on the node ids you pass to it.
-It's especially useful when used together with `useHandleConnections`.
+It's especially useful when used together with `useNodeConnections`.
 
 ```ts
-import { useNodesData, useHandleConnections } from '@vue-flow/core'
+import { useNodesData, useNodeConnections } from '@vue-flow/core'
 
 // get all connections where this node is the target (incoming connections)
-const connections = useHandleConnections({
-  type: 'target',
+const connections = useNodeConnections({
+  handleType: 'target',
 })
 
 const data = useNodesData(() => connections.value.map((connection) => connection.source))
@@ -155,12 +117,12 @@ console.log(data.value) // [{ /* ... */]
 To further narrow down the type of the returned data, you can pass a guard function as the 2nd argument.
 
 ```ts
-import { useNodesData, useHandleConnections, type Node } from '@vue-flow/core'
+import { useNodesData, useNodeConnections, type Node } from '@vue-flow/core'
 
 type MyNode = Node<{ foo: string }>
 
-const connections = useHandleConnections({
-  type: 'target',
+const connections = useNodeConnections({
+  handleType: 'target',
 })
 
 const data = useNodesData(() => connections.value.map((connection) => connection.source), (node): node is MyNode => node.type === 'foo')
@@ -196,18 +158,20 @@ This is how the default handle component is built:
 ```vue
 
 <script lang="ts" setup>
-import { NodeId, useHandle, useVueFlow } from '@vue-flow/core'
+import { useHandle, useNodeId, useStore } from '@vue-flow/core'
 import type { HandleProps, Position } from '@vue-flow/core'
 
 const props = withDefaults(defineProps<HandleProps>(), {
   type: 'source',
   position: 'top' as Position,
-  connectable: true,
+  isConnectable: true,
 })
 
-const nodeId = inject(NodeId, '')
+const nodeId = useNodeId()
 
-const { id, hooks, connectionStartHandle } = useVueFlow()
+// read raw store state directly — `store.x` is reactive inside computeds/templates, so a per-instance
+// component doesn't need `storeToRefs` (which re-derives a ref for every state key on each call)
+const store = useStore()
 
 const { handlePointerDown, handleClick } = useHandle({
   nodeId,
@@ -239,11 +203,11 @@ export default {
       {
         source: type !== 'target',
         target: type === 'target',
-        connectable: connectable,
+        connectable: isConnectable,
         connecting:
-          connectionStartHandle?.nodeId === nodeId &&
-          connectionStartHandle?.handleId === id &&
-          connectionStartHandle?.type === type,
+          store.connectionStartHandle?.nodeId === nodeId &&
+          store.connectionStartHandle?.id === id &&
+          store.connectionStartHandle?.type === type,
       },
     ]"
     @mousedown="onMouseDownHandler"

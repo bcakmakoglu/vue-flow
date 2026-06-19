@@ -1,11 +1,13 @@
-import { defineComponent, h } from 'vue'
-import type { SmoothStepEdgeProps } from '../../types'
-import { Position } from '../../types'
-import BaseEdge from './BaseEdge.vue'
-import { getSmoothStepPath } from './utils'
+import type { SmoothStepEdgeProps } from '../../types';
+import { getSmoothStepPath, Position } from '@xyflow/system';
+import { defineComponent, h } from 'vue';
+import BaseEdge from './BaseEdge.vue';
+import { baseEdgeProps } from './utils';
 
 const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
   name: 'SmoothStepEdge',
+  // see StraightEdge: keep undeclared attrs (source/target/…) from leaking onto the <path>
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',
@@ -24,7 +26,8 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
     'markerStart',
     'interactionWidth',
     'offset',
-  ] as any,
+    'stepPosition',
+  ],
   compatConfig: { MODE: 3 },
   setup(props, { attrs }) {
     return () => {
@@ -32,17 +35,11 @@ const SmoothStepEdge = defineComponent<SmoothStepEdgeProps>({
         ...props,
         sourcePosition: props.sourcePosition ?? Position.Bottom,
         targetPosition: props.targetPosition ?? Position.Top,
-      })
+      });
 
-      return h(BaseEdge as any, {
-        path,
-        labelX,
-        labelY,
-        ...attrs,
-        ...props,
-      })
-    }
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) });
+    };
   },
-})
+});
 
-export default SmoothStepEdge
+export default SmoothStepEdge;

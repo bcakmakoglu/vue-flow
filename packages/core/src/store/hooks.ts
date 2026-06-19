@@ -1,10 +1,8 @@
-import { tryOnScopeDispose } from '@vueuse/core'
-import type { Ref } from 'vue'
-import { getCurrentInstance, onBeforeMount } from 'vue'
-import type { FlowEvents, FlowHooks } from '../types'
-import { createExtendedEventHook, warn } from '../utils'
+import type { Edge, FlowEvents, FlowHooks, Node } from '../types';
+import { getCurrentInstance, onBeforeMount, onScopeDispose } from 'vue';
+import { createExtendedEventHook, warn } from '../utils';
 
-export function createHooks(): FlowHooks {
+export function createHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): FlowHooks<NodeType, EdgeType> {
   return {
     edgesChange: createExtendedEventHook(),
     nodesChange: createExtendedEventHook(),
@@ -28,7 +26,6 @@ export function createHooks(): FlowHooks {
     connectEnd: createExtendedEventHook(),
     clickConnectStart: createExtendedEventHook(),
     clickConnectEnd: createExtendedEventHook(),
-    paneReady: createExtendedEventHook(),
     init: createExtendedEventHook(),
     move: createExtendedEventHook(),
     moveStart: createExtendedEventHook(),
@@ -39,6 +36,7 @@ export function createHooks(): FlowHooks {
     selectionContextMenu: createExtendedEventHook(),
     selectionStart: createExtendedEventHook(),
     selectionEnd: createExtendedEventHook(),
+    selectionChange: createExtendedEventHook(),
     viewportChangeStart: createExtendedEventHook(),
     viewportChange: createExtendedEventHook(),
     viewportChangeEnd: createExtendedEventHook(),
@@ -54,37 +52,39 @@ export function createHooks(): FlowHooks {
     edgeMouseLeave: createExtendedEventHook(),
     edgeDoubleClick: createExtendedEventHook(),
     edgeClick: createExtendedEventHook(),
-    edgeUpdateStart: createExtendedEventHook(),
-    edgeUpdate: createExtendedEventHook(),
-    edgeUpdateEnd: createExtendedEventHook(),
+    reconnectStart: createExtendedEventHook(),
+    reconnect: createExtendedEventHook(),
+    reconnectEnd: createExtendedEventHook(),
     updateNodeInternals: createExtendedEventHook(),
-    error: createExtendedEventHook((err) => warn(err.message)),
-  }
+    error: createExtendedEventHook(err => warn(err.message)),
+  };
 }
 
-export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) {
-  const inst = getCurrentInstance()
-
+export function useHooks<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  emit: (...args: any[]) => void,
+  hooks: FlowHooks<NodeType, EdgeType>,
+) {
+  const inst = getCurrentInstance();
   onBeforeMount(() => {
-    for (const [key, value] of Object.entries(hooks.value)) {
+    for (const [key, value] of Object.entries(hooks)) {
       const listener = (data: unknown) => {
-        emit(key, data)
-      }
+        emit(key, data);
+      };
 
       // push into fns instead of using `on` to avoid overwriting default handlers - the emitter should be called in addition to the default handlers
-      value.setEmitter(listener)
-      tryOnScopeDispose(value.removeEmitter)
+      value.setEmitter(listener);
+      onScopeDispose(value.removeEmitter, true);
 
-      value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents))
-      tryOnScopeDispose(value.removeHasEmitListeners)
+      value.setHasEmitListeners(() => hasVNodeListener(key as keyof FlowEvents));
+      onScopeDispose(value.removeHasEmitListeners, true);
     }
-  })
+  });
 
   function hasVNodeListener(event: keyof FlowEvents) {
-    const key = toHandlerKey(event)
+    const key = toHandlerKey(event);
     // listeners live on vnode.props; value can be a Function or an array of Functions
-    const h = inst?.vnode.props?.[key]
-    return !!h
+    const h = inst?.vnode.props?.[key];
+    return !!h;
   }
 }
 
@@ -96,7 +96,7 @@ export function useHooks(emit: (...args: any[]) => void, hooks: Ref<FlowHooks>) 
  * @returns The corresponding handler key.
  */
 function toHandlerKey(event: string) {
-  const [head, ...rest] = event.split(':')
-  const camel = head.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase())
-  return `on${camel}${rest.length ? `:${rest.join(':')}` : ''}`
+  const [head, ...rest] = event.split(':');
+  const camel = head.replace(/(?:^|-)(\w)/g, (_, c: string) => c.toUpperCase());
+  return `on${camel}${rest.length ? `:${rest.join(':')}` : ''}`;
 }

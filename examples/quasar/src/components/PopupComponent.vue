@@ -1,17 +1,17 @@
 <script>
-import { ref } from 'vue'
-import BasicFlow from './BasicFlow.vue'
+import { ref } from 'vue';
+import BasicFlow from './BasicFlow.vue';
 
 export default {
   components: { BasicFlow },
   setup() {
-    const show = ref(false)
+    const show = ref(false);
     return {
       show,
       isReady: ref(false),
-    }
+    };
   },
-}
+};
 </script>
 
 <template>

@@ -1,215 +1,145 @@
-import { nextTick } from 'vue'
 import type {
-  EdgeAddChange,
-  EdgeChange,
   EdgeRemoveChange,
   EdgeSelectionChange,
-  ElementChange,
-  FlowElement,
-  GraphEdge,
-  GraphNode,
-  NodeAddChange,
-  NodeChange,
   NodeRemoveChange,
   NodeSelectionChange,
-  StyleFunc,
-  Styles,
-} from '../types'
-import { isGraphNode } from '.'
+} from '@xyflow/system';
+import type {
+  Edge,
+  EdgeAddChange,
+  EdgeChange,
+  ElementChange,
+  InternalNode,
+  Node,
+  NodeAddChange,
+  NodeChange,
+} from '../types';
+import { isNode } from '.';
 
-function handleParentExpand(updateItem: GraphNode, parent: GraphNode) {
-  if (parent) {
-    const extendWidth = updateItem.position.x + updateItem.dimensions.width - parent.dimensions.width
-    const extendHeight = updateItem.position.y + updateItem.dimensions.height - parent.dimensions.height
-
-    if (extendWidth > 0 || extendHeight > 0 || updateItem.position.x < 0 || updateItem.position.y < 0) {
-      let parentStyles: Styles = {}
-
-      if (typeof parent.style === 'function') {
-        parentStyles = { ...parent.style(parent) }
-      } else if (parent.style) {
-        parentStyles = { ...parent.style }
-      }
-
-      parentStyles.width = parentStyles.width ?? `${parent.dimensions.width}px`
-      parentStyles.height = parentStyles.height ?? `${parent.dimensions.height}px`
-
-      if (extendWidth > 0) {
-        if (typeof parentStyles.width === 'string') {
-          const currWidth = Number(parentStyles.width.replace('px', ''))
-          parentStyles.width = `${currWidth + extendWidth}px`
-        } else {
-          parentStyles.width += extendWidth
-        }
-      }
-
-      if (extendHeight > 0) {
-        if (typeof parentStyles.height === 'string') {
-          const currWidth = Number(parentStyles.height.replace('px', ''))
-          parentStyles.height = `${currWidth + extendHeight}px`
-        } else {
-          parentStyles.height += extendHeight
-        }
-      }
-
-      if (updateItem.position.x < 0) {
-        const xDiff = Math.abs(updateItem.position.x)
-        parent.position.x = parent.position.x - xDiff
-
-        if (typeof parentStyles.width === 'string') {
-          const currWidth = Number(parentStyles.width.replace('px', ''))
-          parentStyles.width = `${currWidth + xDiff}px`
-        } else {
-          parentStyles.width += xDiff
-        }
-
-        updateItem.position.x = 0
-      }
-
-      if (updateItem.position.y < 0) {
-        const yDiff = Math.abs(updateItem.position.y)
-        parent.position.y = parent.position.y - yDiff
-
-        if (typeof parentStyles.height === 'string') {
-          const currWidth = Number(parentStyles.height.replace('px', ''))
-          parentStyles.height = `${currWidth + yDiff}px`
-        } else {
-          parentStyles.height += yDiff
-        }
-
-        updateItem.position.y = 0
-      }
-
-      parent.dimensions.width = Number(parentStyles.width.toString().replace('px', ''))
-      parent.dimensions.height = Number(parentStyles.height.toString().replace('px', ''))
-
-      if (typeof parent.style === 'function') {
-        parent.style = (p) => {
-          const styleFunc = parent.style as StyleFunc
-
-          return {
-            ...styleFunc(p),
-            ...parentStyles,
-          }
-        }
-      } else {
-        parent.style = {
-          ...parent.style,
-          ...parentStyles,
-        }
-      }
-    }
-  }
-}
-
+/**
+ * Apply element changes IMMUTABLY (xyflow/react `applyNodeChanges` semantics): returns a NEW array where
+ * changed elements are NEW objects and unchanged elements are reused by reference. Immutability is required
+ * by the node split — the store re-adopts the result via `adoptUserNodes`, whose `checkEquality` reuses the
+ * existing `InternalNode` when the user-node reference is unchanged; mutating in place would keep the same
+ * reference and re-adopt a stale internal node. Reusing unchanged refs keeps re-adoption O(changed).
+ *
+ * `position`/`dimensions` changes are gated on `isNode` (user `Node`s have no `internals`, so the old
+ * `isInternalNode` guard would skip them) — edges never receive those change types anyway.
+ */
 export function applyChanges<
-  T extends FlowElement = FlowElement,
-  C extends ElementChange = T extends GraphNode ? NodeChange : EdgeChange,
+  T extends Node | Edge = Node | Edge,
+  C extends ElementChange = T extends InternalNode ? NodeChange : EdgeChange,
 >(changes: C[], elements: T[]): T[] {
-  const addRemoveChanges = changes.filter((c) => c.type === 'add' || c.type === 'remove') as (
-    | NodeAddChange
-    | EdgeAddChange
-    | NodeRemoveChange
-    | EdgeRemoveChange
-  )[]
+  // bucket changes: field updates by id, plus add/remove
+  const updatesById = new Map<string, C[]>();
+  const addChanges: (NodeAddChange | EdgeAddChange)[] = [];
+  const removeIds = new Set<string>();
 
-  for (const change of addRemoveChanges) {
+  for (const change of changes) {
     if (change.type === 'add') {
-      const index = elements.findIndex((el) => el.id === change.item.id)
-
-      if (index === -1) {
-        elements.push(<T>change.item)
+      addChanges.push(change as NodeAddChange | EdgeAddChange);
+    }
+    else if (change.type === 'remove') {
+      removeIds.add((change as NodeRemoveChange | EdgeRemoveChange).id);
+    }
+    else {
+      const id = (change as { id?: string }).id;
+      if (id == null) {
+        continue;
       }
-    } else if (change.type === 'remove') {
-      const index = elements.findIndex((el) => el.id === change.id)
-
-      if (index !== -1) {
-        elements.splice(index, 1)
+      const bucket = updatesById.get(id);
+      if (bucket) {
+        bucket.push(change);
+      }
+      else {
+        updatesById.set(id, [change]);
       }
     }
   }
 
-  const elementIds = elements.map((el) => el.id)
+  const next: T[] = [];
 
   for (const element of elements) {
-    for (const currentChange of changes) {
-      if ((<any>currentChange).id !== element.id) {
-        continue
-      }
+    if (removeIds.has(element.id)) {
+      continue;
+    }
 
+    const elementChanges = updatesById.get(element.id);
+    if (!elementChanges) {
+      // unchanged → reuse the same reference (so the store's `checkEquality` re-adopt is a no-op)
+      next.push(element);
+      continue;
+    }
+
+    const updated = { ...element } as T;
+
+    for (const currentChange of elementChanges) {
       switch (currentChange.type) {
         case 'select':
-          element.selected = currentChange.selected
-          break
+          ;(updated as { selected?: boolean }).selected = currentChange.selected;
+          break;
         case 'position':
-          if (isGraphNode(element)) {
+          if (isNode(updated)) {
             if (typeof currentChange.position !== 'undefined') {
-              element.position = currentChange.position
+              updated.position = currentChange.position;
             }
 
             if (typeof currentChange.dragging !== 'undefined') {
-              element.dragging = currentChange.dragging
-            }
-
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
-
-              if (parent && isGraphNode(parent)) {
-                handleParentExpand(element, parent)
-              }
+              updated.dragging = currentChange.dragging;
             }
           }
-          break
+          break;
         case 'dimensions':
-          if (isGraphNode(element)) {
+          if (isNode(updated)) {
             if (typeof currentChange.dimensions !== 'undefined') {
-              element.dimensions = currentChange.dimensions
+              updated.measured = { width: currentChange.dimensions.width, height: currentChange.dimensions.height };
             }
 
-            if (typeof currentChange.updateStyle !== 'undefined' && currentChange.updateStyle) {
-              element.style = {
-                ...(element.style || {}),
-                width: `${currentChange.dimensions?.width}px`,
-                height: `${currentChange.dimensions?.height}px`,
-              }
+            if (currentChange.setAttributes) {
+              const setW = currentChange.setAttributes === true || currentChange.setAttributes === 'width';
+              const setH = currentChange.setAttributes === true || currentChange.setAttributes === 'height';
+              updated.style = {
+                ...(updated.style ?? {}),
+                ...(setW && { width: `${currentChange.dimensions?.width}px` }),
+                ...(setH && { height: `${currentChange.dimensions?.height}px` }),
+              };
             }
 
             if (typeof currentChange.resizing !== 'undefined') {
-              element.resizing = currentChange.resizing
-            }
-
-            if (element.expandParent && element.parentNode) {
-              const parent = elements[elementIds.indexOf(element.parentNode)]
-
-              if (parent && isGraphNode(parent)) {
-                const parentInit = !!parent.dimensions.width && !!parent.dimensions.height
-
-                if (!parentInit) {
-                  nextTick(() => {
-                    handleParentExpand(element, parent)
-                  })
-                } else {
-                  handleParentExpand(element, parent)
-                }
-              }
+              updated.resizing = currentChange.resizing;
             }
           }
-          break
+          break;
       }
+    }
+
+    next.push(updated);
+  }
+
+  for (const change of addChanges) {
+    if (next.some(el => el.id === change.item.id)) {
+      continue;
+    }
+
+    if (typeof change.index === 'number') {
+      next.splice(change.index, 0, change.item as unknown as T);
+    }
+    else {
+      next.push(change.item as unknown as T);
     }
   }
 
-  return elements
+  return next;
 }
 
-/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
-export function applyEdgeChanges(changes: EdgeChange[], edges: GraphEdge[]) {
-  return applyChanges(changes, edges)
+/** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
+export function applyEdgeChanges(changes: EdgeChange[], edges: Edge[]) {
+  return applyChanges(changes, edges);
 }
 
-/** @deprecated Use store instance and call `applyChanges` with template-ref or the one received by `onPaneReady` instead */
-export function applyNodeChanges(changes: NodeChange[], nodes: GraphNode[]) {
-  return applyChanges(changes, nodes)
+/** @deprecated Prefer the store instance's apply methods (from `useVueFlow` or the `onInit` instance). */
+export function applyNodeChanges(changes: NodeChange[], nodes: InternalNode[]) {
+  return applyChanges(changes, nodes);
 }
 
 export function createSelectionChange(id: string, selected: boolean): NodeSelectionChange | EdgeSelectionChange {
@@ -217,64 +147,48 @@ export function createSelectionChange(id: string, selected: boolean): NodeSelect
     id,
     type: 'select',
     selected,
-  }
+  };
 }
 
 export function createAdditionChange<
-  T extends GraphNode | GraphEdge = GraphNode,
-  C extends NodeAddChange | EdgeAddChange = T extends GraphNode ? NodeAddChange : EdgeAddChange,
->(item: T): C {
+  T extends Node | Edge = Node,
+  C extends NodeAddChange | EdgeAddChange = T extends Node ? NodeAddChange : EdgeAddChange,
+>(item: T, index?: number): C {
   return <C>{
     item,
     type: 'add',
-  }
+    ...(typeof index === 'number' && { index }),
+  };
 }
 
 export function createNodeRemoveChange(id: string): NodeRemoveChange {
   return {
     id,
     type: 'remove',
-  }
+  };
 }
 
-export function createEdgeRemoveChange(
-  id: string,
-  source: string,
-  target: string,
-  sourceHandle?: string | null,
-  targetHandle?: string | null,
-): EdgeRemoveChange {
+export function createEdgeRemoveChange(id: string): EdgeRemoveChange {
   return {
     id,
-    source,
-    target,
-    sourceHandle: sourceHandle || null,
-    targetHandle: targetHandle || null,
     type: 'remove',
-  }
+  };
 }
 
 export function getSelectionChanges(
-  items: Map<string, any>,
+  items: Map<string, { id: string; selected?: boolean }>,
   selectedIds: Set<string> = new Set(),
-  mutateItem = false,
 ): NodeSelectionChange[] | EdgeSelectionChange[] {
-  const changes: NodeSelectionChange[] | EdgeSelectionChange[] = []
+  const changes: NodeSelectionChange[] | EdgeSelectionChange[] = [];
 
   for (const [id, item] of items) {
-    const willBeSelected = selectedIds.has(id)
+    const willBeSelected = selectedIds.has(id);
 
     // we don't want to set all items to selected=false on the first selection
     if (!(item.selected === undefined && !willBeSelected) && item.selected !== willBeSelected) {
-      if (mutateItem) {
-        // this hack is needed for nodes. When the user dragged a node, it's selected.
-        // When another node gets dragged, we need to deselect the previous one,
-        // in order to have only one selected node at a time - the onNodesChange callback comes too late here :/
-        item.selected = willBeSelected
-      }
-      changes.push(createSelectionChange(item.id, willBeSelected))
+      changes.push(createSelectionChange(item.id, willBeSelected));
     }
   }
 
-  return changes
+  return changes;
 }

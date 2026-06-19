@@ -1,12 +1,12 @@
-import { createApp } from 'vue'
-import './index.css'
-import { createPinia } from 'pinia'
-import App from './App.vue'
-import { router } from './router'
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import App from './App.vue';
+import { router } from './router';
+import './index.css';
 
-const app = createApp(App)
+const app = createApp(App);
 
-app.config.performance = true
-app.use(router)
-app.use(createPinia())
-app.mount('#root')
+app.config.performance = true;
+app.use(router);
+app.use(createPinia());
+app.mount('#root');

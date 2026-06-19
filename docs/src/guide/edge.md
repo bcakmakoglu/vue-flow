@@ -5,28 +5,26 @@ title: Edges
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import LogosTypescript from '~icons/logos/typescript-icon';
-import { VueFlow, Panel } from '@vue-flow/core';
-import { Background } from '@vue-flow/background';
+import { Background, Panel, VueFlow } from '@vue-flow/core';
 import Check from '~icons/mdi/check';
 import Close from '~icons/mdi/close';
 import { ref } from 'vue';
 
-const nodes = [
+const nodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 100, y: 125 },
   },
-];
+]);
 
-const bezierEdge = ref([
-  ...nodes,
+const bezierEdges = ref([
   {
     id: 'e1-2',
     source: '1',
@@ -34,8 +32,7 @@ const bezierEdge = ref([
   }
 ]);
 
-const stepEdge = ref([
-  ...nodes,
+const stepEdges = ref([
   {
     id: 'e1-2',
     type: 'step',
@@ -44,8 +41,7 @@ const stepEdge = ref([
   },
 ]);
 
-const smoothStepEdge = ref([
-  ...nodes,
+const smoothStepEdges = ref([
   {
     id: 'e1-2',
     type: 'smoothstep',
@@ -54,18 +50,21 @@ const smoothStepEdge = ref([
   },
 ]);
 
-const straightEdge = ref([
+const straightNodes = ref([
   {
     id: '1',
     type: 'input',
-    label: 'Node 1',
+    data: { label: 'Node 1' },
     position: { x: 50, y: 25 },
   },
   {
     id: '2',
-    label: 'Node 2',
+    data: { label: 'Node 2' },
     position: { x: 50, y: 125 },
   },
+]);
+
+const straightEdges = ref([
   {
     id: 'e1-2',
     type: 'straight',
@@ -90,7 +89,7 @@ For the full list of options available for an edge, check out the [Edge Type](/t
 
 ## Adding Edges to the Graph
 
-Edges are rendered by passing them to the `edges` prop (or the deprecated `v-model` prop) of the Vue Flow component.
+Edges are rendered by passing them to the `edges` prop (or `v-model:edges` for two-way binding) of the Vue Flow component.
 
 :::warning
 This method will *not* create a change. Check out the [Controlled Flow](/guide/controlled-flow.html) section for more information.
@@ -214,7 +213,7 @@ addEdges([
 
 ## Removing Edges from the Graph
 
-Similar to adding edges, edges can be removed from the graph by removing them from the `mode-value` (using `v-model`) or from the `edges` prop of the Vue Flow component.
+Similar to adding edges, edges can be removed from the graph by removing them from your bound array (using `v-model:edges`) or from the `edges` prop of the Vue Flow component.
 
 ```vue
 <script setup>
@@ -334,52 +333,49 @@ function removeMultipleEdges() {
 
 ## Updating Edge Data
 
-Since edges are reactive object, you can update their data at any point by simply mutating it.
-This allows you to change the label, or even add new properties to the data object at any point in time.
+::: warning Vue Flow 2.0
+Edges are stored as your plain objects and are **not** deeply reactive — mutating a stored edge in place
+(`edge.data = ...`, `edge.animated = !edge.animated`) no longer triggers a re-render. Update edges through
+the store helpers (`updateEdgeData`, `updateEdge`, `setEdges`, `applyEdgeChanges`) or by reassigning your
+`v-model` array immutably. This mirrors the node model and matches React Flow / Svelte Flow.
+:::
 
 There are multiple ways of achieving this, here are some examples:
 
 ::: code-group
 
 ```ts [useVueFlow]
-import  { useVueFlow } from '@vue-flow/core'
+import { useVueFlow } from '@vue-flow/core'
 
-const instance = useVueFlow()
+const { updateEdgeData, setEdges } = useVueFlow()
 
-// use the `updateEdgeData` method to update the data of an edge
-instance.updateEdgeData(edgeId, { hello: 'mona' })
+// the simplest path: merge into an edge's data (pass `{ replace: true }` to overwrite instead of merge)
+updateEdgeData(edgeId, { hello: 'world' })
 
-// find the edge in the state by its id
-const edge = instance.findEdge(edgeId)
+// updater function — receives the current stored edge
+updateEdgeData(edgeId, (edge) => ({ count: (edge.data?.count ?? 0) + 1 }))
 
-edge.data = {
-  ...edge.data,
-  hello: 'world',
-}
-
-// you can also mutate properties like `selectable` or `animated`
-edge.selectable = !edge.selectable
-edge.animated = !edge.animated
+// for non-data fields (selectable, animated, …) reassign the edge immutably via setEdges
+setEdges((edges) =>
+  edges.map((edge) => (edge.id === edgeId ? { ...edge, animated: !edge.animated } : edge)),
+)
 ```
 
 ```vue [useEdge]
 <!-- CustomEdge.vue -->
 <script setup>
-import { useEdge } from '@vue-flow/core'
+import { useEdge, useVueFlow } from '@vue-flow/core'
 
-// `useEdge` returns us the edge object straight from the state
-// since the edge obj is reactive, we can mutate it to update our edges' data
-const { edge } = useEdge()
+// `useEdge` returns the edge as a `ComputedRef` (read `edge.value`); it is NOT mutable
+const { id, edge } = useEdge()
+const { updateEdgeData, setEdges } = useVueFlow()
 
 function onSomeEvent() {
-  edge.data = {
-    ...edge.data,  
-    hello: 'world',
-  }
-  
-  // you can also mutate properties like `selectable` or `animated`
-  edge.selectable = !edge.selectable
-  edge.animated = !edge.animated
+  updateEdgeData(id, { hello: 'world' })
+
+  setEdges((edges) =>
+    edges.map((e) => (e.id === id ? { ...e, animated: !e.animated } : e)),
+  )
 }
 </script>
 ```
@@ -387,22 +383,6 @@ function onSomeEvent() {
 ```vue [v-model]
 <script setup>
 import { ref } from 'vue'
-
-const nodes = ref([
-  {
-    id: '1',
-    position: { x: 50, y: 50 },
-    data: {
-      label: 'Node 1',
-      hello: 'world',
-    },
-  },
-  {
-      id: '2',
-      position: { x: 50, y: 250 },
-      data: { label: 'Node 2', },
-  },
-])
 
 const edges = ref([
   {
@@ -412,21 +392,18 @@ const edges = ref([
   },
 ])
 
+// reassign immutably — a new array with a new object for the changed edge
 function onSomeEvent(edgeId) {
-  const edge = edges.value.find((edge) => edge.id === edgeId)
-  edge.data = {
-    ...elements.value[0].data,
-    hello: 'world',
-  }
-
-  // you can also mutate properties like `selectable` or `animated`
-  edge.selectable = !edge.selectable
-  edge.animated = !edge.animated
+  edges.value = edges.value.map((edge) =>
+    edge.id === edgeId
+      ? { ...edge, data: { ...edge.data, hello: 'world' }, animated: !edge.animated }
+      : edge,
+  )
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow v-model:edges="edges" />
 </template>
 ```
 
@@ -442,7 +419,7 @@ The included node types are `default` (bezier), `step`, `smoothstep` and `straig
 The default edge is a bezier curve that connects two nodes.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="bezierEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="bezierEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -452,7 +429,7 @@ The default edge is a bezier curve that connects two nodes.
 A step edge has a straight path with a step towards the target.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="stepEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="stepEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -462,7 +439,7 @@ A step edge has a straight path with a step towards the target.
 The same as the step edge though with a border radius on the step (rounded step).
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="smoothStepEdge">
+  <VueFlow v-model:nodes="nodes" v-model:edges="smoothStepEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -472,7 +449,7 @@ The same as the step edge though with a border radius on the step (rounded step)
 A simple straight path.
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="straightEdge">
+  <VueFlow v-model:nodes="straightNodes" v-model:edges="straightEdges">
     <Background class="rounded-lg" />
   </VueFlow>
 </div>
@@ -581,18 +558,17 @@ import { VueFlow } from '@vue-flow/core'
 import CustomEdge from './CustomEdge.vue'
 import SpecialEdge from './SpecialEdge.vue'
 
-// You can pass 3 optional generic arguments to the Edge type, allowing you to define:
+// You can pass 2 optional generic arguments to the `Edge` type:
 // 1. The data object type
-// 2. The events object type
-// 3. The possible edge types
+// 2. The possible edge-type string union
 
-interface CustomData {
+export interface CustomData {
     hello: string
 }
 
 type CustomEdgeTypes = 'custom' | 'special'
 
-type CustomEdge = Edge<CustomData, any, CustomEdgeTypes>
+export type CustomEdge = Edge<CustomData, CustomEdgeTypes>
 
 export const edges = ref<CustomEdge[]>([
     {
@@ -662,12 +638,12 @@ const nodes = ref([
 import type { EdgeProps } from '@vue-flow/core';
 import { BezierEdge } from '@vue-flow/core';
 
-import { CustomData } from './edges'
+import type { CustomEdge } from './edges'
 
-// props were passed from the slot using `v-bind="customEdgeProps"`
-const props = defineProps<EdgeProps<CustomData>>();
+// props were passed from the slot using `v-bind="customEdgeProps"` — `EdgeProps` takes the edge type
+const props = defineProps<EdgeProps<CustomEdge>>();
 
-console.log(props.data.hello) // 'world'
+console.log(props.data?.hello)
 </script>
 
 <script lang="ts">
@@ -793,26 +769,34 @@ But you may wish to expand on these features or implement your business logic in
 | Prop Name        | Description                                | Type                                         | Optional                                   |
 |------------------|--------------------------------------------|----------------------------------------------|--------------------------------------------|
 | id               | Unique edge id                             | string                                       | <Close class="text-red-500" />             |
-| sourceNode       | The originating node                       | [GraphNode](/typedocs/interfaces/GraphNode)  | <Close class="text-red-500" />             |
-| targetNode       | The destination node                       | [GraphNode](/typedocs/interfaces/GraphNode)  | <Close class="text-red-500" />             |
 | source           | ID of the source node                      | string                                       | <Close class="text-red-500" />             |
 | target           | ID of the target node                      | string                                       | <Close class="text-red-500" />             |
-| type             | Edge Type                                  | string                                       | <Close class="text-red-500" />             |
-| label            | Edge label, can be a string or a VNode     | string \| VNode \| Component \| Object       | <Check class="text-[var(--vp-c-brand)]" /> |
+| sourcePosition   | Source handle position                     | [Position](/typedocs/enumerations/Position)  | <Close class="text-red-500" />             |
+| targetPosition   | Target handle position                     | [Position](/typedocs/enumerations/Position)  | <Close class="text-red-500" />             |
+| sourceX          | Source x coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| sourceY          | Source y coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| targetX          | Target x coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| targetY          | Target y coordinate (render output)        | number                                       | <Close class="text-red-500" />             |
+| type             | Edge type                                  | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| data             | Custom edge data                           | object                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| label            | Edge label (string or VNode)               | string \| VNode \| Component \| Object       | <Check class="text-[var(--vp-c-brand)]" /> |
 | style            | CSS properties                             | CSSProperties                                | <Check class="text-[var(--vp-c-brand)]" /> |
-| selected         | Is edge selected                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| sourcePosition   | Source position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
-| targetPosition   | Target position                            | [Position](/typedocs/enumerations/Position)         | <Close class="text-red-500" />             |
+| selected         | Is the edge selected                       | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| selectable       | Can the edge be selected                   | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| deletable        | Can the edge be deleted                    | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
 | sourceHandleId   | ID of the source handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | targetHandleId   | ID of the target handle                    | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| animated         | Is edge animated                           | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| updatable        | Is edge updatable                          | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
-| markerStart      | Start marker                               | string                                       | <Close class="text-red-500" />             |
-| markerEnd        | End marker                                 | string                                       | <Close class="text-red-500" />             |
+| animated         | Is the edge animated                       | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| reconnectable    | Is the edge reconnectable                  | boolean                                      | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerStart      | Start marker (resolved url string)         | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
+| markerEnd        | End marker (resolved url string)           | string                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | curvature        | The curvature of the edge                  | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
 | interactionWidth | Width of the interaction area for the edge | number                                       | <Check class="text-[var(--vp-c-brand)]" /> |
-| data             | Additional data of edge                    | any object                                   | <Close class="text-red-500" />             |
-| events           | Contextual and custom events of edge       | [EdgeEventsOn](/typedocs/type-aliases/EdgeEventsOn) | <Close class="text-red-500" />             |
+
+::: tip
+There's no `sourceNode` / `targetNode` on `EdgeProps` anymore — resolve the connected nodes with
+`useInternalNode(() => props.source)` / `useInternalNode(() => props.target)`.
+:::
 
 ## Edge Events
 
@@ -834,9 +818,9 @@ const {
   onEdgeMouseEnter,
   onEdgeMouseLeave,
   onEdgeMouseMove,
-  onEdgeUpdateStart,
-  onEdgeUpdate,
-  onEdgeUpdateEnd,
+  onReconnectStart,
+  onReconnect,
+  onReconnectEnd,
 } = useVueFlow()
   
 const nodes = ref([
@@ -922,9 +906,9 @@ function logEvent(eventName, data) {
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @edge-update-start="logEvent('edge update start', $event)"
-    @edge-update="logEvent('edge update', $event)"
-    @edge-update-end="logEvent('edge update end', $event)"
+    @reconnect-start="logEvent('reconnect start', $event)"
+    @reconnect="logEvent('reconnect', $event)"
+    @reconnect-end="logEvent('reconnect end', $event)"
   />
 </template>
 ```
@@ -933,16 +917,17 @@ function logEvent(eventName, data) {
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
   <VueFlow 
-    v-model="bezierEdge" 
+    v-model:nodes="nodes" 
+    v-model:edges="bezierEdges" 
     @edge-click="logEvent('edge clicked', $event)"
     @edge-double-click="logEvent('edge double clicked', $event)"
     @edge-context-menu="logEvent('edge context menu', $event)"
     @edge-mouse-enter="logEvent('edge mouse enter', $event)"
     @edge-mouse-leave="logEvent('edge mouse leave', $event)"
     @edge-mouse-move="logEvent('edge mouse move', $event)"
-    @edge-update-start="logEvent('edge update start', $event)"
-    @edge-update="logEvent('edge update', $event)"
-    @edge-update-end="logEvent('edge update end', $event)"
+    @reconnect-start="logEvent('reconnect start', $event)"
+    @reconnect="logEvent('reconnect', $event)"
+    @reconnect-end="logEvent('reconnect end', $event)"
   >
     <Panel position="top-center">
         <p class="text-sm">Interact to see events in browser console</p>

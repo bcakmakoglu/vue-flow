@@ -1,7 +1,7 @@
-import type { Edge } from '@vue-flow/core'
+import type { Edge } from '@vue-flow/core';
 
-export interface ProcessEdgeData {
-  isAnimating?: boolean
+export interface ProcessEdgeData extends Record<string, unknown> {
+  isAnimating?: boolean;
 }
 
-export type ProcessEdge = Edge<ProcessEdgeData, any, 'process'>
+export type ProcessEdge = Edge<ProcessEdgeData, 'process'>;

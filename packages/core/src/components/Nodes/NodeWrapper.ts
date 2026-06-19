@@ -1,3 +1,5 @@
+import type { BuiltInNode, MouseTouchEvent, NodeComponent } from '../../types';
+import { getNodesInside, nodeHasDimensions } from '@xyflow/system';
 import {
   computed,
   defineComponent,
@@ -7,30 +9,24 @@ import {
   nextTick,
   onMounted,
   provide,
-  ref,
   resolveComponent,
+  shallowRef,
   toRef,
   watch,
-} from 'vue'
-import { until } from '@vueuse/core'
+} from 'vue';
 import {
-  ARIA_NODE_DESC_KEY,
-  ErrorCode,
-  VueFlowError,
-  arrowKeyDiffs,
-  calcNextPosition,
-  elementSelectionKeys,
-  getXYZPos,
-  handleNodeClick,
-  snapPosition,
-} from '../../utils'
-import { NodeId, NodeRef, Slots } from '../../context'
-import { isInputDOMNode, useDrag, useNode, useNodeHooks, useUpdateNodePositions, useVueFlow } from '../../composables'
-import type { MouseTouchEvent, NodeComponent } from '../../types'
+  isInputDOMNode,
+  useDrag,
+  useStore,
+  useUpdateNodePositions,
+  useVueFlow,
+} from '../../composables';
+import { NodeId, NodeRef, Slots } from '../../context';
+import { ARIA_NODE_DESC_KEY, arrowKeyDiffs, elementSelectionKeys, ErrorCode, handleNodeClick, VueFlowError } from '../../utils';
 
 interface Props {
-  id: string
-  resizeObserver: ResizeObserver
+  id: string;
+  resizeObserver: ResizeObserver;
 }
 
 const NodeWrapper = defineComponent({
@@ -40,221 +36,188 @@ const NodeWrapper = defineComponent({
   setup(props: Props) {
     const {
       id: vueFlowId,
-      noPanClassName,
-      selectNodesOnDrag,
-      nodesSelectionActive,
-      multiSelectionActive,
       emits,
+      getInternalNode,
       removeSelectedNodes,
       addSelectedNodes,
       updateNodeDimensions,
       onUpdateNodeInternals,
       getNodeTypes,
-      nodeExtent,
-      elevateNodesOnSelect,
-      disableKeyboardA11y,
-      ariaLiveMessage,
-      snapToGrid,
-      snapGrid,
-      nodeDragThreshold,
-      nodesDraggable,
-      elementsSelectable,
-      nodesConnectable,
-      nodesFocusable,
-      hooks,
-    } = useVueFlow()
+      setCenter,
+    } = useVueFlow();
 
-    const nodeElement = ref<HTMLDivElement | null>(null)
-    provide(NodeRef, nodeElement)
-    provide(NodeId, props.id)
+    // Read the reactive store directly. Inside computeds/handlers `store.x` already tracks reactively, so
+    // there's no need to project the whole state into refs per node (`storeToRefs` allocates a ref for every
+    // state key on each call — a real cost when it runs once per node/edge/handle).
+    const store = useStore();
+    const { parentLookup } = store;
 
-    const slots = inject(Slots)
+    // `nodesSelectionActive` is the one exception: it's handed to `handleNodeClick`, which writes it back,
+    // so it needs a writable ref.
+    const nodesSelectionActive = toRef(store, 'nodesSelectionActive');
 
-    const instance = getCurrentInstance()
+    const nodeElement = shallowRef<HTMLDivElement | null>(null);
+    provide(NodeRef, nodeElement);
+    provide(NodeId, props.id);
 
-    const updateNodePositions = useUpdateNodePositions()
+    const slots = inject(Slots);
 
-    const { node, parentNode } = useNode(props.id)
+    const instance = getCurrentInstance();
 
-    const { emit, on } = useNodeHooks(node, emits)
+    const updateNodePositions = useUpdateNodePositions();
 
-    const isDraggable = toRef(() => (typeof node.draggable === 'undefined' ? nodesDraggable.value : node.draggable))
+    const nodeRef = computed(() => getInternalNode(props.id));
 
-    const isSelectable = toRef(() => (typeof node.selectable === 'undefined' ? elementsSelectable.value : node.selectable))
+    const isDraggable = toRef(() => {
+      const node = nodeRef.value;
+      return !node || typeof node.draggable === 'undefined' ? store.nodesDraggable : node.draggable;
+    });
 
-    const isConnectable = toRef(() => (typeof node.connectable === 'undefined' ? nodesConnectable.value : node.connectable))
+    const isSelectable = toRef(() => {
+      const node = nodeRef.value;
+      return !node || typeof node.selectable === 'undefined' ? store.elementsSelectable : node.selectable;
+    });
 
-    const isFocusable = toRef(() => (typeof node.focusable === 'undefined' ? nodesFocusable.value : node.focusable))
+    const isConnectable = toRef(() => {
+      const node = nodeRef.value;
+      return !node || typeof node.connectable === 'undefined' ? store.nodesConnectable : node.connectable;
+    });
+
+    const isFocusable = toRef(() => {
+      const node = nodeRef.value;
+      return !node || typeof node.focusable === 'undefined' ? store.nodesFocusable : node.focusable;
+    });
 
     const hasPointerEvents = computed(
       () =>
-        isSelectable.value ||
-        isDraggable.value ||
-        hooks.value.nodeClick.hasListeners() ||
-        hooks.value.nodeDoubleClick.hasListeners() ||
-        hooks.value.nodeMouseEnter.hasListeners() ||
-        hooks.value.nodeMouseMove.hasListeners() ||
-        hooks.value.nodeMouseLeave.hasListeners(),
-    )
+        isSelectable.value
+        || isDraggable.value
+        || store.hooks.nodeClick.hasListeners()
+        || store.hooks.nodeDoubleClick.hasListeners()
+        || store.hooks.nodeMouseEnter.hasListeners()
+        || store.hooks.nodeMouseMove.hasListeners()
+        || store.hooks.nodeMouseLeave.hasListeners(),
+    );
 
-    const isInit = toRef(() => !!node.dimensions.width && !!node.dimensions.height)
+    // a node "has dimensions" once it's measured OR carries explicit `width`/`height` OR `initialWidth`/
+    // `initialHeight` (the SSR fallback, where there's no ResizeObserver to measure) — mirrors xyflow/react
+    // & xyflow/svelte's visibility gate so sized/SSR nodes render immediately instead of staying hidden.
+    const isInit = computed(() => (nodeRef.value ? nodeHasDimensions(nodeRef.value) : false));
+
+    // computed (not toRef): the value-equality gate keeps this node's render effect from re-running on
+    // every `parentLookup` entry replacement — an uncached getter read in render tracks the raw map key
+    const isParent = computed(() => (parentLookup.get(props.id)?.size ?? 0) > 0);
 
     const nodeCmp = computed(() => {
-      const name = node.type || 'default'
+      const name = nodeRef.value?.type || 'default';
 
-      const slot = slots?.[`node-${name}`]
+      const slot = slots?.[`node-${name}`];
       if (slot) {
-        return slot
+        return slot;
       }
 
-      let nodeType = node.template || getNodeTypes.value[name]
+      let nodeType = getNodeTypes.value[name];
 
       if (typeof nodeType === 'string') {
         if (instance) {
-          const components = Object.keys(instance.appContext.components)
+          const components = Object.keys(instance.appContext.components);
           if (components && components.includes(name)) {
-            nodeType = resolveComponent(name, false) as NodeComponent
+            nodeType = resolveComponent(name, false) as NodeComponent;
           }
         }
       }
 
       if (nodeType && typeof nodeType !== 'string') {
-        return nodeType
+        return nodeType;
       }
 
-      emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType))
+      emits.error(new VueFlowError(ErrorCode.NODE_TYPE_MISSING, nodeType));
 
-      return false
-    })
+      return false;
+    });
 
     const dragging = useDrag({
       id: props.id,
       el: nodeElement,
       disabled: () => !isDraggable.value,
       selectable: isSelectable,
-      dragHandle: () => node.dragHandle,
+      dragHandle: () => nodeRef.value?.dragHandle,
       onStart(event) {
-        emit.dragStart(event)
+        emits.nodeDragStart(event);
       },
       onDrag(event) {
-        emit.drag(event)
+        emits.nodeDrag(event);
       },
       onStop(event) {
-        emit.dragStop(event)
+        emits.nodeDragStop(event);
       },
       onClick(event) {
-        onSelectNode(event)
+        onSelectNode(event);
       },
-    })
-
-    const getClass = computed(() => (node.class instanceof Function ? node.class(node) : node.class))
+    });
 
     const getStyle = computed(() => {
-      const styles = (node.style instanceof Function ? node.style(node) : node.style) || {}
+      const node = nodeRef.value;
+      // clone: never mutate the user's `node.style` (nodes are markRaw, so an in-place write isn't
+      // reactive AND would cache stale width/height onto the user object across renders)
+      const styles = { ...node?.style };
 
-      const width = node.width instanceof Function ? node.width(node) : node.width
-      const height = node.height instanceof Function ? node.height(node) : node.height
+      // mirror xyflow/react's `getNodeInlineStyleDimensions`: before the node is measured (no handle bounds
+      // yet — e.g. first paint / SSR) fall back through `initialWidth`/`initialHeight`; once measured, only
+      // an explicit `width`/`height` overrides the natural measured size.
+      const isMeasured = !!node?.internals.handleBounds;
+      const width = node?.width ?? (isMeasured ? undefined : node?.initialWidth);
+      const height = node?.height ?? (isMeasured ? undefined : node?.initialHeight);
 
-      if (!styles.width && width) {
-        styles.width = typeof width === 'string' ? width : `${width}px`
+      if (!styles.width && width != null) {
+        styles.width = `${width}px`;
       }
 
-      if (!styles.height && height) {
-        styles.height = typeof height === 'string' ? height : `${height}px`
+      if (!styles.height && height != null) {
+        styles.height = `${height}px`;
       }
 
-      return styles
-    })
+      return styles;
+    });
 
-    const zIndex = toRef(() => Number(node.zIndex ?? getStyle.value.zIndex ?? 0))
+    const zIndex = toRef(() => Number(nodeRef.value?.zIndex ?? getStyle.value.zIndex ?? 0));
 
     onUpdateNodeInternals((updateIds) => {
       // when no ids are passed, update all nodes
       if (updateIds.includes(props.id) || !updateIds.length) {
-        updateInternals()
+        updateInternals();
       }
-    })
+    });
 
     onMounted(() => {
       watch(
-        () => node.hidden,
+        () => nodeRef.value?.hidden,
         (isHidden = false, _, onCleanup) => {
           if (!isHidden && nodeElement.value) {
-            props.resizeObserver.observe(nodeElement.value)
+            props.resizeObserver.observe(nodeElement.value);
 
             onCleanup(() => {
               if (nodeElement.value) {
-                props.resizeObserver.unobserve(nodeElement.value)
+                props.resizeObserver.unobserve(nodeElement.value);
               }
-            })
+            });
           }
         },
         { immediate: true, flush: 'post' },
-      )
-    })
+      );
+    });
 
-    watch([() => node.type, () => node.sourcePosition, () => node.targetPosition], () => {
+    watch([() => nodeRef.value?.type, () => nodeRef.value?.sourcePosition, () => nodeRef.value?.targetPosition], () => {
       nextTick(() => {
-        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }])
-      })
-    })
-
-    /** this watcher only updates XYZPosition (when dragging a parent etc) */
-    watch(
-      [
-        () => node.position.x,
-        () => node.position.y,
-        () => parentNode.value?.computedPosition.x,
-        () => parentNode.value?.computedPosition.y,
-        () => parentNode.value?.computedPosition.z,
-        zIndex,
-        () => node.selected,
-        () => node.dimensions.height,
-        () => node.dimensions.width,
-        () => parentNode.value?.dimensions.height,
-        () => parentNode.value?.dimensions.width,
-      ],
-      ([newX, newY, parentX, parentY, parentZ, nodeZIndex]) => {
-        const xyzPos = {
-          x: newX,
-          y: newY,
-          z: nodeZIndex + (elevateNodesOnSelect.value ? (node.selected ? 1000 : 0) : 0),
-        }
-
-        if (typeof parentX !== 'undefined' && typeof parentY !== 'undefined') {
-          node.computedPosition = getXYZPos({ x: parentX, y: parentY, z: parentZ! }, xyzPos)
-        } else {
-          node.computedPosition = xyzPos
-        }
-      },
-      { flush: 'post', immediate: true },
-    )
-
-    watch([() => node.extent, nodeExtent], ([nodeExtent, globalExtent], [oldNodeExtent, oldGlobalExtent]) => {
-      // update position if extent has actually changed
-      if (nodeExtent !== oldNodeExtent || globalExtent !== oldGlobalExtent) {
-        clampPosition()
-      }
-    })
-
-    // clamp initial position to nodes' extent
-    // if extent is parent, we need dimensions to properly clamp the position
-    if (
-      node.extent === 'parent' ||
-      (typeof node.extent === 'object' && 'range' in node.extent && node.extent.range === 'parent')
-    ) {
-      until(() => isInit)
-        .toBe(true)
-        .then(clampPosition)
-    }
-    // if extent is not parent, we can clamp it immediately
-    else {
-      clampPosition()
-    }
+        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value as HTMLDivElement, forceUpdate: true }]);
+      });
+    });
 
     return () => {
-      if (node.hidden) {
-        return null
+      const node = nodeRef.value;
+
+      if (!node || node.hidden) {
+        return null;
       }
 
       return h(
@@ -266,25 +229,25 @@ const NodeWrapper = defineComponent({
             'vue-flow__node',
             `vue-flow__node-${nodeCmp.value === false ? 'default' : node.type || 'default'}`,
             {
-              [noPanClassName.value]: isDraggable.value,
+              [store.noPanClassName]: isDraggable.value,
               dragging: dragging?.value,
               draggable: isDraggable.value,
               selected: node.selected,
               selectable: isSelectable.value,
-              parent: node.isParent,
+              parent: isParent.value,
             },
-            getClass.value,
+            node.class,
           ],
           'style': {
             visibility: isInit.value ? 'visible' : 'hidden',
-            zIndex: node.computedPosition.z ?? zIndex.value,
-            transform: `translate(${node.computedPosition.x}px,${node.computedPosition.y}px)`,
+            zIndex: node.internals.z ?? zIndex.value,
+            transform: `translate(${node.internals.positionAbsolute.x}px,${node.internals.positionAbsolute.y}px)`,
             pointerEvents: hasPointerEvents.value ? 'all' : 'none',
             ...getStyle.value,
           },
           'tabIndex': isFocusable.value ? 0 : undefined,
           'role': isFocusable.value ? 'group' : undefined,
-          'aria-describedby': disableKeyboardA11y.value ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
+          'aria-describedby': store.disableKeyboardA11y ? undefined : `${ARIA_NODE_DESC_KEY}-${vueFlowId}`,
           'aria-label': node.ariaLabel,
           'aria-roledescription': 'node',
           ...node.domAttributes,
@@ -295,126 +258,127 @@ const NodeWrapper = defineComponent({
           'onClick': onSelectNode,
           'onDblclick': onDoubleClick,
           'onKeydown': onKeyDown,
+          'onFocus': isFocusable.value ? onFocus : undefined,
         },
         [
-          h(nodeCmp.value === false ? getNodeTypes.value.default : (nodeCmp.value as any), {
+          h(nodeCmp.value === false ? (getNodeTypes.value.default as NodeComponent<BuiltInNode>) : (nodeCmp.value as any), {
+            // exactly the `NodeProps` surface (xyflow/react parity) — no legacy `connectable`/`position`/
+            // `dimensions`/`parent`/`parentNodeId`/`resizing` duplicates, which bloated every node's props
+            // and leaked onto custom-node DOM as `$attrs`
             id: node.id,
             type: node.type,
             data: node.data,
-            events: { ...node.events, ...on },
-            selected: node.selected,
-            resizing: node.resizing,
+            selected: !!node.selected,
             dragging: dragging.value,
-            connectable: isConnectable.value,
-            position: node.computedPosition,
-            dimensions: node.dimensions,
-            isValidTargetPos: node.isValidTargetPos,
-            isValidSourcePos: node.isValidSourcePos,
-            parent: node.parentNode,
-            parentNodeId: node.parentNode,
-            zIndex: node.computedPosition.z ?? zIndex.value,
+            isConnectable: isConnectable.value,
+            positionAbsoluteX: node.internals.positionAbsolute.x,
+            positionAbsoluteY: node.internals.positionAbsolute.y,
+            width: node.measured.width,
+            height: node.measured.height,
+            parentId: node.parentId,
+            zIndex: node.internals.z ?? zIndex.value,
+            selectable: node.selectable ?? true,
+            deletable: node.deletable ?? true,
+            draggable: node.draggable ?? true,
             targetPosition: node.targetPosition,
             sourcePosition: node.sourcePosition,
-            label: node.label,
             dragHandle: node.dragHandle,
             onUpdateNodeInternals: updateInternals,
           }),
         ],
-      )
-    }
-    /** this re-calculates the current position, necessary for clamping by a node's extent */
-    function clampPosition() {
-      const nextPosition = node.computedPosition
-
-      const { computedPosition, position } = calcNextPosition(
-        node,
-        snapToGrid.value ? snapPosition(nextPosition, snapGrid.value) : nextPosition,
-        emits.error,
-        nodeExtent.value,
-        parentNode.value,
-      )
-
-      // only overwrite positions if there are changes when clamping
-      if (node.computedPosition.x !== computedPosition.x || node.computedPosition.y !== computedPosition.y) {
-        node.computedPosition = { ...node.computedPosition, ...computedPosition }
-      }
-
-      if (node.position.x !== position.x || node.position.y !== position.y) {
-        node.position = position
-      }
-    }
-
+      );
+    };
     function updateInternals() {
       if (nodeElement.value) {
-        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }])
+        updateNodeDimensions([{ id: props.id, nodeElement: nodeElement.value, forceUpdate: true }]);
       }
     }
 
     function onMouseEnter(event: MouseEvent) {
-      if (!dragging?.value) {
-        emit.mouseEnter({ event, node })
+      const node = nodeRef.value;
+      if (node && !dragging?.value) {
+        emits.nodeMouseEnter({ event, node: node.internals.userNode });
       }
     }
 
     function onMouseMove(event: MouseEvent) {
-      if (!dragging?.value) {
-        emit.mouseMove({ event, node })
+      const node = nodeRef.value;
+      if (node && !dragging?.value) {
+        emits.nodeMouseMove({ event, node: node.internals.userNode });
       }
     }
 
     function onMouseLeave(event: MouseEvent) {
-      if (!dragging?.value) {
-        emit.mouseLeave({ event, node })
+      const node = nodeRef.value;
+      if (node && !dragging?.value) {
+        emits.nodeMouseLeave({ event, node: node.internals.userNode });
       }
     }
 
     function onContextMenu(event: MouseEvent) {
-      return emit.contextMenu({ event, node })
+      const node = nodeRef.value;
+      if (node) {
+        emits.nodeContextMenu({ event, node: node.internals.userNode });
+      }
     }
 
     function onDoubleClick(event: MouseEvent) {
-      return emit.doubleClick({ event, node })
+      const node = nodeRef.value;
+      if (node) {
+        emits.nodeDoubleClick({ event, node: node.internals.userNode });
+      }
     }
 
     function onSelectNode(event: MouseTouchEvent) {
-      if (isSelectable.value && (!selectNodesOnDrag.value || !isDraggable.value || nodeDragThreshold.value > 0)) {
+      const node = nodeRef.value;
+      if (!node) {
+        return;
+      }
+
+      if (isSelectable.value && (!store.selectNodesOnDrag || !isDraggable.value || store.nodeDragThreshold > 0)) {
+        // handleNodeClick needs the enriched InternalNode; the event payload gets the user node
         handleNodeClick(
           node,
-          multiSelectionActive.value,
+          store.multiSelectionActive,
           addSelectedNodes,
           removeSelectedNodes,
           nodesSelectionActive,
           false,
           nodeElement.value!,
-        )
+        );
       }
 
-      emit.click({ event, node })
+      emits.nodeClick({ event, node: node.internals.userNode });
     }
 
     function onKeyDown(event: KeyboardEvent) {
-      if (isInputDOMNode(event) || disableKeyboardA11y.value) {
-        return
+      const node = nodeRef.value;
+      if (!node || isInputDOMNode(event) || store.disableKeyboardA11y) {
+        return;
       }
 
       if (elementSelectionKeys.includes(event.key) && isSelectable.value) {
-        const unselect = event.key === 'Escape'
+        const unselect = event.key === 'Escape';
 
         handleNodeClick(
           node,
-          multiSelectionActive.value,
+          store.multiSelectionActive,
           addSelectedNodes,
           removeSelectedNodes,
           nodesSelectionActive,
           unselect,
           nodeElement.value!,
-        )
-      } else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
+        );
+      }
+      else if (isDraggable.value && node.selected && arrowKeyDiffs[event.key]) {
         // prevent page scrolling
-        event.preventDefault()
+        event.preventDefault();
 
-        ariaLiveMessage.value = `Moved selected node ${event.key.replace('Arrow', '').toLowerCase()}. New position, x: ${~~node
-          .position.x}, y: ${~~node.position.y}`
+        store.ariaLiveMessage = store.ariaLabelConfig['node.a11yDescription.ariaLiveMessage']({
+          direction: event.key.replace('Arrow', '').toLowerCase(),
+          x: ~~node.position.x,
+          y: ~~node.position.y,
+        });
 
         updateNodePositions(
           {
@@ -422,10 +386,36 @@ const NodeWrapper = defineComponent({
             y: arrowKeyDiffs[event.key].y,
           },
           event.shiftKey,
-        )
+        );
+      }
+    }
+
+    // Pan the viewport to a node that receives KEYBOARD focus (Tab) and isn't currently visible, so
+    // tabbing through nodes never lands on an off-screen one. `:focus-visible` keeps this to keyboard
+    // focus (not pointer/programmatic).
+    function onFocus() {
+      const node = nodeRef.value;
+      if (!node || store.disableKeyboardA11y || !store.autoPanOnNodeFocus || !nodeElement.value?.matches(':focus-visible')) {
+        return;
+      }
+
+      const withinViewport
+        = getNodesInside(
+          new Map([[node.id, node]]),
+          { x: 0, y: 0, width: store.dimensions.width, height: store.dimensions.height },
+          store.transform,
+          true,
+        ).length > 0;
+
+      if (!withinViewport) {
+        setCenter(
+          node.internals.positionAbsolute.x + (node.measured.width ?? 0) / 2,
+          node.internals.positionAbsolute.y + (node.measured.height ?? 0) / 2,
+          { zoom: store.transform[2] },
+        );
       }
     }
   },
-})
+});
 
-export default NodeWrapper
+export default NodeWrapper;

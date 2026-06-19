@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { Position, VueFlow } from '@vue-flow/core'
-import ToolbarNode from './ToolbarNode.vue'
+import { Position, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import ToolbarNode from './ToolbarNode.vue';
 
 const nodes = ref([
   {
@@ -34,11 +34,11 @@ const nodes = ref([
     data: { label: 'toolbar always open', toolbarPosition: Position.Top, toolbarVisible: true },
     position: { x: 0, y: -100 },
   },
-])
+]);
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" fit-view-on-init>
+  <VueFlow :nodes="nodes" fit-view>
     <template #node-menu="props">
       <ToolbarNode :id="props.id" :data="props.data" />
     </template>

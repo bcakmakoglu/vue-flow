@@ -1,15 +1,17 @@
-import type { FlowOptions, State } from '../types'
-import { ConnectionLineType, ConnectionMode, PanOnScrollMode, SelectionMode } from '../types'
+import type { Edge, FlowProps, Node, State } from '../types';
+import { ConnectionLineType, ConnectionMode, isMacOs, mergeAriaLabelConfig, PanOnScrollMode, SelectionMode } from '@xyflow/system';
 
-import { isMacOs } from '../utils'
-import { createHooks } from './hooks'
+import { createHooks } from './hooks';
 
-export function useState(): State {
+export function useState<NodeType extends Node = Node, EdgeType extends Edge = Edge>(): State<NodeType, EdgeType> {
   return {
     vueFlowRef: null,
     viewportRef: null,
     nodes: [],
     edges: [],
+    nodeLookup: new Map(),
+    parentLookup: new Map(),
+    edgeLookup: new Map(),
     connectionLookup: new Map(),
     nodeTypes: {},
     edgeTypes: {},
@@ -20,11 +22,9 @@ export function useState(): State {
       width: 0,
       height: 0,
     },
-    viewport: { x: 0, y: 0, zoom: 1 },
+    transform: [0, 0, 1],
 
-    d3Zoom: null,
-    d3Selection: null,
-    d3ZoomHandler: null,
+    panZoom: null,
 
     minZoom: 0.5,
     maxZoom: 2,
@@ -37,6 +37,8 @@ export function useState(): State {
       [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY],
       [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY],
     ],
+    nodeOrigin: [0, 0],
+    colorMode: 'light',
 
     selectionMode: SelectionMode.Full,
     paneDragging: false,
@@ -48,8 +50,9 @@ export function useState(): State {
     panOnScrollSpeed: 0.5,
     panOnScrollMode: PanOnScrollMode.Free,
     paneClickDistance: 0,
+    nodeClickDistance: 0,
     panOnDrag: true,
-    edgeUpdaterRadius: 10,
+    reconnectRadius: 10,
     onlyRenderVisibleElements: false,
     defaultViewport: { x: 0, y: 0, zoom: 1 },
 
@@ -59,26 +62,26 @@ export function useState(): State {
     userSelectionRect: null,
 
     defaultMarkerColor: '#b1b1b7',
-    connectionLineStyle: {},
-    connectionLineType: null,
     connectionLineOptions: {
       type: ConnectionLineType.Bezier,
       style: {},
     },
-    connectionMode: ConnectionMode.Loose,
+    connectionMode: ConnectionMode.Strict,
     connectionStartHandle: null,
     connectionEndHandle: null,
     connectionClickStartHandle: null,
     connectionPosition: { x: Number.NaN, y: Number.NaN },
     connectionRadius: 20,
+    connectionDragThreshold: 1,
     connectOnClick: true,
     connectionStatus: null,
     isValidConnection: null,
+    onBeforeDelete: null,
 
     snapGrid: [15, 15],
     snapToGrid: false,
 
-    edgesUpdatable: false,
+    edgesReconnectable: false,
     edgesFocusable: true,
     nodesFocusable: true,
     nodesConnectable: true,
@@ -88,6 +91,7 @@ export function useState(): State {
     selectNodesOnDrag: true,
     multiSelectionActive: false,
     selectionKeyCode: 'Shift',
+    selectionOnDrag: false,
     multiSelectionKeyCode: isMacOs() ? 'Meta' : 'Control',
     zoomActivationKeyCode: isMacOs() ? 'Meta' : 'Control',
     deleteKeyCode: 'Backspace',
@@ -95,7 +99,7 @@ export function useState(): State {
 
     hooks: createHooks(),
 
-    applyDefault: true,
+    autoApplyChanges: true,
     autoConnect: false,
 
     fitViewOnInit: false,
@@ -107,28 +111,38 @@ export function useState(): State {
     defaultEdgeOptions: undefined,
     elevateEdgesOnSelect: false,
     elevateNodesOnSelect: true,
+    zIndexMode: 'basic',
 
     autoPanOnNodeDrag: true,
     autoPanOnConnect: true,
+    autoPanOnNodeFocus: true,
+    autoPanOnSelection: true,
     autoPanSpeed: 15,
 
     disableKeyboardA11y: false,
+    ariaLabelConfig: mergeAriaLabelConfig(),
     ariaLiveMessage: '',
-  }
+  };
 }
 
 // these options will be set using the appropriate methods
-export const storeOptionsToSkip: (keyof Partial<FlowOptions & Omit<State, 'nodes' | 'edges' | 'modelValue'>>)[] = [
+export const storeOptionsToSkip: (keyof Partial<FlowProps & Omit<State, 'nodes' | 'edges'>>)[] = [
   'id',
   'vueFlowRef',
   'viewportRef',
   'initialized',
-  'modelValue',
   'nodes',
   'edges',
   'maxZoom',
   'minZoom',
   'translateExtent',
+  'nodeExtent',
+  'fitView',
+  // mapped from the `fitView` prop in `setState`; keep the generic option loop from re-applying the
+  // default — the full state is spread into `setState` on store creation, so a stale `fitViewOnInit: false`
+  // would otherwise clobber the value `fitView` just set, leaving `:fit-view` inert.
+  'fitViewOnInit',
+  'viewport',
   'hooks',
   'defaultEdgeOptions',
-]
+];

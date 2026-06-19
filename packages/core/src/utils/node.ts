@@ -1,38 +1,30 @@
-import type { Ref } from 'vue'
-import { nextTick } from 'vue'
-import type { Actions, GraphNode, HandleElement, HandleType, Position } from '../types'
-import { getDimensions } from '.'
+import type { Ref } from 'vue';
+import type { Actions, InternalNode, NodeLookup } from '../types';
+import { nextTick } from 'vue';
 
-export function getHandleBounds(
-  type: HandleType,
-  nodeElement: HTMLDivElement,
-  nodeBounds: DOMRect,
-  zoom: number,
-  nodeId: string,
-): HandleElement[] | null {
-  const handles = nodeElement.querySelectorAll(`.vue-flow__handle.${type}`)
-
-  if (!handles?.length) {
-    return null
+/**
+ * Whether every node in the lookup has been measured — handle bounds resolved + non-zero dimensions. Hidden
+ * nodes are skipped unless `includeHiddenNodes`. Shared by `useNodesInitialized` and `fitView`'s queue so the
+ * "are nodes ready" check has a single definition.
+ */
+export function areNodesInitialized(nodeLookup: NodeLookup, includeHiddenNodes = false): boolean {
+  if (nodeLookup.size === 0) {
+    return false;
   }
 
-  return Array.from(handles).map((handle): HandleElement => {
-    const handleBounds = handle.getBoundingClientRect()
-
-    return {
-      id: handle.getAttribute('data-handleid'),
-      type,
-      nodeId,
-      position: handle.getAttribute('data-handlepos') as unknown as Position,
-      x: (handleBounds.left - nodeBounds.left) / zoom,
-      y: (handleBounds.top - nodeBounds.top) / zoom,
-      ...getDimensions(handle as HTMLDivElement),
+  for (const node of nodeLookup.values()) {
+    if (includeHiddenNodes || !node.hidden) {
+      if (node.internals.handleBounds === undefined || !node.measured?.width || !node.measured?.height) {
+        return false;
+      }
     }
-  })
+  }
+
+  return true;
 }
 
 export function handleNodeClick(
-  node: GraphNode,
+  node: InternalNode,
   multiSelectionActive: boolean,
   addSelectedNodes: Actions['addSelectedNodes'],
   removeSelectedNodes: Actions['removeSelectedNodes'],
@@ -40,15 +32,16 @@ export function handleNodeClick(
   unselect = false,
   nodeEl: HTMLDivElement,
 ) {
-  nodesSelectionActive.value = false
+  nodesSelectionActive.value = false;
 
   if (!node.selected) {
-    addSelectedNodes([node])
-  } else if (unselect || (node.selected && multiSelectionActive)) {
-    removeSelectedNodes([node])
+    addSelectedNodes([node]);
+  }
+  else if (unselect || (node.selected && multiSelectionActive)) {
+    removeSelectedNodes([node]);
 
     nextTick(() => {
-      nodeEl.blur()
-    })
+      nodeEl.blur();
+    });
   }
 }

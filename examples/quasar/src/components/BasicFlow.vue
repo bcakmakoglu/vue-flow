@@ -1,79 +1,87 @@
 <script setup>
-import { VueFlow, isNode, useVueFlow } from '@vue-flow/core'
-import { ref } from 'vue'
-import { initialElements } from './initial-elements.js'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
 /**
- * useVueFlow provides all event handlers and store properties
- * You can pass the composable an object that has the same properties as the VueFlow component props
+ * Our nodes and edges
  */
-const { onPaneReady, onNodeDragStop, onConnect, instance, addEdges } = useVueFlow()
+const nodes = ref(initialNodes);
 
-/**
- * Our elements
- */
-const elements = ref(initialElements)
+const edges = ref(initialEdges);
 
-/**
- * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
- *
- * onPaneReady is called when viewpane & nodes have visible dimensions
- */
-onPaneReady(({ fitView }) => {
-  fitView()
-})
+// `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to
+// reach the store from the component that renders the flow.
+const flow = ref();
 
-onNodeDragStop((e) => console.log('drag stop', e))
+const dark = ref(false);
+
+function onNodeDragStop(e) {
+  console.log('drag stop', e);
+}
 
 /**
  * onConnect is called when a new connection is created.
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether
  */
-onConnect((params) => addEdges([params]))
-
-const dark = ref(false)
+function onConnect(params) {
+  flow.value?.addEdges([params]);
+}
 
 /**
- * To update node properties you can simply use your elements v-model and mutate the elements directly
- * Changes should always be reflected on the graph reactively, without the need to overwrite the elements
+ * To update node properties reassign the nodes immutably so the v-model change is re-adopted.
+ * Changes are reflected on the graph reactively once the bound nodes ref is replaced.
  */
 function updatePos() {
-  return elements.value.forEach((el) => {
-    console.log(el, elements.value)
-    if (isNode(el)) {
-      el.position = {
-        x: Math.random() * 400,
-        y: Math.random() * 400,
-      }
-    }
-  })
+  nodes.value = nodes.value.map(node => ({
+    ...node,
+    position: {
+      x: Math.random() * 400,
+      y: Math.random() * 400,
+    },
+  }));
 }
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
 function logToObject() {
-  return console.log(instance.value?.toObject())
+  return console.log(flow.value?.toObject());
 }
 
 /**
  * Resets the current viewpane transformation (zoom & pan)
  */
 function resetTransform() {
-  return instance.value?.setTransform({ x: 0, y: 0, zoom: 1 })
+  return flow.value?.setViewport({ x: 0, y: 0, zoom: 1 });
 }
 
 function toggleClass() {
-  dark.value = !dark.value
-  elements.value.forEach((el) => (el.class = dark.value ? 'dark' : 'light'))
+  dark.value = !dark.value;
+  nodes.value = nodes.value.map(node => ({ ...node, class: dark.value ? 'dark' : 'light' }));
 }
 </script>
 
 <template>
-  <VueFlow v-model="elements" class="basicflow" :default-zoom="1.5" :min-zoom="0.2" :max-zoom="4">
+  <VueFlow
+    ref="flow"
+    :nodes="nodes"
+    :edges="edges"
+    class="basicflow"
+    :default-viewport="{ zoom: 1.5 }"
+    :min-zoom="0.2"
+    :max-zoom="4"
+    fit-view
+    @node-drag-stop="onNodeDragStop"
+    @connect="onConnect"
+  >
     <div class="controls">
-      <button style="background-color: #113285; color: white" @click="resetTransform">reset transform</button>
-      <button style="background-color: #6f3381; color: white" @click="updatePos">update positions</button>
+      <button style="background-color: #113285; color: white" @click="resetTransform">
+        reset transform
+      </button>
+      <button style="background-color: #6f3381; color: white" @click="updatePos">
+        update positions
+      </button>
       <button
         :style="{
           backgroundColor: dark ? '#FFFFFB' : '#1C1C1C',
@@ -83,7 +91,9 @@ function toggleClass() {
       >
         toggle {{ dark ? 'light' : 'dark' }}
       </button>
-      <button @click="logToObject">log toObject</button>
+      <button @click="logToObject">
+        log toObject
+      </button>
     </div>
   </VueFlow>
 </template>

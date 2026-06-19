@@ -1,22 +1,22 @@
 <script setup>
 defineProps({
-  sourceX: {
+  fromX: {
     type: Number,
     required: true,
   },
-  sourceY: {
+  fromY: {
     type: Number,
     required: true,
   },
-  targetX: {
+  toX: {
     type: Number,
     required: true,
   },
-  targetY: {
+  toY: {
     type: Number,
     required: true,
   },
-})
+});
 </script>
 
 <template>
@@ -26,9 +26,9 @@ defineProps({
       fill="none"
       stroke="#6F3381"
       :stroke-width="2.5"
-      :d="`M${sourceX},${sourceY} C ${sourceX} ${targetY} ${sourceX} ${targetY} ${targetX},${targetY}`"
+      :d="`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`"
     />
 
-    <circle :cx="targetX" :cy="targetY" fill="#fff" :r="4" stroke="#6F3381" :stroke-width="1.5" />
+    <circle :cx="toX" :cy="toY" fill="#fff" :r="4" stroke="#6F3381" :stroke-width="1.5" />
   </g>
 </template>

@@ -1,32 +1,18 @@
 <script lang="ts" setup>
-import type { EdgeProps, Position } from '@vue-flow/core'
-import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
-import type { CSSProperties } from 'vue'
+import type { EdgeProps } from '@vue-flow/core';
+import { EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core';
 
-interface CustomEdgeProps<T = any> extends EdgeProps<T> {
-  id: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  sourcePosition: Position
-  targetPosition: Position
-  data: T
-  markerEnd: string
-  style?: CSSProperties
-}
+const props = defineProps<EdgeProps>();
 
-const props = defineProps<CustomEdgeProps>()
+const { removeEdges } = useVueFlow();
 
-const { removeEdges } = useVueFlow()
-
-const path = computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props));
 </script>
 
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>
@@ -41,7 +27,9 @@ export default {
       }"
       class="nodrag nopan"
     >
-      <button class="edgebutton" @click="removeEdges(id)">×</button>
+      <button class="edgebutton" @click="removeEdges(id)">
+        ×
+      </button>
     </div>
   </EdgeLabelRenderer>
 </template>

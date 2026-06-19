@@ -1,22 +1,25 @@
-<script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
-import { onUnmounted, provide } from 'vue'
-import Viewport from '../Viewport/Viewport.vue'
-import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue'
-import type { FlowEmits, FlowProps, FlowSlots, VueFlowStore } from '../../types'
-import { Slots } from '../../context'
-import { useOnInitHandler } from '../../composables/useOnInitHandler'
-import { useWatchProps } from '../../composables/useWatchProps'
-import { useVueFlow } from '../../composables/useVueFlow'
-import { useHooks } from '../../store/hooks'
-import EdgeRenderer from '../EdgeRenderer/EdgeRenderer.vue'
-import NodeRenderer from '../NodeRenderer/NodeRenderer.vue'
-import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning'
+<script lang="ts" setup generic="NodeType extends Node = Node, EdgeType extends Edge = Edge">
+import type { Viewport } from '@xyflow/system';
+import type { Ref } from 'vue';
+import type { Edge, FlowEmits, FlowProps, FlowSlots, Node, VueFlowInstance, VueFlowState } from '../../types';
+import { inject, onUnmounted, provide } from 'vue';
+import A11yDescriptions from '../../components/A11y/A11yDescriptions.vue';
+import { storeToRefs } from '../../composables/storeToRefs';
+import { useColorModeClass } from '../../composables/useColorModeClass';
+import { useCreateVueFlow } from '../../composables/useCreateVueFlow';
+import { useOnInitHandler } from '../../composables/useOnInitHandler';
+import { useSelectionChange } from '../../composables/useSelectionChange';
+import { useStylesLoadedWarning } from '../../composables/useStylesLoadedWarning';
+import { useViewportSync } from '../../composables/useViewportSync';
+import { useWatchProps } from '../../composables/useWatchProps';
+import { Slots, VueFlow as VueFlowInjectionKey, VueFlowStateKey } from '../../context';
+import { useHooks } from '../../store/hooks';
+import ZoomPane from '../ZoomPane/ZoomPane.vue';
 
-const props = withDefaults(defineProps<FlowProps>(), {
+const props = withDefaults(defineProps<FlowProps<NodeType, EdgeType>>(), {
   snapToGrid: undefined,
   onlyRenderVisibleElements: undefined,
-  edgesUpdatable: undefined,
+  edgesReconnectable: undefined,
   nodesConnectable: undefined,
   nodesDraggable: undefined,
   elementsSelectable: undefined,
@@ -27,10 +30,11 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomOnDoubleClick: undefined,
   panOnScroll: undefined,
   panOnDrag: undefined,
-  applyDefault: undefined,
-  fitViewOnInit: undefined,
+  autoApplyChanges: undefined,
+  colorMode: undefined,
+  fitView: undefined,
+  fitViewOptions: undefined,
   connectOnClick: undefined,
-  connectionLineStyle: undefined,
   connectionLineOptions: undefined,
   autoConnect: undefined,
   elevateEdgesOnSelect: undefined,
@@ -40,62 +44,94 @@ const props = withDefaults(defineProps<FlowProps>(), {
   nodesFocusable: undefined,
   autoPanOnConnect: undefined,
   autoPanOnNodeDrag: undefined,
+  autoPanOnNodeFocus: undefined,
+  autoPanOnSelection: undefined,
   isValidConnection: undefined,
+  onBeforeDelete: undefined,
   deleteKeyCode: undefined,
   selectionKeyCode: undefined,
+  selectionOnDrag: undefined,
   multiSelectionKeyCode: undefined,
   panActivationKeyCode: undefined,
   zoomActivationKeyCode: undefined,
-})
+});
 
-const emit = defineEmits<FlowEmits>()
+const emit = defineEmits<FlowEmits<NodeType, EdgeType>>();
 
-const slots = defineSlots<FlowSlots>()
+const slots = defineSlots<FlowSlots<NodeType, EdgeType>>();
 
-const modelValue = useVModel(props, 'modelValue', emit)
-const modelNodes = useVModel(props, 'nodes', emit)
-const modelEdges = useVModel(props, 'edges', emit)
+const modelNodes = defineModel<NodeType[]>('nodes');
+const modelEdges = defineModel<EdgeType[]>('edges');
+const modelViewport = defineModel<Viewport>('viewport');
 
-const vfInstance = useVueFlow(props)
+// Reuse an ancestor `<VueFlowProvider>`'s store if present; otherwise this `<VueFlow>` owns it —
+// create + provide our own (auto-wrap, like react's `<Wrapper>`). The store is only ever created by a
+// provider boundary; `useVueFlow()`/`useStore()` are pure consumers. A reused store exposes its two
+// views via the same pair of injection keys (instance + state).
+const injectedInstance = inject(VueFlowInjectionKey, null) as VueFlowInstance<NodeType, EdgeType> | null;
+const injectedState = inject(VueFlowStateKey, null) as VueFlowState<NodeType, EdgeType> | null;
 
-// watch props and update store state
-const disposeWatchers = useWatchProps({ modelValue, nodes: modelNodes, edges: modelEdges }, props, vfInstance)
+// This `<VueFlow>` owns its store unless it reuses an ancestor provider's. When it owns the store, the
+// v-model refs back it directly as signals — single source of truth (svelte's `$bindable` proxy), so the
+// store mutating nodes/edges IS the v-model update, no out-sync. When it reuses a provider's store, the
+// model refs can't back the already-created store, so `useWatchProps` syncs them instead (rebinding a
+// reused store to the hosting `<VueFlow>`'s models is deferred to the multi-instance guard work).
+const ownsStore = !injectedInstance;
 
-useHooks(emit, vfInstance.hooks)
+const { instance, state }
+  = injectedInstance && injectedState
+    ? { instance: injectedInstance, state: injectedState }
+    : useCreateVueFlow<NodeType, EdgeType>(props, {
+        nodes: modelNodes as unknown as Ref<NodeType[]>,
+        edges: modelEdges as unknown as Ref<EdgeType[]>,
+      });
 
-useOnInitHandler()
+// when reusing a provider's store, apply this `<VueFlow>`'s props to it
+if (!ownsStore) {
+  instance.setState(props as Parameters<typeof instance.setState>[0]);
+}
 
-useStylesLoadedWarning()
+// watch props and update store state (nodes/edges are signal-backed when we own the store — see above)
+const disposeWatchers = useWatchProps({ nodes: modelNodes, edges: modelEdges }, props, { instance, state }, ownsStore);
+
+useHooks(emit, state.hooks);
+
+useOnInitHandler(instance);
+
+useSelectionChange(instance);
+
+useStylesLoadedWarning(instance);
+
+const colorModeClass = useColorModeClass(state);
+
+useViewportSync(modelViewport, state);
+
+// the container element ref needs the writable ref (not the unwrapped value) so Vue can assign it;
+// access it by member (`stateRefs.vueFlowRef`) so the template `:ref` binding doesn't auto-unwrap it
+const stateRefs = storeToRefs(state);
 
 // slots will be passed via provide
 // this is to avoid having to pass them down through all the components
 // as that would require a lot of boilerplate and causes significant performance drops
-provide(Slots, slots)
+provide(Slots, slots as unknown as FlowSlots);
 
-onUnmounted(disposeWatchers)
+onUnmounted(disposeWatchers);
 
-defineExpose<VueFlowStore>(vfInstance)
+defineExpose<VueFlowInstance<NodeType, EdgeType>>(instance);
 </script>
 
 <script lang="ts">
 export default {
   name: 'VueFlow',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>
-  <div :ref="vfInstance.vueFlowRef" class="vue-flow">
-    <Viewport>
-      <EdgeRenderer />
-
-      <div class="vue-flow__edge-labels" />
-
-      <NodeRenderer />
-
-      <!-- This slot is affected by zooming & panning -->
-      <slot name="zoom-pane" />
-    </Viewport>
+  <div :ref="stateRefs.vueFlowRef" class="vue-flow" :class="colorModeClass">
+    <!-- the `zoom-pane` slot (affected by zooming & panning) renders inside the transformed Viewport via
+    the provided `Slots` (see ZoomPaneSlot), not drilled through ZoomPane → Pane → Viewport -->
+    <ZoomPane />
 
     <!-- This slot is _not_ affected by zooming & panning -->
     <slot />

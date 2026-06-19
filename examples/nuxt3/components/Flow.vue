@@ -1,34 +1,19 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import { ControlButton, Controls } from '@vue-flow/controls'
-import { MiniMap } from '@vue-flow/minimap'
-import { initialEdges, initialNodes } from './initial-elements.js'
-import Icon from './Icon.vue'
+import { Background, ControlButton, Controls, MiniMap, VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import Icon from './Icon.vue';
+import { initialEdges, initialNodes } from './initial-elements.js';
 
-/**
- * useVueFlow provides all event handlers and store properties
- * You can pass the composable an object that has the same properties as the VueFlow component props
- */
-const { onPaneReady, onNodeDragStop, onConnect, addEdges, setViewport, toObject } = useVueFlow()
+const nodes = ref(initialNodes);
 
-const nodes = ref(initialNodes)
-
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
 // our dark mode toggle flag
-const dark = ref(false)
+const dark = ref(false);
 
-/**
- * This is a Vue Flow event-hook which can be listened to from anywhere you call the composable, instead of only on the main component
- * Any event that is available as `@event-name` on the VueFlow component is also available as `onEventName` on the composable and vice versa
- *
- * onPaneReady is called when viewpane & nodes have visible dimensions
- */
-onPaneReady(({ fitView }) => {
-  fitView()
-})
+// `<VueFlow>` exposes its store via `defineExpose`, so a template ref is the pure-provider way to
+// reach the store from the component that renders the flow.
+const flow = ref();
 
 /**
  * onNodeDragStop is called when a node is done being dragged
@@ -39,23 +24,23 @@ onPaneReady(({ fitView }) => {
  * 3. the node that initiated the drag
  * 4. any intersections with other nodes
  */
-onNodeDragStop(({ event, nodes, node, intersections }) => {
-  console.log('Node Drag Stop', { event, nodes, node, intersections })
-})
+function onNodeDragStop({ event, nodes, node, intersections }) {
+  console.log('Node Drag Stop', { event, nodes, node, intersections });
+}
 
 /**
  * onConnect is called when a new connection is created.
  *
  * You can add additional properties to your new edge (like a type or label) or block the creation altogether by not calling `addEdges`
  */
-onConnect((connection) => {
-  addEdges(connection)
-})
+function onConnect(connection) {
+  flow.value?.addEdges(connection);
+}
 
 /**
  * To update a node or multiple nodes, you can
  * 1. Mutate the node objects *if* you're using `v-model`
- * 2. Use the `updateNode` method (from `useVueFlow`) to update the node(s)
+ * 2. Use the `updateNode` method (from the store) to update the node(s)
  * 3. Create a new array of nodes and pass it to the `nodes` ref
  */
 function updatePos() {
@@ -66,31 +51,32 @@ function updatePos() {
         x: Math.random() * 400,
         y: Math.random() * 400,
       },
-    }
-  })
+    };
+  });
 }
 
 /**
  * toObject transforms your current graph data to an easily persist-able object
  */
 function logToObject() {
-  console.log(toObject())
+  console.log(flow.value?.toObject());
 }
 
 /**
  * Resets the current viewport transformation (zoom & pan)
  */
 function resetTransform() {
-  setViewport({ x: 0, y: 0, zoom: 1 })
+  flow.value?.setViewport({ x: 0, y: 0, zoom: 1 });
 }
 
 function toggleDarkMode() {
-  dark.value = !dark.value
+  dark.value = !dark.value;
 }
 </script>
 
 <template>
   <VueFlow
+    ref="flow"
     :nodes="nodes"
     :edges="edges"
     :class="{ dark }"
@@ -98,8 +84,11 @@ function toggleDarkMode() {
     :default-viewport="{ zoom: 1.5 }"
     :min-zoom="0.2"
     :max-zoom="4"
+    fit-view
+    @node-drag-stop="onNodeDragStop"
+    @connect="onConnect"
   >
-    <Background pattern-color="#aaa" :gap="16" />
+    <Background :gap="16" />
 
     <MiniMap />
 

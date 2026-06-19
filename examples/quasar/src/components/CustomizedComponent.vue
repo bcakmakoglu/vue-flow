@@ -1,9 +1,9 @@
 <script>
-import CustomizedFlow from './CustomizedFlow.vue'
+import CustomizedFlow from './CustomizedFlow.vue';
 
 export default {
   components: { CustomizedFlow },
-}
+};
 </script>
 
 <template>

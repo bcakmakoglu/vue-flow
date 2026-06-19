@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import { VueFlow } from '@vue-flow/core'
-import ConnectionLine from './SnappableConnectionLine.vue'
+import { VueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
+import ConnectionLine from './SnappableConnectionLine.vue';
 
 const nodes = ref([
   {
@@ -19,19 +19,19 @@ const nodes = ref([
     data: { label: 'Node 3' },
     position: { x: 200, y: 0 },
   },
-])
+]);
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view-on-init>
-    <template #connection-line="{ sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition }">
+  <VueFlow :nodes="nodes" :connection-radius="30" auto-connect fit-view>
+    <template #connection-line="{ fromX, fromY, toX, toY, fromPosition, toPosition }">
       <ConnectionLine
-        :source-x="sourceX"
-        :source-y="sourceY"
-        :target-x="targetX"
-        :target-y="targetY"
-        :source-position="sourcePosition"
-        :target-position="targetPosition"
+        :from-x="fromX"
+        :from-y="fromY"
+        :to-x="toX"
+        :to-y="toY"
+        :from-position="fromPosition"
+        :to-position="toPosition"
       />
     </template>
   </VueFlow>

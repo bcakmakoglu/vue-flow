@@ -1,24 +1,23 @@
 <script setup>
-import { h, ref } from 'vue'
-import { Background } from '@vue-flow/background'
-import { MarkerType, VueFlow } from '@vue-flow/core'
-import EdgeWithButton from './EdgeWithButton.vue'
-import CustomEdge from './CustomEdge.vue'
-import CustomEdgeLabel from './CustomEdgeLabel.vue'
+import { Background, MarkerType, VueFlow } from '@vue-flow/core';
+import { h, ref } from 'vue';
+import CustomEdge from './CustomEdge.vue';
+import CustomEdgeLabel from './CustomEdgeLabel.vue';
+import EdgeWithButton from './EdgeWithButton.vue';
 
 const nodes = ref([
-  { id: '1', type: 'input', label: 'Start', position: { x: 50, y: 0 }, style: { borderColor: '#10b981' } },
-  { id: '2', label: 'Node 2', position: { x: 150, y: 100 } },
-  { id: '2a', label: 'Node 2a', position: { x: 0, y: 180 } },
-  { id: '3', label: 'Node 3', position: { x: 250, y: 200 } },
-  { id: '4', label: 'Node 4', position: { x: 400, y: 300 } },
-  { id: '3a', label: 'Node 3a', position: { x: 175, y: 300 } },
-  { id: '5', label: 'Node 5', position: { x: 200, y: 400 } },
-  { id: '6', type: 'output', label: 'Output 6', position: { x: 0, y: 350 } },
-  { id: '7', type: 'output', label: 'Output 7', position: { x: 50, y: 600 } },
-  { id: '8', type: 'output', label: 'Output 8', position: { x: 350, y: 600 } },
-  { id: '9', type: 'output', label: 'Output 9', position: { x: 550, y: 400 } },
-])
+  { id: '1', type: 'input', data: { label: 'Start' }, position: { x: 50, y: 0 }, style: { borderColor: '#10b981' } },
+  { id: '2', data: { label: 'Node 2' }, position: { x: 150, y: 100 } },
+  { id: '2a', data: { label: 'Node 2a' }, position: { x: 0, y: 180 } },
+  { id: '3', data: { label: 'Node 3' }, position: { x: 250, y: 200 } },
+  { id: '4', data: { label: 'Node 4' }, position: { x: 400, y: 300 } },
+  { id: '3a', data: { label: 'Node 3a' }, position: { x: 175, y: 300 } },
+  { id: '5', data: { label: 'Node 5' }, position: { x: 200, y: 400 } },
+  { id: '6', type: 'output', data: { label: 'Output 6' }, position: { x: 0, y: 350 } },
+  { id: '7', type: 'output', data: { label: 'Output 7' }, position: { x: 50, y: 600 } },
+  { id: '8', type: 'output', data: { label: 'Output 8' }, position: { x: 350, y: 600 } },
+  { id: '9', type: 'output', data: { label: 'Output 9' }, position: { x: 550, y: 400 } },
+]);
 
 const edges = ref([
   { id: 'e1-2', source: '1', target: '2', label: 'bezier edge (default)', class: 'normal-edge' },
@@ -60,11 +59,11 @@ const edges = ref([
     type: 'custom',
     data: { text: 'styled custom edge label' },
   },
-])
+]);
 </script>
 
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" fit-view-on-init>
+  <VueFlow :nodes="nodes" :edges="edges" fit-view>
     <template #edge-button="buttonEdgeProps">
       <EdgeWithButton
         :id="buttonEdgeProps.id"

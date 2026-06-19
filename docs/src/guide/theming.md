@@ -5,8 +5,7 @@ title: Theming
 <script setup>
 import LogosJavascript from '~icons/logos/javascript';
 import { ref, h } from 'vue';
-import { Handle, Position, VueFlow } from '@vue-flow/core';
-import { Background } from '@vue-flow/background';
+import { Background, Handle, Position, VueFlow } from '@vue-flow/core';
 
 const CustomNode = (props) => h('div', [
   h(Handle, { connectable: false, type: 'target', position: Position.Top }),
@@ -14,9 +13,12 @@ const CustomNode = (props) => h('div', [
   h(Handle, { connectable: false, type: 'source', position: Position.Bottom }),
 ]);
 
-const elements = ref([
+const nodes = ref([
   { id: '1', label: 'Node 1', position: { x: 0, y: 0 }, draggable: false, deletable: false, selectable: false, type: 'custom' },
   { id: '2', label: 'Node 2', position: { x: 75, y: 75 }, draggable: false, deletable: false, selectable: false, type: 'custom' },
+])
+
+const edges = ref([
   { id: 'e1-2', source: '1', target: '2', animated: true, selectable: false, deletable: false },
 ])
 </script>
@@ -29,17 +31,17 @@ the box.
 ## Library Styles
 
 Vue Flow values flexibility and allows you to take the lead when it comes to styling.
-It showcases some obligatory stylings that must be imported, while leaving optional features, such as the default theme,
-up to your preference.
+It ships two stylesheets, mirroring `@xyflow/react`/`@xyflow/svelte`:
 
-To import the necessary and optional styles:
+- **`style.css`** — the default theme: the necessary structure *and* vue-flow's built-in look. Import this for batteries included.
+- **`base.css`** — the necessary structure plus only minimal theming. Import this instead when you want to theme the flow yourself.
 
 ```css
-/* these are necessary styles for vue flow */
+/* the default theme (structure + the built-in look) */
 @import '@vue-flow/core/dist/style.css';
 
-/* this contains the default theme, these are optional styles */
-@import '@vue-flow/core/dist/theme-default.css';
+/* …or, to theme it yourself, import the minimal structure only: */
+/* @import '@vue-flow/core/dist/base.css'; */
 ```
 
 ## Adjusting the Default Theme
@@ -64,7 +66,7 @@ Here's how you can use CSS classes to add a pop of color or alter the font style
 ```
 
 <div class="mt-4 bg-[var(--vp-code-block-bg)] rounded-lg h-50">
-  <VueFlow v-model="elements" fit-view-on-init>
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" fit-view>
     <template #node-custom="props">
       <CustomNode v-bind="props" />
     </template>
@@ -125,29 +127,28 @@ const nodes = ref([
 
 ### [Redefining Styles with CSS variables](/typedocs/type-aliases/CSSVars)
 
-Some of the defined theme styles can be overwritten using CSS variables.
-These alterations can be implemented either on a global scale or to individual elements.
+Vue Flow exposes its theme through `--xy-*` CSS variables (the same set as `@xyflow/react`/`@xyflow/svelte`). Each rule reads `var(--xy-x, var(--xy-x-default))`, so you override the **un-suffixed** variable and vue-flow falls back to the shipped `--xy-x-default`. Overrides can be applied globally or to individual elements.
 
 ::: code-group
 
 ```css
-/* Global default CSS variable values */
-:root {
-    --vf-node-bg: #fff;
-    --vf-node-text: #222;
-    --vf-connection-path: #b1b1b7;
-    --vf-handle: #555;
+/* Override globally — set the un-suffixed vars on the flow container */
+.vue-flow {
+    --xy-node-background-color: #fff;
+    --xy-node-color: #222;
+    --xy-edge-stroke: #b1b1b7;
+    --xy-handle-background-color: #555;
 }
 ```
 
 ```js{6-7} [<LogosJavascript />]
 const nodes = ref([
-  { 
-    id: '1', 
-    position: { x: 100, y: 100 }, 
+  {
+    id: '1',
+    position: { x: 100, y: 100 },
     data: { label: 'Node 1' },
-    /* Overriding the `--vf-node-color` variable to change node border, box-shadow and handle color */
-    style: { '--vf-node-color': 'blue' } 
+    /* Override a single node's border via the `--xy-node-border` variable */
+    style: { '--xy-node-border': '2px solid blue' }
   },
 ])
 ```
@@ -156,16 +157,64 @@ const nodes = ref([
 
 ## CSS Variables
 
-Here's a concise list of CSS variables you can consider, along with their effects:
+Set the **un-suffixed** variable to override; vue-flow falls back to the shipped `--xy-*-default`.
 
-| Variable             | Effect                                             |
-|----------------------|----------------------------------------------------|
-| --vf-node-color      | Defines node border, box-shadow, and handle colors |
-| --vf-box-shadow      | Defines color of node box-shadow                   |
-| --vf-node-bg         | Defines node background color                      |
-| --vf-node-text       | Defines node text color                            |
-| --vf-handle          | Defines node handle color                          |
-| --vf-connection-path | Defines connection line color                      |
+| Variable                                      | Effect                                            |
+|-----------------------------------------------|---------------------------------------------------|
+| --xy-edge-stroke                              | Edge line color                                   |
+| --xy-edge-stroke-width                        | Edge line width                                   |
+| --xy-edge-stroke-selected                     | Selected edge line color                          |
+| --xy-connectionline-stroke                    | Connection-line (while connecting) color          |
+| --xy-edge-label-color                         | Edge label text color                             |
+| --xy-edge-label-background-color              | Edge label background color                       |
+| --xy-node-color                               | Node text color                                   |
+| --xy-node-border                              | Node border (shorthand, e.g. `1px solid #1a192b`) |
+| --xy-node-background-color                    | Node background color                             |
+| --xy-node-border-radius                       | Node corner radius                                |
+| --xy-node-boxshadow-hover                     | Node box-shadow on hover                          |
+| --xy-node-boxshadow-selected                  | Node box-shadow when selected                     |
+| --xy-handle-background-color                  | Handle background color                           |
+| --xy-handle-border-color                      | Handle border color                               |
+| --xy-selection-background-color               | Selection box fill                                |
+| --xy-selection-border                         | Selection box border                              |
+| --xy-background-color                         | Flow container background color                   |
+| --xy-background-pattern-color                 | `Background` pattern (dots/lines/cross) color     |
+| --xy-controls-button-background-color         | `Controls` button background color                |
+| --xy-controls-button-background-color-hover   | `Controls` button hover background                |
+| --xy-controls-button-color                    | `Controls` button icon color                      |
+| --xy-controls-button-border-color             | `Controls` button border color                    |
+| --xy-controls-box-shadow                      | `Controls` container box-shadow                   |
+| --xy-minimap-background-color                 | `MiniMap` background color                        |
+| --xy-minimap-mask-background-color            | `MiniMap` mask (overlay) color                    |
+| --xy-minimap-node-background-color            | `MiniMap` node color                              |
+| --xy-resize-background-color                  | `NodeResizer` control color                       |
+
+## Color Mode
+
+Vue Flow ships a built-in dark theme. Set the [`colorMode`](/typedocs/interfaces/FlowProps#colormode)
+prop to `dark`, `light` (default) or `system` (follows the OS `prefers-color-scheme`):
+
+```vue
+<template>
+  <VueFlow :nodes="nodes" :edges="edges" color-mode="dark" />
+</template>
+```
+
+The resolved mode is applied as a `light`/`dark` class on the `.vue-flow` container, and the default
+theme overrides the CSS variables above under `.vue-flow.dark`. To theme your own elements for dark
+mode, scope your rules the same way:
+
+```css
+.vue-flow.dark .my-custom-node {
+  background: #1e1e1e;
+  color: #f8f8f8;
+}
+```
+
+::: tip
+`color-mode="system"` reacts to OS theme changes at runtime — switching your system between light and
+dark updates the flow without a remount.
+:::
 
 ## CSS Class Names
 
@@ -176,7 +225,8 @@ Here you'll find a handy reference guide of class names and their respective ele
 | --------------------- | ----------------------------------------- |
 | .vue-flow             | The outer container                       |
 | .vue-flow__container  | Wrapper for container elements            |
-| .vue-flow__viewport   | The inner container                       |
+| .vue-flow__renderer   | The pan/zoom container                    |
+| .vue-flow__viewport   | The transformed (zoomed/panned) layer     |
 | .vue-flow__background | Background component                      |
 | .vue-flow__minimap    | MiniMap component                         |
 | .vue-flow__controls   | Controls component                        |
@@ -186,7 +236,7 @@ Here you'll find a handy reference guide of class names and their respective ele
 | ------------------------- | ------------------------------------------------- |
 | .vue-flow__edges          | Wrapper rendering edges                           |
 | .vue-flow__edge           | Wrapper around each edge element                  |
-| .vue-flow__selectionpane  | Pane for handling user selection                  |
+| .vue-flow__pane           | Pane handling panning & user selection            |
 | .vue-flow__selection      | Defines current user selection box                |
 | .vue-flow__edge-\{type\}  | Edge type (either custom or default)              |
 | .vue-flow__edge.selected  | Defines the currently selected edge(s)            |
@@ -215,5 +265,6 @@ Here you'll find a handy reference guide of class names and their respective ele
 | .vue-flow__handle-top     | Defines a handle at top                   |
 | .vue-flow__handle-left    | Defines a handle at left                  |
 | .vue-flow__handle-right   | Defines a handle at right                 |
-| .vue-flow__handle-connecting | Connection line is over the handle      |
-| .vue-flow__handle-valid      | Connection line over handle with valid connection |
+| .vue-flow__handle.connectable         | Handle that can be connected                    |
+| .vue-flow__handle.connecting          | Handle the connection started from              |
+| .vue-flow__handle.connectionindicator | Handle highlighted as a valid connection target |

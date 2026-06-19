@@ -1,12 +1,12 @@
 <script setup>
-import { Handle, Position, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
+import { Handle, Position, useVueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
 
-const props = defineProps(['id', 'data'])
+const props = defineProps(['id', 'data']);
 
-const operators = ['+', '-', '*', '/']
+const operators = ['+', '-', '*', '/'];
 
-const { updateNodeData } = useVueFlow()
+const { updateNodeData } = useVueFlow();
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const { updateNodeData } = useVueFlow()
     </button>
   </div>
 
-  <Handle type="source" :position="Position.Right" :connectable="false" />
-  <Handle id="target-a" type="target" :position="Position.Left" :connectable="false" />
-  <Handle id="target-b" type="target" :position="Position.Left" :connectable="false" />
+  <Handle type="source" :position="Position.Right" :is-connectable="false" />
+  <Handle id="target-a" type="target" :position="Position.Left" :is-connectable="false" />
+  <Handle id="target-b" type="target" :position="Position.Left" :is-connectable="false" />
 </template>

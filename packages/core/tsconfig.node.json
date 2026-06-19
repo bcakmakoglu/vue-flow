@@ -2,15 +2,16 @@
   "compilerOptions": {
     "composite": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "vite.config.ts",
-    "vite.config.iife.ts"
-  ],
   "files": [
     "package.json"
+  ],
+  "include": [
+    "tsdown.config.mts"
   ]
 }

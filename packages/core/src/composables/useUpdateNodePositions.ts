@@ -1,6 +1,9 @@
-import type { NodeDragItem, XYPosition } from '../types'
-import { calcNextPosition } from '../utils'
-import { useVueFlow } from './useVueFlow'
+import type { XYPosition } from '@xyflow/system';
+import type { NodeDragItem } from '../types';
+import { getNodeDimensions } from '@xyflow/system';
+import { calcNextPosition } from '../utils';
+import { useStore } from './useStore';
+import { useVueFlow } from './useVueFlow';
 
 /**
  * Composable for updating the position of nodes.
@@ -8,42 +11,53 @@ import { useVueFlow } from './useVueFlow'
  * @internal
  */
 export function useUpdateNodePositions() {
-  const { getSelectedNodes, nodeExtent, updateNodePositions, findNode, snapGrid, snapToGrid, nodesDraggable, emits } =
-    useVueFlow()
+  const { getSelectedNodes, updateNodePositions, getInternalNode, emits } = useVueFlow();
+  const store = useStore();
 
   return (positionDiff: XYPosition, isShiftPressed = false) => {
     // by default a node moves 5px on each key press, or 20px if shift is pressed
     // if snap grid is enabled, we use that for the velocity.
-    const xVelo = snapToGrid.value ? snapGrid.value[0] : 5
-    const yVelo = snapToGrid.value ? snapGrid.value[1] : 5
-    const factor = isShiftPressed ? 4 : 1
+    const xVelo = store.snapToGrid ? store.snapGrid[0] : 5;
+    const yVelo = store.snapToGrid ? store.snapGrid[1] : 5;
+    const factor = isShiftPressed ? 4 : 1;
 
-    const positionDiffX = positionDiff.x * xVelo * factor
-    const positionDiffY = positionDiff.y * yVelo * factor
+    const positionDiffX = positionDiff.x * xVelo * factor;
+    const positionDiffY = positionDiff.y * yVelo * factor;
 
-    const nodeUpdates: NodeDragItem[] = []
+    const nodeUpdates: NodeDragItem[] = [];
     for (const node of getSelectedNodes.value) {
-      if (node.draggable || (nodesDraggable && typeof node.draggable === 'undefined')) {
-        const nextPosition = { x: node.computedPosition.x + positionDiffX, y: node.computedPosition.y + positionDiffY }
+      if (node.draggable || (store.nodesDraggable && typeof node.draggable === 'undefined')) {
+        // `getSelectedNodes` returns user `Node`s — resolve the enriched InternalNode for internals/measured
+        const internalNode = getInternalNode(node.id);
+        if (!internalNode) {
+          continue;
+        }
+
+        const nextPosition = {
+          x: internalNode.internals.positionAbsolute.x + positionDiffX,
+          y: internalNode.internals.positionAbsolute.y + positionDiffY,
+        };
 
         const { position } = calcNextPosition(
-          node,
+          internalNode,
           nextPosition,
           emits.error,
-          nodeExtent.value,
-          node.parentNode ? findNode(node.parentNode) : undefined,
-        )
+          store.nodeExtent,
+          node.parentId ? getInternalNode(node.parentId) : undefined,
+        );
 
         nodeUpdates.push({
           id: node.id,
           position,
-          from: node.position,
           distance: { x: positionDiff.x, y: positionDiff.y },
-          dimensions: node.dimensions,
-        })
+          measured: getNodeDimensions(internalNode),
+          internals: {
+            positionAbsolute: { x: internalNode.internals.positionAbsolute.x, y: internalNode.internals.positionAbsolute.y },
+          },
+        });
       }
     }
 
-    updateNodePositions(nodeUpdates, true, false)
-  }
+    updateNodePositions(nodeUpdates, true, false);
+  };
 }

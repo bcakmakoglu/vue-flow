@@ -1,29 +1,30 @@
 <script lang="ts" setup>
-import type { NodeProps } from '@vue-flow/core'
-import { Handle, Position } from '@vue-flow/core'
-import type { Colors } from './utils'
+import type { Node, NodeProps } from '@vue-flow/core';
+import type { Colors } from './utils';
+import { Handle, Position } from '@vue-flow/core';
 
-interface RGBNodeProps extends Pick<NodeProps<{ color: Colors }>, 'data'> {
-  data: {
-    color: Colors
-  }
-  amount: Record<Colors, number>
+type RGBNode = Node<{ color: Colors }, 'rgb'>;
+
+interface RGBNodeProps extends Pick<NodeProps<RGBNode>, 'data'> {
+  amount: Record<Colors, number>;
 }
 
-const props = defineProps<RGBNodeProps>()
+const props = defineProps<RGBNodeProps>();
 
-const emit = defineEmits<{ (event: 'change', data: { color: Colors; val: number }): void }>()
+const emit = defineEmits<{ (event: 'change', data: { color: Colors; val: number }): void }>();
 
-const currentColor = toRef(props.data, 'color', 'red')
+const currentColor = toRef(props.data, 'color', 'red');
 
 function onChange(e: InputEvent) {
-  return emit('change', { color: currentColor.value, val: parseInt((e.target as HTMLInputElement).value) })
+  return emit('change', { color: currentColor.value, val: Number.parseInt((e.target as HTMLInputElement).value) });
 }
 </script>
 
 <template>
   <div class="wrapper">
-    <div class="text-md" :style="{ color: currentColor }">{{ `${currentColor}`.toUpperCase() }}</div>
+    <div class="text-md" :style="{ color: currentColor }">
+      {{ `${currentColor}`.toUpperCase() }}
+    </div>
 
     <input
       :value="amount[currentColor]"
@@ -33,7 +34,7 @@ function onChange(e: InputEvent) {
       min="0"
       max="255"
       @input="onChange"
-    />
+    >
 
     <Handle type="source" :position="Position.Right" :style="{ backgroundColor: currentColor }" />
   </div>

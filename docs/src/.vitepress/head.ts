@@ -4,7 +4,7 @@ export const meta = {
   keywords: 'vue, flowchart, graph, vue3, vuejs, vite, nuxt3, nuxtjs, quasar',
   img: 'https://images.prismic.io/bcakmakoglu/8fbdad18-3cd4-46a9-83cf-dbd9fbf60484_vue-flow.png?auto=compress,format',
   url: 'https://vueflow.dev/',
-}
+};
 
 export default [
   [
@@ -129,4 +129,4 @@ export default [
   ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }],
   ['meta', { name: 'msapplication-TileColor', content: '#10b981' }],
   ['meta', { name: 'theme-color', content: '#10b981' }],
-]
+];

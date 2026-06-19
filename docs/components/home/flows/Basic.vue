@@ -1,117 +1,93 @@
 <script lang="ts" setup>
-import type { ClassFunc, GraphEdge, GraphNode, StyleFunc } from '@vue-flow/core'
-import { ConnectionLineType, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import { Controls } from '@vue-flow/controls'
+import type { Connection, Edge, Node, Styles, VueFlowInstance } from '@vue-flow/core';
+import { Background, ConnectionLineType, Controls, VueFlow } from '@vue-flow/core';
 
-import Cross from '~icons/mdi/window-close'
+import Cross from '~icons/mdi/window-close';
 
-const emit = defineEmits(['pane'])
+const emit = defineEmits(['pane']);
 
-const getNodeClass: ClassFunc<GraphNode> = (el) => {
-  const classes = ['font-semibold', '!border-2', 'transition-colors', 'duration-300', 'ease-in-out']
-  if (el.selected) {
-    classes.push(
-      ...[
-        '!border-primary/80',
-        '!shadow-lg',
-        'shadow-secondary dark:(!shadow-primary/50)',
-        '!bg-primary-100/50 dark:(!bg-primary-300/80)',
-        '!text-gray-700 dark:(!text-white)',
-      ],
-    )
-  }
+// In 2.0 `class`/`style` are plain values (the `ClassFunc`/`StyleFunc` callback types are gone).
+// The base classes/styles are applied statically here; selection-dependent styling is handled in CSS
+// via the `.selected` class Vue Flow adds to node/edge wrappers (see the `<style>` block below).
+const nodeClass = 'font-semibold !border-2 transition-colors duration-300 ease-in-out';
 
-  return classes.join(' ')
-}
+const edgeClass = 'transition-colors duration-300';
 
-const getEdgeClass: ClassFunc<GraphEdge> = (el) => {
-  const classes = ['transition-colors duration-300', el.selected || el.sourceNode.selected ? 'font-semibold' : '']
-  return classes.join(' ')
-}
+const edgeStyle: Styles = {
+  transition: 'stroke ease-in-out 300ms',
+  strokeWidth: 2,
+};
 
-const getEdgeStyle: StyleFunc<GraphEdge> = (el) => {
-  const sourceNodeSelected = el.sourceNode.selected
-  return {
-    transition: 'stroke ease-in-out 300ms',
-    stroke: el.selected || sourceNodeSelected ? 'var(--primary)' : '',
-    strokeWidth: 2,
-  }
-}
+// `<VueFlow>` exposes its store via `defineExpose`; reach `viewport`/`addEdges` through a template ref
+// (pure-provider: no `useVueFlow()` outside a provider).
+const flow = ref<VueFlowInstance>();
 
-const { onPaneReady, onConnect, addEdges, viewport } = useVueFlow({
-  connectionLineType: ConnectionLineType.SmoothStep,
-  connectionLineStyle: {
-    strokeDasharray: 5,
-    animation: 'dashdraw 0.5s linear infinite',
+const nodes = ref<Node[]>([
+  {
+    id: '1',
+    type: 'input',
+    data: { label: 'Start' },
+    position: { x: 250, y: 5 },
+    class: nodeClass,
   },
-  modelValue: [
-    {
-      id: '1',
-      type: 'input',
-      label: 'Start',
-      position: { x: 250, y: 5 },
-      class: getNodeClass,
-    },
-    {
-      id: '2',
-      label: 'Waypoint',
-      position: { x: 100, y: 100 },
-      class: getNodeClass,
-    },
-    { id: '3', label: 'Waypoint', position: { x: 400, y: 100 }, class: getNodeClass },
-    {
-      id: '4',
-      type: 'output',
-      label: 'End',
-      position: { x: 250, y: 225 },
-      class: getNodeClass,
-    },
-    {
-      id: 'e1-2',
-      source: '1',
-      label: 'animated edge',
-      target: '2',
-      animated: true,
-      class: getEdgeClass,
-      style: getEdgeStyle,
-    },
-    {
-      id: 'e1-3',
-      source: '1',
-      target: '3',
-      label: 'default edge',
-      class: getEdgeClass,
-      style: (el: GraphEdge) => {
-        const sourceNodeSelected = el.sourceNode.selected
-        return {
-          transition: 'stroke ease-in-out 300ms',
-          stroke: el.selected || sourceNodeSelected ? 'red' : '',
-        }
-      },
-    },
-    {
-      id: 'e2-4',
-      source: '2',
-      target: '4',
-      type: 'step',
-      animated: true,
-      class: getEdgeClass,
-      style: getEdgeStyle,
-    },
-  ],
-})
+  {
+    id: '2',
+    data: { label: 'Waypoint' },
+    position: { x: 100, y: 100 },
+    class: nodeClass,
+  },
+  { id: '3', data: { label: 'Waypoint' }, position: { x: 400, y: 100 }, class: nodeClass },
+  {
+    id: '4',
+    type: 'output',
+    data: { label: 'End' },
+    position: { x: 250, y: 225 },
+    class: nodeClass,
+  },
+]);
 
-onPaneReady((i) => emit('pane', i))
-onConnect((param) => {
-  addEdges([
+const edges = ref<Edge[]>([
+  {
+    id: 'e1-2',
+    source: '1',
+    label: 'animated edge',
+    target: '2',
+    animated: true,
+    class: edgeClass,
+    style: edgeStyle,
+  },
+  {
+    id: 'e1-3',
+    source: '1',
+    target: '3',
+    label: 'default edge',
+    class: edgeClass,
+    style: { transition: 'stroke ease-in-out 300ms' },
+  },
+  {
+    id: 'e2-4',
+    source: '2',
+    target: '4',
+    type: 'step',
+    animated: true,
+    class: edgeClass,
+    style: edgeStyle,
+  },
+]);
+
+function onConnect(param: Connection) {
+  flow.value?.addEdges([
     {
       ...param,
       type: 'smoothstep',
       animated: true,
     },
-  ])
-})
+  ]);
+}
+
+function onInit(instance: VueFlowInstance) {
+  emit('pane', instance);
+}
 </script>
 
 <template>
@@ -131,11 +107,22 @@ onConnect((param) => {
   <div
     class="w-full h-[300px] md:min-h-[400px] shadow-xl rounded-xl font-mono uppercase border-1 border-secondary overflow-hidden"
   >
-    <VueFlow class="basic">
+    <VueFlow
+      ref="flow"
+      v-model:nodes="nodes"
+      v-model:edges="edges"
+      class="basic"
+      :connection-line-options="{
+        type: ConnectionLineType.SmoothStep,
+        style: { strokeDasharray: 5, animation: 'dashdraw 0.5s linear infinite' },
+      }"
+      @init="onInit"
+      @connect="onConnect"
+    >
       <Controls position="bottom-right" />
       <Background :gap="60">
         <template #pattern>
-          <Cross :style="{ fontSize: `${8 * viewport.zoom || 1}px` }" class="text-[#10b981] opacity-50" />
+          <Cross :style="{ fontSize: `${8 * (flow?.viewport?.value?.zoom ?? 1) || 1}px` }" class="text-[#10b981] opacity-50" />
         </template>
       </Background>
     </VueFlow>
@@ -143,6 +130,21 @@ onConnect((param) => {
 </template>
 
 <style>
+/* selection-state styling that previously lived in the `class`/`style` callbacks (removed in 2.0) */
+.basic .vue-flow__node.selected {
+  @apply !border-primary/80 !shadow-lg shadow-secondary !bg-primary-100/50 !text-gray-700;
+}
+
+.dark .basic .vue-flow__node.selected {
+  @apply dark:(!shadow-primary/50) dark:(!bg-primary-300/80) dark:(!text-white);
+}
+
+.basic .vue-flow__edge.selected .vue-flow__edge-path,
+.basic .vue-flow__edge.selected .vue-flow__edge-text {
+  @apply font-semibold;
+  stroke: var(--primary);
+}
+
 .basic .vue-flow__node-input.selected .vue-flow__handle {
   @apply bg-primary;
 }

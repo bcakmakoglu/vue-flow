@@ -1,27 +1,32 @@
 <script lang="ts" setup>
-import type { VueFlowStore } from '@vue-flow/core'
-import Basic from './flows/Basic.vue'
-import RGB from './flows/RGB.vue'
-import Nested from './flows/Nested.vue'
-import Additional from './flows/Additional.vue'
+import type { VueFlowInstance } from '@vue-flow/core';
+import Additional from './flows/Additional.vue';
+import Basic from './flows/Basic.vue';
+import Nested from './flows/Nested.vue';
+import RGB from './flows/RGB.vue';
 
-const el = ref<HTMLDivElement>()
-const instances: VueFlowStore[] = []
+const el = ref<HTMLDivElement>();
+const instances: VueFlowInstance[] = [];
 
-function onLoad(instance: VueFlowStore) {
-  instances.push(instance)
-  instance.fitView()
+function onLoad(instance: VueFlowInstance) {
+  instances.push(instance);
+
+  // `@pane` fires on init — before the nodes are measured — so fit once they are (then stop listening)
+  const { off } = instance.onNodesInitialized(() => {
+    instance.fitView();
+    off();
+  });
 }
 
 function fitViews() {
-  instances.forEach((i) => i.fitView())
+  instances.forEach(i => i.fitView());
 }
 
 const { stop } = useResizeObserver(
   el,
   useDebounceFn(() => fitViews(), 5),
-)
-onBeforeUnmount(stop)
+);
+onBeforeUnmount(stop);
 </script>
 
 <template>

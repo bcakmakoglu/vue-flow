@@ -1,11 +1,13 @@
-import { defineComponent, h } from 'vue'
-import type { BezierEdgeProps } from '../../types'
-import { Position } from '../../types'
-import BaseEdge from './BaseEdge.vue'
-import { getBezierPath } from './utils'
+import type { BezierEdgeProps } from '../../types';
+import { getBezierPath, Position } from '@xyflow/system';
+import { defineComponent, h } from 'vue';
+import BaseEdge from './BaseEdge.vue';
+import { baseEdgeProps } from './utils';
 
 const BezierEdge = defineComponent<BezierEdgeProps>({
   name: 'BezierEdge',
+  // see StraightEdge: keep undeclared attrs (source/target/…) from leaking onto the <path>
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',
@@ -23,7 +25,7 @@ const BezierEdge = defineComponent<BezierEdgeProps>({
     'markerEnd',
     'markerStart',
     'interactionWidth',
-  ] as any,
+  ],
   compatConfig: { MODE: 3 },
   setup(props, { attrs }) {
     return () => {
@@ -31,17 +33,11 @@ const BezierEdge = defineComponent<BezierEdgeProps>({
         ...props,
         sourcePosition: props.sourcePosition ?? Position.Bottom,
         targetPosition: props.targetPosition ?? Position.Top,
-      })
+      });
 
-      return h(BaseEdge as any, {
-        path,
-        labelX,
-        labelY,
-        ...attrs,
-        ...props,
-      })
-    }
+      return h(BaseEdge, { path, labelX, labelY, ...baseEdgeProps(props, attrs) });
+    };
   },
-})
+});
 
-export default BezierEdge
+export default BezierEdge;

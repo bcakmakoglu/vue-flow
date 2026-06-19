@@ -1,17 +1,21 @@
-import { useVueFlow } from '@vue-flow/core'
-import { getElements } from '../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../support/component';
+import { getElements } from '../../utils';
 
-const { nodes } = getElements(1, 1)
+const { nodes } = getElements(1, 1);
 
 describe('Check if nodes are draggable', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
-      modelValue: [nodes[0]],
-      fitViewOnInit: false,
-    })
-  })
+      nodes: [nodes[0]],
+      fitView: false,
+    });
+    cy.then(() => {
+      store = getStore();
+    });
+  });
 
   it('drags nodes', () => {
     cy.window().then(async (win) => {
@@ -29,16 +33,18 @@ describe('Check if nodes are draggable', () => {
         .trigger('mouseup', {
           force: true,
           view: win,
-        })
+        });
       await cy.tryAssertion(() => {
+        // absolute position lives on the InternalNode now (getNodes/v-model return user nodes)
+        const internalNode = store.getInternalNode(nodes[0].id)!;
         cy.get(`[data-id="${nodes[0].id}"]`)
           .should('be.visible')
           .should(
             'have.css',
             'transform',
-            `matrix(1, 0, 0, 1, ${store.nodes.value[0].computedPosition.x}, ${store.nodes.value[0].computedPosition.y})`,
-          )
-      })
-    })
-  })
-})
+            `matrix(1, 0, 0, 1, ${internalNode.internals.positionAbsolute.x}, ${internalNode.internals.positionAbsolute.y})`,
+          );
+      });
+    });
+  });
+});

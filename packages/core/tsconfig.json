@@ -1,20 +1,20 @@
 {
-  "extends": "@tooling/tsconfig/base",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "declarationDir": "./dist",
     "resolveJsonModule": true,
+    "declarationDir": "./dist"
   },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
   "include": [
     "./src"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    }
+    "dist"
   ]
 }

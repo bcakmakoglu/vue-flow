@@ -1,6 +1,6 @@
 <script setup>
-import { BaseEdge, EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
+import { BaseEdge, EdgeLabelRenderer, getBezierPath, useVueFlow } from '@vue-flow/core';
+import { computed } from 'vue';
 
 const props = defineProps({
   id: {
@@ -39,17 +39,17 @@ const props = defineProps({
     type: Object,
     required: false,
   },
-})
+});
 
-const { removeEdges } = useVueFlow()
+const { removeEdges } = useVueFlow();
 
-const path = computed(() => getBezierPath(props))
+const path = computed(() => getBezierPath(props));
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>
@@ -66,7 +66,9 @@ export default {
       }"
       class="nodrag nopan"
     >
-      <button class="edgebutton" @click="removeEdges(id)">×</button>
+      <button class="edgebutton" @click="removeEdges(id)">
+        ×
+      </button>
     </div>
   </EdgeLabelRenderer>
 </template>

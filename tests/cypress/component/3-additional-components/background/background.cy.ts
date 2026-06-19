@@ -1,4 +1,4 @@
-import App from './App.vue'
+import App from './App.vue';
 
 describe('Render Background', () => {
   beforeEach(() => {
@@ -9,10 +9,10 @@ describe('Render Background', () => {
           height: '100vh',
         },
       },
-    })
-  })
+    });
+  });
 
   it('renders background', () => {
-    cy.get('.vue-flow__background').should('exist')
-  })
-})
+    cy.get('.vue-flow__background').should('exist');
+  });
+});

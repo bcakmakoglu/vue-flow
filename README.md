@@ -99,11 +99,11 @@ const edges = ref([
 ⚠️ __Make sure to import the necessary styles:__
 
 ```css
-/* import the required styles */
+/* the default theme (structure + the built-in look) */
 @import "@vue-flow/core/dist/style.css";
 
-/* import the default theme (optional) */
-@import "@vue-flow/core/dist/theme-default.css";
+/* or, to bring your own theme, import the minimal structure only */
+/* @import "@vue-flow/core/dist/base.css"; */
 ```
 
 Do __not__ scope these styles with `scoped` in your component.

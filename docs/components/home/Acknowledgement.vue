@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import Heart from '~icons/mdi/heart'
+import Heart from '~icons/mdi/heart';
 </script>
 
 <template>
   <section id="acknowledgement">
     <div class="border-t-1 border-secondary py-6">
       <div class="max-w-3/4 md:max-w-4xl mx-auto py-4 md:py-12 lg:py-12 text-center">
-        <h1 class="md:(!mb-8) flex justify-center items-center gap-2"><Heart class="text-red-500 min-w-8" /> Acknowledgement</h1>
+        <h1 class="md:(!mb-8) flex justify-center items-center gap-2">
+          <Heart class="text-red-500 min-w-8" /> Acknowledgement
+        </h1>
 
         <p>
           <span class="underline">First and foremost</span>: A huge <span class="font-semibold text-red-400">Thank you</span> to

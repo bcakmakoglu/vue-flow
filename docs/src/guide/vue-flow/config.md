@@ -65,13 +65,13 @@ const toggleNodesDraggable = () => {
 
 ### nodes (optional)
 
-- Type: [`Node[]`](/typedocs/interfaces/Node)
+- Type: [`Node[]`](/typedocs/type-aliases/Node)
 
 - Details:
 
   An array of nodes.
 
-  Use either the modelValue prop or nodes separately. __Do not mix them!__
+  Pass via the `nodes` prop, or use `v-model:nodes` for two-way binding.
 
 - Example:
 
@@ -118,7 +118,7 @@ const nodes = ref([
 
   An array of edges.
 
-  Use either the modelValue prop or edges separately. __Do not mix them!__
+  Pass via the `edges` prop, or use `v-model:edges` for two-way binding.
 
 - Example:
 
@@ -169,15 +169,12 @@ const edges = ref([
 </template>
 ```
 
-### modelValue (optional) (deprecated)
-
-- Type: [`Elements`](/typedocs/type-aliases/Elements)
+### Two-way binding (`v-model`)
 
 - Details:
 
-  An array of elements (nodes + edges).
-
-  Use either the modelValue prop or nodes/edges separately. __Do not mix them!__
+  For two-way binding, use `v-model:nodes` and `v-model:edges`. The combined `v-model` (the old
+  `modelValue` of mixed nodes + edges) was removed in 2.0 — bind nodes and edges separately.
 
 - Example:
 
@@ -186,18 +183,21 @@ const edges = ref([
 import { ref } from 'vue'  
 import { VueFlow } from '@vue-flow/core'
 
-const elements = ref([
+const nodes = ref([
   { id: '1', type: 'input', label: 'Node 1', position: { x: 250, y: 5 } },
   { id: '2', label: 'Node 2', position: { x: 100, y: 100 }, },
   { id: '3', label: 'Node 3', position: { x: 400, y: 100 } },
   { id: '4', type: 'output', label: 'Node 4', position: { x: 400, y: 200 } },
+])
+
+const edges = ref([
   { id: 'e1-3', source: '1', target: '3' },
   { id: 'e1-2', source: '1', target: '2', animated: true },
 ])
 </script>
 
 <template>
-  <VueFlow v-model="elements" />
+  <VueFlow v-model:nodes="nodes" v-model:edges="edges" />
 </template>
 ```
 
@@ -296,7 +296,7 @@ const edges = ref([
 </template>
 ```
 
-### apply-default (optional)
+### auto-apply-changes (optional)
 
 - Type: `boolean`
 
@@ -315,7 +315,7 @@ const edges = ref([
 
 ```vue
 <template>
-  <VueFlow :apply-default="false" />
+  <VueFlow :auto-apply-changes="false" />
 </template>
 ```
 
@@ -323,11 +323,11 @@ const edges = ref([
 
 - Type: [`ConnectionMode`](/typedocs/enumerations/ConnectionMode)
 
-- Default: `ConnectionMode.Loose`
+- Default: `ConnectionMode.Strict`
 
 - Details:
 
-  If set to `loose` all handles are treated as source handles (thus allowing for connections on target handles as well.)
+  In `strict` mode a source handle only connects to a target handle. Set to `loose` to treat all handles as source handles (allowing connections on target handles as well).
 
 ### connection-line-options
 
@@ -339,27 +339,7 @@ const edges = ref([
   
   The options include the connection line type, style and possible marker types (marker-end/marker-start).
 
-### connection-line-type (optional) (deprecated)
-
-- Type: [`ConnectionLineType`](/typedocs/enumerations/ConnectionLineType)
-
-- Default: `ConnectionLineType.Bezier`
-
-- Details:
-
-  The path to use when drawing a connection-line (`bezier`, `step`, `smoothstep`).
-
-  When using a custom connection line this prop does nothing.
-
-### connection-line-style (optional) (deprecated)
-
-- Type: `CSSProperties` | `null`
-
-- Details:
-
-  Additional styles to add to the default connection-line.
-
-### fit-view-on-init (optional)
+### fit-view (optional)
 
 - Type: `boolean`
 
@@ -367,7 +347,26 @@ const edges = ref([
 
 - Details:
 
-  Trigger fit view when viewport is mounted.
+  Fit the view to the nodes once they're measured on init.
+
+### fit-view-options (optional)
+
+- Type: `FitViewParams`
+
+- Details:
+
+  Options for the initial `fit-view` (e.g. `padding`, `minZoom`, `maxZoom`, `duration`, `includeHiddenNodes`).
+
+### color-mode (optional)
+
+- Type: `'light' | 'dark' | 'system'`
+
+- Default: `'light'`
+
+- Details:
+
+  Applies the resolved `light`/`dark` class to the flow container. `system` follows the OS
+  `prefers-color-scheme` and reacts to changes at runtime. See [Theming](/guide/theming#color-mode).
 
 ## Viewport Options
 
@@ -375,7 +374,7 @@ const edges = ref([
 
 - Type: `KeyCode`
 
-- Default: `Meta`
+- Default: `Meta` on macOS, `Control` on other platforms
 
 - Details:
 
@@ -500,13 +499,27 @@ const edges = ref([
 
 ### default-viewport (optional)
 
-- Type: [`ViewportTransform`](/typedocs/interfaces/ViewportTransform)
+- Type: `Viewport`
 
 - Default: `{ zoom: 1, position: { x: 0, y: 0 } }`
 
 - Details:
 
-  The default viewport when the component is mounted.
+  The default viewport when the component is mounted. Ignored once the user pans/zooms (uncontrolled).
+
+### viewport (optional)
+
+- Type: `Viewport`
+
+- Details:
+
+  Controlled viewport (`v-model:viewport`). Keeps the flow's transform in sync with the bound value —
+  set it to pan/zoom programmatically, and it updates as the user interacts. Use this instead of
+  `default-viewport` when you want to own the viewport state.
+
+  ```vue
+  <VueFlow v-model:viewport="viewport" />
+  ```
 
 ### translate-extent (optional)
 
@@ -537,11 +550,23 @@ const edges = ref([
 
   Define a key which can be used to activate the selection rect.
 
+### selection-on-drag (optional)
+
+- Type: `boolean`
+
+- Default: `false`
+
+- Details:
+
+  Draw a selection rect on a plain pane drag, without holding [`selection-key-code`](#selection-key-code).
+
+  Pair it with `:pan-on-drag="false"` (or a non-left button, e.g. `:pan-on-drag="[1, 2]"`) so a left-drag selects instead of panning.
+
 ### multi-selection-key-code (optional)
 
 - Type: `KeyCode`
 
-- Default: `Meta`
+- Default: `Meta` on macOS, `Control` on other platforms
 
 - Details:
 
@@ -704,23 +729,23 @@ const nodes = ref([
 
 ## Global Edge Options
 
-### edges-updatable (optional)
+### edges-reconnectable (optional)
 
-- Type: `EdgeUpdatable`
+- Type: `EdgeReconnectable`
 
-- Default: `true`
+- Default: `false`
 
 - Details:
 
-  Globally enable/disable updating edges.
+  Globally enable/disable reconnecting edges.
 
-  If set to 'source' only source markers are updatable
-  
-  If set to 'target' only target markers are updatable
+  If set to 'source' only the source end is reconnectable
 
-  If set to 'true' both source and target markers are updatable
+  If set to 'target' only the target end is reconnectable
 
-  Can be overwritten by setting `updatable` on a specific edge element.
+  If set to 'true' both ends are reconnectable
+
+  Can be overwritten by setting `reconnectable` on a specific edge element.
 
 - Example:
 
@@ -729,7 +754,7 @@ const nodes = ref([
 import { ref } from 'vue'
 import { VueFlow } from '@vue-flow/core'
 
-const edgesUpdatable = ref(false)
+const edgesReconnectable = ref(false)
   
 const nodes = ref([
   { id: '1', position: { x: 250, y: 5 } },
@@ -741,13 +766,13 @@ const edges = ref([
   { 
     id: 'e1->3',
     // Overwrites global edges-updatable config
-    updatable: true, 
+    reconnectable: true, 
     source: '1', target: '3', 
   },
 ])
 </script>
 <template>
-  <VueFlow :nodes="nodes" :edges="edges" :edges-updatable="edgesUpdatable" />
+  <VueFlow :nodes="nodes" :edges="edges" :edges-reconnectable="edgesReconnectable" />
 </template>
 ```
 
@@ -761,7 +786,7 @@ const edges = ref([
 
   The default color value which is used when presenting edge-markers (arrowheads).
 
-### edge-updater-radius (optional)
+### reconnect-radius (optional)
 
 - Type: `number`
 
@@ -769,7 +794,7 @@ const edges = ref([
 
 - Details:
 
-  The radius at which an edge-updater can be triggered.
+  The radius around an edge anchor within which a reconnect can be triggered.
 
 ### connect-on-click (optional)
 

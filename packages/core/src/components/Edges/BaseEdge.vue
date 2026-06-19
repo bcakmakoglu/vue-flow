@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { ref, useAttrs } from 'vue'
-import type { BaseEdgeProps } from '../../types'
-import EdgeText from './EdgeText.vue'
+import type { BaseEdgeProps } from '../../types';
+import { shallowRef, useAttrs } from 'vue';
+import EdgeText from './EdgeText.vue';
 
-withDefaults(defineProps<BaseEdgeProps>(), { interactionWidth: 20 })
+withDefaults(defineProps<BaseEdgeProps>(), { interactionWidth: 20 });
 
-const pathEl = ref<SVGPathElement | null>(null)
+const pathEl = shallowRef<SVGPathElement | null>(null);
 
-const interactionEl = ref<SVGPathElement | null>(null)
+const interactionEl = shallowRef<SVGPathElement | null>(null);
 
-const labelEl = ref<SVGGElement | null>(null)
+const labelEl = shallowRef<SVGGElement | null>(null);
 
-const attrs: any = useAttrs()
+const attrs = useAttrs();
 
 defineExpose({
   pathEl,
   interactionEl,
   labelEl,
-})
+});
 </script>
 
 <script lang="ts">
@@ -25,7 +25,7 @@ export default {
   name: 'BaseEdge',
   inheritAttrs: false,
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

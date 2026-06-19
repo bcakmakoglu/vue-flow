@@ -1,9 +1,9 @@
 {
-  "extends": "@tooling/tsconfig/base",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "noEmit": true,
     "declaration": false,
+    "noEmit": true
   },
   "references": [
     {

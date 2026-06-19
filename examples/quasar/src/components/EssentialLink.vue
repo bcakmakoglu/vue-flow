@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'EssentialLink',
@@ -24,7 +24,7 @@ export default defineComponent({
       default: '',
     },
   },
-})
+});
 </script>
 
 <template>
@@ -32,7 +32,9 @@ export default defineComponent({
     <q-item clickable>
       <q-item-section>
         <q-item-label>{{ title }}</q-item-label>
-        <q-item-label caption>{{ caption }}</q-item-label>
+        <q-item-label caption>
+          {{ caption }}
+        </q-item-label>
       </q-item-section>
     </q-item>
   </router-link>

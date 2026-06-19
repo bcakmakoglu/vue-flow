@@ -11,57 +11,51 @@ export enum ErrorCode {
   EDGE_SOURCE_MISSING = 'EDGE_SOURCE_MISSING',
   EDGE_TARGET_MISSING = 'EDGE_TARGET_MISSING',
   EDGE_TYPE_MISSING = 'EDGE_TYPE_MISSING',
-  EDGE_SOURCE_TARGET_SAME = 'EDGE_SOURCE_TARGET_SAME',
   EDGE_SOURCE_TARGET_MISSING = 'EDGE_SOURCE_TARGET_MISSING',
-  EDGE_ORPHANED = 'EDGE_ORPHANED',
 
-  // deprecation errors
-  USEVUEFLOW_OPTIONS = 'USEVUEFLOW_OPTIONS',
+  USE_VUE_FLOW_OUTSIDE_PROVIDER = 'USE_VUE_FLOW_OUTSIDE_PROVIDER',
 }
 
 const messages = {
   [ErrorCode.MISSING_STYLES]: () =>
     `It seems that you haven't loaded the necessary styles. Please import '@vue-flow/core/dist/style.css' to ensure that the graph is rendered correctly`,
   [ErrorCode.MISSING_VIEWPORT_DIMENSIONS]: () => 'The Vue Flow parent container needs a width and a height to render the graph',
-  [ErrorCode.NODE_INVALID]: (id?: string) => `Node is invalid\nNode: ${id}`,
-  [ErrorCode.NODE_NOT_FOUND]: (id: string | null) => `Node not found\nNode: ${id}`,
-  [ErrorCode.NODE_MISSING_PARENT]: (id: string, parentId: string) => `Node is missing a parent\nNode: ${id}\nParent: ${parentId}`,
+  [ErrorCode.NODE_INVALID]: (id?: string) => `Node is invalid\nNode id: ${id}`,
+  [ErrorCode.NODE_NOT_FOUND]: (id: string | null) => `Node not found\nNode id: ${id}`,
+  [ErrorCode.NODE_MISSING_PARENT]: (id: string, parentId: string) =>
+    `Node is missing a parent\nNode id: ${id}\nParent id: ${parentId}`,
   [ErrorCode.NODE_TYPE_MISSING]: (type: string) => `Node type is missing\nType: ${type}`,
-  [ErrorCode.NODE_EXTENT_INVALID]: (id: string) => `Only child nodes can use a parent extent\nNode: ${id}`,
-  [ErrorCode.EDGE_INVALID]: (id: string) => `An edge needs a source and a target\nEdge: ${id}`,
-  [ErrorCode.EDGE_SOURCE_MISSING]: (id: string, source: string) => `Edge source is missing\nEdge: ${id} \nSource: ${source}`,
-  [ErrorCode.EDGE_TARGET_MISSING]: (id: string, target: string) => `Edge target is missing\nEdge: ${id} \nTarget: ${target}`,
+  [ErrorCode.NODE_EXTENT_INVALID]: (id: string) => `Only child nodes can use a parent extent\nNode id: ${id}`,
+  [ErrorCode.EDGE_INVALID]: (id: string) => `An edge needs a source and a target\nEdge id: ${id}`,
+  [ErrorCode.EDGE_SOURCE_MISSING]: (id: string, source: string) =>
+    `Edge source is missing\nEdge id: ${id} \nSource id: ${source}`,
+  [ErrorCode.EDGE_TARGET_MISSING]: (id: string, target: string) =>
+    `Edge target is missing\nEdge id: ${id} \nTarget id: ${target}`,
   [ErrorCode.EDGE_TYPE_MISSING]: (type: string) => `Edge type is missing\nType: ${type}`,
-  [ErrorCode.EDGE_SOURCE_TARGET_SAME]: (id: string, source: string, target: string) =>
-    `Edge source and target are the same\nEdge: ${id} \nSource: ${source} \nTarget: ${target}`,
   [ErrorCode.EDGE_SOURCE_TARGET_MISSING]: (id: string, source: string, target: string) =>
-    `Edge source or target is missing\nEdge: ${id} \nSource: ${source} \nTarget: ${target}`,
-  [ErrorCode.EDGE_ORPHANED]: (id: string) =>
-    `Edge was orphaned (suddenly missing source or target) and has been removed\nEdge: ${id}`,
-  [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge: ${id}`,
-
-  // deprecation errors
-  [ErrorCode.USEVUEFLOW_OPTIONS]: () =>
-    `The options parameter is deprecated and will be removed in the next major version. Please use the id parameter instead`,
-} as const
+    `Edge source or target is missing\nEdge id: ${id} \nSource id: ${source} \nTarget id: ${target}`,
+  [ErrorCode.EDGE_NOT_FOUND]: (id: string) => `Edge not found\nEdge id: ${id}`,
+  [ErrorCode.USE_VUE_FLOW_OUTSIDE_PROVIDER]: () =>
+    `useVueFlow() was called without a <VueFlow> or <VueFlowProvider> ancestor (or outside a component setup). Render one of them above the call, or wrap your components in <VueFlowProvider> to share a store.`,
+} as const;
 
 type ErrorArgs<T extends ErrorCode> = (typeof messages)[T] extends (...args: any[]) => string
   ? Parameters<(typeof messages)[T]>
-  : never
+  : never;
 
 export class VueFlowError<T extends ErrorCode = ErrorCode, Args extends ErrorArgs<T> = ErrorArgs<T>> extends Error {
-  name = 'VueFlowError'
-  code: T
-  args: Args
+  name = 'VueFlowError';
+  code: T;
+  args: Args;
 
   constructor(code: T, ...args: Args) {
     // @ts-expect-error - TS doesn't know that the message is a key of messages
-    super(messages[code]?.(...args))
-    this.code = code
-    this.args = args
+    super(messages[code]?.(...args));
+    this.code = code;
+    this.args = args;
   }
 }
 
 export function isErrorOfType<T extends ErrorCode>(error: VueFlowError, code: T): error is VueFlowError<T> {
-  return error.code === code
+  return error.code === code;
 }

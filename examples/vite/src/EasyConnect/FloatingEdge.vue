@@ -1,24 +1,33 @@
 <script lang="ts" setup>
-import type { EdgeProps } from '@vue-flow/core'
-import { BaseEdge, getStraightPath } from '@vue-flow/core'
-import { computed } from 'vue'
+import type { EdgeProps } from '@vue-flow/core';
+import { BaseEdge, getStraightPath, useVueFlow } from '@vue-flow/core';
+import { computed } from 'vue';
 
-import { getEdgeParams } from './utils'
+import { getEdgeParams } from './utils';
 
-const props = defineProps<EdgeProps>()
+const props = defineProps<EdgeProps>();
 
-const edgeParams = computed(() => getEdgeParams(props.sourceNode, props.targetNode))
+const { getInternalNode } = useVueFlow();
 
-const edgePath = computed(() =>
-  getStraightPath({
-    sourceX: edgeParams.value.sx,
-    sourceY: edgeParams.value.sy,
-    targetX: edgeParams.value.tx,
-    targetY: edgeParams.value.ty,
-  }),
-)
+const edgePath = computed(() => {
+  const sourceNode = getInternalNode(props.source);
+  const targetNode = getInternalNode(props.target);
+
+  if (!sourceNode || !targetNode) {
+    return null;
+  }
+
+  const { sx, sy, tx, ty } = getEdgeParams(sourceNode, targetNode);
+
+  return getStraightPath({
+    sourceX: sx,
+    sourceY: sy,
+    targetX: tx,
+    targetY: ty,
+  });
+});
 </script>
 
 <template>
-  <BaseEdge :id="id" :path="edgePath[0]" :marker-end="markerEnd" :style="style" />
+  <BaseEdge v-if="edgePath" :id="id" :path="edgePath[0]" :marker-end="markerEnd" :style="style" />
 </template>

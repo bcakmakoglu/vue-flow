@@ -101,3 +101,7 @@ typedocs
 
 # pnpm
 .pnpm-store
+
+# TS incremental build cache
+*.tsbuildinfo
+.vf-perf/

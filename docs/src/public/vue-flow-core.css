@@ -1,0 +1,622 @@
+/* The full default theme — the structural `_necessary.css` plus vue-flow's batteries-included look.
+   Mirrors @xyflow/system's style.css. This is the default import (`@vue-flow/core/dist/style.css`). */
+
+/* Necessary structural styles shared by base.css and style.css. Mirrors @xyflow/system's base.css on
+   vue-flow's own `.vue-flow__*` selectors — the element suffixes and DOM nesting match xyflow:
+   `renderer` (outer pan/zoom container) › `pane` (drag/selection surface) › `viewport` (the transformed
+   layer that carries the zoom transform). Declares the always-present `--xy-*` variables (structural:
+   edges, connection line, minimap, background, attribution, resize) and the structural rules that
+   consume them via the `var(--xy-x, var(--xy-x-default))` fallback. */
+
+.vue-flow {
+  direction: ltr;
+
+  --xy-edge-stroke-default: #b1b1b7;
+  --xy-edge-stroke-width-default: 1;
+  --xy-edge-stroke-selected-default: #555;
+
+  --xy-connectionline-stroke-default: #b1b1b7;
+  --xy-connectionline-stroke-width-default: 1;
+
+  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);
+
+  --xy-minimap-background-color-default: #fff;
+  --xy-minimap-mask-background-color-default: rgba(240, 240, 240, 0.6);
+  --xy-minimap-mask-stroke-color-default: transparent;
+  --xy-minimap-mask-stroke-width-default: 1;
+  --xy-minimap-node-background-color-default: #e2e2e2;
+  --xy-minimap-node-stroke-color-default: transparent;
+  --xy-minimap-node-stroke-width-default: 2;
+
+  --xy-background-color-default: transparent;
+  --xy-background-pattern-dots-color-default: #91919a;
+  --xy-background-pattern-lines-color-default: #eee;
+  --xy-background-pattern-cross-color-default: #e2e2e2;
+
+  --xy-resize-background-color-default: #3367d9;
+}
+
+/* applied by `<VueFlow>` when `colorMode` resolves to `dark` (see the `colorMode` prop) */
+
+.vue-flow.dark {
+  --xy-edge-stroke-default: #3e3e3e;
+  --xy-edge-stroke-selected-default: #727272;
+
+  --xy-connectionline-stroke-default: #b1b1b7;
+
+  --xy-attribution-background-color-default: rgba(150, 150, 150, 0.25);
+
+  --xy-minimap-background-color-default: #141414;
+  --xy-minimap-mask-background-color-default: rgba(60, 60, 60, 0.6);
+  --xy-minimap-node-background-color-default: #2b2b2b;
+
+  --xy-background-color-default: #141414;
+  --xy-background-pattern-dots-color-default: #777;
+  --xy-background-pattern-lines-color-default: #777;
+  --xy-background-pattern-cross-color-default: #777;
+}
+
+.vue-flow {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  background-color: var(--xy-background-color, var(--xy-background-color-default));
+}
+
+.vue-flow__container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.vue-flow__pane {
+  z-index: 1;
+}
+
+.vue-flow__pane.draggable {
+    cursor: grab;
+  }
+
+.vue-flow__pane.selection {
+    cursor: pointer;
+  }
+
+.vue-flow__pane.dragging {
+    cursor: grabbing;
+  }
+
+.vue-flow__viewport {
+  transform-origin: 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.vue-flow__renderer {
+  z-index: 4;
+}
+
+.vue-flow__selection {
+  z-index: 6;
+}
+
+.vue-flow__edgelabel-renderer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.vue-flow__nodesselection-rect:focus,
+.vue-flow__nodesselection-rect:focus-visible {
+  outline: none;
+}
+
+.vue-flow .vue-flow__edges {
+  pointer-events: none;
+  overflow: visible;
+}
+
+.vue-flow__edge-path {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));
+  fill: none;
+}
+
+/* arrowhead markers without an explicit color fall back to the edge-stroke variable (the open `.arrow`
+   only strokes; the closed `.arrowclosed` also fills) */
+
+.vue-flow__arrowhead polyline {
+  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.vue-flow__arrowhead polyline.arrowclosed {
+  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));
+}
+
+.vue-flow__connection-path {
+  stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));
+  stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));
+  fill: none;
+}
+
+.vue-flow__edge {
+  pointer-events: visibleStroke;
+  cursor: pointer;
+}
+
+.vue-flow__edge.animated path {
+    stroke-dasharray: 5;
+    animation: dashdraw 0.5s linear infinite;
+  }
+
+.vue-flow__edge.animated path.vue-flow__edge-interaction {
+    stroke-dasharray: none;
+    animation: none;
+  }
+
+.vue-flow__edge.inactive {
+    pointer-events: none;
+  }
+
+.vue-flow__edge.selected,
+  .vue-flow__edge:focus,
+  .vue-flow__edge:focus-visible {
+    outline: none;
+  }
+
+.vue-flow__edge.selected .vue-flow__edge-path,
+  .vue-flow__edge:focus .vue-flow__edge-path,
+  .vue-flow__edge:focus-visible .vue-flow__edge-path {
+    stroke: var(--xy-edge-stroke-selected, var(--xy-edge-stroke-selected-default));
+  }
+
+.vue-flow__edge-textwrapper {
+    pointer-events: all;
+  }
+
+.vue-flow__edge-text {
+    pointer-events: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+            user-select: none;
+  }
+
+.vue-flow__connection {
+  pointer-events: none;
+}
+
+.vue-flow__connection .animated {
+    stroke-dasharray: 5;
+    animation: dashdraw 0.5s linear infinite;
+  }
+
+.vue-flow__connectionline {
+  z-index: 1001;
+}
+
+.vue-flow__nodes {
+  pointer-events: none;
+  transform-origin: 0 0;
+}
+
+.vue-flow__node {
+  position: absolute;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  pointer-events: all;
+  transform-origin: 0 0;
+  box-sizing: border-box;
+  cursor: default;
+}
+
+.vue-flow__node.draggable {
+    cursor: grab;
+    pointer-events: all;
+  }
+
+.vue-flow__node.draggable.dragging {
+      cursor: grabbing;
+    }
+
+.vue-flow__nodesselection {
+  z-index: 3;
+  transform-origin: left top;
+  pointer-events: none;
+}
+
+.vue-flow__nodesselection-rect {
+    position: absolute;
+    pointer-events: all;
+    cursor: grab;
+  }
+
+.vue-flow__nodesselection-rect.dragging {
+      cursor: grabbing;
+    }
+
+.vue-flow__handle {
+  position: absolute;
+  pointer-events: none;
+  min-width: 5px;
+  min-height: 5px;
+}
+
+.vue-flow__handle.connectable {
+    pointer-events: all;
+    cursor: crosshair;
+  }
+
+.vue-flow__handle-bottom {
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+  }
+
+.vue-flow__handle-top {
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+  }
+
+.vue-flow__handle-left {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+
+.vue-flow__handle-right {
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+  }
+
+.vue-flow__edgeupdater {
+  cursor: move;
+  pointer-events: all;
+}
+
+.vue-flow__panel {
+  position: absolute;
+  z-index: 5;
+  margin: 15px;
+}
+
+.vue-flow__panel.top {
+    top: 0;
+  }
+
+.vue-flow__panel.bottom {
+    bottom: 0;
+  }
+
+.vue-flow__panel.left {
+    left: 0;
+  }
+
+.vue-flow__panel.right {
+    right: 0;
+  }
+
+.vue-flow__panel.center {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+.vue-flow__controls-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: content-box;
+  width: 16px;
+  height: 16px;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.vue-flow__controls-button svg {
+    width: 100%;
+    max-width: 12px;
+    max-height: 12px;
+    fill: currentColor;
+  }
+
+.vue-flow__controls-button:disabled {
+    pointer-events: none;
+  }
+
+.vue-flow__controls-button:disabled svg {
+      fill-opacity: 0.4;
+    }
+
+.vue-flow__attribution {
+  font-size: 10px;
+  background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));
+  padding: 2px 3px;
+  margin: 0;
+}
+
+.vue-flow__attribution a {
+    text-decoration: none;
+    color: #999;
+  }
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+
+.vue-flow__minimap {
+  background-color: var(--xy-minimap-background-color, var(--xy-minimap-background-color-default));
+}
+
+.vue-flow__minimap.pannable {
+  cursor: grab;
+}
+
+.vue-flow__minimap.dragging {
+  cursor: grabbing;
+}
+
+.vue-flow__minimap-mask.pannable {
+  cursor: grab;
+}
+
+.vue-flow__resize-control {
+  position: absolute;
+}
+
+.vue-flow__resize-control.left,
+.vue-flow__resize-control.right {
+  cursor: ew-resize;
+}
+
+.vue-flow__resize-control.top,
+.vue-flow__resize-control.bottom {
+  cursor: ns-resize;
+}
+
+.vue-flow__resize-control.top.left,
+.vue-flow__resize-control.bottom.right {
+  cursor: nwse-resize;
+}
+
+.vue-flow__resize-control.bottom.left,
+.vue-flow__resize-control.top.right {
+  cursor: nesw-resize;
+}
+
+/* handle styles */
+
+.vue-flow__resize-control.handle {
+  width: 5px;
+  height: 5px;
+  border: 1px solid #fff;
+  border-radius: 1px;
+  background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
+  /* the `translate` property (not `transform`) so the centering composes with the inline zoom `scale` */
+  translate: -50% -50%;
+}
+
+.vue-flow__resize-control.handle.left {
+  left: 0;
+  top: 50%;
+}
+
+.vue-flow__resize-control.handle.right {
+  left: 100%;
+  top: 50%;
+}
+
+.vue-flow__resize-control.handle.top {
+  left: 50%;
+  top: 0;
+}
+
+.vue-flow__resize-control.handle.bottom {
+  left: 50%;
+  top: 100%;
+}
+
+.vue-flow__resize-control.handle.top.left {
+  left: 0;
+}
+
+.vue-flow__resize-control.handle.bottom.left {
+  left: 0;
+}
+
+.vue-flow__resize-control.handle.top.right {
+  left: 100%;
+}
+
+.vue-flow__resize-control.handle.bottom.right {
+  left: 100%;
+}
+
+/* line styles */
+
+.vue-flow__resize-control.line {
+  border-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));
+  border-width: 0;
+  border-style: solid;
+}
+
+.vue-flow__resize-control.line.left,
+.vue-flow__resize-control.line.right {
+  width: 1px;
+  transform: translate(-50%, 0);
+  top: 0;
+  height: 100%;
+}
+
+.vue-flow__resize-control.line.left {
+  left: 0;
+  border-left-width: 1px;
+}
+
+.vue-flow__resize-control.line.right {
+  left: 100%;
+  border-right-width: 1px;
+}
+
+.vue-flow__resize-control.line.top,
+.vue-flow__resize-control.line.bottom {
+  height: 1px;
+  transform: translate(0, -50%);
+  left: 0;
+  width: 100%;
+}
+
+.vue-flow__resize-control.line.top {
+  top: 0;
+  border-top-width: 1px;
+}
+
+.vue-flow__resize-control.line.bottom {
+  border-bottom-width: 1px;
+  top: 100%;
+}
+
+.vue-flow {
+  --xy-node-color-default: inherit;
+  --xy-node-border-default: 1px solid #1a192b;
+  --xy-node-background-color-default: #fff;
+  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);
+  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;
+  --xy-node-border-radius-default: 3px;
+
+  --xy-handle-background-color-default: #1a192b;
+  --xy-handle-border-color-default: #fff;
+
+  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);
+  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);
+
+  --xy-controls-button-background-color-default: #fefefe;
+  --xy-controls-button-background-color-hover-default: #f4f4f4;
+  --xy-controls-button-color-default: inherit;
+  --xy-controls-button-color-hover-default: inherit;
+  --xy-controls-button-border-color-default: #eee;
+  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+
+  --xy-edge-label-background-color-default: #ffffff;
+  --xy-edge-label-color-default: inherit;
+}
+
+.vue-flow.dark {
+  --xy-node-color-default: #f8f8f8;
+  --xy-node-border-default: 1px solid #3c3c3c;
+  --xy-node-background-color-default: #1e1e1e;
+  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(255, 255, 255, 0.08);
+  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #999;
+
+  --xy-handle-background-color-default: #bebebe;
+  --xy-handle-border-color-default: #1e1e1e;
+
+  --xy-selection-background-color-default: rgba(200, 200, 220, 0.08);
+  --xy-selection-border-default: 1px dotted rgba(200, 200, 220, 0.8);
+
+  --xy-controls-button-background-color-default: #2b2b2b;
+  --xy-controls-button-background-color-hover-default: #3e3e3e;
+  --xy-controls-button-color-default: #f8f8f8;
+  --xy-controls-button-color-hover-default: #fff;
+  --xy-controls-button-border-color-default: #5b5b5b;
+
+  --xy-edge-label-background-color-default: #141414;
+  --xy-edge-label-color-default: #f8f8f8;
+}
+
+.vue-flow__edge.updating .vue-flow__edge-path {
+    stroke: #777;
+  }
+
+.vue-flow__edge-text {
+    font-size: 10px;
+    fill: var(--xy-edge-label-color, var(--xy-edge-label-color-default));
+  }
+
+.vue-flow__edge-textbg {
+    fill: var(--xy-edge-label-background-color, var(--xy-edge-label-background-color-default));
+  }
+
+.vue-flow__node.selectable:focus,
+  .vue-flow__node.selectable:focus-visible {
+    outline: none;
+  }
+
+.vue-flow__node-input,
+.vue-flow__node-default,
+.vue-flow__node-output {
+  padding: 10px;
+  border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));
+  width: 150px;
+  font-size: 12px;
+  color: var(--xy-node-color, var(--xy-node-color-default));
+  text-align: center;
+  border: var(--xy-node-border, var(--xy-node-border-default));
+  background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));
+}
+
+.vue-flow__node-input.selectable:hover, .vue-flow__node-default.selectable:hover, .vue-flow__node-output.selectable:hover {
+      box-shadow: var(--xy-node-boxshadow-hover, var(--xy-node-boxshadow-hover-default));
+    }
+
+.vue-flow__node-input.selectable.selected,
+    .vue-flow__node-input.selectable:focus,
+    .vue-flow__node-input.selectable:focus-visible,
+    .vue-flow__node-default.selectable.selected,
+    .vue-flow__node-default.selectable:focus,
+    .vue-flow__node-default.selectable:focus-visible,
+    .vue-flow__node-output.selectable.selected,
+    .vue-flow__node-output.selectable:focus,
+    .vue-flow__node-output.selectable:focus-visible {
+      box-shadow: var(--xy-node-boxshadow-selected, var(--xy-node-boxshadow-selected-default));
+    }
+
+.vue-flow__nodesselection-rect,
+.vue-flow__selection {
+  background: var(--xy-selection-background-color, var(--xy-selection-background-color-default));
+  border: var(--xy-selection-border, var(--xy-selection-border-default));
+}
+
+.vue-flow__nodesselection-rect:focus,
+  .vue-flow__nodesselection-rect:focus-visible,
+  .vue-flow__selection:focus,
+  .vue-flow__selection:focus-visible {
+    outline: none;
+  }
+
+.vue-flow__handle {
+  width: 6px;
+  height: 6px;
+  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));
+  border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));
+  border-radius: 100%;
+}
+
+.vue-flow__controls {
+  box-shadow: var(--xy-controls-box-shadow, var(--xy-controls-box-shadow-default));
+}
+
+.vue-flow__controls-button {
+  background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));
+  color: var(--xy-controls-button-color, var(--xy-controls-button-color-default));
+  border-bottom: 1px solid var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default));
+}
+
+.vue-flow__controls-button:hover {
+    background: var(--xy-controls-button-background-color-hover, var(--xy-controls-button-background-color-hover-default));
+    color: var(--xy-controls-button-color-hover, var(--xy-controls-button-color-hover-default));
+  }

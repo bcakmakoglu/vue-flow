@@ -1,33 +1,39 @@
 <script setup>
-import { Panel, useVueFlow } from '@vue-flow/core'
-import Icon from './Icon.vue'
+import { Panel, storeToRefs, useStore, useVueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
 
-const flowKey = 'vue-flow--save-restore'
+const flowKey = 'vue-flow--save-restore';
 
-const { nodes, addNodes, dimensions, toObject, fromObject } = useVueFlow()
+const { addNodes, toObject, setNodes, setEdges, setViewport } = useVueFlow();
+
+const { nodes, dimensions } = storeToRefs(useStore());
 
 function onSave() {
-  localStorage.setItem(flowKey, JSON.stringify(toObject()))
+  localStorage.setItem(flowKey, JSON.stringify(toObject()));
 }
 
 function onRestore() {
-  const flow = JSON.parse(localStorage.getItem(flowKey))
+  const flow = JSON.parse(localStorage.getItem(flowKey));
 
   if (flow) {
-    fromObject(flow)
+    // `fromObject` was removed in v2 — restore explicitly so you control when it runs.
+    // The flow is already initialized here (restore is a user action), so `setViewport` applies immediately.
+    setNodes(flow.nodes);
+    setEdges(flow.edges);
+    setViewport(flow.viewport);
   }
 }
 
 function onAdd() {
-  const id = nodes.value.length + 1
+  const id = nodes.value.length + 1;
 
   const newNode = {
     id: `random_node-${id}`,
-    label: `Node ${id}`,
+    data: { label: `Node ${id}` },
     position: { x: Math.random() * dimensions.value.width, y: Math.random() * dimensions.value.height },
-  }
+  };
 
-  addNodes([newNode])
+  addNodes([newNode]);
 }
 </script>
 

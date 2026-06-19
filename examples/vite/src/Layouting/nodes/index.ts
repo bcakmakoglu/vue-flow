@@ -1,4 +1,4 @@
-import type { Node } from '@vue-flow/core'
+import type { Node } from '@vue-flow/core';
 
 export enum ProcessStatus {
   ERROR = 'error',
@@ -8,8 +8,8 @@ export enum ProcessStatus {
   RUNNING = 'running',
 }
 
-export interface ProcessData {
-  status: ProcessStatus | null
+export interface ProcessData extends Record<string, unknown> {
+  status: ProcessStatus | null;
 }
 
-export type ProcessNode = Node<ProcessData, any, 'process'>
+export type ProcessNode = Node<ProcessData, 'process'>;

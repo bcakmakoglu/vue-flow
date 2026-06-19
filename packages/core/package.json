@@ -2,14 +2,14 @@
   "name": "@vue-flow/core",
   "version": "1.48.2",
   "private": false,
-  "license": "MIT",
   "author": "Burak Cakmakoglu<78412429+bcakmakoglu@users.noreply.github.com>",
+  "license": "MIT",
+  "homepage": "https://vueflow.dev",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcakmakoglu/vue-flow",
+    "url": "git+https://github.com/bcakmakoglu/vue-flow.git",
     "directory": "packages/core"
   },
-  "homepage": "https://vueflow.dev",
   "bugs": {
     "url": "https://github.com/bcakmakoglu/vue-flow/issues"
   },
@@ -29,69 +29,65 @@
     "vueflow",
     "typescript"
   ],
-  "main": "./dist/vue-flow-core.js",
-  "module": "./dist/vue-flow-core.mjs",
-  "types": "./dist/index.d.ts",
-  "unpkg": "./dist/vue-flow-core.iife.js",
-  "jsdelivr": "./dist/vue-flow-core.iife.js",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/vue-flow-core.mjs",
-      "require": "./dist/vue-flow-core.js"
-    },
-    "./dist/style.css": "./dist/style.css",
-    "./dist/theme-default.css": "./dist/theme-default.css"
-  },
-  "files": [
-    "dist",
-    "*.d.ts"
-  ],
   "sideEffects": [
     "*.css"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./dist/index.mjs"
+    },
+    "./dist/style.css": "./dist/style.css",
+    "./dist/base.css": "./dist/base.css",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
   ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "dev": "pnpm types:watch & pnpm build:watch",
-    "build": "vite build && vite build -c vite.config.iife.ts",
-    "build:watch": "vite build --watch & vite build -c vite.config.iife.ts --watch",
-    "types": "vue-tsc --declaration --emitDeclarationOnly && tsc -p ./tsconfig.build.json && shx rm -rf tmp && pnpm lint:dist",
-    "types:watch": "vue-tsc --declaration --emitDeclarationOnly --watch & tsc -p ./tsconfig.build.json --watch",
-    "theme": "postcss src/style.css -o dist/style.css && postcss src/theme-default.css -o dist/theme-default.css",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "lint:dist": "eslint --ext \".ts,.tsx\" -c .eslintrc.js --fix --ignore-pattern !**/*  ./dist",
+    "dev": "tsdown --watch",
+    "build": "shx rm -rf dist && pnpm theme && tsdown",
+    "build:watch": "tsdown --watch",
+    "theme": "postcss src/styles/style.css -o dist/style.css && postcss src/styles/base.css -o dist/base.css",
+    "lint": "eslint .",
     "prepublishOnly": "shx cp ../../README.md .",
     "postpublish": "shx rm README.md",
     "test": "exit 0"
   },
   "peerDependencies": {
-    "vue": "^3.3.0"
+    "vue": "^3.5.0"
   },
   "dependencies": {
-    "@vueuse/core": "^10.5.0",
-    "d3-drag": "^3.0.0",
-    "d3-interpolate": "^3.0.1",
-    "d3-selection": "^3.0.0",
-    "d3-zoom": "^3.0.0"
+    "@vueuse/core": "^14.3.0",
+    "@xyflow/system": "^0.0.77"
   },
   "devDependencies": {
-    "@rollup/plugin-replace": "^5.0.3",
+    "@arethetypeswrong/core": "^0.18.3",
     "@tooling/eslint-config": "workspace:*",
-    "@tooling/tsconfig": "workspace:*",
-    "@types/d3-drag": "^3.0.7",
-    "@types/d3-interpolate": "^3.0.4",
-    "@types/d3-selection": "^3.0.11",
-    "@types/d3-transition": "^3.0.9",
-    "@types/d3-zoom": "^3.0.8",
-    "@vitejs/plugin-vue": "^4.4.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "postcss-cli": "^10.1.0",
-    "postcss-nested": "^6.0.1",
-    "vite": "^4.4.11",
-    "vue-tsc": "^1.8.16"
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "postcss-cli": "^11.0.1",
+    "postcss-import": "^16.1.0",
+    "postcss-nested": "^7.0.2",
+    "publint": "^0.3.21",
+    "tsdown": "^0.22.2",
+    "typescript": "^5.6.0",
+    "unplugin-vue": "^7.2.0",
+    "vue": "^3.5.0",
+    "vue-tsc": "^3.3.4"
   }
 }

@@ -1,19 +1,19 @@
 <script lang="ts" setup>
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { useBlobity } from '../utils'
-import Intro from './flows/Intro.vue'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core';
+import { useBlobity } from '../utils';
+import Intro from './flows/Intro.vue';
 
-const { smaller } = useBreakpoints(breakpointsTailwind)
+const { smaller } = useBreakpoints(breakpointsTailwind);
 
-const isMobile = smaller('md')
+const isMobile = smaller('md');
 
-const { blobity } = useBlobity()
+const { blobity } = useBlobity();
 
 onMounted(() => {
   if (isMobile.value) {
-    blobity.value.destroy()
+    blobity.value.destroy();
   }
-})
+});
 </script>
 
 <template>

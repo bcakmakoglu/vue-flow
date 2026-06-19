@@ -1,42 +1,26 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import type { EdgeProps, Position } from '@vue-flow/core'
-import { getBezierPath } from '@vue-flow/core'
-import type { Colors } from './utils'
+import type { Edge, EdgeProps } from '@vue-flow/core';
+import type { Colors } from './utils';
+import { getBezierPath } from '@vue-flow/core';
+import { computed } from 'vue';
 
-interface EdgeData {
-  text?: string
-  color?: Colors
+interface EdgeData extends Record<string, unknown> {
+  // the RGB channel value rendered as the edge label (e.g. 128) — a number, not a string
+  text?: number;
+  color?: Colors;
 }
 
-interface CustomEdgeProps extends EdgeProps<EdgeData> {
-  source: string
-  target: string
-  sourceHandleId?: string
-  targetHandleId?: string
-  id: string
-  sourceX: number
-  sourceY: number
-  targetX: number
-  targetY: number
-  sourcePosition: Position
-  targetPosition: Position
-  markerEnd: string
-  data: {
-    text?: string
-    color?: Colors
-  }
-}
+type RGBEdge = Edge<EdgeData, 'rgb-edge'>;
 
-const props = defineProps<CustomEdgeProps>()
+const props = defineProps<EdgeProps<RGBEdge>>();
 
-const edgePath = computed(() => getBezierPath(props))
+const edgePath = computed(() => getBezierPath(props));
 </script>
 
 <script lang="ts">
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>

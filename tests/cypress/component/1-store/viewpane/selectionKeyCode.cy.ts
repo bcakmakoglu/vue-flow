@@ -1,21 +1,26 @@
-import { useVueFlow } from '@vue-flow/core'
-import { getElements } from '../../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
+import { getElements } from '../../../utils';
 
-const { nodes, edges } = getElements()
+const { nodes, edges } = getElements();
 
 describe('Store State: `selectionKeyCode`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
       edges,
-    })
-  })
+    });
+
+    cy.then(() => {
+      store = getStore();
+    });
+  });
 
   it('triggers selection', () => {
     cy.window().then((win) => {
-      cy.get('body').trigger('keydown', { key: 'Shift', release: false })
+      cy.get('body').trigger('keydown', { key: 'Shift', release: false });
 
       cy.get('.vue-flow__pane')
         .should('exist')
@@ -29,20 +34,20 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
-      cy.get('body').trigger('keyup', { key: 'Shift', release: true })
+      cy.get('body').trigger('keyup', { key: 'Shift', release: true });
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
-      })
-    })
-  })
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
 
   it('changes keycode', () => {
     cy.window().then((win) => {
-      store.selectionKeyCode.value = 'Control'
-      cy.get('body').trigger('keydown', { key: 'Control', release: false })
+      store.selectionKeyCode.value = 'Control';
+      cy.get('body').trigger('keydown', { key: 'Control', release: false });
 
       cy.get('.vue-flow__pane')
         .should('exist')
@@ -56,20 +61,28 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
-      cy.get('body').trigger('keyup', { key: 'Control', release: true })
+      cy.get('body').trigger('keyup', { key: 'Control', release: true });
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
-      })
-    })
-  })
+        expect(store.getSelectedNodes.value.length + store.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
 
-  it('allows `true` as keycode', () => {
+  it('selects on a plain drag with `selectionOnDrag`', () => {
+    // `selectionOnDrag` enters selection mode while NOT panning on drag (see `isSelecting` in
+    // ZoomPane.vue), and `panOnDrag` feeds the d3 pan filter configured at mount — so both must be set
+    // as initial props rather than toggled after mount.
+    cy.vueFlow({
+      nodes,
+      edges,
+      panOnDrag: false,
+      selectionOnDrag: true,
+    });
+
     cy.window().then((win) => {
-      store.selectionKeyCode.value = true
-
       cy.get('.vue-flow__pane')
         .should('exist')
         .trigger('mousedown', {
@@ -82,11 +95,12 @@ describe('Store State: `selectionKeyCode`', () => {
           clientY: 100,
           force: true,
         })
-        .click()
+        .click();
 
       cy.tryAssertion(() => {
-        expect(store.getSelectedElements.value).to.not.have.length(0)
-      })
-    })
-  })
-})
+        const s = getStore();
+        expect(s.getSelectedNodes.value.length + s.getSelectedEdges.value.length).to.be.greaterThan(0);
+      });
+    });
+  });
+});

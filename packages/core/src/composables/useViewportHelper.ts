@@ -1,25 +1,22 @@
-import { interpolate, interpolateZoom } from 'd3-interpolate'
-import { zoomIdentity } from 'd3-zoom'
-import { computed } from 'vue'
-import type { D3Selection, GraphNode, Project, State, TransitionOptions, ViewportFunctions } from '../types'
-import { clampPosition, getRectOfNodes, getTransformForBounds, pointToRendererPoint, rendererPointToPoint, warn } from '../utils'
+import type { Project } from '@xyflow/system';
+import type { Edge, Node, NodeLookup, State, ViewportFunctions } from '../types';
+import { until } from '@vueuse/core';
+import { fitViewport, getViewportForBounds, pointToRendererPoint, rendererPointToPoint } from '@xyflow/system';
+import { computed } from 'vue';
+import { areNodesInitialized, warn } from '../utils';
 
-export interface ViewportHelper extends ViewportFunctions {
-  viewportInitialized: boolean
-  screenToFlowCoordinate: Project
-  flowToScreenCoordinate: Project
+export interface ViewportHelper<NodeType extends Node = Node> extends ViewportFunctions<NodeType> {
+  viewportInitialized: boolean;
+  screenToFlowPosition: Project;
+  flowToScreenPosition: Project;
 }
 
-const DEFAULT_PADDING = 0.1
+const DEFAULT_PADDING = 0.1;
 
-// taken from d3-ease: https://github.com/d3/d3-ease/blob/main/src/cubic.js
-// eslint-disable-next-line no-cond-assign
-const defaultEase = (t: number) => ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2
+async function noop() {
+  warn('Viewport not initialized yet.');
 
-function noop() {
-  warn('Viewport not initialized yet.')
-
-  return Promise.resolve(false)
+  return false;
 }
 
 const initialViewportHelper: ViewportHelper = {
@@ -29,15 +26,12 @@ const initialViewportHelper: ViewportHelper = {
   fitView: noop,
   setCenter: noop,
   fitBounds: noop,
-  project: (position) => position,
-  screenToFlowCoordinate: (position) => position,
-  flowToScreenCoordinate: (position) => position,
+  screenToFlowPosition: position => position,
+  flowToScreenPosition: position => position,
   setViewport: noop,
-  setTransform: noop,
   getViewport: () => ({ x: 0, y: 0, zoom: 1 }),
-  getTransform: () => ({ x: 0, y: 0, zoom: 1 }),
   viewportInitialized: false,
-}
+};
 
 /**
  * Composable that provides viewport helper functions.
@@ -45,183 +39,150 @@ const initialViewportHelper: ViewportHelper = {
  * @internal
  * @param state
  */
-export function useViewportHelper(state: State) {
-  function zoom(scale: number, transitionOptions?: TransitionOptions) {
-    return new Promise<boolean>((resolve) => {
-      if (state.d3Selection && state.d3Zoom) {
-        state.d3Zoom.interpolate(transitionOptions?.interpolate === 'linear' ? interpolate : interpolateZoom).scaleBy(
-          getD3Transition(state.d3Selection, transitionOptions?.duration, transitionOptions?.ease, () => {
-            resolve(true)
-          }),
-          scale,
-        )
-      } else {
-        resolve(false)
-      }
-    })
-  }
+export function useViewportHelper<NodeType extends Node = Node, EdgeType extends Edge = Edge>(
+  state: State<NodeType, EdgeType>,
+  nodeLookup: NodeLookup<NodeType>,
+) {
+  // whether every (non-hidden) node has been measured — `fitView` waits on this so an imperative call right
+  // after `addNodes` doesn't fit around stale (unmeasured) geometry (`getFitViewNodes` skips unmeasured nodes)
+  const nodesInitialized = computed(() => areNodesInitialized(nodeLookup));
 
-  function transformViewport(x: number, y: number, zoom: number, transitionOptions?: TransitionOptions) {
-    return new Promise<boolean>((resolve) => {
-      // enforce translate extent
-      const { x: clampedX, y: clampedY } = clampPosition({ x: -x, y: -y }, state.translateExtent)
-
-      const nextTransform = zoomIdentity.translate(-clampedX, -clampedY).scale(zoom)
-
-      if (state.d3Selection && state.d3Zoom) {
-        state.d3Zoom?.interpolate(transitionOptions?.interpolate === 'linear' ? interpolate : interpolateZoom).transform(
-          getD3Transition(state.d3Selection, transitionOptions?.duration, transitionOptions?.ease, () => {
-            resolve(true)
-          }),
-          nextTransform,
-        )
-      } else {
-        resolve(false)
-      }
-    })
-  }
-
-  return computed<ViewportHelper>(() => {
-    const isInitialized = state.d3Zoom && state.d3Selection && state.dimensions.width && state.dimensions.height
+  return computed<ViewportHelper<NodeType>>(() => {
+    const panZoom = state.panZoom;
+    const isInitialized = state.panZoom && state.dimensions.width && state.dimensions.height;
 
     if (!isInitialized) {
-      return initialViewportHelper
+      return initialViewportHelper;
     }
 
     return {
       viewportInitialized: true,
       // todo: allow passing scale as option
-      zoomIn: (options) => {
-        return zoom(1.2, options)
-      },
-      zoomOut: (options) => {
-        return zoom(1 / 1.2, options)
-      },
-      zoomTo: (zoomLevel, options) => {
-        return new Promise<boolean>((resolve) => {
-          if (state.d3Selection && state.d3Zoom) {
-            state.d3Zoom.interpolate(options?.interpolate === 'linear' ? interpolate : interpolateZoom).scaleTo(
-              getD3Transition(state.d3Selection, options?.duration, options?.ease, () => {
-                resolve(true)
-              }),
-              zoomLevel,
-            )
-          } else {
-            resolve(false)
-          }
-        })
-      },
-      setViewport: (transform, options) => {
-        return transformViewport(transform.x, transform.y, transform.zoom, options)
-      },
-      setTransform: (transform, options) => {
-        return transformViewport(transform.x, transform.y, transform.zoom, options)
+      zoomIn: async options => (panZoom ? panZoom.scaleBy(1.2, options) : false),
+      zoomOut: async options => (panZoom ? panZoom.scaleBy(1 / 1.2, options) : false),
+      zoomTo: async (zoomLevel, options) => (panZoom ? panZoom.scaleTo(zoomLevel, options) : false),
+      setViewport: async (viewport, options) => {
+        if (!panZoom) {
+          return false;
+        }
+
+        await panZoom.setViewport(
+          {
+            x: viewport.x ?? state.transform[0],
+            y: viewport.y ?? state.transform[1],
+            zoom: viewport.zoom ?? state.transform[2],
+          },
+          options,
+        );
+
+        return true;
       },
       getViewport: () => ({
-        x: state.viewport.x,
-        y: state.viewport.y,
-        zoom: state.viewport.zoom,
+        x: state.transform[0],
+        y: state.transform[1],
+        zoom: state.transform[2],
       }),
-      getTransform: () => {
-        return {
-          x: state.viewport.x,
-          y: state.viewport.y,
-          zoom: state.viewport.zoom,
-        }
-      },
-      fitView: (
+      fitView: async (
         options = {
           padding: DEFAULT_PADDING,
           includeHiddenNodes: false,
           duration: 0,
         },
       ) => {
-        const nodesToFit: GraphNode[] = []
-        for (const node of state.nodes) {
-          const isVisible = node.dimensions.width && node.dimensions.height && (options?.includeHiddenNodes || !node.hidden)
-
-          if (isVisible) {
-            if (!options.nodes?.length || (options.nodes?.length && options.nodes.includes(node.id))) {
-              nodesToFit.push(node)
-            }
-          }
+        if (!panZoom) {
+          return false;
         }
 
-        if (!nodesToFit.length) {
-          return Promise.resolve(false)
+        // queue the fit until every node is measured (xyflow/react's `fitViewQueued`): a fit requested
+        // before the nodes settle — e.g. right after `addNodes` — would otherwise frame only the already
+        // measured nodes (`getFitViewNodes` skips unmeasured ones) and ignore the new ones. An empty flow has
+        // nothing to wait for, so don't queue (else the fit would never resolve).
+        if (nodeLookup.size > 0 && !nodesInitialized.value) {
+          await until(nodesInitialized).toBe(true);
         }
 
-        const bounds = getRectOfNodes(nodesToFit)
-
-        const { x, y, zoom } = getTransformForBounds(
-          bounds,
-          state.dimensions.width,
-          state.dimensions.height,
-          options.minZoom ?? state.minZoom,
-          options.maxZoom ?? state.maxZoom,
-          options.padding ?? DEFAULT_PADDING,
-        )
-
-        return transformViewport(x, y, zoom, options)
+        return fitViewport(
+          {
+            nodes: nodeLookup,
+            width: state.dimensions.width,
+            height: state.dimensions.height,
+            panZoom,
+            minZoom: state.minZoom,
+            maxZoom: state.maxZoom,
+          },
+          {
+            padding: options.padding ?? DEFAULT_PADDING,
+            duration: options.duration,
+            ease: options.ease,
+            interpolate: options.interpolate,
+            minZoom: options.minZoom,
+            maxZoom: options.maxZoom,
+            // `fitViewport` forwards these to `getFitViewNodes` at runtime, but its options type `Omit`s
+            // them — pass via spread to satisfy TS.
+            ...(options.includeHiddenNodes ? { includeHiddenNodes: true } : {}),
+            ...(options.nodes?.length ? { nodes: options.nodes } : {}),
+          },
+        );
       },
-      setCenter: (x, y, options) => {
-        const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom
-        const centerX = state.dimensions.width / 2 - x * nextZoom
-        const centerY = state.dimensions.height / 2 - y * nextZoom
+      setCenter: async (x, y, options) => {
+        if (!panZoom) {
+          return false;
+        }
 
-        return transformViewport(centerX, centerY, nextZoom, options)
+        const nextZoom = typeof options?.zoom !== 'undefined' ? options.zoom : state.maxZoom;
+        const centerX = state.dimensions.width / 2 - x * nextZoom;
+        const centerY = state.dimensions.height / 2 - y * nextZoom;
+
+        await panZoom.setViewport({ x: centerX, y: centerY, zoom: nextZoom }, options);
+
+        return true;
       },
-      fitBounds: (bounds, options = { padding: DEFAULT_PADDING }) => {
-        const { x, y, zoom } = getTransformForBounds(
+      fitBounds: async (bounds, options = { padding: DEFAULT_PADDING }) => {
+        if (!panZoom) {
+          return false;
+        }
+
+        const { x, y, zoom } = getViewportForBounds(
           bounds,
           state.dimensions.width,
           state.dimensions.height,
           state.minZoom,
           state.maxZoom,
           options.padding ?? DEFAULT_PADDING,
-        )
+        );
 
-        return transformViewport(x, y, zoom, options)
+        await panZoom.setViewport({ x, y, zoom }, options);
+
+        return true;
       },
-      project: (position) => pointToRendererPoint(position, state.viewport, state.snapToGrid, state.snapGrid),
-      screenToFlowCoordinate: (position) => {
+      screenToFlowPosition: (position) => {
         if (state.vueFlowRef) {
-          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
+          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect();
 
           const correctedPosition = {
             x: position.x - domX,
             y: position.y - domY,
-          }
+          };
 
-          return pointToRendererPoint(correctedPosition, state.viewport, state.snapToGrid, state.snapGrid)
+          return pointToRendererPoint(correctedPosition, state.transform, state.snapToGrid, state.snapGrid);
         }
 
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       },
-      flowToScreenCoordinate: (position) => {
+      flowToScreenPosition: (position) => {
         if (state.vueFlowRef) {
-          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect()
+          const { x: domX, y: domY } = state.vueFlowRef.getBoundingClientRect();
 
           const correctedPosition = {
             x: position.x + domX,
             y: position.y + domY,
-          }
+          };
 
-          return rendererPointToPoint(correctedPosition, state.viewport)
+          return rendererPointToPoint(correctedPosition, state.transform);
         }
 
-        return { x: 0, y: 0 }
+        return { x: 0, y: 0 };
       },
-    }
-  })
-}
-
-export function getD3Transition(selection: D3Selection, duration = 0, ease = defaultEase, onEnd = () => {}) {
-  const hasDuration = typeof duration === 'number' && duration > 0
-
-  if (!hasDuration) {
-    onEnd()
-  }
-
-  return hasDuration ? selection.transition().duration(duration).ease(ease).on('end', onEnd) : selection
+    };
+  });
 }

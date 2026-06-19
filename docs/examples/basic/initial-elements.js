@@ -1,4 +1,4 @@
-import { MarkerType } from '@vue-flow/core'
+import { MarkerType } from '@vue-flow/core';
 
 export const initialNodes = [
   {
@@ -34,7 +34,7 @@ export const initialNodes = [
     position: { x: 300, y: 300 },
     class: 'light',
   },
-]
+];
 
 export const initialEdges = [
   {
@@ -66,4 +66,4 @@ export const initialEdges = [
     target: '4',
     label: 'smoothstep-edge',
   },
-]
+];

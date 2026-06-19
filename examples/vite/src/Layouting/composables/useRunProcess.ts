@@ -1,15 +1,15 @@
-import { ref, toRef, toValue } from 'vue'
-import type { Node } from '@vue-flow/core'
-import { useVueFlow } from '@vue-flow/core'
-import type { MaybeRefOrGetter } from 'vue'
-import type dagre from '@dagrejs/dagre'
-import type { ProcessData, ProcessNode } from '../nodes'
-import { ProcessStatus } from '../nodes'
-import type { ProcessEdge } from '../edges'
+import type { graphlib } from '@dagrejs/dagre';
+import type { Node } from '@vue-flow/core';
+import type { MaybeRefOrGetter } from 'vue';
+import type { ProcessEdge } from '../edges';
+import type { ProcessData, ProcessNode } from '../nodes';
+import { useVueFlow } from '@vue-flow/core';
+import { ref, toRef, toValue } from 'vue';
+import { ProcessStatus } from '../nodes';
 
 interface UseRunProcessOptions {
-  graph: MaybeRefOrGetter<dagre.graphlib.Graph<Node>>
-  cancelOnError?: MaybeRefOrGetter<boolean>
+  graph: MaybeRefOrGetter<graphlib.Graph>;
+  cancelOnError?: MaybeRefOrGetter<boolean>;
 }
 
 /**
@@ -25,17 +25,17 @@ interface UseRunProcessOptions {
  * @param options.cancelOnError Whether to cancel the process if an error occurs.
  */
 export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRunProcessOptions) {
-  const { updateNodeData, getConnectedEdges } = useVueFlow()
+  const { updateNodeData, getConnectedEdges, getNode, getEdge } = useVueFlow<ProcessNode, ProcessEdge>();
 
-  const graph = toRef(() => toValue(dagreGraph))
+  const graph = toRef(() => toValue(dagreGraph));
 
-  const isRunning = ref(false)
+  const isRunning = ref(false);
 
-  const runningTasks = new Map<string, NodeJS.Timeout>()
+  const runningTasks = new Map<string, ReturnType<typeof setTimeout>>();
 
-  const executedNodes = new Set<string>()
+  const executedNodes = new Set<string>();
 
-  const upcomingTasks = new Set<string>()
+  const upcomingTasks = new Set<string>();
 
   /**
    * Run the process on a node.
@@ -46,75 +46,78 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    */
   async function runNode(nodeId: string, isStart = false) {
     if (executedNodes.has(nodeId)) {
-      return
+      return;
     }
 
     // save the upcoming task in case it gets cancelled before we even start it
-    upcomingTasks.add(nodeId)
+    upcomingTasks.add(nodeId);
 
     // get all incoming edges to this node
-    const incomers = (getConnectedEdges(nodeId) as ProcessEdge[]).filter((connection) => connection.target === nodeId)
+    const node = getNode(nodeId);
+    const connectedEdges = node ? (getConnectedEdges([node as Node]) as ProcessEdge[]) : [];
+    const incomers = connectedEdges.filter(connection => connection.target === nodeId);
 
     // wait for edge animations to finish before starting the process
-    await Promise.all(incomers.map((incomer) => until(() => !incomer.data?.isAnimating)))
+    // re-read the edge from the store on every poll - edge updates replace the stored object, so a captured reference would go stale
+    await Promise.all(incomers.map(incomer => until(() => !getEdge(incomer.id)?.data?.isAnimating)));
 
     // remove the upcoming task since we are about to start it
-    upcomingTasks.clear()
+    upcomingTasks.clear();
 
     if (!isRunning.value) {
       // The process was stopped
-      return
+      return;
     }
 
     // mark the node as executed, so it doesn't run again
-    executedNodes.add(nodeId)
+    executedNodes.add(nodeId);
 
-    updateNodeStatus(nodeId, ProcessStatus.RUNNING)
+    updateNodeStatus(nodeId, ProcessStatus.RUNNING);
 
     // simulate an async process with a random timeout between 1-2 seconds
-    const delay = Math.floor(Math.random() * 2000) + 1000
+    const delay = Math.floor(Math.random() * 2000) + 1000;
 
     return new Promise((resolve) => {
       const timeout = setTimeout(
         async () => {
           // get all children of this node
-          const children = graph.value.successors(nodeId) || []
+          const children = graph.value.successors(nodeId) || [];
 
           // randomly decide whether the node will throw an error
-          const willThrowError = Math.random() < 0.15
+          const willThrowError = Math.random() < 0.15;
 
           // we avoid throwing an error on the starting node
           if (!isStart && willThrowError) {
-            updateNodeStatus(nodeId, ProcessStatus.ERROR)
+            updateNodeStatus(nodeId, ProcessStatus.ERROR);
 
             // if cancelOnError is true, we stop the process and mark all descendants as skipped
             if (toValue(cancelOnError)) {
-              await skipDescendants(nodeId)
-              runningTasks.delete(nodeId)
+              await skipDescendants(nodeId);
+              runningTasks.delete(nodeId);
 
-              resolve(true)
-              return
+              resolve(true);
+              return;
             }
           }
 
-          updateNodeStatus(nodeId, ProcessStatus.FINISHED)
+          updateNodeStatus(nodeId, ProcessStatus.FINISHED);
 
-          runningTasks.delete(nodeId)
+          runningTasks.delete(nodeId);
 
           if (children.length > 0) {
             // run the process on the children in parallel
-            await Promise.all(children.map((child) => runNode(child)))
+            await Promise.all(children.map(child => runNode(child)));
           }
 
-          resolve(true)
+          resolve(true);
         },
         // if this is a starting node, we don't want to wait
         isStart ? 0 : delay,
-      )
+      );
 
       // save the timeout so we can cancel it if needed
-      runningTasks.set(nodeId, timeout)
-    })
+      runningTasks.set(nodeId, timeout);
+    });
   }
 
   /**
@@ -130,21 +133,21 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
   async function run(nodes: ProcessNode[]) {
     // if the process is already running, we don't want to start it again
     if (isRunning.value) {
-      return
+      return;
     }
 
     // reset all nodes to their initial state
-    reset(nodes)
+    reset(nodes);
 
-    isRunning.value = true
+    isRunning.value = true;
 
     // get all starting nodes (nodes with no predecessors)
-    const startingNodes = nodes.filter((node) => graph.value.predecessors(node.id)?.length === 0)
+    const startingNodes = nodes.filter(node => graph.value.predecessors(node.id)?.length === 0);
 
     // run the process on all starting nodes in parallel
-    await Promise.all(startingNodes.map((node) => runNode(node.id, true)))
+    await Promise.all(startingNodes.map(node => runNode(node.id, true)));
 
-    clear()
+    clear();
   }
 
   /**
@@ -153,10 +156,10 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    * @param nodes The nodes to reset.
    */
   function reset(nodes: ProcessNode[]) {
-    clear()
+    clear();
 
     for (const node of nodes) {
-      updateNodeStatus(node.id, null)
+      updateNodeStatus(node.id, null);
     }
   }
 
@@ -166,11 +169,11 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    * @param nodeId The ID of the node to skip descendants for.
    */
   async function skipDescendants(nodeId: string) {
-    const children = graph.value.successors(nodeId) || []
+    const children = graph.value.successors(nodeId) || [];
 
     for (const child of children) {
-      updateNodeStatus(child, ProcessStatus.SKIPPED)
-      await skipDescendants(child)
+      updateNodeStatus(child, ProcessStatus.SKIPPED);
+      await skipDescendants(child);
     }
   }
 
@@ -180,33 +183,33 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    * It will mark all running nodes as cancelled and skip all upcoming tasks.
    */
   async function stop() {
-    isRunning.value = false
+    isRunning.value = false;
 
     for (const nodeId of upcomingTasks) {
-      clearTimeout(runningTasks.get(nodeId))
-      runningTasks.delete(nodeId)
-      updateNodeStatus(nodeId, ProcessStatus.CANCELLED)
-      await skipDescendants(nodeId)
+      clearTimeout(runningTasks.get(nodeId));
+      runningTasks.delete(nodeId);
+      updateNodeStatus(nodeId, ProcessStatus.CANCELLED);
+      await skipDescendants(nodeId);
     }
 
     for (const [nodeId, task] of runningTasks) {
-      clearTimeout(task)
-      runningTasks.delete(nodeId)
-      updateNodeStatus(nodeId, ProcessStatus.CANCELLED)
-      await skipDescendants(nodeId)
+      clearTimeout(task);
+      runningTasks.delete(nodeId);
+      updateNodeStatus(nodeId, ProcessStatus.CANCELLED);
+      await skipDescendants(nodeId);
     }
 
-    executedNodes.clear()
-    upcomingTasks.clear()
+    executedNodes.clear();
+    upcomingTasks.clear();
   }
 
   /**
    * Clear all running tasks and executed nodes.
    */
   function clear() {
-    isRunning.value = false
-    executedNodes.clear()
-    runningTasks.clear()
+    isRunning.value = false;
+    executedNodes.clear();
+    runningTasks.clear();
   }
 
   /**
@@ -216,19 +219,19 @@ export function useRunProcess({ graph: dagreGraph, cancelOnError = true }: UseRu
    * @param status The new status of the node.
    */
   function updateNodeStatus(nodeId: string, status: ProcessData['status']) {
-    updateNodeData<ProcessData>(nodeId, { status })
+    updateNodeData(nodeId, { status });
   }
 
-  return { run, stop, reset, isRunning }
+  return { run, stop, reset, isRunning };
 }
 
 async function until(condition: () => boolean) {
   return new Promise((resolve) => {
     const interval = setInterval(() => {
       if (condition()) {
-        clearInterval(interval)
-        resolve(true)
+        clearInterval(interval);
+        resolve(true);
       }
-    }, 100)
-  })
+    }, 100);
+  });
 }

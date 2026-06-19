@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import useStore from './store'
-import Icon from './Icon.vue'
+import { Panel, useVueFlow, VueFlow } from '@vue-flow/core';
+import Icon from './Icon.vue';
+import useStore from './store';
 
-const store = useStore()
+const store = useStore();
 
-const { onConnect, addEdges } = useVueFlow()
+const { onConnect, addEdges } = useVueFlow();
 
-onConnect((params) => addEdges([params]))
+onConnect(params => addEdges([params]));
 </script>
 
 <template>
-  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" class="pinia-flow" fit-view-on-init>
+  <VueFlow v-model:nodes="store.nodes" v-model:edges="store.edges" class="pinia-flow" fit-view>
     <Panel position="top-right">
       <div class="buttons-panel">
         <button @click="store.updatePositions">

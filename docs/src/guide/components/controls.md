@@ -2,30 +2,17 @@
 
 The control panel contains a zoom-in, zoom-out, fit-view and a lock/unlock button.
 
-## Installation
-
-```bash
-yarn add @vue-flow/controls
-
-# or
-npm install @vue-flow/controls
-```
-
 ## Usage
 
 To use the controls simply pass the `Controls` component as a child to the `VueFlow` component.
 
-::: warning
-Make sure you also import the styles as these are *not* part of the default theme anymore.
+::: tip
+The control styles ship in `@vue-flow/core/dist/style.css` — make sure that base stylesheet is imported (see [Getting Started](/guide/getting-started)).
 :::
 
 ```vue
 <script setup>
-import { VueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
-
-// import default controls styles
-import '@vue-flow/controls/dist/style.css'
+import { Controls, VueFlow } from '@vue-flow/core'
 </script>
 
 <template>
@@ -44,6 +31,7 @@ import '@vue-flow/controls/dist/style.css'
 | showInteractive | Show lock interactive btn              | boolean                                        | true     | true    |
 | showZoom        | Show zoom button                       | boolean                                        | true     | true    |
 | fitViewParams   | Params to use on fit-view button click | [FitViewParams](/typedocs/type-aliases/FitViewParams) | true     | -       |
+| position        | Position of the controls panel         | PanelPosition                                         | true     | bottom-left |
 
 ## Emits
 

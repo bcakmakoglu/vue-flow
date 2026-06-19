@@ -1,335 +1,315 @@
-import type { CSSProperties } from 'vue'
-import type { KeyFilter } from '@vueuse/core'
-import type { D3ZoomEvent } from 'd3-zoom'
-import type { VueFlowError } from '../utils'
-import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeUpdatable, GraphEdge } from './edge'
-import type { CoordinateExtent, CoordinateExtentRange, GraphNode, Node, NodeProps } from './node'
+import type { KeyFilter } from '@vueuse/core';
+import type { AriaLabelConfig, ColorMode, Connection, ConnectionMode, CoordinateExtent, FitViewOptionsBase, PanOnScrollMode, SelectionMode, SnapGrid, Viewport, ZIndexMode } from '@xyflow/system';
+import type { CSSProperties } from 'vue';
+import type { VueFlowError } from '../utils';
+import type { EdgeChange, NodeChange } from './changes';
+import type { EdgeTypesObject, NodeTypesObject } from './components';
+import type { ConnectionLineOptions, ConnectionLineProps, Connector, OnConnectStartParams } from './connection';
+import type { DefaultEdgeOptions, Edge, EdgeProps, EdgeReconnectable } from './edge';
+import type { ValidConnectionFunc } from './handle';
 import type {
-  Connection,
-  ConnectionLineOptions,
-  ConnectionLineProps,
-  ConnectionLineType,
-  ConnectionMode,
-  Connector,
-  OnConnectStartParams,
-} from './connection'
-import type { PanOnScrollMode, ViewportTransform } from './zoom'
-import type { EdgeTypesObject, NodeTypesObject } from './components'
-import type { CustomEvent, EdgeMouseEvent, EdgeUpdateEvent, NodeDragEvent, NodeMouseEvent } from './hooks'
-import type { ValidConnectionFunc } from './handle'
-import type { EdgeChange, NodeChange } from './changes'
-import type { VueFlowStore } from './store'
-
-// todo: should be object type
-export type ElementData = any
+  ConnectEndEvent,
+  EdgeMouseEvent,
+  EdgeReconnectEndEvent,
+  EdgeReconnectEvent,
+  EdgeReconnectStartEvent,
+  MouseTouchEvent,
+  NodeDragEvent,
+  NodeMouseEvent,
+  SelectionChangeEvent,
+} from './hooks';
+import type { Node, NodeOrigin, NodeProps } from './node';
+import type { VueFlowInstance } from './store';
 
 /**
- * @deprecated - will be removed in the next major version
- * A flow element (after parsing into state)
+ * Consulted before nodes/edges are deleted (via the delete key or `deleteElements`). Receives the full set
+ * about to be removed (the targeted nodes/edges plus connected edges and child nodes). Return `false` to
+ * cancel, `true` to delete that set, or `{ nodes, edges }` to delete only a subset. Mirrors xyflow/react.
  */
-export type FlowElement<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = GraphNode<NodeData, NodeEvents> | GraphEdge<EdgeData, EdgeEvents>
-
-/**
- * @deprecated - will be removed in the next major version
- * An array of flow elements (after parsing into state)
- */
-export type FlowElements<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = FlowElement<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
-
-/** Initial elements (before parsing into state) */
-export type Element<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Node<NodeData, NodeEvents> | Edge<EdgeData, EdgeEvents>
-
-export type Elements<
-  NodeData = ElementData,
-  EdgeData = ElementData,
-  NodeEvents extends Record<string, CustomEvent> = any,
-  EdgeEvents extends Record<string, CustomEvent> = any,
-> = Element<NodeData, EdgeData, NodeEvents, EdgeEvents>[]
-
-export type MaybeElement = Node | Edge | Connection | FlowElement | Element
+export type OnBeforeDelete<NodeType extends Node = Node, EdgeType extends Edge = Edge> = (params: {
+  nodes: NodeType[];
+  edges: EdgeType[];
+}) => Promise<boolean | { nodes: NodeType[]; edges: EdgeType[] }>;
 
 export interface CustomThemeVars {
-  [key: string]: string | number | undefined
+  [key: string]: string | number | undefined;
 }
 
-export type CSSVars =
-  | '--vf-node-color'
-  | '--vf-box-shadow'
-  | '--vf-node-bg'
-  | '--vf-node-text'
-  | '--vf-connection-path'
-  | '--vf-handle'
+/**
+ * The overridable `--xy-*` CSS custom properties, mirroring `@xyflow/system` (shared with
+ * `@xyflow/react`/`@xyflow/svelte`). Set the un-suffixed var to override; the stylesheet falls back to
+ * the shipped `--xy-*-default` value (`var(--xy-x, var(--xy-x-default))`).
+ */
+export type CSSVars
+  = | '--xy-edge-stroke'
+    | '--xy-edge-stroke-width'
+    | '--xy-edge-stroke-selected'
+    | '--xy-connectionline-stroke'
+    | '--xy-connectionline-stroke-width'
+    | '--xy-attribution-background-color'
+    | '--xy-minimap-background-color'
+    | '--xy-minimap-mask-background-color'
+    | '--xy-minimap-mask-stroke-color'
+    | '--xy-minimap-mask-stroke-width'
+    | '--xy-minimap-node-background-color'
+    | '--xy-minimap-node-stroke-color'
+    | '--xy-minimap-node-stroke-width'
+    | '--xy-background-color'
+    | '--xy-background-pattern-color'
+    | '--xy-resize-background-color'
+    | '--xy-node-color'
+    | '--xy-node-border'
+    | '--xy-node-border-selected'
+    | '--xy-node-background-color'
+    | '--xy-node-boxshadow-hover'
+    | '--xy-node-boxshadow-selected'
+    | '--xy-node-border-radius'
+    | '--xy-handle-background-color'
+    | '--xy-handle-border-color'
+    | '--xy-selection-background-color'
+    | '--xy-selection-border'
+    | '--xy-controls-button-background-color'
+    | '--xy-controls-button-background-color-hover'
+    | '--xy-controls-button-color'
+    | '--xy-controls-button-color-hover'
+    | '--xy-controls-button-border-color'
+    | '--xy-controls-box-shadow'
+    | '--xy-edge-label-background-color'
+    | '--xy-edge-label-color';
 
-export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] }
-export type Styles = CSSProperties & ThemeVars & CustomThemeVars
-/** @deprecated will be removed in the next major version */
-export type ClassFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => string | void
+export type ThemeVars = { [key in CSSVars]?: CSSProperties['color'] };
+export type Styles = CSSProperties & ThemeVars & CustomThemeVars;
 
-/** @deprecated will be removed in the next major version */
-export type StyleFunc<ElementType extends FlowElement = FlowElement> = (element: ElementType) => Styles | void
-
-/** Handle Positions */
-export enum Position {
-  Left = 'left',
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-}
-
-export interface XYPosition {
-  x: number
-  y: number
-}
-
-export type XYZPosition = XYPosition & { z: number }
-
-export interface Dimensions {
-  width: number
-  height: number
-}
-
-export interface Box extends XYPosition {
-  x2: number
-  y2: number
-}
-
-export interface Rect extends Dimensions, XYPosition {}
-
-export type SnapGrid = [x: number, y: number]
-
-export interface SelectionRect extends Rect {
-  startX: number
-  startY: number
-}
-
-export enum SelectionMode {
-  Partial = 'partial',
-  Full = 'full',
-}
+// Vue does not publicly export ClassValue, so we define it here to match its class binding type
+export type ClassValue = string | Record<string, boolean> | ClassValue[];
 
 export interface FlowExportObject {
   /** exported nodes */
-  nodes: Node[]
+  nodes: Node[];
   /** exported edges */
-  edges: Edge[]
-  /**
-   * exported viewport position
-   * @deprecated use {@link FlowExportObject.viewport} instead
-   */
-  position: [x: number, y: number]
-  /**
-   * exported zoom level
-   * @deprecated use {@link FlowExportObject.viewport} instead
-   */
-  zoom: number
+  edges: Edge[];
   /** exported viewport (position + zoom) */
-  viewport: ViewportTransform
+  viewport: Viewport;
 }
 
-export type FlowImportObject = { [key in keyof FlowExportObject]?: FlowExportObject[key] }
+export type FlowOptions<NodeType extends Node = Node, EdgeType extends Edge = Edge> = FlowProps<NodeType, EdgeType>;
 
-export interface FlowProps {
-  id?: string
-  /**
-   * all elements (nodes + edges)
-   * @deprecated use {@link FlowProps.nodes} & {@link FlowProps.nodes} instead
-   */
-  modelValue?: Elements
-  nodes?: Node[]
-  edges?: Edge[]
+export interface FlowProps<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
+  id?: string;
+  nodes?: NodeType[];
+  edges?: EdgeType[];
   /** either use the edgeTypes prop to define your edge-types or use slots (<template #edge-mySpecialType="props">) */
-  edgeTypes?: EdgeTypesObject
+  edgeTypes?: EdgeTypesObject<EdgeType>;
   /** either use the nodeTypes prop to define your node-types or use slots (<template #node-mySpecialType="props">) */
-  nodeTypes?: NodeTypesObject
-  connectionMode?: ConnectionMode
-  /** @deprecated use {@link ConnectionLineOptions.type} */
-  connectionLineType?: ConnectionLineType | null
-  /** @deprecated use {@link ConnectionLineOptions.style} */
-  connectionLineStyle?: CSSProperties | null
-  connectionLineOptions?: ConnectionLineOptions
-  connectionRadius?: number
-  isValidConnection?: ValidConnectionFunc | null
-  deleteKeyCode?: KeyFilter | null
-  selectionKeyCode?: KeyFilter | boolean | null
-  multiSelectionKeyCode?: KeyFilter | null
-  zoomActivationKeyCode?: KeyFilter | null
-  panActivationKeyCode?: KeyFilter | null
-  snapToGrid?: boolean
-  snapGrid?: SnapGrid
-  onlyRenderVisibleElements?: boolean
-  edgesUpdatable?: EdgeUpdatable
-  nodesDraggable?: boolean
-  nodesConnectable?: boolean
-  nodeDragThreshold?: number
-  elementsSelectable?: boolean
-  selectNodesOnDrag?: boolean
+  nodeTypes?: NodeTypesObject<NodeType>;
+  connectionMode?: ConnectionMode;
+  connectionLineOptions?: ConnectionLineOptions;
+  connectionRadius?: number;
+  /**
+   * The threshold in pixels that the pointer must move before a connection line starts to drag.
+   * Useful to prevent accidental connections when clicking on a handle.
+   * @default 1
+   */
+  connectionDragThreshold?: number;
+  isValidConnection?: ValidConnectionFunc | null;
+  /** consulted before delete-key/`deleteElements` removals — cancel, confirm, or filter the set */
+  onBeforeDelete?: OnBeforeDelete<NodeType, EdgeType> | null;
+  deleteKeyCode?: KeyFilter | null;
+  /** hold this key (default `'Shift'`) and drag to draw a selection box. For dragging without a key, see `selectionOnDrag` */
+  selectionKeyCode?: KeyFilter | null;
+  /**
+   * Draw a selection box on a plain pane drag (no key held). Pair it with `panOnDrag` set to a non-left
+   * button (e.g. `[1, 2]`) or `false` so a left-drag selects instead of panning. Mirrors xyflow/react.
+   * @default false
+   */
+  selectionOnDrag?: boolean;
+  multiSelectionKeyCode?: KeyFilter | null;
+  zoomActivationKeyCode?: KeyFilter | null;
+  panActivationKeyCode?: KeyFilter | null;
+  snapToGrid?: boolean;
+  snapGrid?: SnapGrid;
+  onlyRenderVisibleElements?: boolean;
+  edgesReconnectable?: EdgeReconnectable;
+  nodesDraggable?: boolean;
+  nodesConnectable?: boolean;
+  nodeDragThreshold?: number;
+  elementsSelectable?: boolean;
+  selectNodesOnDrag?: boolean;
   /** move pane on drag, replaced prop `paneMovable` */
-  panOnDrag?: boolean | number[]
-  minZoom?: number
-  maxZoom?: number
-  defaultViewport?: Partial<ViewportTransform>
-  translateExtent?: CoordinateExtent
-  nodeExtent?: CoordinateExtent | CoordinateExtentRange
-  defaultMarkerColor?: string
-  zoomOnScroll?: boolean
-  zoomOnPinch?: boolean
-  panOnScroll?: boolean
-  panOnScrollSpeed?: number
-  panOnScrollMode?: PanOnScrollMode
+  panOnDrag?: boolean | number[];
+  minZoom?: number;
+  maxZoom?: number;
+  /** initial viewport for an uncontrolled flow; ignored once the user pans/zooms */
+  defaultViewport?: Partial<Viewport>;
+  /** controlled viewport (`v-model:viewport`) — keeps the flow's transform in sync with the bound value */
+  viewport?: Viewport;
+  translateExtent?: CoordinateExtent;
+  nodeExtent?: CoordinateExtent;
+  /** origin of all nodes relative to their position — `[0, 0]` top-left, `[0.5, 0.5]` center, `[1, 1]` bottom-right */
+  nodeOrigin?: NodeOrigin;
+  /** light/dark/system — applies the resolved `light`/`dark` class to the flow container; `system` follows `prefers-color-scheme` @default 'light' */
+  colorMode?: ColorMode;
+  /** color of edge markers; pass `null` to drive the arrowhead color from the `--xy-edge-stroke` CSS variable @default '#b1b1b7' */
+  defaultMarkerColor?: string | null;
+  zoomOnScroll?: boolean;
+  zoomOnPinch?: boolean;
+  panOnScroll?: boolean;
+  panOnScrollSpeed?: number;
+  panOnScrollMode?: PanOnScrollMode;
   /**
    * Distance that the mouse can move between mousedown/up that will trigger a click
    * @default 0
    */
-  paneClickDistance?: number
-  zoomOnDoubleClick?: boolean
-  /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
-  preventScrolling?: boolean
-  selectionMode?: SelectionMode
-  edgeUpdaterRadius?: number
-  /** will be renamed to `fitView` */
-  fitViewOnInit?: boolean
-  /** allow connection with click handlers, i.e. support touch devices */
-  connectOnClick?: boolean
+  paneClickDistance?: number;
   /**
-   * apply default change handlers for position, dimensions, adding/removing nodes. set this to false if you want to apply the changes manually
-   * @deprecated - will be removed in the next major version, changes will not be auto applied in the future
+   * Distance that the mouse can move between mousedown/up on a node that will trigger a click
+   * @default 0
    */
-  applyDefault?: boolean
+  nodeClickDistance?: number;
+  zoomOnDoubleClick?: boolean;
+  /** If set to false, scrolling inside the viewport will be disabled and instead the page scroll will be used */
+  preventScrolling?: boolean;
+  selectionMode?: SelectionMode;
+  reconnectRadius?: number;
+  /** fit the view to the nodes once they're measured on init (xyflow/react's `fitView` prop) */
+  fitView?: boolean;
+  /** options for the initial `fitView` (padding, includeHiddenNodes, etc.) */
+  fitViewOptions?: FitViewOptionsBase<NodeType>;
+  /** allow connection with click handlers, i.e. support touch devices */
+  connectOnClick?: boolean;
+  /**
+   * Automatically apply node/edge changes (position, dimensions, add/remove, select) back to `nodes`/`edges`.
+   * Set to `false` to handle the `nodes-change` / `edges-change` events and apply the changes yourself.
+   */
+  autoApplyChanges?: boolean;
   /**
    * automatically create an edge when connection is triggered
-   * @deprecated - will be removed in the next major version
    */
-  autoConnect?: boolean | Connector
-  noDragClassName?: string
-  noWheelClassName?: string
-  noPanClassName?: string
+  autoConnect?: boolean | Connector;
+  noDragClassName?: string;
+  noWheelClassName?: string;
+  noPanClassName?: string;
   /** does not work for the `addEdge` utility! */
-  defaultEdgeOptions?: DefaultEdgeOptions
+  defaultEdgeOptions?: DefaultEdgeOptions;
   /** elevates edges when selected and applies z-Index to put them above their nodes */
-  elevateEdgesOnSelect?: boolean
+  elevateEdgesOnSelect?: boolean;
   /** elevates nodes when selected and applies z-Index + 1000 */
-  elevateNodesOnSelect?: boolean
+  elevateNodesOnSelect?: boolean;
+  /**
+   * controls how the z-index of nodes and edges is calculated.
+   * - `basic` (default): z-index is derived from the element's `zIndex`, parentage and selection state
+   * - `auto`: same as `basic`, but parented nodes are always lifted above their parent
+   * - `manual`: the element's explicit `zIndex` is used verbatim (no elevation)
+   */
+  zIndexMode?: ZIndexMode;
 
-  disableKeyboardA11y?: boolean
-  edgesFocusable?: boolean
-  nodesFocusable?: boolean
+  disableKeyboardA11y?: boolean;
+  /** customize the aria labels / a11y descriptions (node/edge descriptions, the aria-live move message, and the Controls/MiniMap/Handle labels); merged over the defaults */
+  ariaLabelConfig?: Partial<AriaLabelConfig>;
+  edgesFocusable?: boolean;
+  nodesFocusable?: boolean;
 
-  autoPanOnConnect?: boolean
-  autoPanOnNodeDrag?: boolean
-  autoPanSpeed?: number
+  autoPanOnConnect?: boolean;
+  autoPanOnNodeDrag?: boolean;
+  /**
+   * Pan the viewport to a node when it receives keyboard focus (Tab) and isn't currently within the
+   * viewport — keeps keyboard navigation from landing on off-screen nodes.
+   * @default true
+   */
+  autoPanOnNodeFocus?: boolean;
+  /**
+   * Pan the viewport automatically when the cursor reaches the edge of the viewport while dragging a
+   * selection box.
+   * @default true
+   */
+  autoPanOnSelection?: boolean;
+  autoPanSpeed?: number;
 }
 
-/**
- * All available VueFlow options
- * @deprecated use the {@link FlowProps} type instead
- */
-export type FlowOptions = FlowProps
+export interface FlowEmits<NodeType extends Node = Node, EdgeType extends Edge = Edge> {
+  nodesChange: [changes: NodeChange<NodeType>[]];
+  edgesChange: [changes: EdgeChange<EdgeType>[]];
+  nodesInitialized: [nodes: NodeType[]];
+  miniMapNodeClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  miniMapNodeDoubleClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  miniMapNodeMouseEnter: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  miniMapNodeMouseMove: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  miniMapNodeMouseLeave: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  connect: [connectionEvent: Connection];
+  connectStart: [connectionEvent: { event?: MouseEvent } & OnConnectStartParams];
+  connectEnd: [connectionEvent: ConnectEndEvent<NodeType>];
+  clickConnectStart: [connectionEvent: { event?: MouseEvent } & OnConnectStartParams];
+  clickConnectEnd: [connectionEvent: ConnectEndEvent<NodeType>];
+  moveStart: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
+  move: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
+  moveEnd: [moveEvent: { event: MouseTouchEvent | null; viewport: Viewport }];
+  selectionDragStart: [selectionEvent: NodeDragEvent<NodeType>];
+  selectionDrag: [selectionEvent: NodeDragEvent<NodeType>];
+  selectionDragStop: [selectionEvent: NodeDragEvent<NodeType>];
+  selectionContextMenu: [selectionEvent: { event: MouseEvent; nodes: NodeType[] }];
+  selectionStart: [selectionEvent: MouseEvent];
+  selectionEnd: [selectionEvent: MouseEvent];
+  selectionChange: [selectionEvent: SelectionChangeEvent<NodeType, EdgeType>];
+  viewportChangeStart: [viewport: Viewport];
+  viewportChange: [viewport: Viewport];
+  viewportChangeEnd: [viewport: Viewport];
+  init: [paneEvent: VueFlowInstance<NodeType, EdgeType>];
+  paneScroll: [paneEvent: WheelEvent | undefined];
+  paneClick: [paneEvent: MouseEvent];
+  paneContextMenu: [paneEvent: MouseEvent];
+  paneMouseEnter: [paneEvent: MouseEvent];
+  paneMouseMove: [paneEvent: MouseEvent];
+  paneMouseLeave: [paneEvent: MouseEvent];
+  updateNodeInternals: [];
+  error: [error: VueFlowError];
 
-export interface FlowEmits {
-  (event: 'nodesChange', changes: NodeChange[]): void
-  (event: 'edgesChange', changes: EdgeChange[]): void
-  (event: 'nodesInitialized'): void
+  edgeContextMenu: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  edgeMouseEnter: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  edgeMouseMove: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  edgeMouseLeave: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  edgeDoubleClick: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  edgeClick: [edgeMouseEvent: EdgeMouseEvent<EdgeType>];
+  reconnectStart: [edgeReconnectEvent: EdgeReconnectStartEvent<EdgeType>];
+  reconnect: [reconnectEvent: EdgeReconnectEvent<EdgeType>];
+  reconnectEnd: [edgeReconnectEvent: EdgeReconnectEndEvent<NodeType, EdgeType>];
 
-  /** @deprecated use `init` instead */
-  (event: 'paneReady', paneEvent: VueFlowStore): void
-  (event: 'init', paneEvent: VueFlowStore): void
-  (event: 'updateNodeInternals'): void
-  (event: 'error', error: VueFlowError): void
+  nodeDoubleClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeClick: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeMouseEnter: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeMouseMove: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeMouseLeave: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeContextMenu: [nodeMouseEvent: NodeMouseEvent<NodeType>];
+  nodeDragStart: [nodeDragEvent: NodeDragEvent<NodeType>];
+  nodeDrag: [nodeDragEvent: NodeDragEvent<NodeType>];
+  nodeDragStop: [nodeDragEvent: NodeDragEvent<NodeType>];
 
-  (event: 'connect', connectionEvent: Connection): void
-  (
-    event: 'connectStart',
-    connectionEvent: {
-      event?: MouseEvent
-    } & OnConnectStartParams,
-  ): void
-  (event: 'connectEnd', connectionEvent?: MouseEvent): void
-  (
-    event: 'clickConnectStart',
-    connectionEvent: {
-      event?: MouseEvent
-    } & OnConnectStartParams,
-  ): void
-  (event: 'clickConnectEnd', connectionEvent?: MouseEvent): void
-
-  (event: 'moveStart', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'move', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-  (event: 'moveEnd', moveEvent: { event: D3ZoomEvent<HTMLDivElement, any>; flowTransform: ViewportTransform }): void
-
-  (event: 'selectionDragStart', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDrag', selectionEvent: NodeDragEvent): void
-  (event: 'selectionDragStop', selectionEvent: NodeDragEvent): void
-  (event: 'selectionContextMenu', selectionEvent: { event: MouseEvent; nodes: GraphNode[] }): void
-  (event: 'selectionStart', selectionEvent: MouseEvent): void
-  (event: 'selectionEnd', selectionEvent: MouseEvent): void
-
-  (event: 'viewportChangeStart', viewport: ViewportTransform): void
-  (event: 'viewportChange', viewport: ViewportTransform): void
-  (event: 'viewportChangeEnd', viewport: ViewportTransform): void
-
-  (event: 'paneScroll', paneScrollEvent: WheelEvent | undefined): void
-  (
-    event: 'paneClick' | 'paneContextMenu' | 'paneMouseEnter' | 'paneMouseMove' | 'paneMouseLeave',
-    paneMouseEvent: MouseEvent,
-  ): void
-
-  (event: 'edgeUpdate', edgeUpdateEvent: EdgeUpdateEvent): void
-  (
-    event:
-      | 'edgeContextMenu'
-      | 'edgeMouseEnter'
-      | 'edgeMouseMove'
-      | 'edgeMouseLeave'
-      | 'edgeDoubleClick'
-      | 'edgeClick'
-      | 'edgeUpdateStart'
-      | 'edgeUpdateEnd',
-    edgeMouseEvent: EdgeMouseEvent,
-  ): void
-
-  (
-    event: 'nodeContextMenu' | 'nodeMouseEnter' | 'nodeMouseMove' | 'nodeMouseLeave' | 'nodeDoubleClick' | 'nodeClick',
-    nodeMouseEvent: NodeMouseEvent,
-  ): void
-
-  (event: 'nodeDragStart' | 'nodeDrag' | 'nodeDragStop', nodeDragEvent: NodeDragEvent): void
-
-  (
-    event:
-      | 'miniMapNodeClick'
-      | 'miniMapNodeDoubleClick'
-      | 'miniMapNodeMouseEnter'
-      | 'miniMapNodeMouseMove'
-      | 'miniMapNodeMouseLeave',
-    nodeMouseEvent: NodeMouseEvent,
-  ): void
-
-  /** v-model event definitions */
-  (event: 'update:modelValue', value: FlowElements): void
-  (event: 'update:nodes', value: GraphNode[]): void
-  (event: 'update:edges', value: GraphEdge[]): void
+  // `update:nodes` / `update:edges` / `update:viewport` are auto-declared by the `defineModel` calls in <VueFlow>.
 }
 
-export interface NodeSlots extends Record<`node-${string}`, (nodeProps: NodeProps) => any> {}
+// Slots are optional (a flow needn't define every node-/edge-type slot), so use `Partial<Record<…>>`
+// rather than a bare `Record`. Beyond correctness, a required index signature makes `<VueFlow>`
+// unassignable to Vue's `Component` (whose `InternalSlots` are optional), which breaks Options-API
+// `components: { VueFlow }` registration.
+// Pick the union member(s) whose `type` matches the slot's type tag. Distributive (not `Extract<…, {type:T}>`)
+// because `type` is OPTIONAL on Node/Edge (`type?:`), so an `Extract` against a required `{ type: T }` is
+// always `never`. For a generic `Node`/`Edge` (`type: string`) every member matches, so the slot stays broad;
+// for a discriminated union it narrows to the matching variant.
+type NodeByType<NodeType extends Node, T extends string> = NodeType extends any ? (T extends NonNullable<NodeType['type']> ? NodeType : never) : never;
+type EdgeByType<EdgeType extends Edge, T extends string> = EdgeType extends any ? (T extends NonNullable<EdgeType['type']> ? EdgeType : never) : never;
 
-export interface EdgeSlots extends Record<`edge-${string}`, (edgeProps: EdgeProps) => any> {}
+export type NodeSlots<NodeType extends Node = Node> = Partial<
+  & { [T in NonNullable<NodeType['type']> as `node-${T}`]: (nodeProps: NodeProps<NodeByType<NodeType, T>>) => any }
+  & Record<`node-${string}`, (nodeProps: NodeProps<NodeType>) => any>
+>;
 
-export interface FlowSlots extends NodeSlots, EdgeSlots {
-  'connection-line': (connectionLineProps: ConnectionLineProps) => any
-  'zoom-pane': () => any
-  'default': () => any
-}
+export type EdgeSlots<EdgeType extends Edge = Edge> = Partial<
+  & { [T in NonNullable<EdgeType['type']> as `edge-${T}`]: (edgeProps: EdgeProps<EdgeByType<EdgeType, T>>) => any }
+  & Record<`edge-${string}`, (edgeProps: EdgeProps<EdgeType>) => any>
+>;
+
+export type FlowSlots<NodeType extends Node = Node, EdgeType extends Edge = Edge> = NodeSlots<NodeType>
+  & EdgeSlots<EdgeType> & {
+    'connection-line'?: (connectionLineProps: ConnectionLineProps<NodeType>) => any;
+    'zoom-pane'?: () => any;
+    'default'?: () => any;
+  };

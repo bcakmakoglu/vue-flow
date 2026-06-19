@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 interface CustomLabelProps {
-  label: string
+  label: string;
 }
 
-defineProps<CustomLabelProps>()
+defineProps<CustomLabelProps>();
 </script>
 
 <template>
-  <tspan dy="10" x="0">{{ label }}</tspan>
+  <tspan dy="10" x="0">
+    {{ label }}
+  </tspan>
 </template>

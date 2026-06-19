@@ -22,7 +22,7 @@ If you're looking for a guide on how to setup a Vue project, check out the [offi
 Before you strap in, make sure you're equipped with:
 
 - [Node.js v20 or above](https://nodejs.org/)
-- [Vue 3.3 or above](https://vuejs.org/)
+- [Vue 3.5 or above](https://vuejs.org/)
 
 ## <span class="flex gap-2 items-center"> <VueJs class="text-primary" /> Play Online</span>
 
@@ -65,22 +65,19 @@ $ yarn add @vue-flow/core
 
 ## Quick Start
 
-In Vue Flow, a graph consists of [**nodes**](/typedocs/interfaces/Node) and [**edges**](/typedocs/type-aliases/Edge).
+In Vue Flow, a graph consists of [**nodes**](/typedocs/type-aliases/Node) and [**edges**](/typedocs/type-aliases/Edge).
 
 **Each node or edge requires a unique id.**
 
-Nodes also need a [XY-position](/typedocs/interfaces/XYPosition), while edges require a `source` and a
+Nodes also need a [XY-position](/typedocs/type-aliases/XYPosition), while edges require a `source` and a
 `target` node id.
 
 ::: warning NOTE!
 To ensure Vue Flow's is correctly displayed, make sure you include the necessary styles.
 
 ```css
-/* these are necessary styles for vue flow */
+/* the default theme — structure + the built-in look */
 @import '@vue-flow/core/dist/style.css';
-
-/* this contains the default theme, these are optional styles */
-@import '@vue-flow/core/dist/theme-default.css';
 ```
 
 Refer to the [Theming](/guide/theming) section for additional information.
@@ -204,10 +201,14 @@ import { computed } from 'vue'
 import { Position, Handle } from '@vue-flow/core'
 
 const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
   position: {
     type: Object,
     required: true,
-  }
+  },
 })
 
 const x = computed(() => `${Math.round(props.position.x)}px`)

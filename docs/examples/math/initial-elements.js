@@ -22,10 +22,10 @@ export const initialNodes = [
     position: { x: 650, y: 15 },
     type: 'result',
   },
-]
+];
 
 export const initialEdges = [
   { id: 'e1-3', source: '1', target: '3', animated: true, targetHandle: 'target-a' },
   { id: 'e2-3', source: '2', target: '3', animated: true, targetHandle: 'target-b' },
   { id: 'e3-4', source: '3', target: '4', animated: true },
-]
+];

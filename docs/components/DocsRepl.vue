@@ -1,19 +1,15 @@
 <script lang="ts" setup>
-import type { SFCOptions } from '@vue/repl'
-import { ReplStore, Repl as VueRepl } from '@vue/repl'
-import CodeMirror from '@vue/repl/codemirror-editor'
-import { useVueFlow } from '@vue-flow/core'
-import { exampleImports } from '../examples'
+import type { SFCOptions } from '@vue/repl';
+import { useStore, useVueImportMap, Repl as VueRepl } from '@vue/repl';
+import CodeMirror from '@vue/repl/codemirror-editor';
+import { computed } from 'vue';
+import { exampleImports } from '../examples';
 
-const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>()
+const props = defineProps<{ example: keyof typeof exampleImports; mainFile?: string }>();
 
-const { vueFlowVersion } = useVueFlow()
-
-let css = `@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@${vueFlowVersion}/dist/theme-default.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/minimap@latest/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/node-resizer@latest/dist/style.css';
+// load the in-repo 2.0 core styles served from /public (see .vitepress/plugins/copy.ts) rather than
+// the CDN — the CDN only has the last published 1.x release, which mismatches the local 2.0 runtime
+let css = `@import '${location.origin}/vue-flow-core.css';
 
 html,
 body,
@@ -35,26 +31,44 @@ body,
   transform: scale(75%);
   transform-origin: bottom right;
 }
-\n`
+\n`;
 
-const store = new ReplStore({
-  showOutput: true,
-  outputMode: 'preview',
-})
+const imports = exampleImports[props.example];
+const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {};
+const files: Record<string, (typeof imports)[keyof typeof imports]> = {};
 
-const files: Record<string, (typeof imports)[keyof typeof imports]> = {}
-const imports = exampleImports[props.example]
-const additionalImports = 'additionalImports' in imports ? imports.additionalImports : {}
-
-for (const example of Object.keys(imports).filter((i) => i !== 'additionalImports')) {
+for (const example of Object.keys(imports).filter(i => i !== 'additionalImports')) {
   if (example.includes('css')) {
-    css += formatCSS(imports[example as keyof typeof imports])
-  } else {
-    files[example] = imports[example as keyof typeof imports]
+    css += formatCSS(imports[example as keyof typeof imports]);
+  }
+  else {
+    files[example] = imports[example as keyof typeof imports];
   }
 }
 
-await store.setVueVersion('3.4.27')
+// `useVueImportMap` builds the sandbox's Vue runtime import map (matched to the repl's bundled
+// compiler). Merge the vue-flow runtime modules into the built-in map so they resolve in the
+// sandbox without surfacing as an editable `import-map.json`.
+const { importMap: vueImportMap, vueVersion } = useVueImportMap();
+
+const builtinImportMap = computed(() => ({
+  imports: {
+    ...vueImportMap.value.imports,
+    '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
+    ...additionalImports,
+  },
+}));
+
+const sfcOptions: SFCOptions = {
+  script: {
+    propsDestructure: true,
+  },
+};
+
+const store = useStore({ builtinImportMap, vueVersion });
+store.showOutput = true;
+store.outputMode = 'preview';
+store.sfcOptions = sfcOptions;
 
 await store.setFiles(
   {
@@ -62,52 +76,45 @@ await store.setFiles(
     'main.css': css,
   },
   props.mainFile ?? 'App.vue',
-)
+);
 
-// pre-set import map
-store.setImportMap({
-  imports: {
-    '@vue-flow/background': `${location.origin}/vue-flow-background.mjs`,
-    '@vue-flow/controls': `${location.origin}/vue-flow-controls.mjs`,
-    '@vue-flow/minimap': `${location.origin}/vue-flow-minimap.mjs`,
-    '@vue-flow/core': `${location.origin}/vue-flow-core.mjs`,
-    '@vue-flow/node-resizer': `${location.origin}/vue-flow-node-resizer.mjs`,
-    '@vue-flow/node-toolbar': `${location.origin}/vue-flow-node-toolbar.mjs`,
-    ...additionalImports,
-  },
-})
-
-const sfcOptions = {
-  script: {
-    propsDestructure: true,
-  },
-} as SFCOptions
+function onKeydown(event: KeyboardEvent) {
+  // prevent the browser's save dialog on both Ctrl+S and Cmd+S
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault();
+  }
+}
 
 function formatCSS(cssString: string) {
-  let formattedString = cssString
+  let formattedString = cssString;
 
-  formattedString = formattedString.replace(/}/g, '\n}\n\n')
-  formattedString = formattedString.replace(/;/g, ';\n    ')
+  formattedString = formattedString.replace(/\}/g, '\n}\n\n');
+  formattedString = formattedString.replace(/;/g, ';\n    ');
 
-  formattedString = formattedString.replace(/{/g, ' {\n    ')
+  formattedString = formattedString.replace(/\{/g, ' {\n    ');
 
-  return formattedString.trim()
+  return formattedString.trim();
 }
 </script>
 
 <template>
-  <VueRepl
-    :editor="CodeMirror"
-    :store="store"
-    :show-compile-output="false"
-    :sfc-options="sfcOptions"
-    :ssr="false"
-    @keydown.ctrl.s.prevent
-    @keydown.meta.s.prevent
-  />
+  <!-- wrapper owns the keydown guard: v4's <Repl> no longer forwards a `keydown` listener, so we
+       catch the bubbled event here (`display: contents` keeps it layout-neutral) -->
+  <div class="docs-repl" @keydown="onKeydown">
+    <VueRepl
+      :editor="CodeMirror"
+      :store="store"
+      :show-compile-output="false"
+      :ssr="false"
+    />
+  </div>
 </template>
 
 <style>
+.docs-repl {
+  display: contents;
+}
+
 .file-selector {
   @apply scrollbar scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-green-500 scrollbar-track-black;
 }

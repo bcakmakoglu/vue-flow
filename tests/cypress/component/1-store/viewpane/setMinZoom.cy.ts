@@ -1,24 +1,26 @@
-import { useVueFlow } from '@vue-flow/core'
-import { getElements } from '../../../utils'
+import type { VueFlowStore } from '@vue-flow/core';
+import { getStore } from '../../../support/component';
+import { getElements } from '../../../utils';
 
-const { nodes } = getElements()
+const { nodes } = getElements();
 
 describe('Store Action: `setMinZoom`', () => {
-  const store = useVueFlow({ id: 'test' })
+  let store: VueFlowStore;
 
   beforeEach(() => {
     cy.vueFlow({
       nodes,
-    })
-  })
+    });
 
-  beforeEach(() => {
-    store.setMinZoom(0.5)
-  })
+    cy.then(() => {
+      store = getStore();
+      store.setMinZoom(0.5);
+    });
+  });
 
   it('sets min-zoom in store', () => {
-    expect(store.minZoom.value).to.eq(0.5)
-  })
+    expect(store.minZoom.value).to.eq(0.5);
+  });
 
   it('sets min-zoom in viewpane', () => {
     cy.viewPort().trigger('wheel', {
@@ -27,14 +29,14 @@ describe('Store Action: `setMinZoom`', () => {
       wheelDeltaX: 0,
       wheelDeltaY: 0,
       bubbles: true,
-    })
+    });
 
     cy.tryAssertion(() => {
       cy.transformationPane().should(
         'have.css',
         'transform',
         `matrix(${store.viewport.value.zoom}, 0, 0, ${store.viewport.value.zoom}, ${store.viewport.value.x}, ${store.viewport.value.y})`,
-      )
-    })
-  })
-})
+      );
+    });
+  });
+});

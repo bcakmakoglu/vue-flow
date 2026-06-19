@@ -1,38 +1,44 @@
 <script lang="ts" setup>
-import { Handle, Position, getNodesInside, useVueFlow } from '@vue-flow/core'
-import type { NodeProps } from '@vue-flow/core'
+import type { NodeProps } from '@vue-flow/core';
+import { getNodesInside, Handle, Position, useStore, useVueFlow } from '@vue-flow/core';
 
-const props = defineProps<NodeProps>()
+const props = defineProps<NodeProps>();
 
-const { onNodeDragStop, getNodes, viewport } = useVueFlow()
+const { onNodeDragStop, viewport, updateNodeData } = useVueFlow();
+
+const { nodeLookup } = useStore();
 
 onNodeDragStop(({ node }) => {
   const nodes = getNodesInside(
-    getNodes.value,
+    nodeLookup,
     {
-      ...props.dimensions,
-      x: props.position.x,
-      y: props.position.y,
+      x: props.positionAbsoluteX,
+      y: props.positionAbsoluteY,
+      width: props.width ?? 0,
+      height: props.height ?? 0,
     },
-    viewport.value,
-  )
-  if (nodes.some((n) => n.id === node.id && n.id !== props.id)) {
-    node.label = `In ${props.id}`
-    node.data = {
+    [viewport.value.x, viewport.value.y, viewport.value.zoom],
+  );
+  if (nodes.some(n => n.id === node.id && n.id !== props.id)) {
+    updateNodeData(node.id, {
+      label: `In ${props.id}`,
       group: props.id,
-    }
-  } else if (node.data?.group === props.id) {
-    node.data.group = undefined
-    node.label = node.id
+    });
   }
-})
+  else if (node.data?.group === props.id) {
+    updateNodeData(node.id, {
+      group: undefined,
+      label: node.id,
+    });
+  }
+});
 </script>
 
 <template>
   <div class="vue-flow__group-node">
     <Handle type="target" :position="Position.Top" />
 
-    <strong>Group {{ label }}</strong>
+    <strong>Group {{ data.label }}</strong>
 
     <Handle type="source" :position="Position.Bottom" />
   </div>

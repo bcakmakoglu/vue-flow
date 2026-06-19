@@ -1,9 +1,11 @@
-import { computed, inject, ref } from 'vue'
-import type { CustomEvent, ElementData } from '../types'
-import { ErrorCode, VueFlowError, getConnectedEdges } from '../utils'
-import { NodeRef } from '../context'
-import { useVueFlow } from './useVueFlow'
-import { useNodeId } from './useNodeId'
+import type { Node } from '../types';
+import { getConnectedEdges } from '@xyflow/system';
+import { computed, inject, shallowRef } from 'vue';
+import { NodeRef } from '../context';
+import { ErrorCode, VueFlowError } from '../utils';
+import { useNodeId } from './useNodeId';
+import { useStore } from './useStore';
+import { useVueFlow } from './useVueFlow';
 
 /**
  * Composable that provides access to a node object, parent node object, connected edges and it's dom element
@@ -14,25 +16,29 @@ import { useNodeId } from './useNodeId'
  *
  * @public
  * @param id - The id of the node to access
- * @returns the node id, the node, the node dom element, it's parent and connected edges
+ * @returns the node id, the node (a `ComputedRef`), the node dom element, it's parent and connected edges
  */
-export function useNode<Data = ElementData, CustomEvents extends Record<string, CustomEvent> = any>(id?: string) {
-  const nodeId = id ?? useNodeId() ?? ''
-  const nodeEl = inject(NodeRef, ref(null))
+export function useNode<NodeType extends Node = Node>(id?: string) {
+  const nodeId = id ?? useNodeId() ?? '';
+  const nodeEl = inject(NodeRef, shallowRef(null));
 
-  const { findNode, edges, emits } = useVueFlow()
+  const { getInternalNode, emits } = useVueFlow<NodeType>();
+  const store = useStore<NodeType>();
 
-  const node = findNode<Data, CustomEvents>(nodeId)!
+  // `node` is the enriched `InternalNode` (it carries `internals`/`measured`, which NodeWrapper + custom
+  // nodes read) and a `computed` (not a one-time read) so it re-resolves whenever the store replaces this
+  // node's lookup entry — required for the immutable re-adopt model where a changed node is a NEW object.
+  const node = computed(() => getInternalNode(nodeId));
 
-  if (!node) {
-    emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId))
+  if (!node.value) {
+    emits.error(new VueFlowError(ErrorCode.NODE_NOT_FOUND, nodeId));
   }
 
   return {
     id: nodeId,
     nodeEl,
     node,
-    parentNode: computed(() => findNode(node.parentNode)),
-    connectedEdges: computed(() => getConnectedEdges([node], edges.value)),
-  }
+    parentNode: computed(() => (node.value ? getInternalNode(node.value.parentId) : undefined)),
+    connectedEdges: computed(() => (node.value ? getConnectedEdges([node.value], store.edges) : [])),
+  };
 }

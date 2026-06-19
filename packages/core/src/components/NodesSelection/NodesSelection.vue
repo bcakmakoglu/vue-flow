@@ -1,56 +1,63 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import { useDrag, useUpdateNodePositions, useVueFlow } from '../../composables'
-import { arrowKeyDiffs, getRectOfNodes } from '../../utils'
+import type { InternalNode } from '../../types';
+import { getNodesBounds } from '@xyflow/system';
+import { computed, onMounted, shallowRef } from 'vue';
+import { storeToRefs, useDrag, useStore, useUpdateNodePositions, useVueFlow } from '../../composables';
+import { arrowKeyDiffs } from '../../utils';
 
-const { emits, viewport, getSelectedNodes, noPanClassName, disableKeyboardA11y, userSelectionActive } = useVueFlow()
+const { emits, viewport, getSelectedNodes } = useVueFlow();
 
-const updatePositions = useUpdateNodePositions()
+const { nodeLookup } = useStore();
 
-const el = ref<HTMLDivElement | null>(null)
+const { noPanClassName, disableKeyboardA11y, userSelectionActive } = storeToRefs(useStore());
+
+const updatePositions = useUpdateNodePositions();
+
+const el = shallowRef<HTMLDivElement | null>(null);
 
 const dragging = useDrag({
   el,
   onStart(args) {
-    emits.selectionDragStart(args)
-    emits.nodeDragStart(args)
+    emits.selectionDragStart(args);
+    emits.nodeDragStart(args);
   },
   onDrag(args) {
-    emits.selectionDrag(args)
-    emits.nodeDrag(args)
+    emits.selectionDrag(args);
+    emits.nodeDrag(args);
   },
   onStop(args) {
-    emits.selectionDragStop(args)
-    emits.nodeDragStop(args)
+    emits.selectionDragStop(args);
+    emits.nodeDragStop(args);
   },
-})
+});
 
 onMounted(() => {
   if (!disableKeyboardA11y.value) {
-    el.value?.focus({ preventScroll: true })
+    el.value?.focus({ preventScroll: true });
   }
-})
+});
 
-const selectedNodesBBox = computed(() => getRectOfNodes(getSelectedNodes.value))
+// getSelectedNodes is readonly (public guard); getNodesBounds only reads it (dims come from nodeLookup)
+const selectedNodesBBox = computed(() => getNodesBounds(getSelectedNodes.value as InternalNode[], { nodeLookup }));
 
 const innerStyle = computed(() => ({
   width: `${selectedNodesBBox.value.width}px`,
   height: `${selectedNodesBBox.value.height}px`,
   top: `${selectedNodesBBox.value.y}px`,
   left: `${selectedNodesBBox.value.x}px`,
-}))
+}));
 
 function onContextMenu(event: MouseEvent) {
-  emits.selectionContextMenu({ event, nodes: getSelectedNodes.value })
+  emits.selectionContextMenu({ event, nodes: [...getSelectedNodes.value] });
 }
 
 function onKeyDown(event: KeyboardEvent) {
   if (disableKeyboardA11y.value) {
-    return
+    return;
   }
 
   if (arrowKeyDiffs[event.key]) {
-    event.preventDefault()
+    event.preventDefault();
 
     updatePositions(
       {
@@ -58,7 +65,7 @@ function onKeyDown(event: KeyboardEvent) {
         y: arrowKeyDiffs[event.key].y,
       },
       event.shiftKey,
-    )
+    );
   }
 }
 </script>
@@ -67,7 +74,7 @@ function onKeyDown(event: KeyboardEvent) {
 export default {
   name: 'NodesSelection',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>
@@ -82,7 +89,7 @@ export default {
       :class="{ dragging }"
       class="vue-flow__nodesselection-rect"
       :style="innerStyle"
-      :tabIndex="disableKeyboardA11y ? undefined : -1"
+      :tabindex="disableKeyboardA11y ? undefined : -1"
       @contextmenu="onContextMenu"
       @keydown="onKeyDown"
     />

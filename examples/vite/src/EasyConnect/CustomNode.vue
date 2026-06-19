@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import { Handle, Position, useVueFlow } from '@vue-flow/core'
-import { computed } from 'vue'
+import { Handle, Position, useStore } from '@vue-flow/core';
+import { computed } from 'vue';
 
-const props = defineProps<{ id: string }>()
+const props = defineProps<{ id: string }>();
 
-const { connectionStartHandle } = useVueFlow()
+// In a custom node, read the reactive store directly — `store.x` tracks reactively inside a computed.
+// (Avoid `storeToRefs(useStore())` here: it re-derives a ref for every state key on each node instance.)
+const store = useStore();
 
-const isTarget = computed(() => connectionStartHandle.value && connectionStartHandle.value.nodeId !== props.id)
+const isTarget = computed(() => store.connectionStartHandle && store.connectionStartHandle.nodeId !== props.id);
 </script>
 
 <template>
@@ -18,8 +20,8 @@ const isTarget = computed(() => connectionStartHandle.value && connectionStartHa
         backgroundColor: isTarget ? '#ffcce3' : '#ccd9f6',
       }"
     >
-      <Handle class="targetHandle" style="z-index: 2" :position="Position.Right" type="source" connectable />
-      <Handle class="targetHandle" :style="{ zIndex: isTarget ? 3 : 1 }" :position="Position.Left" type="target" connectable />
+      <Handle class="targetHandle" style="z-index: 2" :position="Position.Right" type="source" is-connectable />
+      <Handle class="targetHandle" :style="{ zIndex: isTarget ? 3 : 1 }" :position="Position.Left" type="target" is-connectable />
       {{ isTarget ? 'Drop here' : 'Drag to connect' }}
     </div>
   </div>

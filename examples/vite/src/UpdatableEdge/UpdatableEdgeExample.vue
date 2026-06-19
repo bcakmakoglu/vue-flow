@@ -1,61 +1,62 @@
 <script lang="ts" setup>
-import type { Elements, FlowEvents, VueFlowStore } from '@vue-flow/core'
-import { ConnectionMode, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Controls } from '@vue-flow/controls'
+import type { Edge, FlowEvents, Node, VueFlowInstance } from '@vue-flow/core';
+import { ConnectionMode, Controls, isEdge, isNode, VueFlow } from '@vue-flow/core';
 
-import '@vue-flow/controls/dist/style.css'
-
-const initialElements: Elements = [
+const initialElements: (Node | Edge)[] = [
   {
     id: '1',
     type: 'input',
-    label: 'Node <strong>A</strong>',
+    data: { label: 'Node <strong>A</strong>' },
     position: { x: 250, y: 0 },
   },
   {
     id: '2',
-    label: 'Node <strong>B</strong>',
+    data: { label: 'Node <strong>B</strong>' },
     position: { x: 100, y: 100 },
   },
   {
     id: '3',
-    label: 'Node <strong>C</strong>',
+    data: { label: 'Node <strong>C</strong>' },
     position: { x: 400, y: 100 },
     style: { background: '#D6D5E6', color: '#333', border: '1px solid #222138', width: 180 },
   },
-  { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', updatable: 'target' },
-]
+  { id: 'e1-2', source: '1', target: '2', label: 'Updatable target', reconnectable: 'target' },
+];
 
-const { updateEdge } = useVueFlow()
+const nodes = ref<Node[]>(initialElements.filter(isNode));
+const edges = ref<Edge[]>(initialElements.filter(isEdge));
 
-const elements = ref(initialElements)
+// imperative store access for the component that renders `<VueFlow>` (pure-provider model)
+const flow = ref<VueFlowInstance>();
 
-function onLoad(flowInstance: VueFlowStore) {
-  return flowInstance.fitView()
+function onLoad(flowInstance: VueFlowInstance) {
+  return flowInstance.fitView();
 }
 
-function onEdgeUpdateStart({ edge }: FlowEvents['edgeUpdateStart']) {
-  return console.log('start update', edge)
+function onReconnectStart({ edge }: FlowEvents['reconnectStart']) {
+  return console.log('start update', edge);
 }
 
-function onEdgeUpdateEnd({ edge }: FlowEvents['edgeUpdateEnd']) {
-  return console.log('end update', edge)
+function onReconnectEnd({ edge }: FlowEvents['reconnectEnd']) {
+  return console.log('end update', edge);
 }
 
-function onEdgeUpdate({ edge, connection }: FlowEvents['edgeUpdate']) {
-  return updateEdge(edge, connection)
+function onReconnect({ edge, connection }: FlowEvents['reconnect']) {
+  return flow.value?.reconnectEdge(edge, connection);
 }
 </script>
 
 <template>
   <VueFlow
-    v-model="elements"
+    ref="flow"
+    v-model:nodes="nodes"
+    v-model:edges="edges"
     :snap-to-grid="true"
     :connection-mode="ConnectionMode.Loose"
-    @pane-ready="onLoad"
-    @edge-update="onEdgeUpdate"
-    @edge-update-start="onEdgeUpdateStart"
-    @edge-update-end="onEdgeUpdateEnd"
+    @init="onLoad"
+    @reconnect="onReconnect"
+    @reconnect-start="onReconnectStart"
+    @reconnect-end="onReconnectEnd"
   >
     <Controls />
   </VueFlow>

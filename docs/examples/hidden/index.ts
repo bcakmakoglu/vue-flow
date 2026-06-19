@@ -1,1 +1,1 @@
-export { default as HiddenApp } from './App.vue?raw'
+export { default as HiddenApp } from './App.vue?raw';

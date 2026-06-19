@@ -1,26 +1,26 @@
-import type { Node } from '@vue-flow/core'
-import { useNodesData } from '@vue-flow/core'
-import { defineComponent, h } from 'vue'
-import { getElements } from '../../utils'
+import type { Node } from '@vue-flow/core';
+import { useNodesData } from '@vue-flow/core';
+import { defineComponent, h } from 'vue';
+import { getElements } from '../../utils';
 
-const { nodes } = getElements()
+const { nodes } = getElements();
 
 describe('Composable: `useNodesData`', () => {
   it('should return node data', () => {
-    const node = nodes[0]
+    const node = nodes[0];
 
     const ComposableTester = defineComponent({
       emits: ['change'],
       setup(_, { emit }) {
-        const data = useNodesData(node.id)
+        const data = useNodesData(node.id);
 
-        emit('change', data.value)
+        emit('change', data.value);
 
-        return ''
+        return '';
       },
-    })
+    });
 
-    const onChangeSpy = cy.spy().as('onChangeSpy')
+    const onChangeSpy = cy.spy().as('onChangeSpy');
 
     cy.vueFlow(
       {
@@ -34,26 +34,26 @@ describe('Composable: `useNodesData`', () => {
             nodes: node.id,
           }),
       },
-    )
+    );
 
-    cy.get('@onChangeSpy').should('have.been.calledWith', { id: node.id, type: node.type, data: node.data })
-  })
+    cy.get('@onChangeSpy').should('have.been.calledWith', { id: node.id, type: node.type, data: node.data });
+  });
 
   it('should return nodes data', () => {
-    const onChangeSpy = cy.spy().as('onChangeSpy')
+    const onChangeSpy = cy.spy().as('onChangeSpy');
 
-    const nodeIds = nodes.map((node) => node.id)
+    const nodeIds = nodes.map(node => node.id);
 
     const ComposableTester = defineComponent({
       emits: ['change'],
       setup(_, { emit }) {
-        const data = useNodesData(nodeIds)
+        const data = useNodesData(nodeIds);
 
-        emit('change', data.value)
+        emit('change', data.value);
 
-        return ''
+        return '';
       },
-    })
+    });
 
     cy.vueFlow(
       {
@@ -67,33 +67,33 @@ describe('Composable: `useNodesData`', () => {
             nodes: nodeIds,
           }),
       },
-    )
+    );
 
     cy.get('@onChangeSpy').should(
       'have.been.calledWith',
-      nodes.map((node) => ({
+      nodes.map(node => ({
         id: node.id,
         type: node.type,
         data: node.data,
       })),
-    )
-  })
+    );
+  });
 
   it('should return the node data with typeguard', () => {
-    const onChangeSpy = cy.spy().as('onChangeSpy')
+    const onChangeSpy = cy.spy().as('onChangeSpy');
 
-    const nodeIds = nodes.map((node) => node.id)
+    const nodeIds = nodes.map(node => node.id);
 
     const ComposableTester = defineComponent<{ guard?: (node: Node) => node is Node }>({
       emits: ['change'],
       setup(props, { emit }) {
-        const data = useNodesData(nodeIds, props.guard || ((node): node is Node => true))
+        const data = useNodesData(nodeIds, props.guard || ((_node): _node is Node => true));
 
-        emit('change', data.value)
+        emit('change', data.value);
 
-        return ''
+        return '';
       },
-    })
+    });
 
     cy.vueFlow(
       {
@@ -108,15 +108,15 @@ describe('Composable: `useNodesData`', () => {
             guard: (node): node is Node<{ randomData: number }> => node.type === 'custom',
           }),
       },
-    )
+    );
 
     cy.get('@onChangeSpy').should(
       'have.been.calledWith',
-      nodes.map((node) => ({
+      nodes.map(node => ({
         id: node.id,
         type: node.type,
         data: node.data,
       })),
-    )
-  })
-})
+    );
+  });
+});

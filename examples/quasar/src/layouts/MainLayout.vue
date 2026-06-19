@@ -1,6 +1,6 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import EssentialLink from 'components/EssentialLink.vue';
+import { defineComponent, ref } from 'vue';
 
 const linksList = [
   {
@@ -21,7 +21,7 @@ const linksList = [
     icon: 'code',
     link: '/card',
   },
-]
+];
 
 export default defineComponent({
   name: 'MainLayout',
@@ -31,17 +31,17 @@ export default defineComponent({
   },
 
   setup() {
-    const leftDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-    }
+    };
   },
-})
+});
 </script>
 
 <template>
@@ -58,7 +58,9 @@ export default defineComponent({
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
-        <q-item-label header> Examples </q-item-label>
+        <q-item-label header>
+          Examples
+        </q-item-label>
 
         <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
       </q-list>

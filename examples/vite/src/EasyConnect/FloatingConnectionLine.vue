@@ -1,16 +1,18 @@
 <script lang="ts" setup>
-import type { ConnectionLineProps } from '@vue-flow/core'
-import { BaseEdge, getStraightPath } from '@vue-flow/core'
-import { computed } from 'vue'
+import type { ConnectionLineProps } from '@vue-flow/core';
+import { BaseEdge, getStraightPath } from '@vue-flow/core';
+import { computed } from 'vue';
 
-const props = defineProps<ConnectionLineProps>()
+const props = defineProps<ConnectionLineProps>();
 
 const edgePath = computed(() =>
   getStraightPath({
-    ...props,
-    sourceX: props.sourceX - props.sourceNode.dimensions.width / 2,
+    sourceX: props.fromX - (props.fromNode.measured?.width ?? 0) / 2,
+    sourceY: props.fromY,
+    targetX: props.toX,
+    targetY: props.toY,
   }),
-)
+);
 </script>
 
 <template>
@@ -22,6 +24,6 @@ const edgePath = computed(() =>
       }"
       :path="edgePath[0]"
     />
-    <circle :cx="targetX" :cy="targetY" fill="black" :r="3" stroke="black" :stroke-width="1.5" />
+    <circle :cx="toX" :cy="toY" fill="black" :r="3" stroke="black" :stroke-width="1.5" />
   </g>
 </template>

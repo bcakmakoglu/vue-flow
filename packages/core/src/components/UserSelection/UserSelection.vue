@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-import type { SelectionRect } from '../../types'
+import type { SelectionRect } from '@xyflow/system';
 
-defineProps<{ userSelectionRect: SelectionRect }>()
+defineProps<{ userSelectionRect: SelectionRect }>();
 </script>
 
 <script lang="ts">
 export default {
   name: 'UserSelection',
   compatConfig: { MODE: 3 },
-}
+};
 </script>
 
 <template>

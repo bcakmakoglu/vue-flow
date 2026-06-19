@@ -1,7 +1,7 @@
-import { resolve } from 'node:path'
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
+import { resolve } from 'node:path';
+import vue from '@vitejs/plugin-vue';
+import AutoImport from 'unplugin-auto-import/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   resolve: {
@@ -20,6 +20,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['@vue-flow/core', '@vue-flow/minimap', '@vue-flow/controls', '@vue-flow/background'],
+    exclude: ['@vue-flow/core'],
   },
-})
+});

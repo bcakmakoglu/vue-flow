@@ -1,44 +1,38 @@
 <script setup>
-import { Panel, useVueFlow } from '@vue-flow/core'
-import { ref } from 'vue'
+import { Panel, useVueFlow } from '@vue-flow/core';
+import { ref } from 'vue';
 
-const {
-  nodesDraggable,
-  nodesConnectable,
-  elementsSelectable,
-  zoomOnScroll,
-  zoomOnDoubleClick,
-  zoomOnPinch,
-  panOnScroll,
-  panOnScrollMode,
-  panOnDrag,
-  onConnect,
-  onNodeDragStop,
-  onPaneClick,
-  onPaneScroll,
-  onPaneContextMenu,
-  onNodeDragStart,
-  onMoveEnd,
-  addEdges,
-} = useVueFlow()
+// These settings are bound to `<VueFlow>` props by the parent. Expose them as models so the panel can
+// toggle them — the props are reactive, so the flow reacts to every change (no `useStore` needed).
+const nodesDraggable = defineModel('nodesDraggable');
+const nodesConnectable = defineModel('nodesConnectable');
+const elementsSelectable = defineModel('elementsSelectable');
+const zoomOnScroll = defineModel('zoomOnScroll');
+const zoomOnPinch = defineModel('zoomOnPinch');
+const panOnScroll = defineModel('panOnScroll');
+const panOnScrollMode = defineModel('panOnScrollMode');
+const zoomOnDoubleClick = defineModel('zoomOnDoubleClick');
+const panOnDrag = defineModel('panOnDrag');
 
-const captureZoomClick = ref(false)
+const { onConnect, onNodeDragStop, onPaneClick, onPaneScroll, onPaneContextMenu, onNodeDragStart, onMoveEnd, addEdges } = useVueFlow();
 
-const captureZoomScroll = ref(false)
+const captureZoomClick = ref(false);
 
-onConnect((params) => addEdges(params))
+const captureZoomScroll = ref(false);
 
-onNodeDragStart((e) => console.log('drag start', e))
+onConnect(params => addEdges(params));
 
-onNodeDragStop((e) => console.log('drag stop', e))
+onNodeDragStart(e => console.log('drag start', e));
 
-onPaneClick((event) => captureZoomClick.value && console.log('pane click', event))
+onNodeDragStop(e => console.log('drag stop', e));
 
-onPaneScroll((event) => captureZoomScroll.value && console.log('pane scroll', event))
+onPaneClick(event => captureZoomClick.value && console.log('pane click', event));
 
-onPaneContextMenu((event) => captureZoomClick.value && console.log('pane ctx menu', event))
+onPaneScroll(event => captureZoomScroll.value && console.log('pane scroll', event));
 
-onMoveEnd((flowTransform) => console.log('move end', flowTransform))
+onPaneContextMenu(event => captureZoomClick.value && console.log('pane ctx menu', event));
+
+onMoveEnd(flowTransform => console.log('move end', flowTransform));
 </script>
 
 <template>
@@ -46,37 +40,37 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
     <div>
       <label class="label" for="draggable">
         nodesDraggable
-        <input id="draggable" v-model="nodesDraggable" type="checkbox" class="vue-flow__draggable" />
+        <input id="draggable" v-model="nodesDraggable" type="checkbox" class="vue-flow__draggable">
       </label>
     </div>
     <div>
       <label class="label" for="connectable">
         nodesConnectable
-        <input id="connectable" v-model="nodesConnectable" type="checkbox" class="vue-flow__connectable" />
+        <input id="connectable" v-model="nodesConnectable" type="checkbox" class="vue-flow__connectable">
       </label>
     </div>
     <div>
       <label class="label" for="selectable">
         elementsSelectable
-        <input id="selectable" v-model="elementsSelectable" type="checkbox" class="vue-flow__selectable" />
+        <input id="selectable" v-model="elementsSelectable" type="checkbox" class="vue-flow__selectable">
       </label>
     </div>
     <div>
       <label class="label" for="zoomonscroll">
         zoomOnScroll
-        <input id="zoomonscroll" v-model="zoomOnScroll" type="checkbox" class="vue-flow__zoomonscroll" />
+        <input id="zoomonscroll" v-model="zoomOnScroll" type="checkbox" class="vue-flow__zoomonscroll">
       </label>
     </div>
     <div>
       <label class="label" for="zoomonpinch">
         zoomOnPinch
-        <input id="zoomonpinch" v-model="zoomOnPinch" type="checkbox" class="vue-flow__zoomonpinch" />
+        <input id="zoomonpinch" v-model="zoomOnPinch" type="checkbox" class="vue-flow__zoomonpinch">
       </label>
     </div>
     <div>
       <label class="label" for="panonscroll">
         panOnScroll
-        <input id="panonscroll" v-model="panOnScroll" type="checkbox" class="vue-flow__panonscroll" />
+        <input id="panonscroll" v-model="panOnScroll" type="checkbox" class="vue-flow__panonscroll">
       </label>
     </div>
     <div>
@@ -92,25 +86,25 @@ onMoveEnd((flowTransform) => console.log('move end', flowTransform))
     <div>
       <label class="label" for="zoomondbl">
         zoomOnDoubleClick
-        <input id="zoomondbl" v-model="zoomOnDoubleClick" type="checkbox" class="vue-flow__zoomondbl" />
+        <input id="zoomondbl" v-model="zoomOnDoubleClick" type="checkbox" class="vue-flow__zoomondbl">
       </label>
     </div>
     <div>
       <label class="label" for="panemoveable">
         paneMovable
-        <input id="panemoveable" v-model="panOnDrag" type="checkbox" class="vue-flow__panemoveable" />
+        <input id="panemoveable" v-model="panOnDrag" type="checkbox" class="vue-flow__panemoveable">
       </label>
     </div>
     <div>
       <label class="label" for="capturezoompaneclick">
         capture onPaneClick
-        <input id="capturezoompaneclick" v-model="captureZoomClick" type="checkbox" class="vue-flow__capturezoompaneclick" />
+        <input id="capturezoompaneclick" v-model="captureZoomClick" type="checkbox" class="vue-flow__capturezoompaneclick">
       </label>
     </div>
     <div>
       <label class="label" for="capturezoompanescroll">
         capture onPaneScroll
-        <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll" />
+        <input id="capturezoompanescroll" v-model="captureZoomScroll" type="checkbox" class="vue-flow__capturezoompanescroll">
       </label>
     </div>
   </Panel>

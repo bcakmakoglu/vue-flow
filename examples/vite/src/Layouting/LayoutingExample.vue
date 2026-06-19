@@ -1,44 +1,43 @@
 <script lang="ts" setup>
-import { nextTick, ref } from 'vue'
-import { Panel, VueFlow, useVueFlow } from '@vue-flow/core'
-import { Background } from '@vue-flow/background'
-import Icon from './components/Icon.vue'
-import ProcessNode from './nodes/ProcessNode.vue'
-import ProcessEdge from './edges/ProcessEdge.vue'
+import type { Direction } from './composables/useLayout';
+import { Background, Panel, useVueFlow, VueFlow } from '@vue-flow/core';
+import { nextTick, ref } from 'vue';
+import Icon from './components/Icon.vue';
+import { useLayout } from './composables/useLayout';
 
-import { initialEdges, initialNodes } from './initial-elements'
-import { useRunProcess } from './composables/useRunProcess'
-import type { Direction } from './composables/useLayout'
-import { useLayout } from './composables/useLayout'
+import { useRunProcess } from './composables/useRunProcess';
+import ProcessEdge from './edges/ProcessEdge.vue';
+import { initialEdges, initialNodes } from './initial-elements';
+import ProcessNode from './nodes/ProcessNode.vue';
 
-import './styles.css'
+import './styles.css';
 
-const nodes = ref(initialNodes)
+const nodes = ref(initialNodes);
 
-const edges = ref(initialEdges)
+const edges = ref(initialEdges);
 
-const cancelOnError = ref(true)
+const cancelOnError = ref(true);
 
-const { graph, layout } = useLayout()
+const { graph, layout } = useLayout();
 
-const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError })
+const { run, stop, reset, isRunning } = useRunProcess({ graph, cancelOnError });
 
-const { fitView } = useVueFlow()
+const { fitView } = useVueFlow();
 
 async function layoutGraph(direction: Direction) {
   // Stop the current execution process
-  await stop()
+  await stop();
 
   // Reset the nodes to their initial status
-  reset(nodes.value)
+  reset(nodes.value);
 
   // Layout the graph
-  nodes.value = layout(nodes.value, edges.value, direction)
+  nodes.value = layout(nodes.value, edges.value, direction);
 
   // Fit the view to the graph
   nextTick(() => {
-    fitView()
-  })
+    fitView();
+  });
 }
 </script>
 
@@ -81,7 +80,7 @@ async function layoutGraph(direction: Direction) {
 
         <div class="checkbox-panel">
           <label>Cancel on error</label>
-          <input v-model="cancelOnError" type="checkbox" />
+          <input v-model="cancelOnError" type="checkbox">
         </div>
       </Panel>
     </VueFlow>

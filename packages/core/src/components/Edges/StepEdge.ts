@@ -1,9 +1,11 @@
-import { defineComponent, h } from 'vue'
-import type { StepEdgeProps } from '../../types'
-import SmoothStepEdge from './SmoothStepEdge'
+import type { StepEdgeProps } from '../../types';
+import { defineComponent, h } from 'vue';
+import SmoothStepEdge from './SmoothStepEdge';
 
 const StepEdge = defineComponent<StepEdgeProps>({
   name: 'StepEdge',
+  // see StraightEdge: keep undeclared attrs from auto-applying to the SmoothStepEdge root
+  inheritAttrs: false,
   props: [
     'sourcePosition',
     'targetPosition',
@@ -20,10 +22,10 @@ const StepEdge = defineComponent<StepEdgeProps>({
     'markerEnd',
     'markerStart',
     'interactionWidth',
-  ] as any,
+  ],
   setup(props, { attrs }) {
-    return () => h(SmoothStepEdge as any, { ...props, ...attrs, borderRadius: 0 })
+    return () => h(SmoothStepEdge, { ...props, ...attrs, borderRadius: 0 });
   },
-})
+});
 
-export default StepEdge
+export default StepEdge;
