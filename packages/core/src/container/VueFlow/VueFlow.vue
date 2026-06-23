@@ -27,6 +27,7 @@ const props = withDefaults(defineProps<FlowProps>(), {
   zoomOnDoubleClick: undefined,
   panOnScroll: undefined,
   panOnDrag: undefined,
+  ancestorZoom: undefined,
   applyDefault: undefined,
   fitViewOnInit: undefined,
   connectOnClick: undefined,
