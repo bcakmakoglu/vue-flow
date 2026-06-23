@@ -70,10 +70,6 @@ export default defineConfigWithTheme<DefaultTheme.Config>({
   outDir: resolve(__dirname, '../../dist'),
 
   vite: {
-    define: {
-      // eslint-disable-next-line n/prefer-global/process
-      __ANALYTICS_ID__: process.env.VERCEL_ANALYTICS_ID,
-    },
     plugins: [
       copyVueFlowPlugin(),
       AutoImport({

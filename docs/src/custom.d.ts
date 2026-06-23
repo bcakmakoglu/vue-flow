@@ -1,5 +1,3 @@
-declare const __ANALYTICS_ID__: string
-
 declare module 'virtual:icons/*' {
   import type { FunctionalComponent, SVGAttributes } from 'vue'
   const component: FunctionalComponent<SVGAttributes>

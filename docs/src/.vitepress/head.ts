@@ -129,4 +129,5 @@ export default [
   ['link', { rel: 'shortcut icon', href: '/favicons/favicon.ico' }],
   ['meta', { name: 'msapplication-TileColor', content: '#10b981' }],
   ['meta', { name: 'theme-color', content: '#10b981' }],
+  ['script', { src: 'https://cdn.usefathom.com/script.js', 'data-spa': 'auto', 'data-site': 'QIHWMESA', defer: '' }],
 ]
