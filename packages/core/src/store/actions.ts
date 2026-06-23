@@ -343,10 +343,16 @@ export function useActions<NodeType extends Node = Node, EdgeType extends Edge =
       if (node) {
         const dimensions = getDimensions(update.nodeElement);
 
+        // Re-measure when the size changed, when this is a forced update, or when handle bounds are still
+        // missing — matching xyflow/system's guard. The last term keeps a node from being left without
+        // handle bounds if it ever reaches here un-forced with dimensions that already match.
         const doUpdate = !!(
           dimensions.width
           && dimensions.height
-          && (node.measured.width !== dimensions.width || node.measured.height !== dimensions.height || update.forceUpdate)
+          && (node.measured.width !== dimensions.width
+            || node.measured.height !== dimensions.height
+            || !node.internals.handleBounds
+            || update.forceUpdate)
         );
 
         if (doUpdate) {
