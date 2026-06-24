@@ -6,6 +6,12 @@ title: Troubleshooting
 
 This section aims to help you understand, avoid, and fix errors that may occur when using Vue Flow.
 
+## VS Code Webviews
+
+There may be issues with node panning and dragging when using Vue Flow in a VS Code extension webview environment.
+
+As a workaround, you can implement any broken functionality directly. See [this issue](https://github.com/bcakmakoglu/vue-flow/issues/1986) for more details.
+
 ## Errors and Fixes
 
 Vue Flow can emit several error types to help diagnose and resolve issues.
