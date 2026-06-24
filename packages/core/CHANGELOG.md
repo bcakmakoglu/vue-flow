@@ -1,5 +1,690 @@
 # @vue-flow/core
 
+## 2.0.0-next.0
+
+### Major Changes
+
+- [#2101](https://github.com/bcakmakoglu/vue-flow/pull/2101) [`717bc71`](https://github.com/bcakmakoglu/vue-flow/commit/717bc71ba07a60e8c9ddaf8c9b141b93be8b15cb) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Collapse `ConnectionLineType` and `PanelPositionType` onto their `@xyflow/system` counterparts. Both are now re-exported from `@xyflow/system` (the local definitions are removed), aligning `@vue-flow/core` with `@xyflow/react`/`@xyflow/svelte`. Two breaking changes:
+
+  - **`ConnectionLineType.SimpleBezier`'s value changed from `'simple-bezier'` to `'simplebezier'`**, matching `@xyflow/system` and vue-flow's own `'simplebezier'` edge-type registry key. If you pass the enum (`{ type: ConnectionLineType.SimpleBezier }`) nothing changes; only the raw string literal `'simple-bezier'` is affected — update it to `'simplebezier'`.
+  - **`PanelPositionType` is renamed to `PanelPosition`** (`@xyflow/system`'s type). It now also accepts `'center-left'` and `'center-right'` in addition to the six existing corner/edge positions. Update type references from `PanelPositionType` to `PanelPosition`.
+
+  Also trims the redundant `| MarkerType` from `EdgeMarkerType` (now `string | EdgeMarker`, matching the system shape) — non-breaking, since `MarkerType` values are already strings.
+
+- [#2154](https://github.com/bcakmakoglu/vue-flow/pull/2154) [`02012fc`](https://github.com/bcakmakoglu/vue-flow/commit/02012fcd9345a89e33d9b0ffbe34ee1965b20a01) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align Vue Flow's internal DOM and structural element class names with `@xyflow/react`/`@xyflow/svelte`. The container layers now nest and are named identically to xyflow: `renderer` (outer pan/zoom container) › `pane` (drag/selection surface) › `viewport` (the transformed layer that carries the zoom transform).
+
+  Three `vue-flow__*` class suffixes change (the `vue-flow__` prefix is unchanged):
+
+  - `.vue-flow__transformationpane` → `.vue-flow__viewport` (the transformed layer)
+  - `.vue-flow__viewport` → `.vue-flow__renderer` (the outer container)
+  - `.vue-flow__edge-labels` → `.vue-flow__edgelabel-renderer`
+
+  If you target any of these in custom CSS — or query them from JS — update the selector. Note `viewport` now refers to the transformed inner layer (previously it was the outer container).
+
+- [#2105](https://github.com/bcakmakoglu/vue-flow/pull/2105) [`469c328`](https://github.com/bcakmakoglu/vue-flow/commit/469c328ac4e7aab7f4de3fa0621f40757086974c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align the CSS with `@xyflow/react`/`@xyflow/svelte`: the theme is now driven by the shared `--xy-*` custom-property system (replacing `--vf-*`), and the stylesheets are split the same way xyflow's are.
+
+  **Breaking changes:**
+
+  - **CSS variables renamed `--vf-*` → `--xy-*`** and expanded to the full xyflow set. Each rule reads `var(--xy-x, var(--xy-x-default))`, so you override the un-suffixed variable and vue-flow falls back to the shipped `--xy-x-default`. Update custom themes accordingly — e.g. `--vf-node-bg` → `--xy-node-background-color`, `--vf-node-text` → `--xy-node-color`, `--vf-handle` → `--xy-handle-background-color`, `--vf-connection-path`/edge color → `--xy-edge-stroke`, `--vf-edge-text`/`--vf-edge-text-bg` → `--xy-edge-label-color`/`--xy-edge-label-background-color`. The full set is exported as `CSSVars`. There is no longer a single `--vf-node-color` driving border + box-shadow + handle together; node border, box-shadow and handle color are now separate variables.
+  - **`dist/theme-default.css` was removed.** `dist/style.css` is now the full default theme (necessary structure **and** the built-in look) — import just that. A new `dist/base.css` ships the structure plus only minimal theming, for when you want to bring your own theme (mirrors `@xyflow/react`'s `base.css` vs `style.css`).
+  - **The built-in `input`/`output` node types no longer have colored (blue/pink) accents** — all default node types use the same neutral `#1a192b` border, matching `@xyflow/react`'s current default theme.
+
+  Colors that were previously hardcoded (edge stroke, selected-edge stroke, resize controls, background-pattern dots/lines/cross) are now `--xy-*` variables, and many more themeable variables are exposed (selection box, node border-radius, hover/selected box-shadows, controls box-shadow, minimap mask/node strokes, attribution background, …).
+
+- [#2108](https://github.com/bcakmakoglu/vue-flow/pull/2108) [`1174502`](https://github.com/bcakmakoglu/vue-flow/commit/117450211c1ebe1893b89993b339678c8491cbd0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align connection/reconnect event payloads with xyflow/react and add the `selectionChange` event:
+
+  - `connectEnd` / `clickConnectEnd` now emit `{ event, connectionState }` (was the bare `MouseEvent | TouchEvent | undefined`). The `connectionState` is the `FinalConnectionState` (re-exported from `@xyflow/system`) — whether the connection was valid plus the from/to handles and nodes — mirroring react's `onConnectEnd`.
+  - `reconnectStart` now emits `{ event, edge, handleType }` and `reconnectEnd` now emits `{ event, edge, handleType, connectionState }` (both were `{ event, edge }`). `handleType` is the handle being reconnected; `reconnectEnd` also carries the `FinalConnectionState`, matching react's `onReconnectStart`/`onReconnectEnd`.
+  - Added a `selectionChange` event (`onSelectionChange` / `@selection-change`), emitting `{ nodes, edges }` whenever the set of selected nodes or edges changes — mirroring react's `onSelectionChange`. Previously selection was only observable through `nodesChange`/`edgesChange` select changes.
+
+  Handlers that only read `edge` (reconnect) or ignore the payload are unaffected; handlers typed against the old `connectEnd`/`reconnect*` payloads need updating to the new object shapes.
+
+- [#2061](https://github.com/bcakmakoglu/vue-flow/pull/2061) [`6aed15a`](https://github.com/bcakmakoglu/vue-flow/commit/6aed15ac68d1db0fa2401de1398c80f05fd25d96) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align the initial-fit and node-origin props with `xyflow/react` + `xyflow/svelte`.
+
+  - **`fitViewOnInit` → `fitView`.** The prop that fits the view on the first render is now named `fitView` (boolean), matching react/svelte. A companion `fitViewOptions` prop forwards the initial fit's options (`padding`, `minZoom`, `maxZoom`, `duration`, `nodes`, `includeHiddenNodes`). The internal one-shot flag keeps its own name, so the `fitView()` action is unaffected.
+  - **`nodeOrigin` is now forwarded.** The prop existed on the type but was ignored — absolute-position computation, expand-parent, and the resize control all hard-coded `[0, 0]`. They now honor the configured `nodeOrigin` (default `[0, 0]`, unchanged).
+  - **`nodeClickDistance` added.** Distance (px) the pointer may move between pointerdown and pointerup on a node and still count as a click (default `0`), matching react/svelte. Previously node-drag click suppression incorrectly reused `nodeDragThreshold` for this.
+
+  | Old                                         | New                                    |
+  | ------------------------------------------- | -------------------------------------- |
+  | `:fit-view-on-init="true"`                  | `:fit-view="true"`                     |
+  | (initial fit options were not configurable) | `:fit-view-options="{ padding: 0.2 }"` |
+
+- [#2110](https://github.com/bcakmakoglu/vue-flow/pull/2110) [`80de1d8`](https://github.com/bcakmakoglu/vue-flow/commit/80de1d8dda280b08b3637a3b2cd7ad4934f0aba0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align the package's export map with xyflow and fix type-declaration resolution:
+
+  - **Dual type declarations.** `exports["."]` now resolves ESM types from `index.d.mts` (the `import` condition) and CJS types from `index.d.cts` (the `require` condition), bundled into a single flat declaration per format. This removes the "types masquerade as CJS" issue under `node16`/`nodenext` ESM resolution (`arethetypeswrong` is now green across node10 / node16-CJS / node16-ESM / bundler). Bundler resolution (Vite/webpack — i.e. virtually every Vue app) was already correct and is unaffected.
+  - **Dropped the IIFE / browser-global build.** `vue-flow-core.iife.js` and the `unpkg`/`jsdelivr` fields are removed (matching `@xyflow/svelte`, which is ESM-only). The ESM (`.mjs`) and CJS (`.js`) builds are unchanged, so bundler and `require()` consumers are unaffected; CDN `<script>` users should load the ESM build (e.g. via esm.sh) or use a bundler.
+  - Minor: `repository.url` now ends in `.git`, `files` trimmed to `["dist"]`, and a `default` export condition was added.
+
+- [#2096](https://github.com/bcakmakoglu/vue-flow/pull/2096) [`fa04aa3`](https://github.com/bcakmakoglu/vue-flow/commit/fa04aa3eceda14ab9065f2ca707ae6e64c4e97a7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reuse `@xyflow/system` primitives instead of re-implementing them.
+
+  - **Type guards** — `isNode` / `isEdge` / `isGraphNode` now delegate to the system's `isNodeBase` / `isEdgeBase` / `isInternalNodeBase` (single source of truth, matching xyflow/react & xyflow/svelte). Public signatures are unchanged; `isInternalNodeBase` is now re-exported as well.
+  - **Padding** — `fitView` / `fitBounds` and a node `extent`'s `CoordinateExtentRange` now use the system's `Padding` type, and `Padding` / `PaddingWithUnit` / `PaddingUnit` are re-exported.
+    - **Breaking:** the extent padding's positional-tuple form (`[y, x]`, `[top, x, bottom]`, `[top, right, bottom, left]`) is removed. Use the object form instead, e.g. `{ top: 10, left: 20 }` or the `x` / `y` shorthands.
+    - `fitView` / `fitBounds` `padding` now accepts per-side values and `px` / `%` units (previously `number` only). A `%` extent padding resolves against the parent's width/height.
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`22236a4`](https://github.com/bcakmakoglu/vue-flow/commit/22236a44956ca1fb1dabe80079581161ae45c19a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align core types and change-pipeline shapes with `@xyflow/system` (the framework-agnostic engine that powers `xyflow/react` and `xyflow/svelte`). Hooks, slots, and the rest of the vue-flow API keep their shape; this changeset covers the data-shape moves. (The `useVueFlow` signature change and the `<VueFlowProvider>` context model are covered in their own changesets.)
+
+  ### `Node` / `GraphNode`
+
+  `Node` keeps its public surface but adds `parentId?: string` (matching xyflow). The deprecated `parentNode` field is removed — use `parentId`.
+
+  `GraphNode` is now structurally assignable to `@xyflow/system`'s `InternalNodeBase`, which means the following vue-flow-only top-level fields are gone:
+
+  - `node.computedPosition` → use `node.internals.positionAbsolute` (and `node.internals.z` for the z-index).
+  - `node.dimensions` → use `node.measured`.
+  - `node.handleBounds` (top-level) → use `node.internals.handleBounds`.
+  - `node.isParent` → check the new `parentLookup` map exposed by the store (`useVueFlow().parentLookup.value.get(nodeId)?.size`). The flag was a derived value; treating it as derived removes a class of stale-flag bugs when nodes are added/removed dynamically.
+
+  ### `NodeProps` / `EdgeProps`
+
+  `NodeProps<NodeType>` and `EdgeProps<EdgeType>` now take a `NodeType`/`EdgeType` generic, matching `xyflow/react`'s convention. Previous data-first usage (`NodeProps<MyData>`) should become `NodeProps<Node<MyData, 'myType'>>`.
+
+  The renderer now forwards the full `NodeProps` surface (`selectable`, `deletable`, `draggable`, `isConnectable`, `positionAbsoluteX`, `positionAbsoluteY`, `parentId`) so custom-node components see the same props they would in xyflow/react.
+
+  ### `EdgeType` generic (mirrors `NodeType`)
+
+  `Node` and `Edge` now reuse `@xyflow/system`'s `NodeBase` / `EdgeBase` as their foundation (`Node = NodeBase & {…vue}`, `DefaultEdge extends EdgeBase`), the same way `xyflow/react` does — so the shared fields stay in lockstep with the engine instead of being hand-maintained.
+
+  The store and its public types now carry an `EdgeType extends Edge = Edge` generic alongside the existing `NodeType` (xyflow/react order: `<NodeType, EdgeType>`), with defaults so existing untyped usage is unchanged. `useVueFlow<NodeType, EdgeType>()` now returns a fully-typed store: `edges`, `findEdge`, `addEdges`, `updateEdge`, `updateEdgeData`, the edge lookup, and the edge-related hooks/events/slots are all parameterized on your `EdgeType` (e.g. `useVueFlow<Node, MyEdge>().findEdge(id)` returns `GraphEdge<MyEdge> | undefined`). `GraphEdge` is now `GraphEdge<EdgeType>` (parameterized on the user edge, like `GraphNode<NodeType>`) rather than `GraphEdge<Data, Type>`.
+
+  ### Change types
+
+  The `NodeChange` / `EdgeChange` families mirror `@xyflow/system` exactly (no `replace` variant yet):
+
+  - `NodeDimensionChange.updateStyle` → `setAttributes` (`true | 'width' | 'height'`).
+  - `NodePositionChange.from` → `positionAbsolute`. Consumers tracking the "before" position now derive it themselves.
+  - `NodeAddChange.item` is the user-provided `Node` (not `GraphNode`); same for `EdgeAddChange.item` and `Edge`. Both add an optional `index`.
+  - `EdgeRemoveChange` is now `{ id, type: 'remove' }` only — vue-flow's extra `source`/`target`/`sourceHandle`/`targetHandle` fields are gone. Read those from the edge via `findEdge(id)` before the change is applied.
+  - `NodeDragItem` drops vue-flow's `from`/`dimensions`/`parentNode` extensions and adopts the system shape (`measured`, `internals.positionAbsolute`, `parentId`, `origin`, `dragging`).
+
+  ### `useVueFlow` API
+
+  `useVueFlow()` is now a zero-argument, pure context consumer — it returns the store provided by the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor and throws when called outside one. It no longer takes an id or options object and no longer creates or populates a store; pass options to `<VueFlow>` as props, and wrap sibling/external consumers in `<VueFlowProvider>`. There is no global flow registry anymore. (See the `retire-storage-singleton` / `vue-flow-provider` changesets for the full migration.)
+
+  The deprecated `paneReady` event is gone — listen to `init` (or `onInit`) instead. The deprecated mixed-elements API (`<VueFlow v-model="elements">`, `setElements`, `addSelectedElements`, `removeSelectedElements`, `getElements`, `getSelectedElements`) is removed — use the separate `nodes` / `edges` props and `setNodes` / `setEdges` / `addSelectedNodes` / `addSelectedEdges` / `removeSelectedNodes` / `removeSelectedEdges` / `getNodes` / `getEdges` / `getSelectedNodes` / `getSelectedEdges` actions and getters.
+
+  Default change handlers (`applyNodeChanges` / `applyEdgeChanges`) are wired automatically when the store is created (gated on `autoApplyChanges`), so `addNodes` / `addEdges` mutate the store — matching xyflow/react.
+
+  ### Built-in nodes (label rendering)
+
+  The built-in `input` / `default` / `output` node components read labels from `data.label`. The deprecated top-level `node.label` is no longer supported — move labels to `data: { label: 'My Node' }`.
+
+  ### Migration cheat-sheet
+
+  | Old                                                          | New                                                                                       |
+  | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+  | `node.parentNode`                                            | `node.parentId`                                                                           |
+  | `node.computedPosition`                                      | `node.internals.positionAbsolute` (+ `node.internals.z`)                                  |
+  | `node.dimensions`                                            | `node.measured`                                                                           |
+  | `node.handleBounds`                                          | `node.internals.handleBounds`                                                             |
+  | `node.isParent`                                              | `parentLookup.value.get(node.id)?.size > 0`                                               |
+  | `node.label` (top-level)                                     | `node.data.label`                                                                         |
+  | `NodeProps<MyData>`                                          | `NodeProps<Node<MyData, 'myType'>>`                                                       |
+  | `EdgeProps<MyData>`                                          | `EdgeProps<Edge<MyData, 'myType'>>`                                                       |
+  | `NodeDimensionChange.updateStyle`                            | `NodeDimensionChange.setAttributes`                                                       |
+  | `NodePositionChange.from`                                    | `NodePositionChange.positionAbsolute`                                                     |
+  | `NodeAddChange.item: GraphNode`                              | `NodeAddChange.item: Node`                                                                |
+  | `EdgeAddChange.item: GraphEdge`                              | `EdgeAddChange.item: Edge`                                                                |
+  | `EdgeRemoveChange.{source,target,sourceHandle,targetHandle}` | look up the edge via `findEdge(id)`                                                       |
+  | `onPaneReady` / `@pane-ready`                                | `onInit` / `@init`                                                                        |
+  | `<VueFlow v-model="elements">`                               | `<VueFlow :nodes="nodes" :edges="edges">` (or `v-model:nodes`/`v-model:edges`)            |
+  | `store.setElements(...)`                                     | `store.setNodes(...)` + `store.setEdges(...)`                                             |
+  | `store.addSelectedElements(...)`                             | `store.addSelectedNodes(...)` / `store.addSelectedEdges(...)`                             |
+  | `store.removeSelectedElements(...)`                          | `store.removeSelectedNodes(...)` / `store.removeSelectedEdges(...)`                       |
+  | `store.getElements` / `store.getSelectedElements`            | `store.getNodes` / `store.getEdges` / `store.getSelectedNodes` / `store.getSelectedEdges` |
+
+- [#2098](https://github.com/bcakmakoglu/vue-flow/pull/2098) [`1cd53ad`](https://github.com/bcakmakoglu/vue-flow/commit/1cd53ad9f89950ee77e672ba76c593bc105886c7) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Type the `class` property as `ClassValue` (`string | Record<string, boolean> | ClassValue[]`, mirroring Vue's class-binding type) on `Node`, `Edge`, and `ConnectionLineOptions` — replacing the looser `string | string[] | Record<string, any>` (and a bare `string` on the connection line).
+
+  The undocumented **function form** for `class` and `style` (`(el) => value`) is removed. It was never part of the public type — only a dead runtime branch in the node/edge wrappers — and passing a function produced a broken native render anyway. Pass a resolved `ClassValue` / style object instead (compute it in your own component if it needs to be dynamic).
+
+- [#2099](https://github.com/bcakmakoglu/vue-flow/pull/2099) [`84e0485`](https://github.com/bcakmakoglu/vue-flow/commit/84e04859a10640b3e45c747b530abf3ac23f5809) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align the connection-line component props with xyflow/react (and the existing `ConnectionState`): `ConnectionLineProps` now uses `from*`/`to*` naming instead of `source*`/`target*`.
+
+  - `sourceX`/`sourceY`/`sourcePosition` → `fromX`/`fromY`/`fromPosition`; `targetX`/`targetY`/`targetPosition` → `toX`/`toY`/`toPosition`
+  - `sourceNode`/`sourceHandle` → `fromNode`/`fromHandle`; `targetNode`/`targetHandle` → `toNode`/`toHandle`
+  - `markerStart`/`markerEnd` are now optional, matching `EdgeProps` (a required `string` made a custom connection line's `defineProps` warn "Expected String, got Undefined")
+
+  **Breaking:** custom connection-line components (the `#connection-line` slot) must read the `from*`/`to*` props.
+
+  Also removes the `ElementData` type (it was `= any`): an `Edge`'s `Data` now defaults to `Record<string, unknown>`, matching `Node` and xyflow.
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`702ff95`](https://github.com/bcakmakoglu/vue-flow/commit/702ff950096dd3f563e7747c32d8627239c652ce) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove experimental features flag
+
+- [#2058](https://github.com/bcakmakoglu/vue-flow/pull/2058) [`1e839e7`](https://github.com/bcakmakoglu/vue-flow/commit/1e839e72c35d165d08d3398954b1c8cf6586e896) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove dead code and unused public surface (2.0 cleanup).
+
+  Removed public API (all were unused / never emitted):
+
+  - `ErrorCode.EDGE_ORPHANED` and `ErrorCode.EDGE_SOURCE_TARGET_SAME` — never constructed anywhere; they described behavior that no longer exists.
+  - Unused exported types: `MaybeElement`, `XYZPosition`, `Box`, `NodeBounds`, `NodeHandle`, `ConnectionHandle` (distinct from the still-present `ConnectingHandle`).
+  - `IsValidParams.nodeLookup` — `isValidHandle` reads the node lookup from a separate argument; the field was redundant.
+
+  Internal-only cleanup (no API change): dropped the unused `on` half of `useNodeHooks`/`useEdgeHooks` (the `NodeEventsOn`/`EdgeEventsOn` types are kept), an unreachable guard in the connection line, a dead parameter in an internal handle helper, and a shadowed no-op. Stale `@deprecated`/JSDoc wording (`onPaneReady`, "removed in the next major", "global storage") was corrected — `autoApplyChanges` and `autoConnect` are no longer tagged `@deprecated` (they are kept).
+
+- [#2114](https://github.com/bcakmakoglu/vue-flow/pull/2114) [`7270925`](https://github.com/bcakmakoglu/vue-flow/commit/727092516f5a6c84c8de25ae1061247288eb48f3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove the redundant `viewportHelper` `ComputedRef` from the `useVueFlow()` instance. The viewport functions (`setCenter`, `fitView`, `zoomIn`, `zoomOut`, `zoomTo`, `setViewport`, `getViewport`, `fitBounds`, `screenToFlowPosition`, `flowToScreenPosition`) are already exposed **flat** on the instance — mirroring `useReactFlow` / `useSvelteFlow` — so the nested `viewportHelper` was duplicate surface.
+
+  - `useVueFlow().viewportHelper.value.setCenter(…)` → `useVueFlow().setCenter(…)` (and likewise for the other viewport functions).
+  - The init flag moves to a flat `viewportInitialized` (`ComputedRef<boolean>`): `useVueFlow().viewportHelper.value.viewportInitialized` → `useVueFlow().viewportInitialized.value`.
+
+- [#2053](https://github.com/bcakmakoglu/vue-flow/pull/2053) [`32d7e86`](https://github.com/bcakmakoglu/vue-flow/commit/32d7e864c6f4b9d775bab3ade6de1814fc2c3cf3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Bring edges to the same model as the 2.0 node split and align the accessor / connection / reconnect API with `@xyflow/system` (the engine behind `xyflow/react` and `xyflow/svelte`).
+
+  ### Edges are stored verbatim (no more `GraphEdge`)
+
+  Edges are now stored as your plain `Edge` objects — the same model nodes already use. There is no enriched edge representation anymore.
+
+  - `GraphEdge` and `isGraphEdge` are **removed**. Use `Edge`.
+  - `getEdges`/`getEdge`/`getSelectedEdges`/`v-model:edges` return your `Edge` objects (typed `DeepReadonly`); reading `edge.sourceNode`/`edge.targetNode`/`edge.sourceX` no longer works — resolve nodes with `useInternalNode(() => props.source)` and read positions from `EdgeProps`.
+  - In-place edge mutation is no longer reactive. Update edges with `updateEdge`/`updateEdgeData`/`setEdges`/`applyEdgeChanges`, or reassign the `v-model` array immutably.
+  - `EdgeProps` no longer carries `sourceNode`/`targetNode`; it gains `selectable`/`deletable` and exposes handles as `sourceHandleId`/`targetHandleId`. `type`/`data` are optional.
+  - `useEdge().edge` is now a `ComputedRef`.
+  - `defaultEdgeOptions` are applied at connection-creation and at render, never stamped onto stored edges (a runtime change to `defaultEdgeOptions` is now reflected immediately).
+
+  ### Accessor renames
+
+  - `findNode` → `getNode`, `findEdge` → `getEdge`.
+
+  ### Viewport coordinate helpers
+
+  - `screenToFlowCoordinate` → `screenToFlowPosition`, `flowToScreenCoordinate` → `flowToScreenPosition`.
+  - `project` is **removed** — use `screenToFlowPosition` (it handles the container offset for you).
+
+  ### Edge reconnect vocabulary
+
+  The "edge update" vocabulary becomes "reconnect":
+
+  - `updateEdge(oldEdge, connection)` → `reconnectEdge(oldEdge, connection)`.
+  - events `edgeUpdateStart`/`edgeUpdate`/`edgeUpdateEnd` → `reconnectStart`/`reconnect`/`reconnectEnd` (`@edge-update*` → `@reconnect*`).
+  - `edgeUpdaterRadius` → `reconnectRadius`, `edgesUpdatable` → `edgesReconnectable`, `edge.updatable` → `edge.reconnectable`.
+  - `EdgeUpdatable` → `EdgeReconnectable`, `EdgeUpdateEvent` → `EdgeReconnectEvent`.
+
+  ### `useConnection` shape
+
+  `useConnection()` now returns a `ComputedRef<ConnectionState>` — `{ inProgress, isValid, from, fromHandle, fromPosition, fromNode, to, toHandle, toPosition, toNode, pointer }` — instead of `{ startHandle, endHandle, status, position }`.
+
+  ### `connectionMode` defaults to `strict`
+
+  In `strict` mode a source handle only connects to a target handle. Set `connection-mode="loose"` to restore the previous default (every handle treated as a source).
+
+  ### New
+
+  - `updateEdge(id, edgeUpdate, { replace? })` — partial edge update (the edge analogue of `updateNode`); accepts an object or an updater function.
+  - `useInternalNode` is now exported.
+
+- [#717](https://github.com/bcakmakoglu/vue-flow/pull/717) [`6da35f5`](https://github.com/bcakmakoglu/vue-flow/commit/6da35f5767588f836292c91ce045b6c3b54a579e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Update handle styles and avoid using fixed pixel positions to offset handle position and instead use transform to align handles
+
+- [#2035](https://github.com/bcakmakoglu/vue-flow/pull/2035) [`02ab098`](https://github.com/bcakmakoglu/vue-flow/commit/02ab0982e9caf4cda9452b4a0602cee4a779d76a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make `nodeLookup` / `parentLookup` / `edgeLookup` the maintained, reactive `Map` structures the store mutates directly, instead of Vue `computed`s derived from the node/edge arrays.
+
+  **Breaking:** these three are no longer `ComputedRef`s — they are reactive `Map`s. Read them without `.value`:
+
+  ```diff
+  - store.nodeLookup.value.get(id)
+  + store.nodeLookup.get(id)
+  - store.parentLookup.value
+  + store.parentLookup
+  - store.edgeLookup.value.get(id)
+  + store.edgeLookup
+  ```
+
+  Internally, every node/edge membership mutation (`setNodes`, `setEdges`, `addNodes`, `removeNodes`, `applyNodeChanges`, `applyEdgeChanges`, `updateNode`, `updateEdge`, `$reset`) now flows through internal `commitNodes` / `commitEdges` helpers that update the lookups + `parentLookup` and keep the `nodes`/`edges` arrays as in-sync mirrors in one pass. The user-facing `nodes`/`edges` arrays remain canonical and are unchanged in shape — this mirrors how `@xyflow/svelte`/`@xyflow/react` keep their lookups. This is groundwork for driving node positions/handle-bounds through `@xyflow/system` directly.
+
+- [#2049](https://github.com/bcakmakoglu/vue-flow/pull/2049) [`3b4ec68`](https://github.com/bcakmakoglu/vue-flow/commit/3b4ec68d987a78267bd2617230d38ddf620441ab) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove a second batch of deprecated APIs (2.0). Each has a drop-in replacement; internal usage was migrated first.
+
+  - **`useHandleConnections` removed** — use `useNodeConnections` (params: `type` → `handleType` (now optional), `id` → `handleId`).
+  - **`HandleConnection` type removed** — use `NodeConnection` (identical shape, `Connection & { edgeId: string }`). The `getHandleConnections` store action is unchanged but now returns `NodeConnection[]`.
+  - **`connectionLineType` / `connectionLineStyle` props (and store state) removed** — use `connectionLineOptions.type` / `connectionLineOptions.style`.
+  - **`PanelPosition` enum removed** — use the `PanelPositionType` string-literal union (e.g. `'top-left'`).
+
+- [#1549](https://github.com/bcakmakoglu/vue-flow/pull/1549) [`f6bb711`](https://github.com/bcakmakoglu/vue-flow/commit/f6bb7111bf53b174ddbef5b458d249188d8b1524) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove deprecated exports `addEdge`, `updateEdge` & `useZoomPanHelper`
+
+- [#2057](https://github.com/bcakmakoglu/vue-flow/pull/2057) [`46f5a58`](https://github.com/bcakmakoglu/vue-flow/commit/46f5a587ae2297affc4228360d3544df66932248) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Node event payloads now carry the user `Node` instead of the enriched `InternalNode` (xyflow/react + svelte parity).
+
+  `nodeClick`/`nodeMouseEnter`/`nodeMouseMove`/`nodeMouseLeave`/`nodeContextMenu`/`nodeDoubleClick`, `nodeDragStart`/`nodeDrag`/`nodeDragStop`, `selectionDragStart`/`selectionDrag`/`selectionDragStop`, `selectionContextMenu`, the minimap node events, and `nodesInitialized` all emit user `Node`s now.
+
+  If a handler read store-computed fields off the event node (`node.internals.positionAbsolute`, `node.internals.z`, `node.internals.handleBounds`, authoritative `node.measured`), resolve the enriched node from the id instead:
+
+  ```ts
+  onNodeDrag(({ node }) => {
+    const internal = getInternalNode(node.id); // or useInternalNode(() => node.id)
+    // internal.internals.positionAbsolute, internal.measured, …
+  });
+  ```
+
+  `nodesInitialized` is also now typed with a payload (`NodeType[]`) on the component emit, matching the hook.
+
+- [#2119](https://github.com/bcakmakoglu/vue-flow/pull/2119) [`f6c720f`](https://github.com/bcakmakoglu/vue-flow/commit/f6c720f13fc1173dfdfa3eb5690ba1f4174ef4b3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align node `extent` typing with `@xyflow/system`:
+
+  - Collapse the local `CoordinateExtent` type onto `@xyflow/system`'s (they were identical) — it's now re-exported from `@xyflow/system`.
+  - Remove `CoordinateExtentRange` and the per-node "clamp to parent **with padding**" extent form (`extent: { range, padding }`). `node.extent` and the `nodeExtent` prop now accept exactly what the system understands: `'parent' | CoordinateExtent | null`. Use `extent: 'parent'` to clamp a child to its parent. This drops a vue-flow-only workaround that couldn't be cleanly typed against `@xyflow/system`; if padded clamping returns it'll be a system-level feature. To inset from the parent in the meantime, apply the offset yourself.
+
+- [#2046](https://github.com/bcakmakoglu/vue-flow/pull/2046) [`bd54937`](https://github.com/bcakmakoglu/vue-flow/commit/bd549373d26f530597a3131b6ab0a2275cb2a664) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Split the node representation into the user-facing `Node` and the enriched `InternalNode`, matching `@xyflow/react` / `@xyflow/svelte`.
+
+  The user nodes array (`v-model:nodes`, `store.nodes`, `getNodes()`, `findNode(id)`, `getNode(id)`, `getSelectedNodes`) now holds and returns your **raw `Node`s** — the exact objects you pass in, without the store-computed `internals`. The enriched node (with `internals.{positionAbsolute, z, handleBounds, userNode}` and authoritative `measured`) lives only in `nodeLookup` and is reached via the new accessors:
+
+  - `store.getInternalNode(id)` — returns the `InternalNode` for an id
+  - `useInternalNode(id)` — composable, a `computed` that re-resolves on re-adopt
+  - `type InternalNode` — alias for the enriched node (formerly the only `GraphNode` you got back)
+
+  Internally, vue-flow now hands your nodes straight to `@xyflow/system`'s `adoptUserNodes` (adopting into the persistent `nodeLookup` with `checkEquality`), exactly like react/svelte — there is no second `parseNode` pass (the `parseNode` util is removed; `parseEdge` stays, as the system has no edge adopter).
+
+  **Breaking changes:**
+
+  - **Direct in-place node mutation is no longer reactive.** `node.position = …`, `node.data.x = …`, `node.selected = …` on a node you got from `findNode`/`getNodes`/`v-model` will not re-render. Use the store helpers (`updateNode`, `updateNodeData`, `applyNodeChanges`, `setNodes`) or reassign the bound `v-model` array. This is what lets the store skip deep-reactifying every node — a deliberate performance trade.
+  - **`findNode`/`getNodes`/`v-model:nodes` no longer carry `internals`/`computedPosition`.** Read absolute position, z-index, handle bounds and measured dimensions via `getInternalNode(id)` / `useInternalNode(id)` / `nodeLookup`. Custom node components are unaffected — they still receive position/dimensions through their props.
+  - **Node defaults are no longer force-stamped** (parity with xyflow): a node you pass without `data` keeps `data: undefined` (previously `{}`), and `selected`/`dragging` stay `undefined` until set. Guard optional reads (`data?.label`).
+
+  Drag/selection/context-menu event payloads (`onNodeDrag`, `onSelectionContextMenu`, `onNodesInitialized`, …) still emit the enriched `InternalNode`s, so existing handlers that read `node.computedPosition` etc. keep working.
+
+- [#2066](https://github.com/bcakmakoglu/vue-flow/pull/2066) [`00ecc50`](https://github.com/bcakmakoglu/vue-flow/commit/00ecc502bebd54e536c57e80344e0e5663a01952) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `NodeWrapper` now passes custom node components exactly the documented `NodeProps` surface (xyflow/react parity) and no longer forwards legacy duplicate props that were never part of `NodeProps`:
+
+  | Removed prop               | Use instead                                                            |
+  | -------------------------- | ---------------------------------------------------------------------- |
+  | `connectable`              | `isConnectable`                                                        |
+  | `position` (`{ x, y, z }`) | `positionAbsoluteX` / `positionAbsoluteY`                              |
+  | `dimensions`               | `width` / `height`                                                     |
+  | `parent`, `parentNodeId`   | `parentId`                                                             |
+  | `resizing`                 | — (read `node.resizing` via `useNode()`/`getInternalNode()` if needed) |
+
+  These duplicates bloated every node's props on each render and leaked onto custom-node DOM as `$attrs` (e.g. `parent="…"`, `position="[object Object]"`) when a custom component didn't set `inheritAttrs: false`. Built-in nodes are unaffected.
+
+  Also fixes `NodeWrapper` mutating the user's `node.style` object when applying `width`/`height` — it now clones, so a user's style object is never written to (and width/height no longer get cached stale across renders).
+
+- [#2048](https://github.com/bcakmakoglu/vue-flow/pull/2048) [`0bdfeea`](https://github.com/bcakmakoglu/vue-flow/commit/0bdfeea7637ce35459c3c4e988b66feb8f444c1f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove long-deprecated APIs (2.0). Each has a drop-in replacement:
+
+  - **`getNode` / `getEdge` getters removed** — use `findNode(id)` / `findEdge(id)` from `useVueFlow()` (same return value; they accept `string | undefined | null`).
+  - **`FlowExportObject.position` / `FlowExportObject.zoom` removed** — `toObject()` no longer emits them; use `FlowExportObject.viewport` (`{ x, y, zoom }`) instead.
+  - **`GraphEdge.events` removed** — this legacy per-edge handler bag was vestigial (never read); edge events are emitted through the store (`useVueFlow().onEdgeClick`, etc.).
+
+- [#2041](https://github.com/bcakmakoglu/vue-flow/pull/2041) [`3b353eb`](https://github.com/bcakmakoglu/vue-flow/commit/3b353ebba73648bcbfb8f3f04b5c9cb943422b4c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove `useVueFlow().fromObject()` and the `FlowImportObject` type. This aligns the API with React/Svelte Flow, which expose `toObject()` but have no `fromObject` — restore is done explicitly so you control _when_ it runs (after the flow is initialized), instead of `fromObject` having to watch for viewport readiness internally.
+
+  `toObject()` is unchanged. To restore a saved flow, set the elements and viewport yourself from `onInit` (or any time after mount):
+
+  ```ts
+  const { setNodes, setEdges, setViewport, onInit } = useVueFlow();
+
+  onInit(() => {
+    const flow = JSON.parse(localStorage.getItem("flow") ?? "null");
+    if (!flow) {
+      return;
+    }
+
+    setNodes(flow.nodes);
+    setEdges(flow.edges);
+
+    if (flow.viewport) {
+      setViewport(flow.viewport);
+    }
+  });
+  ```
+
+- [#2091](https://github.com/bcakmakoglu/vue-flow/pull/2091) [`14f04c6`](https://github.com/bcakmakoglu/vue-flow/commit/14f04c649d9eb0d7084196d1c050b5512380b0c0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rename the `applyDefault` prop/option to `autoApplyChanges`.
+
+  `applyDefault` was opaque: it toggles whether Vue Flow automatically applies node/edge changes (drag, resize, select, add/remove) back to your `nodes`/`edges`. The new name says what it does and pairs with the `applyNodeChanges` / `applyEdgeChanges` helpers you call when it is off. The default is unchanged (`true`).
+
+  ```diff
+  - <VueFlow :nodes="nodes" :edges="edges" :apply-default="false" />
+  + <VueFlow :nodes="nodes" :edges="edges" :auto-apply-changes="false" />
+  ```
+
+  If you passed `applyDefault` to `useVueFlow()` / `<VueFlow>` (as a prop or option) or read it from the store, rename it to `autoApplyChanges`.
+
+- [#2109](https://github.com/bcakmakoglu/vue-flow/pull/2109) [`8161860`](https://github.com/bcakmakoglu/vue-flow/commit/81618601a13f863f1d08f64c2b6bfb78051b9623) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rename `GraphNode` to `InternalNode` (and the `isGraphNode` type guard to `isInternalNode`), mirroring xyflow/react. `InternalNode` is the enriched, store-internal node returned by `getInternalNode` / `useInternalNode` / `nodeLookup`. The `GraphNode` name is removed — replace `GraphNode<T>` with `InternalNode<T>` and `isGraphNode(…)` with `isInternalNode(…)`.
+
+- [#2035](https://github.com/bcakmakoglu/vue-flow/pull/2035) [`02ab098`](https://github.com/bcakmakoglu/vue-flow/commit/02ab0982e9caf4cda9452b4a0602cee4a779d76a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Retire the global flow store registry in favour of a pure context model, mirroring `useReactFlow` / `useSvelteFlow`. The store is created once by `<VueFlow>` (or `<VueFlowProvider>`) and handed to descendants via `inject`; there is no longer a module-level `Map` of flows keyed by id, nor the internal `Storage` singleton that used to live on `app.config.globalProperties.$vueFlowStorage`.
+
+  **BREAKING:** `useVueFlow()` no longer accepts any argument — no id, no options. It is a pure consumer that returns the store provided by the nearest `<VueFlow>` / `<VueFlowProvider>` ancestor, and throws a `VueFlowError` when called outside one.
+
+  Migration:
+
+  - `useVueFlow({ nodes, edges, ... })` → pass those to the component instead: `<VueFlow :nodes="nodes" :edges="edges" ... />`.
+  - `useVueFlow('my-id')` / `useVueFlow({ id: 'my-id' })` to reach a flow's store from outside its subtree → wrap the relevant subtree in `<VueFlowProvider>` and call `useVueFlow()` from any descendant (siblings of `<VueFlow>` included).
+  - Multiple independent flows on one page → give each its own `<VueFlowProvider>` (or `<VueFlow>`) tree; they no longer share a registry, so they can't collide and don't need distinct ids to stay separate.
+
+  The store `id` is still readable (`useVueFlow().id`) and can be pinned via `<VueFlowProvider id="...">` / `<VueFlow id="...">`, but it is now purely a label (aria/debug) — never a lookup key.
+
+- [#2124](https://github.com/bcakmakoglu/vue-flow/pull/2124) [`bc7a89d`](https://github.com/bcakmakoglu/vue-flow/commit/bc7a89d2bde37369632938cec04735d86c2ee253) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add an explicit `selectionOnDrag` prop and drop the `selectionKeyCode={true}` overload (aligns with xyflow/react & xyflow/svelte).
+
+  Drawing a selection box on a plain pane drag (no key held) used to be expressed by setting `selectionKeyCode` to `true`, which overloaded the key-code prop. It's now its own boolean prop:
+
+  ```vue
+  <!-- before -->
+  <VueFlow :selection-key-code="true" :pan-on-drag="false" />
+  <!-- after -->
+  <VueFlow :selection-on-drag="true" :pan-on-drag="false" />
+  ```
+
+  `selectionKeyCode` is once again just the key you hold to select (default `'Shift'`). As part of this, `selectionOnDrag` is threaded to the pan/zoom instance so `paneClick` fires while selecting on drag (it was previously swallowed by d3-zoom's click handling — xyflow/react #5572).
+
+- [#2046](https://github.com/bcakmakoglu/vue-flow/pull/2046) [`bd54937`](https://github.com/bcakmakoglu/vue-flow/commit/bd549373d26f530597a3131b6ab0a2275cb2a664) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Make a `<VueFlow>`'s `v-model:nodes`/`v-model:edges` refs the store's single source of truth, removing the `@vueuse` `watchPausable` two-way sync.
+
+  When `<VueFlow>` owns its store, its model refs now back the store directly (svelte `$bindable`-style, via the store's signal proxy): the store mutating nodes/edges (drag, `addEdges`, `applyNodeChanges`, …) _is_ the v-model update — the outbound direction is free, with no second array and no pause/resume watcher. A single guarded watch re-adopts an external array reassignment (`nodes.value = [...]`) to rebuild the lookups (the analogue of svelte-flow re-running `adoptUserNodes` on a reference change). When a `<VueFlow>` instead reuses an ancestor `<VueFlowProvider>`'s store, its models can't back the already-created store, so they're synced with a native-`watch` identity-in / snapshot-out binding (no `watchPausable`). `@vueuse/core`'s `watchPausable` is no longer used by core.
+
+  Also restores `<VueFlowProvider id="…">` forwarding its `id` to the created store (it had stopped declaring the `id` prop).
+
+- [#2044](https://github.com/bcakmakoglu/vue-flow/pull/2044) [`05b0268`](https://github.com/bcakmakoglu/vue-flow/commit/05b02682dfbebb134dedf5951a65664ed8f4fb73) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Adopt `@xyflow/system`'s `handleExpandParent` for `expandParent` nodes and make the `CoordinateExtentRange` `padding` actually apply.
+
+  Parent expansion (a child with `expandParent: true` growing its parent to fit) is now delegated to `@xyflow/system` — the same engine `xyflow/react`/`xyflow/svelte` use — replacing vue-flow's hand-maintained `handleParentExpand`. Wired at the three points system/react do: dragging (`updateNodePositions`), measurement (`updateNodeDimensions`), and resizing (`<NodeResizer>` / `ResizeControl`). Behaviour now matches xyflow/react exactly:
+
+  - a child dragged past its parent's **top/left** pins its relative position at `0` and grows the parent up/left (instead of the previous in-place style mutation), and sibling children are counter-offset so they stay put;
+  - `node.origin` is respected when a resize expands the parent.
+
+  `CoordinateExtentRange` extents (`extent: { range, padding }`) now honour their `padding` again. The `@xyflow/system` migration had reduced such extents to their bare `range` for the system clamp, silently dropping the inset; the store now re-applies the padding (the same `getExtent` math the keyboard-move path uses) after computing absolute positions, and coerces the range form safely around `adoptUserNodes` (which previously crashed on a `{ range, padding }` extent).
+
+  Fixed a double-clamp in `calcNextPosition`: it pre-shrank the extent by the node's dimensions and then `clampPosition` subtracted them again, so extent-constrained keyboard moves stopped a full node width/height short of the boundary. Extent clamping now matches `@xyflow/system`.
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace d3 zoom and pan with panzoom instance
+
+- [#2116](https://github.com/bcakmakoglu/vue-flow/pull/2116) [`7eee294`](https://github.com/bcakmakoglu/vue-flow/commit/7eee29453a0e12ac4a9db908838cf945b1c2de76) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align `useNodeConnections` params with xyflow/react and xyflow/svelte:
+
+  - Rename the `nodeId` param to `id` (`useNodeConnections({ nodeId })` → `useNodeConnections({ id })`). Like before, it's optional and falls back to the node id from the `useNodeId` context injection.
+  - `handleId` now requires `handleType` to be set. Passing `handleId` on its own is a type error — `handleId` is meaningless at runtime without a `handleType`, and the type now points you at the fix (mirrors xyflow/react & xyflow/svelte). Runtime behavior is unchanged.
+
+- [#2064](https://github.com/bcakmakoglu/vue-flow/pull/2064) [`1016391`](https://github.com/bcakmakoglu/vue-flow/commit/1016391756b281fd3f4298f3c694662b04414565) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Split the store API to match `useReactFlow`/`useSvelteFlow`. `useVueFlow()` is now the curated **instance** — actions, computed getters, and event hooks (`onNodeClick`, `onConnect`, …) — and no longer exposes the raw reactive state. The state moved to a new `useStore()`, with `storeToRefs()` as the destructure bridge (Pinia-style).
+
+  ```ts
+  // before — everything came off useVueFlow()
+  const { nodes, transform, nodeLookup, setViewport, onConnect } = useVueFlow();
+
+  // after
+  const { setViewport, onConnect } = useVueFlow(); // instance: actions + getters + hooks
+  const store = useStore(); // reactive state object (store.nodes, store.transform — no .value)
+  const { nodes, transform } = storeToRefs(store); // refs for destructuring scalar/array state
+  const { nodeLookup } = useStore(); // reactive-Map lookups destructure directly (no .value)
+  ```
+
+  - **`useStore()`** returns the reactive state object (all `State` fields + the `nodeLookup`/`parentLookup`/`edgeLookup`/`connectionLookup` Maps). Read it directly (`store.nodes`, `store.transform`) — reading inside a `computed`/`watch`/template tracks reactively, like `xyflow/svelte`'s store.
+  - **`storeToRefs(store)`** projects the value-type state fields to refs so `const { nodes } = storeToRefs(useStore())` stays reactive (destructuring the reactive object directly would not). The reference-type lookups stay reactive when destructured straight off `useStore()`.
+  - Computed getters (`getNodes`, `getEdges`, `getSelectedNodes`, `getSelectedEdges`, `viewport`, `getNodeTypes`, `getEdgeTypes`) and all event hooks remain on `useVueFlow()`.
+  - **No `useStoreApi`.** Unlike `xyflow/react`, Vue's fine-grained reactivity makes a non-subscribing handle redundant: `useStore()` already serves both reactive reads (in effects) and current-value reads (in callbacks); `setState` is an action on `useVueFlow()`; subscriptions are `watch(() => store.x, …)`. This mirrors `xyflow/svelte`, which has `useStore()` and no `useStoreApi`.
+
+  ### Migration
+
+  | Before (`useVueFlow()`)                                     | After                                                       |
+  | ----------------------------------------------------------- | ----------------------------------------------------------- |
+  | `const { nodes } = useVueFlow()`                            | `const { nodes } = storeToRefs(useStore())`                 |
+  | `const { transform, dimensions } = useVueFlow()`            | `const { transform, dimensions } = storeToRefs(useStore())` |
+  | `const { nodeLookup } = useVueFlow()`                       | `const { nodeLookup } = useStore()`                         |
+  | `const { setViewport, getNodes, onConnect } = useVueFlow()` | unchanged (instance members stay)                           |
+
+  A `<VueFlow>` template ref (`defineExpose`) now exposes the instance (`VueFlowInstance`). The `VueFlowStore` type is kept as an alias of `VueFlowInstance`.
+
+- [#2036](https://github.com/bcakmakoglu/vue-flow/pull/2036) [`e9df9d4`](https://github.com/bcakmakoglu/vue-flow/commit/e9df9d46b665e5577b932ea341320a4418082928) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Raise the `vue` peer dependency to `^3.5.0` (was `^3.3.0`) and generate the default flow `id` with Vue's SSR-safe [`useId()`](https://vuejs.org/api/composition-api-helpers.html#useid) instead of a module-level counter. The flow id is only an aria/debug label (not a lookup key), and `useId()` yields ids that are stable across server render and client hydration, fixing potential SSR hydration mismatches on auto-generated ids.
+
+  **BREAKING:** Vue `>=3.5.0` is now required (`useId()` landed in 3.5). Consumers on Vue 3.3/3.4 must upgrade. Passing an explicit `id` to `<VueFlow>` / `<VueFlowProvider>` is unaffected.
+
+### Minor Changes
+
+- [#2142](https://github.com/bcakmakoglu/vue-flow/pull/2142) [`05c68fe`](https://github.com/bcakmakoglu/vue-flow/commit/05c68fee9d32faad9c9db22c662352c2cfe5664f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add an `ariaLabelConfig` prop to customize the accessibility text (ports xyflow/react #5277). Pass a `Partial<AriaLabelConfig>` (merged over the defaults) to override any of the node/edge a11y descriptions, the aria-live "moved node" message, and the Controls / MiniMap / Handle aria labels. Defaults now come from `@xyflow/system`'s `defaultAriaLabelConfig`, aligning the wording with `@xyflow/react`/`@xyflow/svelte`. As part of this, the Controls buttons and Handle — which previously had no `aria-label` — now get accessible labels, the Controls panel gets a `Control Panel` label, and the MiniMap label default moves into the config. `AriaLabelConfig` is re-exported from the package root.
+
+- [#2129](https://github.com/bcakmakoglu/vue-flow/pull/2129) [`285e73c`](https://github.com/bcakmakoglu/vue-flow/commit/285e73cf195dc6d32ffaa8ea56835f3876b2a433) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Allow theming arrowhead markers with the `--xy-edge-stroke` CSS variable (mirrors xyflow/react #5419 + #5459). `defaultMarkerColor` now accepts `null` — pass it (or leave a marker's `color` unset) and the arrowhead inherits `--xy-edge-stroke` instead of the hard-coded `#b1b1b7`, so markers can match themed edge colors. The marker polylines carry `.arrow` / `.arrowclosed` classes and only set an inline color when one is provided; the open arrow strokes only, the closed arrow strokes and fills. The default (`#b1b1b7`) is unchanged.
+
+- [#2113](https://github.com/bcakmakoglu/vue-flow/pull/2113) [`2f46b62`](https://github.com/bcakmakoglu/vue-flow/commit/2f46b628a9c8466dda9bcd2e90a6fc2450d36f92) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `autoPanOnNodeFocus` (default `true`), mirroring xyflow/react. When a node receives keyboard focus (Tab) and isn't within the viewport, the viewport pans to center it — so keyboard navigation never lands on an off-screen node. Only reacts to keyboard focus (`:focus-visible`), not pointer/programmatic focus. Set `auto-pan-on-node-focus="false"` (or pass `false`) to disable.
+
+- [#2117](https://github.com/bcakmakoglu/vue-flow/pull/2117) [`75dff3d`](https://github.com/bcakmakoglu/vue-flow/commit/75dff3d59e1a8cd42bdf79722290198334d2b98f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add an `autoPanOnSelection` prop (mirrors xyflow/react and xyflow/svelte). When `true` (the default), the viewport pans automatically as the cursor reaches the edge of the viewport while dragging a selection box, so you can select nodes beyond the visible area in one gesture. Set `:auto-pan-on-selection="false"` to keep the viewport fixed during selection.
+
+- [#2047](https://github.com/bcakmakoglu/vue-flow/pull/2047) [`4de2621`](https://github.com/bcakmakoglu/vue-flow/commit/4de26214639ea6fd2e530a9a11f3f653eac1db06) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Stop duplicating `@xyflow/system` utilities and remove dead code. Most of these are internal helpers (not part of `@vue-flow/core`'s public export surface), but two collapses change user-observable behavior:
+
+  - **Auto-generated edge IDs now use the `xy-edge__` prefix** (previously `vueflow__edge-`), matching `@xyflow/react`/`@xyflow/svelte`. This only affects edges created without an explicit `id` (e.g. connections drawn by the user, or `addEdges`/`updateEdge` with a bare `Connection`). Edges with an explicit `id` are unaffected. If you select auto-generated edges by id (CSS `[data-id^="vueflow__edge-"]`, query selectors, persisted references), update them to `xy-edge__`.
+  - **Handle measurement now uses `@xyflow/system`'s `getHandleBounds`**, which collects handles via the `.source` / `.target` class (matching react/svelte) instead of vue-flow's `.vue-flow__handle.${type}` scoping. Vue Flow handles always carry the `source`/`target` class, so behavior is unchanged — unless a custom node template puts a bare `source`/`target` class on a non-handle element, which would now be measured as a handle.
+
+  The remaining changes are internal-only with no public API impact:
+
+  - `getHandlePosition`, `oppositePosition` and `getNodeDimensions` were byte-for-byte (or near) copies of `@xyflow/system` exports; their consumers now import from `@xyflow/system` directly and the local copies are removed. As a side effect, handle positioning + node dimensions now honor `initialWidth`/`initialHeight` (pre-measurement sizing), matching xyflow/react+svelte.
+  - Removed the re-export shims that simply forwarded `@xyflow/system` exports (`getEventPosition`, `pointToRendererPoint`, `nodeToRect`, `getNodesBounds`, `getViewportForBounds`, `getNodesInside`, `getConnectedEdges` from `utils/graph.ts`; `areSetsEqual`, `areConnectionMapsEqual`, `handleConnectionChange` from `utils/store.ts`). Consumers now import these from `@xyflow/system` directly. The public re-exports of `getNodesInside` and `getConnectedEdges` (via the package root `index.ts`) are preserved — they now re-export straight from `@xyflow/system`.
+  - Removed unused helpers with no callers: `getClosestHandle`, `isConnectionValid`, `getNodesWithinDistance`, `getHandles`, `resetRecentHandle` (`utils/handle.ts`), `getConnectedNodes` (`utils/graph.ts`), and `getNodeDimensions` (`utils/general.ts`, file deleted). The connection flow runs through system's `XYHandle`.
+
+- [#2062](https://github.com/bcakmakoglu/vue-flow/pull/2062) [`67e9cf9`](https://github.com/bcakmakoglu/vue-flow/commit/67e9cf94676e65f80033d9129fdab0fc300f816b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add a `colorMode` prop (`'light' | 'dark' | 'system'`, default `'light'`) matching `xyflow/react` + `xyflow/svelte`. The resolved mode is applied as a `light`/`dark` class on the `.vue-flow` container; `'system'` follows the OS `prefers-color-scheme` and reacts to changes at runtime.
+
+  The default theme ships a dark palette out of the box: built-in nodes, edges, handles, `Controls`, and `MiniMap` adapt automatically (light values on `.vue-flow`, dark overrides under `.vue-flow.dark`), and the container paints a dark background in dark mode. Existing light-mode appearance is unchanged. (The theme is driven by the `--xy-*` CSS variables — see the separate CSS-alignment changeset.)
+
+- [#2115](https://github.com/bcakmakoglu/vue-flow/pull/2115) [`379b593`](https://github.com/bcakmakoglu/vue-flow/commit/379b593d6f8d09212c1f4821a72b75a63c222d85) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add a `connectionDragThreshold` prop (mirrors xyflow/react and xyflow/svelte). It's the distance in pixels the pointer must move from a handle before a connection line starts to drag — useful to prevent accidental connections when you just click a handle. Defaults to `1`; set it higher (e.g. `connectionDragThreshold="25"`) to require a more deliberate drag, or `0` to start the connection immediately on pointer-down. Below the threshold, neither `connectStart` nor `connectEnd` fires.
+
+- [#2122](https://github.com/bcakmakoglu/vue-flow/pull/2122) [`5ddb3fe`](https://github.com/bcakmakoglu/vue-flow/commit/5ddb3fe6b309a9829b95ef01890a004b73ef2a45) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose the raw pointer position during a connection (mirrors xyflow/react & xyflow/svelte, "pass current pointer position to connection"):
+
+  - Custom connection-line components (`#connection-line`) now receive a `pointer` prop — the unsnapped pointer position in flow coordinates, distinct from `toX`/`toY` (which snap to the hovered handle).
+  - `useConnection().pointer` is now the raw pointer position. Previously it tracked the snapped end (it was aliased to the connection's `to`); the snapped end is still available via `to` / `toHandle`.
+
+- [#2063](https://github.com/bcakmakoglu/vue-flow/pull/2063) [`452bac3`](https://github.com/bcakmakoglu/vue-flow/commit/452bac3128232770aea412b819dcb58bdea7ffc3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add a controlled `viewport` prop with `v-model:viewport` support, matching `xyflow/react`'s controlled viewport and `xyflow/svelte`'s `bind:viewport`.
+
+  ```vue
+  <VueFlow v-model:viewport="viewport" />
+  ```
+
+  The bound value two-way binds to the flow's canonical transform: setting it pans/zooms the flow (applied via the panzoom's `syncViewport`, so no extra pan/zoom events fire), and it updates as the user interacts (via `update:viewport`). `defaultViewport` remains the uncontrolled initial-viewport prop; use `viewport` when you want to own the viewport state.
+
+- [#2152](https://github.com/bcakmakoglu/vue-flow/pull/2152) [`6c77849`](https://github.com/bcakmakoglu/vue-flow/commit/6c7784967434366375e74e7dbcd66a2ed4c54016) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Discriminate the `#node-<type>` / `#edge-<type>` slot props by node/edge type. When `nodes`/`edges` are typed as a discriminated union (e.g. `(MyNodeA | MyNodeB)[]`), each `#node-<type>` / `#edge-<type>` slot now narrows its props to the matching variant's `NodeProps` / `EdgeProps`, so a custom node/edge component can safely type its `data` without a cast. Generic `Node[]` / `Edge[]` flows are unchanged (props stay broad), and arbitrary slot names remain allowed (a broad `node-${string}` / `edge-${string}` fallback). Type-only.
+
+- [#2005](https://github.com/bcakmakoglu/vue-flow/pull/2005) [`30cbd70`](https://github.com/bcakmakoglu/vue-flow/commit/30cbd702e5a00e92539fac53d3535ce7a0e0d174) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `MiniMap` component into core pkg.
+
+- [#2130](https://github.com/bcakmakoglu/vue-flow/pull/2130) [`1bcd1eb`](https://github.com/bcakmakoglu/vue-flow/commit/1bcd1eb09113a58927624ddc3a487f69f9096b84) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Compute edge z-index via `@xyflow/system`'s `getElevatedEdgeZIndex` and add a `zIndexMode` prop (mirrors xyflow/react #5361 + #5637). Edges connected to a parented (child) node now elevate above the parent automatically — even without `elevateEdgesOnSelect` — and a selected edge bumps by `+1000` when `elevateEdgesOnSelect` is on. The new `zIndexMode` prop (`'basic'` default | `'auto'` | `'manual'`) controls how node and edge z-indices are derived; `'manual'` uses each element's explicit `zIndex` verbatim with no elevation.
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace existing graph utils exports with those already provided by `@xyflow/system`:
+
+  - Replace utils
+    - `clamp`
+    - `clampPosition`
+    - `getDimensions`
+    - `getHostForElement`
+    - `getOverlappingArea`
+    - `rectToBox`
+    - `boxToRect`
+    - `getBoundsofRects`
+    - `getBoundsOfBoxes`
+    - `rendererPointToPoint`
+    - `getMarkerId`
+    - `isRect`
+    - `isNumeric`
+    - `calcAutoPan`
+    - `isMouseEvent`
+    - `getEventPosition`
+
+  -Remove utils
+
+  - `isMacOS`
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `Controls` component into core pkg.
+
+- [#1548](https://github.com/bcakmakoglu/vue-flow/pull/1548) [`1359e81`](https://github.com/bcakmakoglu/vue-flow/commit/1359e81810d16277e20684eca99e52deafa21e13) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Background>` component to core package
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `NodeResizer`, `NodeResizeControl`, and `NodeToolbar` are now exported directly from `@vue-flow/core`, and the resize-control styles ship with `@vue-flow/core/dist/style.css`. The `@vue-flow/node-resizer` and `@vue-flow/node-toolbar` packages are deprecated; install only `@vue-flow/core` going forward.
+
+- [#2134](https://github.com/bcakmakoglu/vue-flow/pull/2134) [`ced3e16`](https://github.com/bcakmakoglu/vue-flow/commit/ced3e16fe18bba10b71ef8bace3c6aa990dc8a46) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add an `autoScale` prop to `NodeResizer` / `NodeResizeControl` (mirrors xyflow/react #5326). Handle controls already scale up by `Math.max(1 / zoom, 1)` so they don't shrink below their base size when zooming out; `autoScale` (default `true`) now lets you opt out — previously the prop existed but had no effect. The handle is also centered via the `translate` CSS property instead of `transform`, so the centering composes with the zoom `scale` and the handle stays pinned to the node corner at any zoom (aligns with `@xyflow/system`).
+
+- [#2071](https://github.com/bcakmakoglu/vue-flow/pull/2071) [`bbaaf35`](https://github.com/bcakmakoglu/vue-flow/commit/bbaaf358392e6efcc7b6034fc56ffc383bdb1810) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `onBeforeDelete` and `deleteElements` (xyflow/react parity).
+
+  - **`onBeforeDelete`** prop — `(params: { nodes, edges }) => Promise<boolean | { nodes, edges }>`, consulted before delete-key removals and `deleteElements`. Return `false` to cancel, `true` to delete the gathered set, or `{ nodes, edges }` to delete only a subset.
+  - **`deleteElements({ nodes, edges })`** action — gathers the targeted nodes plus their child nodes and connected edges (skipping `deletable: false`), runs `onBeforeDelete`, removes the resolved set, and resolves to `{ deletedNodes, deletedEdges }`.
+
+  The Delete key now routes through `deleteElements`, so a single keypress can confirm/cancel a node together with its edges. Low-level `removeNodes`/`removeEdges` stay hook-free. Resolves the tracked enhancement in #1630.
+
+- [#2004](https://github.com/bcakmakoglu/vue-flow/pull/2004) [`b5f7162`](https://github.com/bcakmakoglu/vue-flow/commit/b5f7162a002c1aafa2effe35697be62ece42fd56) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Move `<Controls>` component to core pkg
+
+- [#2111](https://github.com/bcakmakoglu/vue-flow/pull/2111) [`ac4911d`](https://github.com/bcakmakoglu/vue-flow/commit/ac4911d65701ee464358f64818efe33a1c67c088) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove the `vueFlowVersion` field from the flow instance (`useVueFlow().vueFlowVersion`) and the build-time `__VUE_FLOW_VERSION__` injection. It was exposed but never used internally and has no equivalent in xyflow/react; read your installed version from your package manager or `@vue-flow/core/package.json` instead.
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace d3 with xyflow minimap instance
+
+- [#2137](https://github.com/bcakmakoglu/vue-flow/pull/2137) [`a41b9e7`](https://github.com/bcakmakoglu/vue-flow/commit/a41b9e782d761eec051b59d77f8cde27dacede19) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add a `stepPosition` option to smooth-step / step edges (mirrors xyflow/react #5376). Set `pathOptions.stepPosition` (0 = bend at source, 1 = at target, 0.5 = midpoint, the default) to control where the edge bends along its path. The path math comes from `@xyflow/system`'s `getSmoothStepPath`; the `SmoothStepEdge` component now forwards the option to it.
+
+- [#1552](https://github.com/bcakmakoglu/vue-flow/pull/1552) [`34461c9`](https://github.com/bcakmakoglu/vue-flow/commit/34461c9665bb0bbe715ad9521366fe07df18577e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Replace existing edge utils with ones that are already provided by `@xyflow/system` and re-export them
+
+- [#2152](https://github.com/bcakmakoglu/vue-flow/pull/2152) [`6c77849`](https://github.com/bcakmakoglu/vue-flow/commit/6c7784967434366375e74e7dbcd66a2ed4c54016) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Thread the flow's `NodeType`/`EdgeType` through a few more public types so a typed flow gets specific typing instead of the generic default:
+
+  - `ConnectionLineProps<NodeType>` — the `#connection-line` slot now types `fromNode`/`toNode` as `InternalNode<NodeType>` (inferred from `:nodes`), so a custom connection-line component gets typed node `data`. It was the only `FlowSlots` slot that didn't carry the flow's `NodeType`.
+  - `RemoveNodes<NodeType>` / `RemoveEdges<EdgeType>` — the functional-updater form now receives the flow's node/edge type, matching `SetNodes`/`AddNodes`.
+  - `IsNodeIntersecting<NodeType>` — mirrors its sibling `GetIntersectingNodes<NodeType>`.
+
+  All generics default to `Node`/`Edge`, so existing code is unaffected. Type-only, no runtime change.
+
+- [#2138](https://github.com/bcakmakoglu/vue-flow/pull/2138) [`3dd5d1b`](https://github.com/bcakmakoglu/vue-flow/commit/3dd5d1b653a7b35aaeeb194fd4b02ddfefdef7cc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `ease` and `interpolate` options to every viewport function (mirrors xyflow/react #5276). `fitView`, `setViewport`, `setCenter`, `fitBounds`, `zoomTo`, `zoomIn` and `zoomOut` now accept `ease?: (t: number) => number` and `interpolate?: 'smooth' | 'linear'` alongside `duration` to control the transition curve.
+
+  While aligning, the viewport option types now reuse `@xyflow/system` directly (breaking):
+
+  - `FitViewParams` → `FitViewOptions` (= system's `FitViewOptionsBase`). Its `nodes` option takes node objects instead of ids — `nodes?: string[]` → `nodes?: (Node | { id: string })[]` — and the vestigial `offset` option is removed (superseded by `padding`).
+  - `TransitionOptions` → `ViewportHelperFunctionOptions`.
+  - `ViewportPositionFunc` → `Project`.
+
+- [#2035](https://github.com/bcakmakoglu/vue-flow/pull/2035) [`02ab098`](https://github.com/bcakmakoglu/vue-flow/commit/02ab0982e9caf4cda9452b4a0602cee4a779d76a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add `<VueFlowProvider>` — a context provider component mirroring `<ReactFlowProvider>` / `<SvelteFlowProvider>`. Render it as an ancestor of a `<VueFlow>` and any sibling/descendant components that need the same store; they all resolve it via `inject`:
+
+  ```vue
+  <VueFlowProvider>
+    <Sidebar />   <!-- can call useVueFlow() and share the flow's store -->
+    <VueFlow />   <!-- reuses the provided store instead of creating its own -->
+  </VueFlowProvider>
+  ```
+
+  Pass an optional `id` to label the store (`<VueFlowProvider id="my-flow">`), readable via `useVueFlow().id`. The provider owns the store and provides it via context; it is the supported way to share one flow's store with sibling components. For multiple independent flows on a page, give each its own `<VueFlowProvider>` (or bare `<VueFlow>`) — one provider scopes one store, so a single provider is not meant to host several `<VueFlow>` instances.
+
+### Patch Changes
+
+- [#2068](https://github.com/bcakmakoglu/vue-flow/pull/2068) [`31d959a`](https://github.com/bcakmakoglu/vue-flow/commit/31d959ad1327344f98cca2dcb1899abc17a5fdc9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix `TS2589: Type instantiation is excessively deep and possibly infinite` on the store's read accessors. `getNodes`/`getEdges`/`getSelectedNodes`/`getSelectedEdges` returned `DeepReadonly<…[]>`, which recurses into every nested property — and `Edge.label?: string | VNode | Component` makes it descend into Vue's deeply self-referential `VNode`/`Component` types, past TypeScript's instantiation-depth ceiling. The error surfaced on ordinary reads like `getEdges.value.filter(…)`. These accessors now return a shallow `readonly EdgeType[]` / `readonly NodeType[]`, and `getNode`/`getEdge` return the plain element type. The returned list stays read-only (change nodes/edges via `setNodes`/`updateNode`/`applyNodeChanges`). Fixes #1886.
+
+- [#2035](https://github.com/bcakmakoglu/vue-flow/pull/2035) [`02ab098`](https://github.com/bcakmakoglu/vue-flow/commit/02ab0982e9caf4cda9452b4a0602cee4a779d76a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Compute node `internals.positionAbsolute` / `internals.z` centrally via `@xyflow/system`'s `updateAbsolutePositions`, driven by the store on every node mutation, and remove the per-node positionAbsolute watcher (and its `clampPosition`) that previously lived in each `NodeWrapper`. This mirrors how `@xyflow/svelte`/`@xyflow/react` derive absolute positions and replaces vue-flow's custom `getXYZPos` parent-chain math.
+
+  Behaviour is unchanged for the common cases (parent-relative positioning, `extent: 'parent'`, extent clamping, z-index elevation on select). Two narrow notes:
+
+  - The `padding` on a `CoordinateExtentRange` extent (`{ range, padding }`) is not applied by the system clamp pass — the node is clamped to its `range` (e.g. parent bounds) without the extra padding. (`@xyflow/system` has no `CoordinateExtentRange` concept; tracked as a follow-up.)
+  - Root-node `z` is derived from `node.zIndex` + select-elevation (matching `@xyflow/system`'s `calculateZ`); the previous `style.zIndex` fallback for root z is no longer consulted.
+
+- [#2118](https://github.com/bcakmakoglu/vue-flow/pull/2118) [`66efe9c`](https://github.com/bcakmakoglu/vue-flow/commit/66efe9cf8fab20efe9b48df4d3504e916f4d4f99) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Clear the visual nodes-selection box when no selected nodes remain. `nodesSelectionActive` only ever turns on via a user drag-select, but it could get stuck `true` after the selected nodes were removed (e.g. deleted) — so a later programmatic select would wrongly render the `NodesSelection` rect around an unrelated node. Re-adopting nodes now turns it back off whenever the selection is empty. Mirrors xyflow/react #5727.
+
+- [#2100](https://github.com/bcakmakoglu/vue-flow/pull/2100) [`be30dcc`](https://github.com/bcakmakoglu/vue-flow/commit/be30dcc80b92333a6efe00b88486261c9dd62f10) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Reuse more `@xyflow/system` types instead of re-defining them locally: `XYPosition`, `Dimensions`, `Rect`, `SnapGrid`, `SelectionRect`, `SelectionMode`, `Position`, `ConnectionMode`, `Connection`, `NodeConnection`, `HandleType`, `NodeDimensionChange`, `NodePositionChange`, `NodeSelectionChange`, `NodeRemoveChange`, `EdgeSelectionChange`, `EdgeRemoveChange` and `Align`. Public API is unchanged (they're re-exported from the entry).
+
+- [#2146](https://github.com/bcakmakoglu/vue-flow/pull/2146) [`3fd2d60`](https://github.com/bcakmakoglu/vue-flow/commit/3fd2d604afcd8dcdb756cfe2ffe9c09174c32191) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Migrate the connection-radius example to the current connection-line slot props. The custom `#connection-line` slot exposes its coordinates as `fromX`/`fromY`/`fromPosition` and `toX`/`toY`/`toPosition` (matching `@xyflow/react` and `@xyflow/svelte`), not the old `source*`/`target*` — the example used the old names, so it rendered against `undefined` coordinates. Note the edge path helpers (`getBezierPath` etc.) keep their `source*`/`target*` parameter names, so map the slot's `from*`/`to*` onto them.
+
+- [#2077](https://github.com/bcakmakoglu/vue-flow/pull/2077) [`ed4296e`](https://github.com/bcakmakoglu/vue-flow/commit/ed4296eacc7e9fbf849b380e97069c2f081b6b4f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Internal cleanup: drop redundant type casts (vestigial `as unknown as readonly T[]` getter casts left from the pre-#1886 `DeepReadonly` era, the unnecessary `as any` on the built-in edge components, and several double casts reduced to a value or a single assertion), refresh stale comments, and remove the now-dead type imports. No behavior or public-API change.
+
+- [#2075](https://github.com/bcakmakoglu/vue-flow/pull/2075) [`607f507`](https://github.com/bcakmakoglu/vue-flow/commit/607f507a6c89e46a4abd2f4e96d17fdeeb135a37) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Expose `./package.json` in the package `exports` map, so `@vue-flow/core/package.json` can be imported (e.g. to read the version). The `exports` map previously blocked it with `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+
+- [#2160](https://github.com/bcakmakoglu/vue-flow/pull/2160) [`f3e9a2c`](https://github.com/bcakmakoglu/vue-flow/commit/f3e9a2ce0563d1418dfda976c0e15d6b52054207) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove the internal `useNodeHooks`/`useEdgeHooks` composables. They created a second, per-wrapper set of `ExtendedEventHook`s whose only listener forwarded to the global `emits` hooks — so `NodeWrapper`/`EdgeWrapper` now call `emits.node*`/`emits.edge*` directly. Behavior is identical (the global hooks still back both `onNodeClick`/`onEdgeClick` and the Vue `@node-click` emitter), but this drops 9 hook instances + 9 forwarding closures **per node and per edge** of setup cost and memory. The unused `NodeEventsEmit`/`EdgeEventsEmit` types are removed with them.
+
+- [#2161](https://github.com/bcakmakoglu/vue-flow/pull/2161) [`575c4a9`](https://github.com/bcakmakoglu/vue-flow/commit/575c4a99141a1eec6085593f08ce1b2c201d8812) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove the `useGetPointerPosition` composable. It was an `@internal` helper that nothing in core (or the examples/docs) used — the drag/connection paths derive pointer positions inline via `@xyflow/system`. Its public re-export is dropped.
+
+- [#2066](https://github.com/bcakmakoglu/vue-flow/pull/2066) [`dd4938b`](https://github.com/bcakmakoglu/vue-flow/commit/dd4938b1cfb2c1d7c85798e6a09773a24e4823fd) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Edge rendering cleanup (DOM hygiene + per-frame perf):
+
+  - The built-in edge components (`straight`/`bezier`/`smoothstep`/`step`/`simplebezier`) no longer leak their geometry/identity props onto the `<path>` element. Previously they spread `{ ...attrs, ...props }` into `BaseEdge` (whose root does `v-bind="$attrs"`), so every edge path carried bogus attributes — `source`, `target`, `sourcePosition`, `targetPosition`, `reconnectable`, `selectable`, `animated`, and the per-frame-changing `sourceX`/`sourceY`/`targetX`/`targetY`. `BaseEdge` now receives only the props it renders (path, label/marker/interaction + genuine `style`/`class`), and the built-in edge components set `inheritAttrs: false`. The four position attrs were re-written on every drag frame, so this also trims `setAttribute` work during drags.
+  - `EdgeText` no longer re-measures its label (`getBBox`, a forced reflow) on every `x`/`y` change — the text's bounding box is position-independent, so it now only re-measures when the label/element changes. Removes a per-frame reflow for labeled edges during drag.
+
+  Custom edge components are unaffected (they pass their own props to `BaseEdge`). Edge `style`, labels, and markers still render exactly as before.
+
+- [#2159](https://github.com/bcakmakoglu/vue-flow/pull/2159) [`82a205a`](https://github.com/bcakmakoglu/vue-flow/commit/82a205a47b46165a30c1e6ec66b8af6634e38110) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Add the `selectable` class to edges (xyflow parity). The edge `<g>` now carries a `selectable` class whenever the edge is selectable (its own `selectable` flag, or `elementsSelectable` when unset), and the CSS keys `cursor: pointer` and the focus edge-path stroke off `.selectable` — matching React/Svelte Flow. Previously `cursor: pointer` was applied to every edge unconditionally, so **non-selectable edges no longer show the pointer cursor**.
+
+- [#2107](https://github.com/bcakmakoglu/vue-flow/pull/2107) [`03569ca`](https://github.com/bcakmakoglu/vue-flow/commit/03569cac4295cfde602dbb3e357d3cc2c3866a82) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Convert the component emit type definitions (`MiniMapEmits`, `MiniMapNodeEmits`, `ControlEmits`, `NodeResizerEmits`, and `ControlButton`'s inline emit) from the call-signature overload form to Vue 3.3+ object notation (`{ eventName: [args] }`), matching `FlowEmits`. Event names and payloads are unchanged and `defineEmits` accepts both forms, so component usage is unaffected — only update if you imported one of these interfaces and relied on its old callable shape. Also types the `MiniMap` `click` payload's `position` as `XYPosition` (was an inline `{ x, y }`).
+
+- [#2060](https://github.com/bcakmakoglu/vue-flow/pull/2060) [`ba3e7a9`](https://github.com/bcakmakoglu/vue-flow/commit/ba3e7a9307586f9a2f81df5b3947f5649ff48fdf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix `fitView`'s `includeHiddenNodes` option being ignored. It was accepted in `FitViewParams` (and defaulted to `false`) but never forwarded to the underlying `fitViewport` call, so `fitView({ includeHiddenNodes: true })` (and `:fit-view-on-init` with it) silently excluded hidden nodes. It's now passed through, so hidden nodes (that have known dimensions) participate in the fit when requested.
+
+- [#2141](https://github.com/bcakmakoglu/vue-flow/pull/2141) [`fd53b22`](https://github.com/bcakmakoglu/vue-flow/commit/fd53b22ac9cf1b7382240b7e9828ab5ca1eca0e5) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Defer an imperative `fitView()` until the nodes are measured (ports xyflow/react's `fitView` queue). A `fitView()` call made before the nodes settle — e.g. right after `addNodes()` — used to frame only the already-measured nodes (`getFitViewNodes` skips unmeasured ones) and ignore the new ones. It now waits for `nodesInitialized` before fitting, so the fit always frames the current nodes. An empty flow resolves immediately (nothing to wait for). The `useNodesInitialized` check is now a shared `areNodesInitialized` helper used by both the composable and the fitView queue.
+
+- [#2112](https://github.com/bcakmakoglu/vue-flow/pull/2112) [`a974460`](https://github.com/bcakmakoglu/vue-flow/commit/a974460e7223422188d3aef2a681a4d4983d001c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix save/restore leaving nodes invisible. `toObject()` now mirrors xyflow/react: it shallow-clones each node/edge (keeping `measured` and the other fields) and reads the viewport off the transform, instead of stripping fields and round-tripping through `JSON.stringify`/`parse`.
+
+  Previously `measured` was stripped from the export, so restoring a saved flow (`setNodes` with the same node ids) produced nodes with no measured size. A node stays `visibility: hidden` until it's measured, and because the restored nodes reuse their existing DOM elements (same id → no re-mount), the `ResizeObserver` never re-fires to re-measure them — so they were stuck hidden. Keeping `measured` in the export means a restored flow renders immediately.
+
+- [#2097](https://github.com/bcakmakoglu/vue-flow/pull/2097) [`fa544e8`](https://github.com/bcakmakoglu/vue-flow/commit/fa544e8517a030cfa142fb0636f60e8286cbd5f0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `FlowEmits` now uses Vue's object/tuple emit notation (`eventName: [arg: T]`) instead of call-signature overloads — the style `defineEmits` recommends. The `update:nodes` / `update:edges` / `update:viewport` entries were also dropped: they're auto-declared by the `defineModel` calls in `<VueFlow>`, so re-listing them was redundant. No runtime or event-payload change — the same events fire with the same arguments.
+
+- [#2128](https://github.com/bcakmakoglu/vue-flow/pull/2128) [`e46a9ad`](https://github.com/bcakmakoglu/vue-flow/commit/e46a9ada6444862bba36107c03d730adda6117bf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Align the handle `connectionindicator` class with xyflow/react's model (fixes the click-connection case from xyflow/react #5042). It now keys off the global connection state — `isConnectableEnd` for possible end handles while a connection is in progress (drag **or** click), `isConnectableStart` otherwise — instead of a per-handle "is this the connection's start/end handle" check. Previously a handle with `connectableStart: false, connectableEnd: true` never showed the indicator as a connection target.
+
+- [#2145](https://github.com/bcakmakoglu/vue-flow/pull/2145) [`ea479a6`](https://github.com/bcakmakoglu/vue-flow/commit/ea479a6906ee953aa14f88de42b4c3f2c3c603f6) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Restore the per-handle connection-state classes used for connection-validation styling. During a connection drag `<Handle>` again toggles `connectingfrom` (on the handle the drag started from), `connectingto` (on the handle currently hovered), and `valid` (when that hovered handle is a valid target) — matching `@xyflow/react` and `@xyflow/svelte`. Core only toggles the classes; coloring is left to your CSS. Note the class names now mirror xyflow: target `.vue-flow__handle.connectingto` / `.connectingfrom` / `.valid` instead of the old `vue-flow__handle-connecting` / `vue-flow__handle-valid`.
+
+- [#2095](https://github.com/bcakmakoglu/vue-flow/pull/2095) [`1825d3f`](https://github.com/bcakmakoglu/vue-flow/commit/1825d3f7226a93e98694503d984b724430dd838f) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix the `fitView` prop being ignored on init — `:fit-view` (and `<VueFlow fit-view>`) had no effect, so flows didn't fit to their nodes after load. `setState` maps the `fitView` prop to the internal `fitViewOnInit` flag, but its generic option loop then re-applied the default `fitViewOnInit: false` (re-spread from the freshly-created state), clobbering the value the mapping had just set. `fitViewOnInit` is now excluded from that loop (it's set solely by the `fitView` mapping), so the initial fit runs as intended. Regression from the `fitViewOnInit`-prop → `fitView`-prop rename.
+
+- [#2070](https://github.com/bcakmakoglu/vue-flow/pull/2070) [`14eaaa6`](https://github.com/bcakmakoglu/vue-flow/commit/14eaaa6985ae5d37bc7a29e87763a34e3ea289ff) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Emit the `init` event from `watch(..., { flush: 'post' })` instead of `setTimeout(() => …, 1)`. It still fires once, after the viewport is initialized and applied to the DOM (so `@init`/`onInit` consumers see the ready viewport), but the timing is now deterministic (post-render) rather than a 1ms macrotask. Adds previously-missing test coverage for the `@init` timing.
+
+- [#2127](https://github.com/bcakmakoglu/vue-flow/pull/2127) [`1e280d8`](https://github.com/bcakmakoglu/vue-flow/commit/1e280d88600acec3d6f2c334b0f1eb039be8aabf) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix `isNodeIntersecting` when the area is fully contained in the node. With `partially: false` it only counted a node as intersecting when the node was fully inside the area — so a large node _containing_ a smaller query area reported no intersection. Full containment now counts either way (node-in-area or area-in-node), matching `getIntersectingNodes` and xyflow/react #5482.
+
+- [#2111](https://github.com/bcakmakoglu/vue-flow/pull/2111) [`ac4911d`](https://github.com/bcakmakoglu/vue-flow/commit/ac4911d65701ee464358f64818efe33a1c67c088) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Migrate the build from Vite (library mode) to [tsdown](https://tsdown.dev), aligning with `@xyflow/react`/`@xyflow/system`. One tool now produces the JS bundles **and** the bundled, per-condition type declarations (`index.d.mts` / `index.d.ts`), replacing the previous `vite build` + separate `vue-tsc → rolldown-plugin-dts` flatten step.
+
+  - `.vue` SFCs compile via `unplugin-vue`; SFC declarations are emitted by tsdown's `dts: { vue: true }` (vue-tsc under the hood).
+  - The control icons are now plain Vue components (`icons.ts`) instead of `.svg` files, removing the `vite-svg-loader` dependency.
+  - Declared dependencies (`@vueuse/core`, `d3-interpolate`, `@xyflow/system`) are now externalized rather than bundled — the standard library behavior (they're already `dependencies`), shrinking the published bundle. The ESM/CJS dual output is unchanged.
+  - Source maps are now published, and `publint` + `arethetypeswrong` run as part of the build.
+  - Output files are renamed `vue-flow-core.{mjs,js}` → `index.{mjs,js}`; consumers use the package entry point (`@vue-flow/core`) so this is internal.
+
+  Removed dev dependencies: `vite`, `@vitejs/plugin-vue`, `vite-svg-loader`, `@rollup/plugin-replace`, `rollup-plugin-dts`.
+
+- [#2094](https://github.com/bcakmakoglu/vue-flow/pull/2094) [`1fdc169`](https://github.com/bcakmakoglu/vue-flow/commit/1fdc1693c0d5b1dbf5f2c528a229987e941d29cc) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix `<MiniMap>`'s `nodeColor` not reacting to external reactive state. A `nodeColor` / `nodeStrokeColor` / `nodeClassName` function that reads a reactive value declared outside the node (e.g. recoloring a node from a `ref`) didn't update the minimap, because the per-node `v-memo` keyed on the function _reference_. It now keys on the function _result_, so such recolors re-render the affected minimap node while untouched nodes still skip during drag/pan frames.
+
+- [#2150](https://github.com/bcakmakoglu/vue-flow/pull/2150) [`b7116eb`](https://github.com/bcakmakoglu/vue-flow/commit/b7116eb7f6256cace3781dd2e451faab4b5c764b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix the flaky `TS2589: Type instantiation is excessively deep and possibly infinite` that could appear on the most common state-update pattern — `nodes.value = nodes.value.map((n) => ({ ...n, position }))` and the edge equivalent — typically surfacing intermittently in long-running editor type-checkers (clears on a TS-server restart, then returns).
+
+  `ref<Node[]>` makes `.value` an `UnwrapRef<Node[]>`, and Vue's `UnwrapRef` recursively walks the entire `Node` type — including `style`'s `CSSProperties` (hundreds of large string-literal unions). A single spread-map therefore cost ~426k type instantiations, sitting right on TypeScript's instantiation-depth limit. Nodes and edges contain no refs, so unwrapping them is pure overhead: `@vue-flow/core` now opts them out via Vue's `RefUnwrapBailTypes` (the same hook Vue uses to bail DOM `Node`/`Window`), dropping the same operation to ~1k instantiations. Type-only — no runtime change.
+
+- [#2125](https://github.com/bcakmakoglu/vue-flow/pull/2125) [`42082a4`](https://github.com/bcakmakoglu/vue-flow/commit/42082a4514c525e14114eb1ee0105fe3e91562f0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Honor `width`/`height` and `initialWidth`/`initialHeight` in the node visibility gate and inline size (mirrors xyflow/react & xyflow/svelte). The node wrapper previously gated visibility on `measured` alone, so a node sized via `width`/`initialWidth` stayed `visibility: hidden` until the `ResizeObserver` measured it — and in SSR (no `ResizeObserver`) it never became visible. Visibility now uses `@xyflow/system`'s `nodeHasDimensions` (`measured ?? width ?? initialWidth`), and the wrapper's inline size falls back through `initialWidth`/`initialHeight` before the node is measured (`initialWidth`/`initialHeight` are the SSR dimensions, since DOM can't be measured server-side).
+
+- [#2160](https://github.com/bcakmakoglu/vue-flow/pull/2160) [`f3e9a2c`](https://github.com/bcakmakoglu/vue-flow/commit/f3e9a2ce0563d1418dfda976c0e15d6b52054207) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `NodeWrapper` now resolves its node with a direct `computed(() => getInternalNode(id))` instead of the public `useNode` composable. It only ever used `useNode`'s `node`; resolving directly drops the unused `parentNode`/`connectedEdges` computeds and the `nodeEl` inject (plus a redundant `useVueFlow`/`useStore` resolution) that `useNode` allocated per node. `useNode` itself is unchanged for custom-node use.
+
+- [#2133](https://github.com/bcakmakoglu/vue-flow/pull/2133) [`a197c81`](https://github.com/bcakmakoglu/vue-flow/commit/a197c81db4318d73bfdf1c9f0b0506117a53a080) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Keep the current selection on a pane click when `elementsSelectable` is `false` (mirrors xyflow/react #5217). Previously a pane click always cleared the selection; now a selection set before selection was disabled — or set programmatically — survives the click. The interactive reset is centralized in a new gated `resetSelectedElements` action (a no-op while `elementsSelectable` is `false`), distinct from `removeSelectedNodes`/`removeSelectedEdges`, which still clear unconditionally.
+
+- [#2147](https://github.com/bcakmakoglu/vue-flow/pull/2147) [`f83c2b1`](https://github.com/bcakmakoglu/vue-flow/commit/f83c2b1cccc237306ae62b824a6968bf40655303) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix edges snapping back to a node's default handle positions after a re-commit (e.g. a dagre layout flipping `sourcePosition`/`targetPosition`, or any `nodes.value.map(...)`). `@xyflow/system`'s `parseHandles` resets `handleBounds` to `undefined` whenever a re-committed user node carries no `measured`, and vue-flow's node-rep split deliberately keeps `measured` (and `handleBounds`) off the user `Node` — so every re-commit wiped the handle bounds and edges fell back to the node's default sides instead of its actual handles. `adoptNodes` now carries the prior `handleBounds` forward alongside `measured` (extending the same adapter that already preserves `measured`); a genuine re-measure (`updateNodeDimensions`, e.g. NodeWrapper's `sourcePosition` watcher) still overwrites them, and that fresh result is preserved by the next re-commit.
+
+- [#2143](https://github.com/bcakmakoglu/vue-flow/pull/2143) [`e8cc06a`](https://github.com/bcakmakoglu/vue-flow/commit/e8cc06a144d12701fe556c7a57636905950e3cd0) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix nodes turning invisible after a re-commit that doesn't change their size. Re-committing fresh node objects — a one-way `:nodes` reassignment, a layout pass, `nodes.value.map((n) => ({ ...n }))` — dropped each node's measured dimensions: the node-rep split keeps `measured` off the user `Node`s, and the system's `adoptUserNodes` only sources `measured` from the incoming user node. The node then failed the `nodeHasDimensions` gate and rendered with `visibility: hidden`, and because its DOM size hadn't actually changed the `ResizeObserver` never re-fired to restore it. `adoptNodes` now carries the previously measured dimensions forward for re-committed nodes that don't supply their own (mirroring how the system already reuses `handleBounds`); a genuine resize still re-measures via the `ResizeObserver`.
+
+- [#2144](https://github.com/bcakmakoglu/vue-flow/pull/2144) [`92cf29c`](https://github.com/bcakmakoglu/vue-flow/commit/92cf29cbcdd4fb2c9907afe938efa138acb7dde9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix reconnectable edges vanishing when you press an edge's reconnect handle without dragging. The edge was hidden eagerly on pointerdown, but `@xyflow/system`'s `XYHandle` only fires its connect/reconnect-end callbacks once the drag threshold (`connectionDragThreshold`, default `1`) is crossed — so a plain click hid the edge and never restored it (it reappeared only on mouse-move, and was gone entirely on mouse-up). The original edge is now hidden — and `reconnectStart` emitted — only once the reconnect drag actually starts (the connection's `onConnectStart`), matching `@xyflow/react` and `@xyflow/svelte`.
+
+- [#2041](https://github.com/bcakmakoglu/vue-flow/pull/2041) [`3b353eb`](https://github.com/bcakmakoglu/vue-flow/commit/3b353ebba73648bcbfb8f3f04b5c9cb943422b4c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Remove the internal `until` watcher from `setState` (no more polling a reactive flag to detect async readiness). Min/max-zoom and `translateExtent` are now applied directly — those setters already write to state, and `XYPanZoom` reads them when it mounts, so deferring until the panZoom instance existed was redundant. No public API change.
+
+- [#2131](https://github.com/bcakmakoglu/vue-flow/pull/2131) [`2bd3fa5`](https://github.com/bcakmakoglu/vue-flow/commit/2bd3fa52e062b4c2ac2523b91e41ce86596878d3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Export `ResizeControlVariant` as a value, not type-only (mirrors xyflow/react #4947). It is a runtime enum, but the bundled type declarations re-exported it through the NodeResizer barrel as `export type`, so `ResizeControlVariant.Line` / `.Handle` could not be used as a value in TypeScript consumers. It is now re-exported directly from the package root as a value.
+
+- [#2123](https://github.com/bcakmakoglu/vue-flow/pull/2123) [`5d7e677`](https://github.com/bcakmakoglu/vue-flow/commit/5d7e677c1025969aa581b91fe7fdb0fb3ae8e03d) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - A plain click on the pane no longer opens a selection box or fires `selectionStart`/`selectionEnd`. The selection (clearing the current selection + `selectionStart`) now begins only once the pointer moves past the click threshold (`paneClickDistance`, or immediately while the selection key is held), and `nodesSelectionActive` / `selectionEnd` only update when a real selection drag happened — instead of resetting on every pointer-down and activating on every pointer-up. Mirrors xyflow/react #5593.
+
+- [#2059](https://github.com/bcakmakoglu/vue-flow/pull/2059) [`7df91f0`](https://github.com/bcakmakoglu/vue-flow/commit/7df91f0ee7374cd40ea8b5d7c24fa7d07e47944b) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Fix node selection desyncing the internal lookup under `autoApplyChanges: false`. `getSelectionChanges` mutated the lookup node's `selected` in place as a synchronous "deselect the previous node" hack. With markRaw'd nodes that mutation didn't re-render, and with `autoApplyChanges: false` (no auto-apply) it left the lookup's `selected` permanently out of sync with the user node — so `XYDrag` (which reads `selected` from the lookup) could pick up nodes the user's state considered unselected.
+
+  The mutation is removed: selection now flows purely through the change pipeline (the synchronous `applyNodeChanges` re-adopt already produces the deselect-previous behavior). No change for `autoApplyChanges: true`; under `autoApplyChanges: false` the store no longer half-applies selection — you apply the emitted `select` changes yourself, as intended for controlled flow.
+
+- [#2164](https://github.com/bcakmakoglu/vue-flow/pull/2164) [`468603c`](https://github.com/bcakmakoglu/vue-flow/commit/468603cc08a1ef0fa98975404fe649312c55fec9) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Simplify `<Handle>`'s per-instance reactivity. The seven connection-state `toRef`s (`connectingFrom`/`connectingTo`/`valid`/`connectionInProcess`/…) all derived from the same global `connection*` store state and were used only in the class binding — they're consolidated into a single `connectionClasses` computed. The redundant `isConnectableStart`/`isConnectableEnd` refs are dropped too (their props already default to `true`). Each handle now allocates ~5 reactive effects instead of ~13 — meaningful since handles are the highest-multiplicity element (~2 per node). Identical rendered classes; no behavior or API change.
+
+- [#2121](https://github.com/bcakmakoglu/vue-flow/pull/2121) [`14368ca`](https://github.com/bcakmakoglu/vue-flow/commit/14368caaca3bbd4624ec5fc929db66fc58935352) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - `removeSelectedNodes` / `removeSelectedEdges` now only emit changes for nodes/edges that are actually selected, instead of one deselect change per element. This avoids re-committing and re-rendering every node/edge on an unselect — most noticeably on drag start with `selectNodesOnDrag: false`. Mirrors xyflow/react #5682.
+
+- [#2158](https://github.com/bcakmakoglu/vue-flow/pull/2158) [`6a5805a`](https://github.com/bcakmakoglu/vue-flow/commit/6a5805a8ef879922a3c3ff72093234fda88e2f40) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Drop the per-frame id-array allocation in `NodeRenderer`/`EdgeRenderer`. The stable id-list computed previously mapped the whole `nodes`/`edges` array to ids on every commit just to diff it against the previous list. It now compares the live array against the previous id list in place with an indexed loop, allocating a new id array only when membership actually changes — the unchanged path (every drag frame) allocates nothing.
+
+- [#2157](https://github.com/bcakmakoglu/vue-flow/pull/2157) [`bed16a5`](https://github.com/bcakmakoglu/vue-flow/commit/bed16a523f22fb3ec72cfe1ffc233d66cedd44ec) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Iterate a value-stable id list in `NodeRenderer`/`EdgeRenderer` so their `v-for` render effect only re-runs on node/edge **membership** changes, not on every commit. Previously each position or data update replaced the whole `nodes`/`edges` array and re-diffed all N children every frame; a moved node/edge now re-renders only through its own lookup-backed wrapper. Combined with the existing per-item `v-memo`, membership changes stay O(changed). No API change.
+
+- [#2156](https://github.com/bcakmakoglu/vue-flow/pull/2156) [`14a8b7c`](https://github.com/bcakmakoglu/vue-flow/commit/14a8b7ca290026741da19d0555136f2eb3df0c6e) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Perf: read the reactive store directly in the per-element components (`NodeWrapper`, `EdgeWrapper`, `Handle`) and the per-element composables they call (`useNode`, `useHandle`, `useDrag`, `useUpdateNodePositions`, `useNodeConnections`) instead of `storeToRefs(useStore())`. `storeToRefs` runs `toRefs` over the whole state — allocating a ref for every state key — on each call, which adds up when it runs once per node, edge, and handle on a large graph. Inside a component's computeds/render, `store.x` already tracks reactively, so no refs are needed.
+
+  `useStore` and `storeToRefs` are unchanged (`storeToRefs` is still the way to destructure state into refs and carry them around). The guidance for custom nodes/edges: read fields off `useStore()` directly (`const store = useStore(); store.transform`) rather than `storeToRefs` per instance.
+
+- [#2066](https://github.com/bcakmakoglu/vue-flow/pull/2066) [`0416033`](https://github.com/bcakmakoglu/vue-flow/commit/04160338517a01790f3eea249ae220db7e56adca) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Type-check component templates under `strictTemplates` and fix what it surfaced in core:
+
+  - `ControlButton` now declares its `disabled` prop and `click` emit instead of relying on attribute fall-through. Its rendered output and behaviour are unchanged.
+  - The `NodesSelection` rectangle binds the correct lowercase `tabindex` attribute (was `tabIndex`).
+  - The handle's identifier `data-*` attributes (`data-id` et al., queried during connection) are bound through a typed record — no rendered change.
+
+- [#2035](https://github.com/bcakmakoglu/vue-flow/pull/2035) [`02ab098`](https://github.com/bcakmakoglu/vue-flow/commit/02ab0982e9caf4cda9452b4a0602cee4a779d76a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Compute parent-aware node positions through `@xyflow/system`'s `adoptUserNodes`. vue-flow hands raw user nodes to system's adopt routine, which produces `internals.positionAbsolute`, `internals.z`, `internals.rootParentIndex`, and `internals.handleBounds` correct from the first paint — the previous flow set `internals.positionAbsolute` naively to `node.position` and relied on the per-node `NodeWrapper` watcher to "correct" child positions on the next reactive tick (that watcher is gone; the store recomputes absolute positions imperatively).
+
+  Also reshape `store.parentLookup` from `Map<string, Set<string>>` to `Map<string, Map<string, GraphNode<NodeType>>>` to match `@xyflow/system`'s `ParentLookup`. The only existing consumer (`NodeWrapper`'s `isParent` derived ref) used `.size`, which works the same on both shapes. This makes the lookup usable as a direct argument to `updateAbsolutePositions` / `handleExpandParent`.
+
+  Hand-written code that called `store.parentLookup.value.get(id)?.has(childId)` (set semantics) needs to switch to `.has(childId)` on the inner `Map` — same call signature, same answer.
+
+- [#2155](https://github.com/bcakmakoglu/vue-flow/pull/2155) [`c14d562`](https://github.com/bcakmakoglu/vue-flow/commit/c14d5620c72b03edb1769ba81c79a13c49b7ce47) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Drop the unused `d3-interpolate` runtime dependency. The d3 zoom/transition/interpolate logic now lives inside `@xyflow/system`, and `@vue-flow/core` no longer imports `d3-interpolate` (or the `@types/d3-*` packages) directly.
+
+- [#2034](https://github.com/bcakmakoglu/vue-flow/pull/2034) [`d7577ae`](https://github.com/bcakmakoglu/vue-flow/commit/d7577aef8b34c7a7bf4f8929fdc815e29e322c63) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Rebuild `useHandle` on top of `@xyflow/system`'s `XYHandle`. Drag-to-connect now goes through `XYHandle.onPointerDown` — the same connection engine that powers `xyflow/react` and `xyflow/svelte` — instead of the previous vue-flow specific drag loop. Click-to-connect stays vue-flow specific so the richer `isValidConnection({ source, target, sourceHandle, targetHandle }, { nodes, edges, sourceNode, targetNode })` callback signature is preserved.
+
+  No public-API changes. `useHandle`'s props (`handleId`, `nodeId`, `type`, `isValidConnection`, `edgeUpdaterType`, `onEdgeUpdate`, `onEdgeUpdateEnd`) and return shape (`handlePointerDown`, `handleClick`) are unchanged. The `onConnectStart` / `onConnect` / `onConnectEnd` event hooks fire with the same payloads they did before.
+
+  Internal effects of the migration:
+
+  - Auto-pan on connect, the connection radius / closest-handle resolution, and the drag threshold are now driven by the system implementation. Behaviour is in lockstep with xyflow/react and xyflow/svelte.
+  - A bridge inside `useHandle` decomposes the system's unified `ConnectionState` into vue-flow's split-field store (`connectionStartHandle`, `connectionEndHandle`, `connectionPosition`, `connectionStatus`), so `useConnection`, `Pane.vue`, `ZoomPane.vue`, and `<Handle />` continue to read the same reactive fields they always have.
+  - The user-facing `ValidConnectionFunc` is wrapped at the boundary to fit system's bare `(edge) => boolean` signature — source/target nodes are resolved from `nodeLookup` before the user's callback runs.
+
+- [#2120](https://github.com/bcakmakoglu/vue-flow/pull/2120) [`41c3775`](https://github.com/bcakmakoglu/vue-flow/commit/41c3775821d39ee8a2922eeb863798cfbf005be3) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Improve `useNodesData`'s return type (mirrors xyflow/react & xyflow/svelte). It now uses `@xyflow/system`'s `DistributivePick` instead of a merged object type, so when you pass a union node type the result is a discriminated union — checking `.type` narrows `.data`:
+
+  ```ts
+  const node = useNodesData<MyNode>(id); // MyNode = TextNode | NumberNode
+  if (node.value?.type === "text") {
+    node.value.data.text; // narrowed to TextNode's data
+  }
+  ```
+
+  For a single (non-union) node type the result is unchanged.
+
+- [#2050](https://github.com/bcakmakoglu/vue-flow/pull/2050) [`305439b`](https://github.com/bcakmakoglu/vue-flow/commit/305439b044fb3552b9cefc39b11b57d4d8002940) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Internal: make the `[x, y, zoom]` `transform` tuple the canonical viewport state (the `@xyflow/system` representation), with `viewport` (`{ x, y, zoom }`) derived from it.
+
+  This mirrors how `@xyflow/react`/`@xyflow/svelte` store the viewport internally and removes the bidirectional `{x,y,zoom}` ↔ `[x,y,zoom]` mapping that previously happened at every `@xyflow/system` call site. The public API is unchanged: `useVueFlow().viewport` still resolves to `{ x, y, zoom }` (now a derived `computed`), and `setViewport`/`getViewport`/`fitView`/`onViewportChange`/`toObject().viewport` are all unchanged.
+
+  The only behavioral nuance: `useVueFlow().viewport` is now a read-only `ComputedRef` — set the viewport via `setViewport`/`zoom*`/`fitView` (mutating `viewport.value` directly was never a supported API).
+
+- [#2039](https://github.com/bcakmakoglu/vue-flow/pull/2039) [`db68798`](https://github.com/bcakmakoglu/vue-flow/commit/db6879896018d76b543032eaa85436c9e865e44a) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Bump the `@vueuse/core` dependency from `^10` to `^14`.
+
+  vue-flow now defines its own event-hook types (`EventHookOn` / `EventHookOff` / `EventHookTrigger`) instead of re-exporting `@vueuse/core`'s. The hook API is unchanged — handlers still receive a single payload (`onNodesChange((changes) => …)`, `onConnect((connection) => …)`, etc.). This decoupling is required because `@vueuse/core` v14 changed its internal `Callback<T>` to spread array payloads (`T extends any[]` → `(...param: T) => void`), which would otherwise have forced vue-flow's array-payload hooks (`NodeChange[]` / `EdgeChange[]`) to an awkward variadic `(...changes) => …` signature.
+
+- [#2162](https://github.com/bcakmakoglu/vue-flow/pull/2162) [`5fd79e3`](https://github.com/bcakmakoglu/vue-flow/commit/5fd79e3b68829f7db00d7f452176dd208df6592c) Thanks [@bcakmakoglu](https://github.com/bcakmakoglu)! - Stop drilling the `zoom-pane` slot through `VueFlow → ZoomPane → Pane → Viewport`. It now renders inside `Viewport` (the transformed layer it belongs to) from the provided `Slots`, via a small propless `ZoomPaneSlot` component. This keeps ZoomPane's slot to Viewport static — so Pane/Viewport bail out of ZoomPane/Pane re-renders — and the slot itself bails out of Viewport's per-frame transform re-renders (invoked once and riding the CSS transform, instead of being rebuilt each pan/zoom frame). No API change.
+
 ## 1.48.2
 
 ### Patch Changes
