@@ -8,6 +8,7 @@ export function getHandleBounds(
   nodeElement: HTMLDivElement,
   nodeBounds: DOMRect,
   zoom: number,
+  ancestorZoom: number,
   nodeId: string,
 ): HandleElement[] | null {
   const handles = nodeElement.querySelectorAll(`.vue-flow__handle.${type}`)
@@ -24,8 +25,8 @@ export function getHandleBounds(
       type,
       nodeId,
       position: handle.getAttribute('data-handlepos') as unknown as Position,
-      x: (handleBounds.left - nodeBounds.left) / zoom,
-      y: (handleBounds.top - nodeBounds.top) / zoom,
+      x: (handleBounds.left - nodeBounds.left) / zoom / ancestorZoom,
+      y: (handleBounds.top - nodeBounds.top) / zoom / ancestorZoom,
       ...getDimensions(handle as HTMLDivElement),
     }
   })
