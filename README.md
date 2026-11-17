@@ -1,3 +1,5 @@
+## This repository has been archived and development for Vue Flow has moved to [xyflow](https://github.com/xyflow/xyflow). Please check out the new repository for the latest updates and features.
+
 # Vue Flow 🌊
 
 [![Vue flow](vue-flow.gif)](https://vueflow.dev/)
